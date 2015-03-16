@@ -1,0 +1,12 @@
+#ifndef LOGVIEWER_GLOBAL_H
+#define LOGVIEWER_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(LOGVIEWER_LIBRARY)
+#  define LOGVIEWERSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define LOGVIEWERSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // LOGVIEWER_GLOBAL_H
