@@ -1,15 +1,15 @@
-#include "loggingwidget.h"
-#include "loggingmodel.h"
-#include "ui_loggingwidget.h"
-#include "loggingsortfilterproxymodel.h"
+#include "logwidget.h"
+#include "logmodel.h"
+#include "ui_logwidget.h"
+#include "logsortfilterproxymodel.h"
 
 #include <QMenu>
 
-LoggingWidget::LoggingWidget(QWidget *parent) :
+LogWidget::LogWidget(QWidget *parent) :
     QFrame(parent),
-    ui(new Ui::LoggingWidget),
+    ui(new Ui::LogWidget),
     m_model(nullptr),
-    m_filterModel(new LoggingSortFilterProxyModel(this)),
+    m_filterModel(new LogSortFilterProxyModel(this)),
     m_categoriesMenu(new QMenu(this))
 {
     ui->setupUi(this);
@@ -24,21 +24,21 @@ LoggingWidget::LoggingWidget(QWidget *parent) :
             this, SLOT(filterCategoriesTriggered(QAction*)));
 
     connect(ui->infoToolButton, &QToolButton::toggled,
-            m_filterModel, &LoggingSortFilterProxyModel::setFilterIncludesDebugMessages);
+            m_filterModel, &LogSortFilterProxyModel::setFilterIncludesDebugMessages);
     connect(ui->warningToolButton, &QToolButton::toggled,
-            m_filterModel, &LoggingSortFilterProxyModel::setFilterIncludesWarningMessages);
+            m_filterModel, &LogSortFilterProxyModel::setFilterIncludesWarningMessages);
     connect(ui->errorToolButton, &QToolButton::toggled,
-            m_filterModel, &LoggingSortFilterProxyModel::setFilterIncludesCriticalMessages);
+            m_filterModel, &LogSortFilterProxyModel::setFilterIncludesCriticalMessages);
     connect(ui->errorToolButton, &QToolButton::toggled,
-            m_filterModel, &LoggingSortFilterProxyModel::setFilterIncludesFatalMessages);
+            m_filterModel, &LogSortFilterProxyModel::setFilterIncludesFatalMessages);
     ui->infoToolButton->setChecked(true);
     ui->warningToolButton->setChecked(true);
     ui->errorToolButton->setChecked(true);
 
     connect(ui->previousToolButton, &QToolButton::clicked,
-            this, &LoggingWidget::goToPrevious);
+            this, &LogWidget::goToPrevious);
     connect(ui->nextToolButton, &QToolButton::clicked,
-            this, &LoggingWidget::goToNext);
+            this, &LogWidget::goToNext);
 
     connect(m_filterModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
             this, SLOT(updateNavigationState()));
@@ -53,17 +53,17 @@ LoggingWidget::LoggingWidget(QWidget *parent) :
             m_filterModel, SLOT(setFilterFixedString(QString)));
 }
 
-LoggingWidget::~LoggingWidget()
+LogWidget::~LogWidget()
 {
     delete ui;
 }
 
-LoggingModel *LoggingWidget::model()
+LogModel *LogWidget::model()
 {
     return m_model;
 }
 
-void LoggingWidget::setModel(LoggingModel *model)
+void LogWidget::setModel(LogModel *model)
 {
     if (m_model) {
         m_model->disconnect(this);
@@ -94,12 +94,12 @@ void LoggingWidget::setModel(LoggingModel *model)
     }
 }
 
-bool LoggingWidget::canNavigate() const
+bool LogWidget::canNavigate() const
 {
     return m_filterModel->rowCount() != 0;
 }
 
-bool LoggingWidget::canGoToNext() const
+bool LogWidget::canGoToNext() const
 {
     if (!canNavigate())
         return false;
@@ -110,7 +110,7 @@ bool LoggingWidget::canGoToNext() const
     return ui->tableView->currentIndex().row() != m_filterModel->rowCount() - 1;
 }
 
-bool LoggingWidget::canGoToPrevious() const
+bool LogWidget::canGoToPrevious() const
 {
     if (!canNavigate())
         return false;
@@ -121,7 +121,7 @@ bool LoggingWidget::canGoToPrevious() const
     return ui->tableView->currentIndex().row() != 0;
 }
 
-void LoggingWidget::goToNext()
+void LogWidget::goToNext()
 {
     if (!canNavigate())
         return;
@@ -137,7 +137,7 @@ void LoggingWidget::goToNext()
 
 }
 
-void LoggingWidget::goToPrevious()
+void LogWidget::goToPrevious()
 {
     if (!canNavigate())
         return;
@@ -152,7 +152,7 @@ void LoggingWidget::goToPrevious()
     ui->tableView->setCurrentIndex(next);
 }
 
-void LoggingWidget::updateCategoryList(const QList<const char *> categories)
+void LogWidget::updateCategoryList(const QList<const char *> categories)
 {
     m_categoriesMenu->clear();
     foreach (const char *name, categories) {
@@ -165,18 +165,18 @@ void LoggingWidget::updateCategoryList(const QList<const char *> categories)
     }
 }
 
-void LoggingWidget::filterCategoriesTriggered(QAction *action)
+void LogWidget::filterCategoriesTriggered(QAction *action)
 {
     const char *category = (const char *)action->data().toInt(); // FIXME!
     setCategoryVisibility(category, action->isChecked());
 }
 
-void LoggingWidget::setCategoryVisibility(const char *categoryName, bool visible)
+void LogWidget::setCategoryVisibility(const char *categoryName, bool visible)
 {
     m_filterModel->setFilterIncludesCategoryName(categoryName, visible);
 }
 
-void LoggingWidget::updateNavigationState()
+void LogWidget::updateNavigationState()
 {
     ui->nextToolButton->setEnabled(canGoToNext());
     ui->previousToolButton->setEnabled(canGoToPrevious());

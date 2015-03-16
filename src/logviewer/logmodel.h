@@ -1,18 +1,20 @@
-#ifndef LOGGINGMODEL_H
-#define LOGGINGMODEL_H
+#ifndef LOGMODEL_H
+#define LOGMODEL_H
+
+#include "logviewer_global.h"
 
 #include <QAbstractTableModel>
 #include <QList>
 
 #include "logmessage.h"
 
-class LoggingModel : public QAbstractTableModel
+class LOGVIEWERSHARED_EXPORT LogModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    LoggingModel(QObject *parent = 0);
-    ~LoggingModel();
+    LogModel(QObject *parent = 0);
+    ~LogModel();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -36,4 +38,4 @@ private:
     QList<const char *> m_categories;
 };
 
-#endif // LOGGINGMODEL_H
+#endif // LOGMODEL_H

@@ -1,14 +1,16 @@
-#ifndef LOGGINGSORTFILTERPROXYMODEL_H
-#define LOGGINGSORTFILTERPROXYMODEL_H
+#ifndef LOGSORTFILTERPROXYMODEL_H
+#define LOGSORTFILTERPROXYMODEL_H
+
+#include "logviewer_global.h"
 
 #include <QSortFilterProxyModel>
 #include "logmessage.h"
 
-class LoggingSortFilterProxyModel : public QSortFilterProxyModel
+class LOGVIEWERSHARED_EXPORT LogSortFilterProxyModel : public QSortFilterProxyModel
 {
 public:
-    LoggingSortFilterProxyModel(QObject *parent);
-    ~LoggingSortFilterProxyModel();
+    LogSortFilterProxyModel(QObject *parent);
+    ~LogSortFilterProxyModel();
 
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
@@ -32,4 +34,4 @@ private:
     QMap<const char *, bool> m_category;
 };
 
-#endif // LOGGINGSORTFILTERPROXYMODEL_H
+#endif // LOGSORTFILTERPROXYMODEL_H

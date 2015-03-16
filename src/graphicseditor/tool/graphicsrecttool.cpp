@@ -1,6 +1,6 @@
-#include "graphicsrecttool.h"
-#include "graphicsrectitem.h"
-#include "graphicslinetooldialog.h"
+#include "tool/graphicsrecttool.h"
+#include "item/graphicsrectitem.h"
+
 #include "graphicshandle.h"
 #include "graphicsscene.h"
 #include "graphicsview.h"
@@ -60,7 +60,7 @@ void GraphicsRectTool::mouseReleaseEvent(QMouseEvent *event)
 
 QDialog *GraphicsRectTool::optionDialog()
 {
-    return new GraphicsLineToolDialog();
+    return nullptr;
 }
 
 QString GraphicsRectTool::toolGroup() const

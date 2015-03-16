@@ -1,10 +1,13 @@
 #ifndef LOGMESSAGE_H
 #define LOGMESSAGE_H
 
+#include "logviewer_global.h"
+
 #include <QtGlobal>
 #include <QString>
 
-class LogMessage
+
+class LOGVIEWERSHARED_EXPORT LogMessage
 {
 public:
     LogMessage();

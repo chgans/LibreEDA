@@ -4,9 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += widgets
-
+QT       += widgets opengl
 QT       -= gui
+CONFIG   += c++11
 
 TARGET = graphicseditor
 TEMPLATE = lib

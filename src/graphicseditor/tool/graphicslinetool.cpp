@@ -1,6 +1,7 @@
-#include "graphicslinetool.h"
-#include "graphicslinetooldialog.h"
-#include "graphicslineitem.h"
+#include "tool/graphicslinetool.h"
+#include "tool/graphicslinetooldialog.h"
+#include "item/graphicslineitem.h"
+
 #include "graphicshandle.h"
 #include "graphicsscene.h"
 #include "graphicsview.h"

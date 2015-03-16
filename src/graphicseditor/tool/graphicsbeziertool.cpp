@@ -1,5 +1,6 @@
-#include "graphicsbeziertool.h"
-#include "graphicsbezieritem.h"
+#include "tool/graphicsbeziertool.h"
+#include "item/graphicsbezieritem.h"
+
 #include "graphicshandle.h"
 #include "graphicsview.h"
 #include "graphicsscene.h"

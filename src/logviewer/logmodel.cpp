@@ -1,7 +1,8 @@
-#include "loggingmodel.h"
+#include "logmodel.h"
+
 #include <QIcon>
 
-LoggingModel::LoggingModel(QObject *parent):
+LogModel::LogModel(QObject *parent):
     QAbstractTableModel(parent)
 {
     m_messageTypeNames.append(QString("Debug"));
@@ -15,19 +16,19 @@ LoggingModel::LoggingModel(QObject *parent):
     m_messageTypeIconNames.append(QString("dialog-error"));
 }
 
-LoggingModel::~LoggingModel()
+LogModel::~LogModel()
 {
 
 }
 
-int LoggingModel::rowCount(const QModelIndex &parent) const
+int LogModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
 
     return m_messages.count();
 }
 
-int LoggingModel::columnCount(const QModelIndex &parent) const
+int LogModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
 
@@ -35,7 +36,7 @@ int LoggingModel::columnCount(const QModelIndex &parent) const
 }
 
 
-QVariant LoggingModel::data(const QModelIndex &index, int role) const
+QVariant LogModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
@@ -72,7 +73,7 @@ QVariant LoggingModel::data(const QModelIndex &index, int role) const
     }
 }
 
-LogMessage *LoggingModel::message(const QModelIndex &index) const
+LogMessage *LogModel::message(const QModelIndex &index) const
 {
     int row = index.row();
 
@@ -82,7 +83,7 @@ LogMessage *LoggingModel::message(const QModelIndex &index) const
     return m_messages.value(row);
 }
 
-void LoggingModel::addMessage(LogMessage *message)
+void LogModel::addMessage(LogMessage *message)
 {
     int pos = m_messages.count();
 
@@ -95,7 +96,7 @@ void LoggingModel::addMessage(LogMessage *message)
     }
 }
 
-void LoggingModel::clearMessages()
+void LogModel::clearMessages()
 {
     beginResetModel();
     qDeleteAll(m_messages);

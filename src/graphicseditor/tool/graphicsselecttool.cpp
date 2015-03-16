@@ -1,8 +1,10 @@
-#include "graphicsselecttool.h"
+#include "tool/graphicsselecttool.h"
+
 #include "graphicsscene.h"
 #include "graphicsview.h"
 #include "graphicsobject.h"
 #include "graphicshandle.h"
+
 #include <QGraphicsItem>
 #include <QGraphicsEffect>
 

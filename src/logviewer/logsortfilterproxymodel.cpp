@@ -1,7 +1,7 @@
-#include "loggingsortfilterproxymodel.h"
-#include "loggingmodel.h"
+#include "logsortfilterproxymodel.h"
+#include "logmodel.h"
 
-LoggingSortFilterProxyModel::LoggingSortFilterProxyModel(QObject *parent):
+LogSortFilterProxyModel::LogSortFilterProxyModel(QObject *parent):
     QSortFilterProxyModel(parent)
 {
     m_messageType[QtDebugMsg] = true;
@@ -10,14 +10,14 @@ LoggingSortFilterProxyModel::LoggingSortFilterProxyModel(QObject *parent):
     m_messageType[QtFatalMsg] = true;
 }
 
-LoggingSortFilterProxyModel::~LoggingSortFilterProxyModel()
+LogSortFilterProxyModel::~LogSortFilterProxyModel()
 {
 
 }
 
-bool LoggingSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool LogSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
-    LoggingModel *model = static_cast<LoggingModel *>(sourceModel());
+    LogModel *model = static_cast<LogModel *>(sourceModel());
     QModelIndex index = model->index(source_row, 0, source_parent);
     LogMessage *msg = model->message(index);
     QtMsgType type = msg->messageType;
@@ -28,67 +28,67 @@ bool LoggingSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelI
             QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
 }
 
-bool LoggingSortFilterProxyModel::filterIncludesCategoryName(const char *categoryName) const
+bool LogSortFilterProxyModel::filterIncludesCategoryName(const char *categoryName) const
 {
     if (!m_category.contains(categoryName))
         return true;
     return m_category.value(categoryName);
 }
 
-bool LoggingSortFilterProxyModel::filterIncludesMessageType(QtMsgType messageType) const
+bool LogSortFilterProxyModel::filterIncludesMessageType(QtMsgType messageType) const
 {
     return m_messageType.value(messageType, false);
 }
 
-void LoggingSortFilterProxyModel::setFilterIncludesMessageType(QtMsgType messageType, bool includes)
+void LogSortFilterProxyModel::setFilterIncludesMessageType(QtMsgType messageType, bool includes)
 {
     Q_ASSERT(messageType >= 0 && messageType < 4);
     m_messageType[messageType] = includes;
     invalidateFilter();
 }
 
-void LoggingSortFilterProxyModel::setFilterIncludesCategoryName(const char *categoryName, bool includes)
+void LogSortFilterProxyModel::setFilterIncludesCategoryName(const char *categoryName, bool includes)
 {
     m_category[categoryName] = includes;
     invalidateFilter();
 }
 
-bool LoggingSortFilterProxyModel::filterIncludesDebugMessages() const
+bool LogSortFilterProxyModel::filterIncludesDebugMessages() const
 {
     return filterIncludesMessageType(QtDebugMsg);
 }
 
-bool LoggingSortFilterProxyModel::filterIncludesWarningMessages() const
+bool LogSortFilterProxyModel::filterIncludesWarningMessages() const
 {
     return filterIncludesMessageType(QtWarningMsg);
 }
 
-bool LoggingSortFilterProxyModel::filterIncludesCriticalMessages() const
+bool LogSortFilterProxyModel::filterIncludesCriticalMessages() const
 {
     return filterIncludesMessageType(QtCriticalMsg);
 }
 
-bool LoggingSortFilterProxyModel::filterIncludesFatalMessages() const
+bool LogSortFilterProxyModel::filterIncludesFatalMessages() const
 {
     return filterIncludesMessageType(QtFatalMsg);
 }
 
-void LoggingSortFilterProxyModel::setFilterIncludesDebugMessages(bool includes)
+void LogSortFilterProxyModel::setFilterIncludesDebugMessages(bool includes)
 {
     setFilterIncludesMessageType(QtDebugMsg, includes);
 }
 
-void LoggingSortFilterProxyModel::setFilterIncludesWarningMessages(bool includes)
+void LogSortFilterProxyModel::setFilterIncludesWarningMessages(bool includes)
 {
     setFilterIncludesMessageType(QtWarningMsg, includes);
 }
 
-void LoggingSortFilterProxyModel::setFilterIncludesCriticalMessages(bool includes)
+void LogSortFilterProxyModel::setFilterIncludesCriticalMessages(bool includes)
 {
     setFilterIncludesMessageType(QtCriticalMsg, includes);
 }
 
-void LoggingSortFilterProxyModel::setFilterIncludesFatalMessages(bool includes)
+void LogSortFilterProxyModel::setFilterIncludesFatalMessages(bool includes)
 {
     setFilterIncludesMessageType(QtFatalMsg, includes);
 }

@@ -1,26 +1,28 @@
-#ifndef LOGGINGWIDGET_H
-#define LOGGINGWIDGET_H
+#ifndef LOGWIDGET_H
+#define LOGWIDGET_H
+
+#include "logviewer_global.h"
 
 #include <QFrame>
 
 namespace Ui {
-class LoggingWidget;
+class LogWidget;
 }
 
-class LoggingModel;
-class LoggingSortFilterProxyModel;
+class LogModel;
+class LogSortFilterProxyModel;
 class QMenu;
 
-class LoggingWidget : public QFrame
+class LOGVIEWERSHARED_EXPORT LogWidget : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit LoggingWidget(QWidget *parent = 0);
-    ~LoggingWidget();
+    explicit LogWidget(QWidget *parent = 0);
+    ~LogWidget();
 
-    LoggingModel *model();
-    void setModel(LoggingModel *model);
+    LogModel *model();
+    void setModel(LogModel *model);
 
     bool canNavigate() const;
     bool canGoToNext() const;
@@ -37,10 +39,10 @@ protected:
     void setCategoryVisibility(const char *categoryName, bool visible);
 
 private:
-    Ui::LoggingWidget *ui;
-    LoggingModel *m_model;
-    LoggingSortFilterProxyModel *m_filterModel;
+    Ui::LogWidget *ui;
+    LogModel *m_model;
+    LogSortFilterProxyModel *m_filterModel;
     QMenu *m_categoriesMenu;
 };
 
-#endif // LOGGINGWIDGET_H
+#endif // LOGWIDGET_H
