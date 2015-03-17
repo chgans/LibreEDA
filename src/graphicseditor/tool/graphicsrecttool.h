@@ -1,7 +1,7 @@
 #ifndef GRAPHICSRECTTOOL_H
 #define GRAPHICSRECTTOOL_H
 
-#include "graphicstool.h"
+#include "graphicseditor/graphicstool.h"
 
 class GraphicsRectItem;
 

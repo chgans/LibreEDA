@@ -8,7 +8,7 @@
 
 #include "logmessage.h"
 
-class LOGVIEWERSHARED_EXPORT LogModel : public QAbstractTableModel
+class LogModel : public QAbstractTableModel
 {
     Q_OBJECT
 

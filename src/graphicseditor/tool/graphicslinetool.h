@@ -1,7 +1,7 @@
 #ifndef GRAPHICSLINETOOL_H
 #define GRAPHICSLINETOOL_H
 
-#include "graphicstool.h"
+#include "graphicseditor/graphicstool.h"
 
 class GraphicsLineItem;
 

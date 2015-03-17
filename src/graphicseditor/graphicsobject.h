@@ -7,7 +7,7 @@
 #include <QPainterPath>
 #include <QVector>
 
-#include "graphicshandle.h"
+#include "graphicseditor/graphicshandle.h"
 
 class QGraphicsItem;
 class QPainter;

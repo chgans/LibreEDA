@@ -2,9 +2,9 @@
 #define GRAPHICSPATHPOINT_H
 
 #include <QGraphicsItem>
-#include "graphicshandle.h"
-#include "igraphicsitemobserver.h"
-#include "igraphicsobservableitem.h"
+#include "graphicseditor/graphicshandle.h"
+#include "graphicseditor/igraphicsitemobserver.h"
+#include "graphicseditor/igraphicsobservableitem.h"
 
 
 class GraphicsPathPoint:

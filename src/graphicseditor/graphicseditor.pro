@@ -11,6 +11,7 @@ CONFIG   += c++11
 TARGET = graphicseditor
 TEMPLATE = lib
 CONFIG += staticlib
+INCLUDEPATH += $$PWD/..
 
 SOURCES += graphicseditor.cpp \
     graphicshandle.cpp \
@@ -27,7 +28,8 @@ SOURCES += graphicseditor.cpp \
     tool/graphicslinetool.cpp \
     tool/graphicslinetooldialog.cpp \
     tool/graphicsrecttool.cpp \
-    tool/graphicsselecttool.cpp
+    tool/graphicsselecttool.cpp \
+    graphicstool.cpp
 
 HEADERS += graphicseditor.h \
     graphicshandle.h \
@@ -44,7 +46,9 @@ HEADERS += graphicseditor.h \
     tool/graphicslinetool.h \
     tool/graphicslinetooldialog.h \
     tool/graphicsrecttool.h \
-    tool/graphicsselecttool.h
+    tool/graphicsselecttool.h \
+    graphicstool.h
+
 unix {
     target.path = /usr/lib
     INSTALLS += target
@@ -57,3 +61,19 @@ OTHER_FILES += \
     tool/graphicsbeziertool.svg \
     tool/graphicslinetool.svg \
     tool/graphicsrecttool.svg
+
+RESOURCES += \
+    graphicseditor.qrc
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core/release/ -lcore
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../core/debug/ -lcore
+else:unix: LIBS += -L$$OUT_PWD/../core/ -lcore
+
+INCLUDEPATH += $$PWD/../core
+DEPENDPATH += $$PWD/../core
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/release/libcore.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/debug/libcore.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/release/core.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/debug/core.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../core/libcore.a

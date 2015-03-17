@@ -15,8 +15,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+
 private:
     Ui::MainWindow *ui;
+
+    void addGraphicsEditor();
+    void addLogViewer();
 };
 
 #endif // MAINWINDOW_H

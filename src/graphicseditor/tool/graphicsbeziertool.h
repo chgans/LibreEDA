@@ -1,7 +1,7 @@
 #ifndef GRAPHICSBEZIERTOOL_H
 #define GRAPHICSBEZIERTOOL_H
 
-#include "graphicstool.h"
+#include "graphicseditor/graphicstool.h"
 
 #include <QPointF>
 

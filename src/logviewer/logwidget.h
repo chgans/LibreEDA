@@ -13,7 +13,7 @@ class LogModel;
 class LogSortFilterProxyModel;
 class QMenu;
 
-class LOGVIEWERSHARED_EXPORT LogWidget : public QFrame
+class LogWidget : public QFrame
 {
     Q_OBJECT
 

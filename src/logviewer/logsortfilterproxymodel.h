@@ -6,7 +6,7 @@
 #include <QSortFilterProxyModel>
 #include "logmessage.h"
 
-class LOGVIEWERSHARED_EXPORT LogSortFilterProxyModel : public QSortFilterProxyModel
+class LogSortFilterProxyModel : public QSortFilterProxyModel
 {
 public:
     LogSortFilterProxyModel(QObject *parent);

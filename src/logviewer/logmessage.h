@@ -7,7 +7,7 @@
 #include <QString>
 
 
-class LOGVIEWERSHARED_EXPORT LogMessage
+class LogMessage
 {
 public:
     LogMessage();

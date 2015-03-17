@@ -1,7 +1,7 @@
 #ifndef GRAPHICSSELECTTOOL_H
 #define GRAPHICSSELECTTOOL_H
 
-#include "graphicstool.h"
+#include "graphicseditor/graphicstool.h"
 
 #include <QPoint>
 

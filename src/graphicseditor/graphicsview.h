@@ -13,7 +13,7 @@ class GraphicsView : public QGraphicsView
     Q_OBJECT
 
 public:
-    GraphicsView(QWidget *parent);
+    GraphicsView(QWidget *parent = 0);
     ~GraphicsView();
 
     GraphicsScene *scene();
