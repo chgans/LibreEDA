@@ -29,7 +29,9 @@ SOURCES += graphicseditor.cpp \
     tool/graphicslinetooldialog.cpp \
     tool/graphicsrecttool.cpp \
     tool/graphicsselecttool.cpp \
-    graphicstool.cpp
+    graphicstool.cpp \
+    graphicsgrid.cpp \
+    grid/graphicscartesiangrid.cpp
 
 HEADERS += graphicseditor.h \
     graphicshandle.h \
@@ -47,7 +49,9 @@ HEADERS += graphicseditor.h \
     tool/graphicslinetooldialog.h \
     tool/graphicsrecttool.h \
     tool/graphicsselecttool.h \
-    graphicstool.h
+    graphicstool.h \
+    graphicsgrid.h \
+    grid/graphicscartesiangrid.h
 
 unix {
     target.path = /usr/lib

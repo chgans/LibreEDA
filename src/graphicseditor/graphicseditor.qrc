@@ -3,5 +3,8 @@
         <file>graphicslinetool.svg</file>
         <file>graphicsrecttool.svg</file>
         <file>graphicsbeziertool.svg</file>
+        <file>graphicssnapgrid.svg</file>
+        <file>graphicssnaplock.svg</file>
+        <file>graphicssnapobject.svg</file>
     </qresource>
 </RCC>

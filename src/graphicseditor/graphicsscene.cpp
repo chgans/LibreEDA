@@ -1,11 +1,12 @@
 #include "graphicsscene.h"
 #include "graphicsobject.h"
 #include "graphicshandle.h"
+#include "graphicsgrid.h"
 
 #include <QPainter>
 
 GraphicsScene::GraphicsScene(QObject *parent):
-    QGraphicsScene(parent)
+    QGraphicsScene(parent), m_grid(nullptr)
 {
 }
 
@@ -23,6 +24,16 @@ QList<GraphicsObject *> GraphicsScene::selectedObjects()
             objects.append(object);
     }
     return objects;
+}
+
+GraphicsGrid *GraphicsScene::grid()
+{
+    return m_grid;
+}
+
+void GraphicsScene::setGrid(GraphicsGrid *grid)
+{
+    m_grid = grid;
 }
 
 void GraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)

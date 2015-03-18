@@ -31,6 +31,10 @@ public:
 
     void scaleView(qreal scaleFactor);
 
+public slots:
+    void enableSnapToGrid(bool enabled);
+    bool isSnapToGridEnabled() const;
+
 signals:
     void leftMouseButtonPressed();
     void leftMouseButtonReleased();
@@ -70,6 +74,12 @@ private:
     GraphicsTool *m_tool;
     GraphicsObject *m_objectUnderMouse;
     const GraphicsHandle *m_handleUnderMouse;
+    QPoint m_snappedMousePosition;
+    bool m_snappedMousePositionChanged;
+    void updateMousePos();
+    QMouseEvent snapMouseEvent(QMouseEvent *event);
+    QSizeF pixelSize() const;
+    bool m_snapToGridEnabled;
 };
 
 #endif // GRAPHICSVIEW_H

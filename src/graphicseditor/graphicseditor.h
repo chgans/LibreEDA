@@ -29,8 +29,9 @@ private:
     QActionGroup *m_interactiveToolsActionGroup;
     QList<GraphicsTool *> m_interactiveTools;
     QToolBar *m_interactiveToolsToolBar;
+    QToolBar *m_snapToolBar;
 
-    void addTool(GraphicsTool *tool);
+    void addInteractiveTool(GraphicsTool *tool);
 
 };
 

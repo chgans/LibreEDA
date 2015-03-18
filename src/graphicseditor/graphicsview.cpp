@@ -2,9 +2,8 @@
 #include "graphicsscene.h"
 #include "graphicsobject.h"
 #include "graphicstool.h"
+#include "graphicsgrid.h"
 
-#include <QGraphicsScene>
-#include <QGraphicsOpacityEffect>
 #include <QGLWidget>
 
 #include <QMouseEvent>
@@ -32,7 +31,9 @@ GraphicsView::GraphicsView(QWidget *parent):
     QGraphicsView(parent),
     m_tool(nullptr),
     m_objectUnderMouse(nullptr),
-    m_handleUnderMouse(nullptr)
+    m_handleUnderMouse(nullptr),
+    m_snappedMousePositionChanged(true),
+    m_snapToGridEnabled(true)
 {    
     setViewport(new QGLWidget);
 
@@ -99,7 +100,7 @@ GraphicsObject *GraphicsView::objectUnderMouse() const
 
 QPoint GraphicsView::mousePosition() const
 {
-    return mapFromGlobal(QCursor::pos());
+    return m_snappedMousePosition;
 }
 
 void GraphicsView::scaleView(qreal scaleFactor)
@@ -111,6 +112,16 @@ void GraphicsView::scaleView(qreal scaleFactor)
     scale(scaleFactor, scaleFactor);
 }
 
+void GraphicsView::enableSnapToGrid(bool enabled)
+{
+    m_snapToGridEnabled = enabled;
+}
+
+bool GraphicsView::isSnapToGridEnabled() const
+{
+    return m_snapToGridEnabled;
+}
+
 void GraphicsView::drawBackground(QPainter *painter, const QRectF &rect)
 {
 
@@ -120,11 +131,34 @@ void GraphicsView::drawBackground(QPainter *painter, const QRectF &rect)
     painter->fillRect(rect, QBrush(gradient));
 
     QGraphicsView::drawBackground(painter, rect);
+
+    if (scene() && scene()->grid()) {
+        scene()->grid()->draw(pixelSize(), painter, rect);
+    }
 }
 
 void GraphicsView::drawForeground(QPainter *painter, const QRectF &rect)
 {
-    QGraphicsView::drawForeground(painter, rect);
+    //QGraphicsView::drawForeground(painter, rect);
+
+    QPointF p = mapToScene(mousePosition());
+
+    if (p.isNull())
+        return;
+
+    qreal length = 50.0/transform().m11();
+    QPointF top(p.x(),
+                p.y() - length);
+    QPointF bottom(p.x(),
+                   p.y() + length);
+    QPointF right(p.x() + length,
+                  p.y());
+    QPointF left(p.x() - length,
+                 p.y());
+    painter->setPen(QPen(Qt::white, 0, Qt::SolidLine));
+    painter->drawLine(top, bottom);
+    painter->drawLine(left, right);
+
 }
 
 // TODO: Zoom here or tool
@@ -138,6 +172,8 @@ void GraphicsView::wheelEvent(QWheelEvent *event)
 
 void GraphicsView::mousePressEvent(QMouseEvent *event)
 {
+    updateMousePos();
+
     if (event->button() == Qt::LeftButton) {
         //qDebug() << "leftMouseButtonPressed";
         emit leftMouseButtonPressed();
@@ -147,7 +183,8 @@ void GraphicsView::mousePressEvent(QMouseEvent *event)
         QGraphicsView::mousePressEvent(event);
     }
     else if (event->button() == Qt::LeftButton && m_tool) {
-        m_tool->mousePressEvent(event);
+        QMouseEvent ev = snapMouseEvent(event);
+        m_tool->mousePressEvent(&ev);
     }
     else {
         event->ignore();
@@ -156,6 +193,8 @@ void GraphicsView::mousePressEvent(QMouseEvent *event)
 
 void GraphicsView::mouseMoveEvent(QMouseEvent *event)
 {
+    updateMousePos();
+
     if (objectUnderMouse() && !m_objectUnderMouse) {
         //qDebug() << "hoverItemEntered";
         m_objectUnderMouse = objectUnderMouse();
@@ -190,21 +229,29 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *event)
         emit mouseMoved();
     }
 
-    if (m_tool != nullptr)
-        m_tool->mouseMoveEvent(event);
+    if (m_tool != nullptr) {
+        if (m_snappedMousePositionChanged) {
+            QMouseEvent ev = snapMouseEvent(event);
+            m_tool->mouseMoveEvent(&ev);
+        }
+    }
     else
         event->ignore();
 }
 
 void GraphicsView::mouseReleaseEvent(QMouseEvent *event)
 {
+    updateMousePos();
+
     if (event->button() == Qt::LeftButton) {
         //qDebug() << "leftMouseButtonReleased";
         emit leftMouseButtonReleased();
     }
 
-    if (m_tool != nullptr)
-        m_tool->mouseReleaseEvent(event);
+    if (m_tool != nullptr) {
+        QMouseEvent ev = snapMouseEvent(event);
+        m_tool->mouseReleaseEvent(&ev);
+    }
     else
         event->ignore();
 }
@@ -258,4 +305,37 @@ void GraphicsView::keyReleaseEvent(QKeyEvent *event)
         m_tool->keyReleaseEvent(event);
     else
         event->ignore();
+}
+
+void GraphicsView::updateMousePos()
+{
+    if (m_snapToGridEnabled &&
+            scene() && scene()->grid()) {
+        QPoint viewPos = mapFromGlobal(QCursor::pos());
+        QPointF scenePos = mapToScene(viewPos);
+        QPointF snapPos = scene()->grid()->snap(pixelSize(), scenePos);
+        QPoint newPos = mapFromScene(snapPos);
+        if (m_snappedMousePosition != newPos) {
+            m_snappedMousePosition = newPos;
+            m_snappedMousePositionChanged = true;
+            scene()->update(); // Force redraw of foreground
+        }
+        else {
+            m_snappedMousePositionChanged = false;
+        }
+    }
+}
+
+QMouseEvent GraphicsView::snapMouseEvent(QMouseEvent *event)
+{
+    return QMouseEvent(event->type(),
+                       m_snappedMousePosition,
+                       event->button(),
+                       event->buttons(),
+                       event->modifiers());
+}
+
+QSizeF GraphicsView::pixelSize() const
+{
+    return QSizeF(transform().m11(), transform().m22());
 }
