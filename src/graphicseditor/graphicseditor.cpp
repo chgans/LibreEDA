@@ -19,10 +19,10 @@ GraphicsEditor::GraphicsEditor(QWidget *parent):
 {
     setLayout(new QVBoxLayout);
     m_scene = new GraphicsScene(this);
-    m_scene->setSceneRect(0, 0, 297, 210);
+    m_scene->setSceneRect(0, 0, 100, 100);
     m_view = new GraphicsView();
     m_view->setScene(m_scene);
-    m_view->scale(4, 4);
+    m_view->fitInView(m_view->sceneRect());
     layout()->addWidget(m_view);
 
     addTool(new GraphicsSelectTool(this));

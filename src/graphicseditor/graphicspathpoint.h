@@ -25,25 +25,43 @@ public:
     };
     Q_DECLARE_FLAGS(HandleTypes, HandleType)
 
-    QPointF nodePos() const;
-    void setNodePos(const QPointF &pos);
+    QPointF nodePos() const
+    {
+        return pos(NodeHandle);
+    }
+    void setNodePos(const QPointF &pos)
+    {
+        setPos(NodeHandle, pos);
+    }
     void setNodePos(qreal x, qreal y)
     {
         setNodePos(QPointF(x, y));
     }
-    QPointF control1Pos() const;
-    void setControl1Pos(const QPointF &pos);
+    QPointF control1Pos() const
+    {
+        return pos(Control1Handle);
+    }
+    void setControl1Pos(const QPointF &pos)
+    {
+        setPos(Control1Handle, pos);
+    }
     void setControl1Pos(qreal x, qreal y)
     {
         setControl1Pos(QPointF(x, y));
     }
-    QPointF control2Pos() const;
-    void setControl2Pos(const QPointF &pos);
+    QPointF control2Pos() const
+    {
+        return pos(Control2Handle);
+    }
+    void setControl2Pos(const QPointF &pos)
+    {
+        setPos(Control2Handle, pos);
+    }
     void setControl2Pos(qreal x, qreal y)
     {
         setControl2Pos(QPointF(x, y));
     }
-    QPointF pos(HandleType type);
+    QPointF pos(HandleType type) const;
     void setPos(HandleType type, const QPointF &pos);
     void setPos(HandleType type, qreal x, qreal y)
     {
@@ -80,6 +98,7 @@ private:
     GraphicsHandle *m_control2Handle;
     QMap<HandleType, GraphicsHandle **> m_typeToHandle;
     IGraphicsItemObserver *m_observer;
+    QString typeToString(HandleType type);
 
     // IGraphicsHandleObserver interface
 public:

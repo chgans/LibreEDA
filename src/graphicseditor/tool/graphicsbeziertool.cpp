@@ -14,6 +14,10 @@
 Q_DECLARE_LOGGING_CATEGORY(GraphicsBezierToolLog)
 Q_LOGGING_CATEGORY(GraphicsBezierToolLog, "graphics.bezier.tool")
 #define DEBUG() qCDebug(GraphicsBezierToolLog)
+#define WARNING() qCDebug(GraphicsBezierToolLog)
+
+#define WARN_STATE WARNING() << "Inconsistent state!"
+
 
 GraphicsBezierTool::GraphicsBezierTool(QObject *parent):
     GraphicsTool(parent),
@@ -66,17 +70,14 @@ void GraphicsBezierTool::mousePressEvent(QMouseEvent *event)
 
     switch (m_state) {
     case NotStarted:
-        qDebug() << "MPE, NS";
         scene()->clearSelection();
         m_nodePos = event->pos();
         setState(FirstPoint);
         break;
     case MidPoints:
-        qDebug() << "MPE, MP";
-        m_nodePos = event->pos();
         break;
     default:
-        qWarning() << "Inconsistent state in MPE!";
+        WARN_STATE;
         break;
     }
 
@@ -85,41 +86,44 @@ void GraphicsBezierTool::mousePressEvent(QMouseEvent *event)
 
 void GraphicsBezierTool::mouseMoveEvent(QMouseEvent *event)
 {
-    if (event->buttons().testFlag(Qt::LeftButton)) {
+    if (event->buttons() != 0) {
         return; // Do nothing if dragging
     }
 
+    QPointF scenePos;
+    QPointF itemPos;
     switch (m_state) {
     case NotStarted:
         // Nothing to do
         break;
     case FirstPoint:
-        if (m_insertHandleOnMouseMove) { // TODO: check for minimum view distance, 10 pixels?
-            // Insert the point at the mouse press position
-            qDebug() << "MME, FP, A" << m_nodePos << mapToItem(m_nodePos);
-            m_item->addPoint(mapToItem(m_nodePos));
-            m_insertHandleOnMouseMove = false;
-            // Insert the 2nd point at the mouse move position
-            m_item->addPoint(mapToItem(event->pos()));
-            setState(MidPoints);
-        }
-        m_nodePos = event->pos();
-        break;
-    case MidPoints: {
-        if (m_insertHandleOnMouseMove) { // Same as above
+        if (m_insertHandleOnMouseMove) {
             // Insert the point at the mouse release position
-            qDebug() << "MME, MP, A" << m_nodePos << mapToItem(m_nodePos);
-            m_item->addPoint(mapToItem(m_nodePos));
-            m_insertHandleOnMouseMove = false;
+            scenePos = mapToScene(m_nodePos);
+            itemPos = mapToItem(m_nodePos);
+            DEBUG() << "MME, adding first point" << scenePos << itemPos;
+            m_index = m_item->addPoint(itemPos);
+            setState(MidPoints);
+            // Don't clear m_insertHandleOnMouseMove, so that the second point
+            // will be inserted when the mouse will move
         }
         m_nodePos = event->pos();
-        int idx = m_item->pointCount() - 1;
-        GraphicsPathPoint *point = m_item->pointAt(idx);
-        point->setNodePos(mapToItem(m_nodePos));
         break;
-    }
+    case MidPoints:
+        m_nodePos = event->pos();
+        scenePos = mapToScene(m_nodePos);
+        itemPos = mapToItem(m_nodePos);
+        if (m_insertHandleOnMouseMove) {
+            DEBUG() << "MME, adding mid point" << scenePos << itemPos;
+            m_index = m_item->addPoint(itemPos);
+            m_insertHandleOnMouseMove = false;
+        }
+        else {
+            m_item->movePoint(m_index, itemPos);
+        }
+        break;
     default:
-        qWarning() << "Inconsistent state in MVE!";
+        WARN_STATE;
         break;
     }
 
@@ -133,22 +137,29 @@ void GraphicsBezierTool::mouseReleaseEvent(QMouseEvent *event)
     //    return;
     //}
 
+    QPointF scenePos = mapToScene(m_nodePos);
+    QPointF itemPos = mapToItem(m_nodePos);
     switch (m_state) {
     case NotStarted:
-        qDebug() << "MRE, NS";
+        DEBUG() << "MRE, NS";
         break;
     case FirstPoint:
-        qDebug() << "MRE, FP, A" << mapToScene(event->pos());
+        scenePos = mapToScene(m_nodePos);
+        DEBUG() << "MRE, Adding item at " << scenePos;
         m_item = new GraphicsBezierItem();
-        m_item->setPos(mapToScene(m_nodePos));
+        m_item->setPos(scenePos);
         m_item->setPen(QPen(QBrush(Qt::darkCyan), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         m_item->setFlags(QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsMovable);
         scene()->addItem(m_item);
         m_item->setSelected(true); // For debugging
+        itemPos = mapToItem(m_nodePos);
+        DEBUG() << "MRE, scheduling add first point" << scenePos << itemPos;
         m_insertHandleOnMouseMove = true;
         break;
     case MidPoints:
-        qDebug() << "MRE, MP, A" << mapToItem(event->pos());
+        scenePos = mapToScene(m_nodePos);
+        itemPos = mapToItem(m_nodePos);
+        DEBUG() << "MRE, scheduling add mid point" << scenePos << itemPos;
         m_insertHandleOnMouseMove = true;
         break;
     case LastPoint:
@@ -156,7 +167,7 @@ void GraphicsBezierTool::mouseReleaseEvent(QMouseEvent *event)
         setState(NotStarted);
         break;
     default:
-        qWarning() << "Inconsistent state in MRE!";
+        WARN_STATE;
         break;
     }
 
@@ -172,20 +183,18 @@ void GraphicsBezierTool::mouseDoubleClickEvent(QMouseEvent *event)
 
     switch (m_state) {
     case FirstPoint:
-        qDebug() << "MDCE, FP";
+        DEBUG() << "MDCE, FP";
         scene()->removeItem(m_item);
         delete m_item;
         m_item = nullptr;
         setState(NotStarted);
         break;
     case MidPoints:
-        qDebug() << "MDCE, MP";
-        // TODO: check the edge case when user just double click:
-        // => only 2 points with almost same pos
+        DEBUG() << "MDCE, MP";
         setState(LastPoint);
         break;
     default:
-        qWarning() << "Inconsistent state MDCE!";
+        WARN_STATE;
         break;
     }
 
@@ -218,6 +227,10 @@ QAction *GraphicsBezierTool::action() const
 
 void GraphicsBezierTool::activate()
 {
+    if (m_item != nullptr) {
+        delete m_item;
+    }
+    m_state = NotStarted;
 }
 
 void GraphicsBezierTool::desactivate()

@@ -29,6 +29,7 @@ private:
     GraphicsBezierItem *m_item;
     QPoint m_nodePos;
     bool m_insertHandleOnMouseMove = true;
+    int m_index;
 
     // GraphicsTool interface
 public:

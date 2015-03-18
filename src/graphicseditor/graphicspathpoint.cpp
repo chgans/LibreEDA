@@ -2,6 +2,12 @@
 
 #include <QDebug>
 
+#include <QLoggingCategory>
+Q_DECLARE_LOGGING_CATEGORY(GraphicsPathPointLog)
+Q_LOGGING_CATEGORY(GraphicsPathPointLog, "graphics.bezier.point")
+#define DEBUG() qCDebug(GraphicsPathPointLog)
+#define WARNING() qCDebug(GraphicsPathPointLog)
+
 GraphicsPathPoint::GraphicsPathPoint(QGraphicsItem *parent):
     QGraphicsItem(parent),
     IGraphicsItemObserver(),
@@ -37,6 +43,7 @@ GraphicsPathPoint::GraphicsPathPoint(QGraphicsItem *parent):
     setBehaviour(NormalHandleBehaviour);
 
     QGraphicsItem::setPos(QPointF(0, 0));
+    DEBUG() << "Our pos" << mapToParent(QGraphicsItem::pos());
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
     setSelected(false);
@@ -45,6 +52,7 @@ GraphicsPathPoint::GraphicsPathPoint(QGraphicsItem *parent):
 
 GraphicsPathPoint::~GraphicsPathPoint()
 {
+    // TODO: use map
     if (m_nodeHandle) {
         removeObservedItem(m_nodeHandle);
         delete m_nodeHandle;
@@ -60,95 +68,69 @@ GraphicsPathPoint::~GraphicsPathPoint()
     // removeItemObserver(); // ?
 }
 
-QPointF GraphicsPathPoint::nodePos() const
+QPointF GraphicsPathPoint::pos(GraphicsPathPoint::HandleType type) const
 {
-    if (m_handles.testFlag(NodeHandle)) {
-        return mapToParent(m_nodeHandle->pos());
-    }
-    return QPointF();
-}
+    Q_ASSERT(m_handles.testFlag(type));
 
-// pos is in parent coordinate
-void GraphicsPathPoint::setNodePos(const QPointF &pos)
-{
-    if (m_handles.testFlag(NodeHandle)) {
-        //qDebug() << "setNodePos" << mapFromParent(pos);
-        m_nodeHandle->setPos(mapFromParent(pos));
-    }
-    else
-        qDebug() << "setNodePos!" << m_handles;
-}
-
-QPointF GraphicsPathPoint::control1Pos() const
-{
-    if (m_handles.testFlag(Control1Handle)) {
-        return mapToParent(m_control1Handle->pos());
-    }
-    return QPointF();
-}
-
-void GraphicsPathPoint::setControl1Pos(const QPointF &pos)
-{
-    if (m_handles.testFlag(Control1Handle)) {
-        m_control1Handle->setPos(mapFromParent(pos));
-    }
-    else
-        qDebug() << "setCtl1Pos!";
-}
-
-QPointF GraphicsPathPoint::control2Pos() const
-{
-    if (m_handles.testFlag(Control2Handle)) {
-        return mapToParent(m_control2Handle->pos());
-    }
-    return QPointF();
-
-}
-
-void GraphicsPathPoint::setControl2Pos(const QPointF &pos)
-{
-    if (m_handles.testFlag(Control2Handle)) {
-        return m_control2Handle->setPos(mapFromParent(pos));
-    }
-    else
-        qDebug() << "setCtl2Pos!";
-}
-
-QPointF GraphicsPathPoint::pos(GraphicsPathPoint::HandleType type)
-{
+    // TODO: use map
+    GraphicsHandle *handle;
     switch (type) {
     case NodeHandle:
-        return nodePos();
+        handle = m_nodeHandle;
+        break;
     case Control1Handle:
-        return control1Pos();
+        handle = m_control1Handle;
+        break;
     case Control2Handle:
-        return control2Pos();
+        handle = m_control2Handle;
+        break;
     default:
         Q_ASSERT(false);
     }
+
+    QPointF handlePos = handle->pos();
+    QPointF parentPos = mapToParent(handlePos);
+    return parentPos;
 }
 
+// Pos is in parent coordinate
 void GraphicsPathPoint::setPos(GraphicsPathPoint::HandleType type, const QPointF &pos)
 {
+    Q_ASSERT(m_handles.testFlag(type));
+
+    blockItemNotification();
+
+    // TODO: use map
+    GraphicsHandle *handle;
     switch (type) {
     case NodeHandle:
-        setNodePos(pos);
-        return;
+        handle = m_nodeHandle;
+        break;
     case Control1Handle:
-        setControl1Pos(pos);
-        return;
+        handle = m_control1Handle;
+        break;
     case Control2Handle:
-        setControl2Pos(pos);
-        return;
+        handle = m_control2Handle;
+        break;
     default:
         Q_ASSERT(false);
     }
+
+    QPointF parentPos = pos;
+    QPointF handlePos = mapFromParent(parentPos); // Same if we're at (0, 0)
+    int idx = parentItem()->childItems().indexOf(this); // hack
+    DEBUG() << "Set point " << idx << typeToString(type)
+            << " pos. parent=" << parentPos
+            << ", handle=" << handlePos;
+
+    handle->setPos(handlePos);
+
+    unblockItemNotification();
 }
 
 GraphicsPathPoint::HandleTypes GraphicsPathPoint::handlesEnabled() const
 {
     return m_handles;
-
 }
 
 void GraphicsPathPoint::enableHandle(GraphicsPathPoint::HandleType type, bool set)
@@ -156,23 +138,21 @@ void GraphicsPathPoint::enableHandle(GraphicsPathPoint::HandleType type, bool se
     GraphicsHandle **handle = m_typeToHandle[type];
     Q_ASSERT(handle != nullptr);
 
-    //qDebug() << type << m_handles << "=>" << set;
-
     if (set) {
         m_handles |= type;
         (*handle)->setVisible(true); // Our visibility take over
         // We do it here, because it causes contructor issues
         // If called in constructor, it would cause a call on a member function
         // while the object is not fully contructed
+        blockItemNotification();
         addObservedItem(*handle);
+        unblockItemNotification();
     }
     else {
         m_handles &= ~type;
         (*handle)->setVisible(false);
         removeObservedItem(*handle);
     }
-
-    //qDebug() << m_handles;
 }
 
 bool GraphicsPathPoint::isFirst() const
@@ -184,7 +164,7 @@ void GraphicsPathPoint::setFirst(bool first)
 {
     if (m_first == first)
         return;
-    qDebug() << "First" << m_first << "=>" << first;
+
     m_first = first;
     updateEnabledHandles();
 }
@@ -198,7 +178,7 @@ void GraphicsPathPoint::setLast(bool last)
 {
     if (m_last == last)
         return;
-    qDebug() << "Last" << m_last << "=>" << last;
+
     m_last = last;
     updateEnabledHandles();
 }
@@ -220,7 +200,7 @@ void GraphicsPathPoint::setBehaviour(GraphicsHandleBehaviour behaviour)
 {
     if (m_behaviour == behaviour)
         return;
-    qDebug() << "Behaviour" << m_behaviour << "=>" << behaviour;
+
     m_behaviour = behaviour;
     updateEnabledHandles();
 }
@@ -228,6 +208,20 @@ void GraphicsPathPoint::setBehaviour(GraphicsHandleBehaviour behaviour)
 GraphicsHandleBehaviour GraphicsPathPoint::behaviour() const
 {
     return m_behaviour;
+}
+
+QString GraphicsPathPoint::typeToString(GraphicsPathPoint::HandleType type)
+{
+    switch (type) {
+    case NodeHandle:
+        return QString("Node");
+    case Control1Handle:
+        return QString("Ctl1");
+    case Control2Handle:
+        return QString("Ctl2");
+    default:
+        return QString("???");
+    }
 }
 
 bool GraphicsPathPoint::handleEnabled(GraphicsPathPoint::HandleType type)
@@ -286,7 +280,9 @@ void GraphicsPathPoint::itemNotification(IGraphicsObservableItem *item)
     else {
         Q_ASSERT(false);
     }
+    blockItemNotification();
     notifyObservers();
+    unblockItemNotification();
 }
 
 QRectF GraphicsPathPoint::boundingRect() const

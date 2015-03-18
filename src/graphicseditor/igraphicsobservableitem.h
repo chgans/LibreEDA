@@ -11,10 +11,9 @@ public:
     IGraphicsObservableItem();
     virtual ~IGraphicsObservableItem();
 
-    void beginItemObserverTransaction();
     void addItemObserver(IGraphicsItemObserver *observer);
     void removeItemObserver(IGraphicsItemObserver *observer);
-    void endItemObserverTransaction();
+
     QList<IGraphicsItemObserver *> itemObservers() const;
 
 protected:
@@ -23,6 +22,9 @@ protected:
 private:
     QList<IGraphicsItemObserver *> m_observers;
     bool m_transactionInProgress;
+    void beginItemObserverTransaction();
+    void endItemObserverTransaction();
+    friend class IGraphicsItemObserver;
 };
 
 #endif // IGRAPHICSOBSERVABLEITEM_H

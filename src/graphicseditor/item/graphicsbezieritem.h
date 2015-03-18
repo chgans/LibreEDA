@@ -19,18 +19,20 @@ public:
     QPen pen() const;
     void setPen(const QPen &pen);
 
-    void addPoint(const QPointF &pos);
+    int addPoint(const QPointF &pos);
     void removePoint(int index);
-    QList<GraphicsPathPoint *> points() const;
+    void movePoint(int index, const QPointF &pos);
+    QList<QPointF> points() const;
     int pointCount() const;
-    GraphicsPathPoint *pointAt(int idx);
+    QPointF pointAt(int idx) const;
 
 private:
     QPen m_pen;
     QLineF m_line;
     QPainterPath m_path;
+    QList<GraphicsPathPoint *> m_pathPoints;
 
-    bool m_updatingHandles;
+    //bool m_updatingHandles;
 
     void setBoundingRectDirty();
     void computeBoundingRect() const;
@@ -50,10 +52,14 @@ private:
     QVector<qreal> m_c1y;
     QVector<qreal> m_c2x;
     QVector<qreal> m_c2y;
-    void updateSpline();
-    void computeControlPoints(const QVector<qreal> &p, QVector<qreal> &c1, QVector<qreal> &c2);
-    void updateHandles();
 
+    void smoothBezier();
+    void computeBezierControlPoints(const QVector<qreal> &p, QVector<qreal> &c1, QVector<qreal> &c2);
+
+    void bezierToPathPoints();
+    void bezierToPathPoint(int idx);
+    void pathPointsToBezier();
+    void pathPointToBezier(int idx);
 
     // QGraphicsItem interface
 public:
