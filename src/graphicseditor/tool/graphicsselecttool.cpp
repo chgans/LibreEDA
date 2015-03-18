@@ -188,9 +188,7 @@ void GraphicsSelectTool::mouseMoveEvent(QMouseEvent *event)
             m_rubberBand->setGeometry(viewRect);
             QPainterPath path;
             path.addPolygon(view()->mapToScene(viewRect));
-            foreach (QGraphicsItem *item, scene()->items(path)) {
-                item->setSelected(true);
-            }
+            scene()->setSelectionArea(path);
             break;
         }
         case MoveItem:
