@@ -29,6 +29,8 @@ GraphicsEditor::GraphicsEditor(QWidget *parent):
     grid->setOrigin(QPointF(0, 0));
     grid->setSize(QSize(m_scene->sceneRect().width(),
                         m_scene->sceneRect().height()));
+    grid->setQuadrantEnabled(GraphicsCartesianGrid::TopRightQuadrant, false);
+    grid->setQuadrantEnabled(GraphicsCartesianGrid::BottomLeftQuadrant, false);
     m_scene->setGrid(grid);
     m_view = new GraphicsView();
     m_view->setScene(m_scene);
@@ -58,6 +60,9 @@ GraphicsEditor::GraphicsEditor(QWidget *parent):
     action->setCheckable(true);
     action->setChecked(true);
     m_snapToolBar->addAction(action);
+    action = new QAction(QIcon::fromTheme("preferences-system"),
+                         "Configure grid and snapping", nullptr);
+    m_snapToolBar->addAction(action);
 
     Q_INIT_RESOURCE(graphicseditor);
 }
@@ -75,8 +80,8 @@ void GraphicsEditor::activate(QMainWindow *win)
 
 void GraphicsEditor::desactivate(QMainWindow *win)
 {
+    win->removeToolBar(m_snapToolBar);
     win->removeToolBar(m_interactiveToolsToolBar);
-    win->addToolBar(m_snapToolBar);
 }
 
 void GraphicsEditor::addInteractiveTool(GraphicsTool *tool)
