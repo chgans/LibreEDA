@@ -12,8 +12,6 @@ TARGET = logviewer
 TEMPLATE = lib
 CONFIG += staticlib
 
-DEFINES += LOGVIEWER_LIBRARY
-
 SOURCES += logviewer.cpp \
     logmessage.cpp \
     logmodel.cpp \

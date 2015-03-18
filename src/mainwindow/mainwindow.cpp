@@ -42,7 +42,7 @@ void MainWindow::addGraphicsEditor()
 void MainWindow::addLogViewer()
 {
     QDockWidget *outputPaneDock = new QDockWidget();
-    outputPaneDock->setWidget(new LogViewer());
+    outputPaneDock->setWidget(LogViewer::instance());
     outputPaneDock->setFeatures(QDockWidget::NoDockWidgetFeatures); // not movable, floatable, ...
     outputPaneDock->setTitleBarWidget(new QWidget); // get rid of empty space at the top
     addDockWidget(Qt::BottomDockWidgetArea, outputPaneDock);

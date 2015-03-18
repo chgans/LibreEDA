@@ -27,6 +27,7 @@ LogViewer::LogViewer(QWidget *parent):
     qInstallMessageHandler(myMessageOutput);
     setLayout(new QVBoxLayout);
     layout()->addWidget(m_widget);
+    m_widget->setModel(m_model);
 }
 
 LogViewer::~LogViewer()
