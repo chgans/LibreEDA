@@ -148,7 +148,7 @@ void GraphicsBezierTool::mouseReleaseEvent(QMouseEvent *event)
         DEBUG() << "MRE, Adding item at " << scenePos;
         m_item = new GraphicsBezierItem();
         m_item->setPos(scenePos);
-        m_item->setPen(QPen(QBrush(Qt::darkCyan), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        m_item->setPen(QPen(QBrush(Qt::darkCyan), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         m_item->setFlags(QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsMovable);
         scene()->addItem(m_item);
         m_item->setSelected(true); // For debugging

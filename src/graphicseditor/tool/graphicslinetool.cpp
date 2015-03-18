@@ -31,7 +31,7 @@ void GraphicsLineTool::mousePressEvent(QMouseEvent *event)
         m_item->setPos(scenePos);
         setP1(event->pos());
         setP2(event->pos());
-        m_item->setPen(QPen(Qt::darkMagenta));
+        m_item->setPen(QPen(Qt::darkMagenta, 1, Qt::SolidLine));
         scene()->addItem(m_item);
         m_state = 1;
     }
