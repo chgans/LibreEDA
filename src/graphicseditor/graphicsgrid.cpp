@@ -1,5 +1,8 @@
 #include "graphicsgrid.h"
 
+// See http://www.qcad.org/doc/qcad/2.2/reference/en/chapter14.html
+// for snap/constraint ideas
+
 GraphicsGrid::GraphicsGrid():
     mPriority(0),
     mCoarseMultiplier(10),

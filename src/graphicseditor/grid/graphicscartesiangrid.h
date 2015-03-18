@@ -41,10 +41,14 @@ public:
 
 
 protected:
-    void drawCartGrid(QPainter *painter, const QColor &color, Qt::PenStyle style,
+    void drawGrid(QPainter *painter, const QColor &color, Qt::PenStyle style,
                       const QRectF &rect, qreal xstep, qreal ystep) const;
+    void drawQuadrantGrid(const QSizeF &pixelPerMm, QPainter *painter, const QRectF &rect) const;
+
     bool shouldDrawCoarse(const QSizeF &pixelPerMm) const;
     bool shouldDrawFine(const QSizeF &pixelPerMm) const;
+
+    QRectF quadrantRect(Quadrant which) const;
 
     qreal mRotation;
     QSizeF mSize;

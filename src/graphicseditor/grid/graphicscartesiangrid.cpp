@@ -55,75 +55,6 @@ GraphicsGrid *GraphicsCartesianGrid::clone() const
     return grid;
 }
 
-void GraphicsCartesianGrid::draw(const QSizeF &pixelPerMm, QPainter *painter, const QRectF &prect) const
-{
-    //qDebug() << __PRETTY_FUNCTION__ << this << prect;
-
-    QPainterPath ppath;
-    ppath.addRect(prect);
-    //painter->fillPath(shape().intersected(ppath), backgroundBrush());
-
-    bool drawCoarse = shouldDrawCoarse(pixelPerMm);
-    if (!drawCoarse)
-        return;
-    bool drawFine = shouldDrawFine(pixelPerMm);
-
-    //painter->setClipRect(prect); // FIXME: get rid of this clip
-    if (mQuadrants[0]) {
-        QRectF r = QRectF(rect().topLeft(),
-                          rect().center()).intersected(prect);
-        if (!r.isEmpty()) {
-#if 0
-            qreal xmod = fmod(r.left() - origin().x(), step().x());
-            qreal ymod = fmod(r.top() - origin().y(), step().y());
-            r.setLeft(r.left() - xmod);
-            r.setTop(r.top() - ymod);
-#elif 0
-            r.setLeft(int((r.left() - origin().x())/step().x()) * step().x() + origin().x());
-            r.setTop (int((r.top()  - origin().y())/step().y()) * step().y() + origin().y());
-#endif
-            if (drawFine)
-                drawCartGrid(painter, fineLineColor(), fineLineStyle(),
-                             r, step().x()/coarseMultiplier(), step().y()/coarseMultiplier());
-            drawCartGrid(painter, coarseLineColor(), coarseLineStyle(),
-                         r, step().x(), step().y());
-        }
-    }
-    if (mQuadrants[1]) {
-        QRectF r = QRectF(QPointF(rect().center().x(), rect().top()),
-                          QPointF(rect().right(), rect().center().y())).intersected(prect);
-        if (!r.isEmpty()) {
-            if (drawFine)
-                drawCartGrid(painter, fineLineColor(), fineLineStyle(),
-                             r, step().x()/coarseMultiplier(), step().y()/coarseMultiplier());
-            drawCartGrid(painter, coarseLineColor(), coarseLineStyle(),
-                         r, step().x(), step().y());
-        }
-    }
-    if (mQuadrants[2]) {
-        QRectF r = QRectF(rect().center(),
-                          rect().bottomRight()).intersected(prect);
-        if (!r.isEmpty()) {
-            if (drawFine)
-                drawCartGrid(painter, fineLineColor(), fineLineStyle(),
-                             r, step().x()/coarseMultiplier(), step().y()/coarseMultiplier());
-            drawCartGrid(painter, coarseLineColor(), coarseLineStyle(),
-                         r, step().x(), step().y());
-        }
-    }
-    if (mQuadrants[3]) {
-        QRectF r = QRectF(QPointF(rect().left(), rect().center().y()),
-                          QPointF(rect().center().x(), rect().bottom())).intersected(prect);
-        if (!r.isEmpty()) {
-            if (drawFine)
-                drawCartGrid(painter, fineLineColor(), fineLineStyle(),
-                             r, step().x()/coarseMultiplier(), step().y()/coarseMultiplier());
-            drawCartGrid(painter, coarseLineColor(), coarseLineStyle(),
-                         r, step().x(), step().y());
-        }
-    }
-}
-
 QRectF GraphicsCartesianGrid::rect() const
 {
     return QRectF(origin(), size());
@@ -153,22 +84,38 @@ QPainterPath GraphicsCartesianGrid::shape(const QSizeF &pixelPerMm) const
     if (!shouldDrawCoarse(pixelPerMm))
         return path;
 
-    if (mQuadrants[0])
-        path.addRect(QRectF(rect().topLeft(),
-                            rect().center()));
-    if (mQuadrants[1])
-        path.addRect(QRectF(QPointF(rect().center().x(), rect().top()),
-                            QPointF(rect().right(), rect().center().y())));
-    if (mQuadrants[2])
-        path.addRect(QRectF(rect().center(),
-                            rect().bottomRight()));
-    if (mQuadrants[3])
-        path.addRect(QRectF(QPointF(rect().left(), rect().center().y()),
-                            QPointF(rect().center().x(), rect().bottom())));
+    for (int q = TopLeftQuadrant; q <= BottomLeftQuadrant; q ++)
+        path.addRect(quadrantRect(Quadrant(q)));
+
     return path;
 }
 
-void GraphicsCartesianGrid::drawCartGrid(QPainter *painter, const QColor &color, Qt::PenStyle style,
+
+void GraphicsCartesianGrid::draw(const QSizeF &pixelPerMm, QPainter *painter, const QRectF &prect) const
+{
+    bool drawCoarse = shouldDrawCoarse(pixelPerMm);
+    if (!drawCoarse)
+        return;
+
+    for (int q = TopLeftQuadrant; q <= BottomLeftQuadrant; q ++)
+        drawQuadrantGrid(pixelPerMm, painter, quadrantRect(Quadrant(q)).intersected(prect));
+}
+
+
+void GraphicsCartesianGrid::drawQuadrantGrid(const QSizeF &pixelPerMm, QPainter *painter, const QRectF &rect) const
+{
+    bool drawFine = shouldDrawFine(pixelPerMm);
+
+    if (!rect.isEmpty()) {
+        if (drawFine)
+            drawGrid(painter, fineLineColor(), fineLineStyle(),
+                         rect, step().x()/coarseMultiplier(), step().y()/coarseMultiplier());
+        drawGrid(painter, coarseLineColor(), coarseLineStyle(),
+                     rect, step().x(), step().y());
+    }
+}
+
+void GraphicsCartesianGrid::drawGrid(QPainter *painter, const QColor &color, Qt::PenStyle style,
                                  const QRectF &rect, qreal xstep, qreal ystep) const
 {
     qreal left = int((rect.left() - origin().x())/step().x()) * step().x() + origin().x();
@@ -210,4 +157,21 @@ bool GraphicsCartesianGrid::shouldDrawFine(const QSizeF &pixelPerMm) const
 {
     return (pixelPerMm.width()*step().x()/coarseMultiplier()) > MIN_SIZE_IN_PIXEL &&
             (pixelPerMm.height()*step().y()/coarseMultiplier()) > MIN_SIZE_IN_PIXEL;
+}
+
+QRectF GraphicsCartesianGrid::quadrantRect(GraphicsCartesianGrid::Quadrant which) const
+{
+    if (which == TopLeftQuadrant && mQuadrants[which])
+        return QRectF(rect().topLeft(),
+                      rect().center());
+    if (which == TopRightQuadrant && mQuadrants[which])
+        return QRectF(QPointF(rect().center().x(), rect().top()),
+                      QPointF(rect().right(), rect().center().y()));
+    if (which == BottomRightQuadrant && mQuadrants[which])
+        return QRectF(rect().center(),
+                      rect().bottomRight());
+    if (which == BottomLeftQuadrant && mQuadrants[which])
+        return QRectF(QPointF(rect().left(), rect().center().y()),
+                      QPointF(rect().center().x(), rect().bottom()));
+    return QRectF();
 }
