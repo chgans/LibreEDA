@@ -44,7 +44,10 @@ GraphicsView::GraphicsView(QWidget *parent):
     setDragMode(QGraphicsView::NoDrag);
     setMouseTracking(true);
 
-    setTransformationAnchor(AnchorUnderMouse);
+    // AnchorUnderMouse doesn't work for some reason
+    // Use NoAnchor and fix it up in scaleView()
+    setTransformationAnchor(NoAnchor);
+    setResizeAnchor(NoAnchor);
 }
 
 GraphicsView::~GraphicsView()
@@ -110,6 +113,7 @@ void GraphicsView::scaleView(qreal scaleFactor)
         return;
 
     scale(scaleFactor, scaleFactor);
+    updateMousePos();
 }
 
 void GraphicsView::enableSnapToGrid(bool enabled)
@@ -166,7 +170,11 @@ void GraphicsView::wheelEvent(QWheelEvent *event)
 {
     if (!event->modifiers().testFlag(Qt::ControlModifier))
         return;
+    QPointF pos = mapToScene(event->pos());
     scaleView(pow((double)2, -event->delta() / 240.0));
+    pos -= mapToScene(event->pos());
+    translate(-pos.x(), -pos.y());
+
     event->accept();
 }
 
