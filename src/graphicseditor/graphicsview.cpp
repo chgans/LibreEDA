@@ -168,8 +168,10 @@ void GraphicsView::drawForeground(QPainter *painter, const QRectF &rect)
 // TODO: Zoom here or tool
 void GraphicsView::wheelEvent(QWheelEvent *event)
 {
-    if (!event->modifiers().testFlag(Qt::ControlModifier))
+    if (!event->modifiers().testFlag(Qt::ControlModifier)) {
+        QGraphicsView::wheelEvent(event);
         return;
+    }
     QPointF pos = mapToScene(event->pos());
     scaleView(pow((double)2, -event->delta() / 240.0));
     pos -= mapToScene(event->pos());
