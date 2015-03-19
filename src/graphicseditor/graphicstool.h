@@ -33,6 +33,7 @@ public:
     virtual void setView(GraphicsView *view);
 
     // TODO: split interactive vs non-interactive
+    // non-interactive still have to manage "Esc"
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);

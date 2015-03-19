@@ -6,5 +6,18 @@
         <file>graphicssnapgrid.svg</file>
         <file>graphicssnaplock.svg</file>
         <file>graphicssnapobject.svg</file>
+        <file>graphicsbeziercurvetool.svg</file>
+        <file>graphicsbeziersplinetool.svg</file>
+        <file>graphicscircletool.svg</file>
+        <file>graphicspathpointadd.svg</file>
+        <file>graphicspathpointcorner.svg</file>
+        <file>graphicspathpointdel.svg</file>
+        <file>graphicspathpointsmooth.svg</file>
+        <file>graphicspathpointsymetrical.svg</file>
+        <file>graphicspolygontool.svg</file>
+        <file>graphicsrectangletool.svg</file>
+        <file>graphicsarctool.svg</file>
+        <file>graphicsellipsetool.svg</file>
+        <file>graphicspolylinetool.svg</file>
     </qresource>
 </RCC>

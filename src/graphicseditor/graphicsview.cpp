@@ -32,7 +32,7 @@ GraphicsView::GraphicsView(QWidget *parent):
     m_tool(nullptr),
     m_objectUnderMouse(nullptr),
     m_handleUnderMouse(nullptr),
-    m_snappedMousePositionChanged(true),
+    m_mousePositionChanged(true),
     m_snapToGridEnabled(true)
 {    
     setViewport(new QGLWidget);
@@ -103,7 +103,7 @@ GraphicsObject *GraphicsView::objectUnderMouse() const
 
 QPoint GraphicsView::mousePosition() const
 {
-    return m_snappedMousePosition;
+    return m_mousePosition;
 }
 
 void GraphicsView::scaleView(qreal scaleFactor)
@@ -238,7 +238,7 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *event)
     }
 
     if (m_tool != nullptr) {
-        if (m_snappedMousePositionChanged) {
+        if (m_mousePositionChanged) {
             QMouseEvent ev = snapMouseEvent(event);
             m_tool->mouseMoveEvent(&ev);
         }
@@ -281,6 +281,7 @@ void GraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 }
 
 // TODO: manage esc and tab here or tool or tool manager?
+//  => better in AbstractGraphicsTool
 void GraphicsView::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
@@ -317,27 +318,31 @@ void GraphicsView::keyReleaseEvent(QKeyEvent *event)
 
 void GraphicsView::updateMousePos()
 {
+    QPoint viewPos = mapFromGlobal(QCursor::pos());
+    QPointF scenePos = mapToScene(viewPos);
     if (m_snapToGridEnabled &&
             scene() && scene()->grid()) {
-        QPoint viewPos = mapFromGlobal(QCursor::pos());
-        QPointF scenePos = mapToScene(viewPos);
         QPointF snapPos = scene()->grid()->snap(pixelSize(), scenePos);
         QPoint newPos = mapFromScene(snapPos);
-        if (m_snappedMousePosition != newPos) {
-            m_snappedMousePosition = newPos;
-            m_snappedMousePositionChanged = true;
+        if (m_mousePosition != newPos) {
+            m_mousePosition = newPos;
+            m_mousePositionChanged = true;
             scene()->update(); // Force redraw of foreground
         }
         else {
-            m_snappedMousePositionChanged = false;
+            m_mousePositionChanged = false;
         }
+    }
+    else {
+        m_mousePosition = viewPos;
+        m_mousePositionChanged = true;
     }
 }
 
 QMouseEvent GraphicsView::snapMouseEvent(QMouseEvent *event)
 {
     return QMouseEvent(event->type(),
-                       m_snappedMousePosition,
+                       m_mousePosition,
                        event->button(),
                        event->buttons(),
                        event->modifiers());

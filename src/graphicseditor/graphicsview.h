@@ -74,8 +74,8 @@ private:
     GraphicsTool *m_tool;
     GraphicsObject *m_objectUnderMouse;
     const GraphicsHandle *m_handleUnderMouse;
-    QPoint m_snappedMousePosition;
-    bool m_snappedMousePositionChanged;
+    QPoint m_mousePosition;
+    bool m_mousePositionChanged;
     void updateMousePos();
     QMouseEvent snapMouseEvent(QMouseEvent *event);
     QSizeF pixelSize() const;

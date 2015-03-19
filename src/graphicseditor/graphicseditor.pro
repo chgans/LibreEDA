@@ -31,7 +31,8 @@ SOURCES += graphicseditor.cpp \
     tool/graphicsselecttool.cpp \
     graphicstool.cpp \
     graphicsgrid.cpp \
-    grid/graphicscartesiangrid.cpp
+    grid/graphicscartesiangrid.cpp \
+    tool/graphicsitemaligntool.cpp
 
 HEADERS += graphicseditor.h \
     graphicshandle.h \
@@ -51,7 +52,8 @@ HEADERS += graphicseditor.h \
     tool/graphicsselecttool.h \
     graphicstool.h \
     graphicsgrid.h \
-    grid/graphicscartesiangrid.h
+    grid/graphicscartesiangrid.h \
+    tool/graphicsitemaligntool.h
 
 unix {
     target.path = /usr/lib

@@ -26,13 +26,21 @@ public slots:
 private:
     GraphicsView *m_view;
     GraphicsScene *m_scene;
+
+    void addInteractiveTools();
+    void addInteractiveTool(GraphicsTool *tool);
     QActionGroup *m_interactiveToolsActionGroup;
     QList<GraphicsTool *> m_interactiveTools;
     QToolBar *m_interactiveToolsToolBar;
+
+    void addSnapTools();
     QToolBar *m_snapToolBar;
 
-    void addInteractiveTool(GraphicsTool *tool);
+    void addPathPointTools();
+    QToolBar *m_pathPointToolBar;
 
+    void addArrangeTools();
+    QToolBar *m_arrangeToolBar;
 };
 
 #endif // GRAPHICSEDITOR_H
