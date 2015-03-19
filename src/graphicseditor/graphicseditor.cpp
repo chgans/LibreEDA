@@ -202,7 +202,7 @@ void GraphicsEditor::addArrangeTools()
     // send to back. front, raise, lower
     // align and distribute
     //
-    action = new QAction(QIcon::fromTheme(""),
+    QAction *action = new QAction(QIcon::fromTheme(""),
                          "Make selected path points auto-smooth", nullptr);
     m_pathPointToolBar->addAction(action);
 
