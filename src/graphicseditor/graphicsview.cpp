@@ -244,7 +244,11 @@ void GraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 }
 
 // TODO: manage esc and tab here or tool or tool manager?
-//  => better in AbstractGraphicsTool
+//  => better in AbstractGraphicsTool... no
+//  => a Tool manager? Someone as to manage the "default" tool logic
+//  => Pass the events to tool manager, and then depending of the accepted
+//     state of the event and the kind of event, pass it to the scene
+//  => As well, we should certainly use QAction as well
 void GraphicsView::keyPressEvent(QKeyEvent *event)
 {
     if (m_tool != nullptr)
