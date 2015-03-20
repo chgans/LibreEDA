@@ -35,27 +35,6 @@ public slots:
     void enableSnapToGrid(bool enabled);
     bool isSnapToGridEnabled() const;
 
-signals:
-    void leftMouseButtonPressed();
-    void leftMouseButtonReleased();
-    void ctlKeyPressed();
-    void ctlKeyReleased();
-    void majKeyPressed();
-    void majKeyReleased();
-    void escKeyPressed();
-    void escKeyReleased();
-    void hoverItemEntered();
-    void hoverItemLeft();
-    void hoverHandleEntered();
-    void hoverHandleLeft();
-    void mouseMoved();
-
-signals:
-    void mouseDoubleClicked(const QPoint &pos);
-
-protected:
-
-
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
     void drawForeground(QPainter *painter, const QRectF &rect);

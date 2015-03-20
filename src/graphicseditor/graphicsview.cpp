@@ -184,11 +184,6 @@ void GraphicsView::mousePressEvent(QMouseEvent *event)
 {
     updateMousePos();
 
-    if (event->button() == Qt::LeftButton) {
-        //qDebug() << "leftMouseButtonPressed";
-        emit leftMouseButtonPressed();
-    }
-
     if (event->button() == Qt::RightButton) {
         QGraphicsView::mousePressEvent(event);
     }
@@ -206,37 +201,16 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *event)
     updateMousePos();
 
     if (objectUnderMouse() && !m_objectUnderMouse) {
-        //qDebug() << "hoverItemEntered";
         m_objectUnderMouse = objectUnderMouse();
-        emit hoverItemEntered();
-        if (event->modifiers().testFlag(Qt::ControlModifier))
-            emit ctlKeyPressed();
     }
     if (!objectUnderMouse() && m_objectUnderMouse) {
-        //qDebug() << "hoverItemLeft";
-        emit hoverItemLeft();
-        if (event->modifiers().testFlag(Qt::ControlModifier))
-            emit ctlKeyPressed();
         m_objectUnderMouse = nullptr;
     }
     if (handleUnderMouse() && !m_handleUnderMouse) {
-        //qDebug() << "hoverHandleEntered";
         m_handleUnderMouse = handleUnderMouse();
-        if (event->modifiers().testFlag(Qt::ControlModifier))
-            emit ctlKeyPressed();
-        emit hoverHandleEntered();
     }
     if (!handleUnderMouse() && m_handleUnderMouse) {
-        //qDebug() << "hoverHandleLeft";
-        emit hoverHandleLeft();
-        if (event->modifiers().testFlag(Qt::ControlModifier))
-            emit ctlKeyPressed();
         m_handleUnderMouse = nullptr;
-    }
-
-    if (event->buttons().testFlag(Qt::LeftButton)) {
-        //qDebug() << "mouseMoved";
-        emit mouseMoved();
     }
 
     if (m_tool != nullptr) {
@@ -253,11 +227,6 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent *event)
 {
     updateMousePos();
 
-    if (event->button() == Qt::LeftButton) {
-        //qDebug() << "leftMouseButtonReleased";
-        emit leftMouseButtonReleased();
-    }
-
     if (m_tool != nullptr) {
         QMouseEvent ev = snapMouseEvent(event);
         m_tool->mouseReleaseEvent(&ev);
@@ -266,35 +235,18 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent *event)
         event->ignore();
 }
 
-// TODO:
 void GraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 {
-#if 0
-    if (event->button() != Qt::LeftButton)
-        return;
-    emit mouseDoubleClicked(event->pos());
-    event->accept();
-#else
     if (m_tool != nullptr)
         m_tool->mouseDoubleClickEvent(event);
     else
         event->ignore();
-#endif
 }
 
 // TODO: manage esc and tab here or tool or tool manager?
 //  => better in AbstractGraphicsTool
 void GraphicsView::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape) {
-        qDebug() << "escKeyPressed";
-        emit escKeyPressed();
-    }
-    else if (event->key() == Qt::Key_Control) {
-        qDebug() << "ctlKeyPressed";
-        emit ctlKeyPressed();
-    }
-
     if (m_tool != nullptr)
         m_tool->keyPressEvent(event);
     else
@@ -303,15 +255,6 @@ void GraphicsView::keyPressEvent(QKeyEvent *event)
 
 void GraphicsView::keyReleaseEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape) {
-        qDebug() << "escKeyReleased";
-        emit escKeyReleased();
-    }
-    else if (event->key() == Qt::Key_Control) {
-        qDebug() << "ctlKeyReleased";
-        emit ctlKeyReleased();
-    }
-
     if (m_tool != nullptr)
         m_tool->keyReleaseEvent(event);
     else
