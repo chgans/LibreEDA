@@ -41,13 +41,6 @@ public:
 signals:
     void objectInserted(GraphicsObject *object);
 
-    // AbstractGraphicsInteractiveTool interface
-public:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent *event);
-
 private:
     int m_index;
     QPointF m_pressPos;
@@ -55,6 +48,13 @@ private:
     bool m_addPointOnMouseMove;
     bool m_isActive;
     GraphicsObject *m_item;
+
+    // AbstractGraphicsInteractiveTool interface
+public:
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
 };
 
 #endif // ABSTRACTGRAPHICSINSERTTOOL_H
