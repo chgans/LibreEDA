@@ -10,6 +10,7 @@ public:
     GraphicsItemAlignTool();
     ~GraphicsItemAlignTool();
 
+public slots:
     void align(Qt::AlignmentFlag alignement);
 
 };

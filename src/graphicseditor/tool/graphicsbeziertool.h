@@ -1,49 +1,40 @@
 #ifndef GRAPHICSBEZIERTOOL_H
 #define GRAPHICSBEZIERTOOL_H
 
-#include "graphicseditor/graphicstool.h"
+#include "graphicseditor/abstractgraphicsinserttool.h"
 
 #include <QPointF>
 
 class GraphicsBezierItem;
 
-class GraphicsBezierTool : public GraphicsTool
+class GraphicsBezierTool : public AbstractGraphicsInsertTool
 {
 public:
     GraphicsBezierTool(QObject *parent);
+    ~GraphicsBezierTool();
 
 private:
-    QPointF mapToScene(const QPoint &pos);
-    QPointF mapToItem(const QPoint &pos);
-    QPointF mapFromScene(const QPointF &pos);
-    QPointF mapFromItem(const QPointF &pos);
-
-    enum State {
-        NotStarted,
-        FirstPoint,
-        MidPoints,
-        LastPoint
-    };
-    State m_state;
-    void setState(State state);
+    QAction *m_action;
+    QString m_toolGroup;
     GraphicsBezierItem *m_item;
-    QPoint m_nodePos;
-    bool m_insertHandleOnMouseMove = true;
-    int m_index;
 
     // GraphicsTool interface
 public:
-    virtual void mousePressEvent(QMouseEvent *event);
-    virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void mouseReleaseEvent(QMouseEvent *event);
-    virtual void mouseDoubleClickEvent(QMouseEvent *event);
-    virtual void keyPressEvent(QKeyEvent *event);
-    virtual void keyReleaseEvent(QKeyEvent *event);
     virtual QDialog *optionDialog();
     virtual QString toolGroup() const;
     virtual QAction *action() const;
-    virtual void activate();
-    virtual void desactivate();
+    virtual void activate(const QAction *which);
+    virtual void desactivate(const QAction *which);
+
+    // AbstractGraphicsInsertTool interface
+public:
+    GraphicsObject *beginInsert(const QPointF &pos);
+    void addPoint(int idx, const QPointF &pos);
+    void freezePoint(int idx);
+    bool removePoint(int idx);
+    void movePoint(int idx, const QPointF &pos);
+    void endInsert(const QPointF &pos);
+    void cancelInsert();
 };
 
 #endif // GRAPHICSBEZIERTOOL_H

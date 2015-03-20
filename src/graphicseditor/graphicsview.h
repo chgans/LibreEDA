@@ -4,7 +4,7 @@
 #include <QGraphicsView>
 
 class GraphicsScene;
-class GraphicsTool;
+class AbstractGraphicsInteractiveTool;
 class GraphicsObject;
 class GraphicsHandle;
 
@@ -19,8 +19,8 @@ public:
     GraphicsScene *scene();
     void setScene(GraphicsScene *scene);
 
-    GraphicsTool *tool();
-    void setTool(GraphicsTool *tool);
+    AbstractGraphicsInteractiveTool *tool();
+    void setTool(AbstractGraphicsInteractiveTool *tool);
 
     GraphicsObject *objectAt(const QPoint &pos) const;
     GraphicsHandle *handleAt(const QPoint &pos) const;
@@ -71,7 +71,7 @@ protected:
     void keyReleaseEvent(QKeyEvent *event);
 
 private:
-    GraphicsTool *m_tool;
+    AbstractGraphicsInteractiveTool *m_tool;
     GraphicsObject *m_objectUnderMouse;
     const GraphicsHandle *m_handleUnderMouse;
     QPoint m_mousePosition;

@@ -38,7 +38,7 @@
 //   Qt::SizeAllCursor
 
 GraphicsSelectTool::GraphicsSelectTool(QObject *parent):
-    GraphicsTool(parent),
+    AbstractGraphicsInteractiveTool(parent),
     m_state(HintState),
     m_operation(DragSelect),
     m_mousePressPosition(QPoint(0, 0)),
@@ -46,6 +46,9 @@ GraphicsSelectTool::GraphicsSelectTool(QObject *parent):
     m_handle(nullptr),
     m_rubberBand(new QRubberBand(QRubberBand::Rectangle))
 {
+    m_toolGroup = "interactive-tools";
+    m_action = new QAction(QIcon::fromTheme("edit-select"),
+                           "select", nullptr);
 }
 
 GraphicsSelectTool::~GraphicsSelectTool()
@@ -98,12 +101,14 @@ QDialog *GraphicsSelectTool::optionDialog()
     return nullptr;
 }
 
-void GraphicsSelectTool::activate()
+void GraphicsSelectTool::activate(const QAction *which)
 {
+    Q_ASSERT(m_action == which);
 }
 
-void GraphicsSelectTool::desactivate()
+void GraphicsSelectTool::desactivate(const QAction *which)
 {
+    Q_ASSERT(m_action == which);
 }
 
 void GraphicsSelectTool::cancel()
@@ -125,13 +130,12 @@ void GraphicsSelectTool::setView(GraphicsView *other)
 
 QString GraphicsSelectTool::toolGroup() const
 {
-    return "interactive-tools";
+    return m_toolGroup;
 }
 
 QAction *GraphicsSelectTool::action() const
 {
-    return  new QAction(QIcon::fromTheme("edit-select"),
-                        "select", nullptr);
+    return m_action;
 }
 
 

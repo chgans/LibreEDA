@@ -6,11 +6,6 @@
 
 class GraphicsView;
 class GraphicsScene;
-class GraphicsObject;
-
-class QMouseEvent;
-class QKeyEvent;
-class QWheelEvent;
 
 class QDialog;
 class QAction;
@@ -19,6 +14,8 @@ class QAction;
  *  - Actions (hooked with context menu)
  *    - Esc => cancel()
  *    - Tab => options
+ *  - Use case: align tool has 6 actions
+ *  - replace option dialog w/ option widget: allow to dosplay widget in a QDock or something
  */
 
 class GraphicsTool : public QObject
@@ -32,35 +29,19 @@ public:
     GraphicsScene *scene();
     virtual void setView(GraphicsView *view);
 
-    // TODO: split interactive vs non-interactive
-    // non-interactive still have to manage "Esc"
-    virtual void mousePressEvent(QMouseEvent *event);
-    virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void mouseReleaseEvent(QMouseEvent *event);
-    virtual void mouseDoubleClickEvent(QMouseEvent *event);
-
-    virtual void keyPressEvent(QKeyEvent *event);
-    virtual void keyReleaseEvent(QKeyEvent *event);
-
-    virtual void wheelEvent(QWheelEvent *event);
-
     virtual QDialog *optionDialog() = 0;
 
     virtual QString toolGroup() const = 0;
     virtual QAction *action() const = 0;
 
-    virtual void activate() = 0;
-    virtual void desactivate() = 0;
+    virtual void activate(const QAction *which) = 0;
+    virtual void desactivate(const QAction *which) = 0;
 
 signals:
     void finished();
 
 public slots:
     virtual void cancel();
-
-protected:
-    GraphicsObject *createPhantomItem(GraphicsObject *item);
-    QList<GraphicsObject *> createPhantomItems(const QList<GraphicsObject *> &items);
 
 private:
     GraphicsView *m_view;

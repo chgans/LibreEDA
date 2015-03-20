@@ -1,45 +1,49 @@
 #ifndef GRAPHICSRECTTOOL_H
 #define GRAPHICSRECTTOOL_H
 
-#include "graphicseditor/graphicstool.h"
+#include "graphicseditor/abstractgraphicsinserttool.h"
 
 class GraphicsRectItem;
 
-class GraphicsRectTool : public GraphicsTool
+class GraphicsRectTool : public AbstractGraphicsInsertTool
 {
     Q_OBJECT
 
 public:
     GraphicsRectTool(QObject *parent);
-
+    ~GraphicsRectTool();
 
     // GraphicsTool interface
 public:
-    virtual void mousePressEvent(QMouseEvent *event);
-    virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual QDialog *optionDialog();
     virtual QString toolGroup() const;
     virtual QAction *action() const;
-
-
-
-protected:
-    void setP1(const QPoint &handlePos);
-    void setP2(const QPoint &handlePos);
-
-private:
-    int m_state;
-    GraphicsRectItem *m_item;
+    virtual void activate(const QAction *which);
+    virtual void desactivate(const QAction *which);
 
     // GraphicsTool interface
 public slots:
     virtual void cancel();
 
-    // GraphicsTool interface
+    // AbstractGraphicsInsertTool interface
 public:
-    virtual void activate();
-    virtual void desactivate();
+    GraphicsObject *beginInsert(const QPointF &pos);
+    void addPoint(int idx, const QPointF &pos);
+    void freezePoint(int idx);
+    bool removePoint(int idx);
+    void movePoint(int idx, const QPointF &pos);
+    void endInsert(const QPointF &pos);
+    void cancelInsert();
+
+
+protected:
+    void setP1(const QPointF &pos);
+    void setP2(const QPointF &pos);
+
+private:
+    QString m_toolGroup;
+    QAction *m_toolAction;
+    GraphicsRectItem *m_item;
 };
 
 #endif // GRAPHICSRECTTOOL_H

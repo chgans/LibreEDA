@@ -101,14 +101,14 @@ void GraphicsEditor::addInteractiveTools()
     //  - with easy convert to/from QPolygon, QRect, QPainterPath, etc...
 }
 
-void GraphicsEditor::addInteractiveTool(GraphicsTool *tool)
+void GraphicsEditor::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
 {
 
     bool firstTool = m_interactiveTools.count() == 0;
     bool firstAction = m_interactiveToolsActionGroup->actions().count() == 0;
     QAction *action = tool->action();
     action->setCheckable(true);
-    action->setData(QVariant::fromValue<GraphicsTool *>(tool));
+    action->setData(QVariant::fromValue<AbstractGraphicsInteractiveTool *>(tool));
     m_interactiveToolsActionGroup->addAction(action);
     m_interactiveToolsToolBar->addAction(action);
     if (firstAction) {
@@ -119,7 +119,7 @@ void GraphicsEditor::addInteractiveTool(GraphicsTool *tool)
         action->setChecked(false);
     connect(m_interactiveToolsActionGroup, &QActionGroup::triggered,
             this, [this](QAction *action) {
-        GraphicsTool *tool = action->data().value<GraphicsTool*>();
+        AbstractGraphicsInteractiveTool *tool = action->data().value<AbstractGraphicsInteractiveTool*>();
         m_view->setTool(tool);
     });
     connect(tool, &GraphicsTool::finished,

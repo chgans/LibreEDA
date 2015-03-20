@@ -10,52 +10,16 @@
 #include <QAction>
 
 GraphicsRectTool::GraphicsRectTool(QObject *parent):
-    GraphicsTool(parent), m_state(0), m_item(nullptr)
+    AbstractGraphicsInsertTool(parent), m_item(nullptr)
 {
-
+    m_toolAction = new QAction(QIcon(":/icons/graphicsrecttool.svg"),
+                           "Place a rectangle", nullptr);
+    m_toolGroup = "interactive-tools";
 }
 
-void GraphicsRectTool::mousePressEvent(QMouseEvent *event)
+GraphicsRectTool::~GraphicsRectTool()
 {
 
-    if (m_state == 0) {
-        Q_ASSERT(m_item == nullptr);
-        scene()->clearSelection();
-        m_item = new GraphicsRectItem();
-        m_item->setFlags(QGraphicsItem::ItemIsMovable |
-                         QGraphicsItem::ItemIsSelectable);
-        QPointF scenePos = view()->mapToScene(event->pos());
-        m_item->setPos(scenePos);
-        setP1(event->pos());
-        setP2(event->pos());
-        m_item->setPen(QPen(QBrush(Qt::darkBlue), 1));
-        m_item->setBrush(QBrush(Qt::darkYellow));
-        scene()->addItem(m_item);
-        m_state = 1;
-    }
-    else if (m_state == 1) {
-        setP2(event->pos());
-        m_item = nullptr;
-        m_state = 0;
-    }
-    event->accept();
-}
-
-void GraphicsRectTool::mouseMoveEvent(QMouseEvent *event)
-{
-    if (m_state == 1) {
-        setP2(event->pos());
-    }
-    event->accept();
-}
-
-void GraphicsRectTool::mouseReleaseEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-    if (m_state == 1) {
-        // TODO: use command stack
-
-    }
 }
 
 QDialog *GraphicsRectTool::optionDialog()
@@ -65,45 +29,101 @@ QDialog *GraphicsRectTool::optionDialog()
 
 QString GraphicsRectTool::toolGroup() const
 {
-    return "interactive-tools";
+    return m_toolGroup;
 }
 
 QAction *GraphicsRectTool::action() const
 {
-    return new QAction(QIcon(":/icons/graphicsrecttool.svg"),
-                                  "Place a rectangle", nullptr);
+    return m_toolAction;
 }
 
 void GraphicsRectTool::cancel()
 {
-    if (m_state == 0) {
-        emit finished();
+}
+
+GraphicsObject *GraphicsRectTool::beginInsert(const QPointF &pos)
+{
+    m_item = new GraphicsRectItem();
+    m_item->setFlags(QGraphicsItem::ItemIsMovable |
+                     QGraphicsItem::ItemIsSelectable);
+    m_item->setPos(pos);
+    m_item->setPen(QPen(QBrush(Qt::darkBlue), 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    m_item->setBrush(QBrush(Qt::darkYellow));
+    return m_item;
+}
+
+void GraphicsRectTool::addPoint(int idx, const QPointF &pos)
+{
+    Q_ASSERT(idx < 2);
+
+    QPointF itemPos = m_item->mapFromScene(pos);
+    if (idx == 0)
+        setP1(itemPos);
+    else {
+        setP2(itemPos);
     }
-    else if (m_state == 1) {
-        scene()->removeItem(m_item);
-        delete m_item;
-        m_item = nullptr;
-        m_state = 0;
+}
+
+void GraphicsRectTool::freezePoint(int idx)
+{
+    Q_ASSERT(idx < 2);
+
+    if (idx == 0)
+        return;
+
+    emit objectInserted(m_item);
+    resetTool();
+}
+
+bool GraphicsRectTool::removePoint(int idx)
+{
+    Q_UNUSED(idx);
+    return false;
+}
+
+void GraphicsRectTool::movePoint(int idx, const QPointF &pos)
+{
+    Q_ASSERT(idx < 2);
+
+    QPointF itemPos = m_item->mapFromScene(pos);
+    if (idx == 0)
+        setP1(itemPos);
+    else {
+        setP2(itemPos);
     }
 }
 
-void GraphicsRectTool::setP1(const QPoint &handlePos)
+void GraphicsRectTool::endInsert(const QPointF &pos)
 {
-    QPointF pos = m_item->mapFromScene(view()->mapToScene(handlePos));
-    m_item->handleAt(GraphicsRectItem::TopLeft)->setPos(pos);
+    Q_UNUSED(pos);
 }
 
-void GraphicsRectTool::setP2(const QPoint &handlePos)
+void GraphicsRectTool::cancelInsert()
 {
-    QPointF pos = m_item->mapFromScene(view()->mapToScene(handlePos));
-    m_item->handleAt(GraphicsRectItem::BottomRight)->setPos(pos);
+
+}
+
+void GraphicsRectTool::setP1(const QPointF &pos)
+{
+    QRectF rect = m_item->rect();
+    rect.setTopLeft(pos);
+    m_item->setRect(rect);
+}
+
+void GraphicsRectTool::setP2(const QPointF &pos)
+{
+    QRectF rect = m_item->rect();
+    rect.setBottomLeft(pos);
+    m_item->setRect(rect);
 }
 
 
-void GraphicsRectTool::activate()
+void GraphicsRectTool::activate(const QAction *which)
 {
+    Q_ASSERT(which == m_toolAction);
 }
 
-void GraphicsRectTool::desactivate()
+void GraphicsRectTool::desactivate(const QAction *which)
 {
+    Q_ASSERT(which == m_toolAction);
 }

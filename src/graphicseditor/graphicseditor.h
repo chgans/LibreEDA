@@ -9,7 +9,7 @@ class QToolBar;
 
 class GraphicsView;
 class GraphicsScene;
-class GraphicsTool;
+class AbstractGraphicsInteractiveTool;
 
 class GraphicsEditor: public QWidget
 {
@@ -28,9 +28,9 @@ private:
     GraphicsScene *m_scene;
 
     void addInteractiveTools();
-    void addInteractiveTool(GraphicsTool *tool);
+    void addInteractiveTool(AbstractGraphicsInteractiveTool *tool);
     QActionGroup *m_interactiveToolsActionGroup;
-    QList<GraphicsTool *> m_interactiveTools;
+    QList<AbstractGraphicsInteractiveTool *> m_interactiveTools;
     QToolBar *m_interactiveToolsToolBar;
 
     void addSnapTools();

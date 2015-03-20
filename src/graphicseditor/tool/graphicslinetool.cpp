@@ -12,52 +12,13 @@
 #include <QDebug>
 
 GraphicsLineTool::GraphicsLineTool(QObject *parent):
-    GraphicsTool(parent), m_state(0), m_item(nullptr)
+    AbstractGraphicsInsertTool(parent), m_item(nullptr)
 {
-
+    m_action = new QAction(QIcon(":/icons/graphicslinetool.svg"),
+                           "Place a line", nullptr);
+    m_toolGroup = "interactive-tools";
 }
 
-
-
-void GraphicsLineTool::mousePressEvent(QMouseEvent *event)
-{
-    if (m_state == 0) {
-        Q_ASSERT(m_item == nullptr);
-        scene()->clearSelection();
-        m_item = new GraphicsLineItem();
-        m_item->setFlags(QGraphicsItem::ItemIsMovable |
-                         QGraphicsItem::ItemIsSelectable);
-        QPointF scenePos = view()->mapToScene(event->pos());
-        m_item->setPos(scenePos);
-        setP1(event->pos());
-        setP2(event->pos());
-        m_item->setPen(QPen(Qt::darkMagenta, 1, Qt::SolidLine));
-        scene()->addItem(m_item);
-        m_state = 1;
-    }
-    else if (m_state == 1) {
-        setP2(event->pos());
-        m_item = nullptr;
-        m_state = 0;
-    }
-    event->accept();
-}
-
-void GraphicsLineTool::mouseMoveEvent(QMouseEvent *event)
-{
-    if (m_state == 1) {
-        setP2(event->pos());
-    }
-    event->accept();
-}
-
-void GraphicsLineTool::mouseReleaseEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-    if (m_state == 1) {
-        // TODO: use command stack
-    }
-}
 
 QDialog *GraphicsLineTool::optionDialog()
 {
@@ -66,47 +27,97 @@ QDialog *GraphicsLineTool::optionDialog()
 
 QString GraphicsLineTool::toolGroup() const
 {
-    return "interactive-tools";
+    return m_toolGroup;
 }
 
 QAction *GraphicsLineTool::action() const
 {
-    return new QAction(QIcon(":/icons/graphicslinetool.svg"),
-                                  "Place a line", nullptr);
+    return m_action;
 }
 
 void GraphicsLineTool::cancel()
 {
-    if (m_state == 0) {
-        emit finished();
+}
+
+void GraphicsLineTool::activate(const QAction *which)
+{
+    Q_ASSERT(m_action == which);
+}
+
+void GraphicsLineTool::desactivate(const QAction *which)
+{
+    Q_ASSERT(m_action == which);
+}
+
+GraphicsObject *GraphicsLineTool::beginInsert(const QPointF &pos)
+{
+    m_item = new GraphicsLineItem();
+    m_item->setFlags(QGraphicsItem::ItemIsMovable |
+                     QGraphicsItem::ItemIsSelectable);
+    m_item->setPen(QPen(Qt::darkMagenta, 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    m_item->setPos(pos);
+    return m_item;
+}
+
+void GraphicsLineTool::addPoint(int idx, const QPointF &pos)
+{
+    Q_ASSERT(idx < 2);
+
+    QPointF itemPos = m_item->mapFromScene(pos);
+    if (idx == 0)
+        setP1(itemPos);
+    else {
+        setP2(itemPos);
     }
-    else if (m_state == 1) {
-        scene()->removeItem(m_item);
-        delete m_item;
-        m_item = nullptr;
-        m_state = 0;
+}
+
+void GraphicsLineTool::freezePoint(int idx)
+{
+    if (idx == 0)
+        return;
+
+    emit objectInserted(m_item);
+    resetTool();
+}
+
+bool GraphicsLineTool::removePoint(int idx)
+{
+    Q_UNUSED(idx);
+    return false;
+}
+
+void GraphicsLineTool::movePoint(int idx, const QPointF &pos)
+{
+    Q_ASSERT(idx < 2);
+
+    QPointF itemPos = m_item->mapFromScene(pos);
+    if (idx == 0)
+        setP1(itemPos);
+    else {
+        setP2(itemPos);
     }
 }
 
-void GraphicsLineTool::setP1(const QPoint &viewPos)
+void GraphicsLineTool::endInsert(const QPointF &pos)
 {
-    QPointF scenePos = view()->mapToScene(viewPos);
-    QPointF handlePos = m_item->mapFromScene(scenePos);
-    m_item->handleAt(0)->setPos(handlePos);
+    Q_UNUSED(pos);
 }
 
-void GraphicsLineTool::setP2(const QPoint &viewPos)
+void GraphicsLineTool::cancelInsert()
 {
-    QPointF scenePos = view()->mapToScene(viewPos);
-    QPointF handlePos = m_item->mapFromScene(scenePos);
-    m_item->handleAt(1)->setPos(handlePos);
+
 }
 
-
-void GraphicsLineTool::activate()
+void GraphicsLineTool::setP1(const QPointF &pos)
 {
+    QLineF line = m_item->line();
+    line.setP1(pos);
+    m_item->setLine(line);
 }
 
-void GraphicsLineTool::desactivate()
+void GraphicsLineTool::setP2(const QPointF &pos)
 {
+    QLineF line = m_item->line();
+    line.setP2(pos);
+    m_item->setLine(line);
 }

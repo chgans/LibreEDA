@@ -1,7 +1,7 @@
 #ifndef GRAPHICSSELECTTOOL_H
 #define GRAPHICSSELECTTOOL_H
 
-#include "graphicseditor/graphicstool.h"
+#include "graphicseditor/abstractgraphicsinteractivetool.h"
 
 #include <QPoint>
 
@@ -10,7 +10,7 @@ class GraphicsHandle;
 
 class QRubberBand;
 
-class GraphicsSelectTool : public GraphicsTool
+class GraphicsSelectTool : public AbstractGraphicsInteractiveTool
 {
     Q_OBJECT
 
@@ -19,6 +19,9 @@ public:
     ~GraphicsSelectTool();
 
 private:
+    QString m_toolGroup;
+    QAction *m_action;
+
     enum ToolState {
         HintState,
         OperationState
@@ -49,8 +52,8 @@ public:
     virtual QString toolGroup() const;
     virtual QAction *action() const;
     QDialog *optionDialog();
-    virtual void activate();
-    virtual void desactivate();
+    virtual void activate(const QAction *which);
+    virtual void desactivate(const QAction *which);
 
     // GraphicsTool interface
 public slots:

@@ -1,7 +1,7 @@
 #include "graphicsview.h"
 #include "graphicsscene.h"
 #include "graphicsobject.h"
-#include "graphicstool.h"
+#include "abstractgraphicsinteractivetool.h"
 #include "graphicsgrid.h"
 
 #include <QGLWidget>
@@ -65,19 +65,19 @@ void GraphicsView::setScene(GraphicsScene *scene)
     QGraphicsView::setScene(scene);
 }
 
-GraphicsTool *GraphicsView::tool()
+AbstractGraphicsInteractiveTool *GraphicsView::tool()
 {
     return m_tool;
 }
 
-void GraphicsView::setTool(GraphicsTool *tool)
+void GraphicsView::setTool(AbstractGraphicsInteractiveTool *tool)
 {
     if (m_tool)
-        m_tool->desactivate();
+        m_tool->desactivate(m_tool->action()); // FIXME: pass "this" instead, a non active tool doesnt need a view
     m_tool = tool;
     if (m_tool) {
         m_tool->setView(this);
-        m_tool->activate();
+        m_tool->activate(tool->action());
     }
 }
 
