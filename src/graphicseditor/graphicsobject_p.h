@@ -1,0 +1,5 @@
+#ifndef GRAPHICSOBJECT_P_H
+#define GRAPHICSOBJECT_P_H
+
+#endif // GRAPHICSOBJECT_P_H
+

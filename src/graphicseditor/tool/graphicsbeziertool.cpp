@@ -23,7 +23,7 @@ GraphicsBezierTool::GraphicsBezierTool(QObject *parent):
     AbstractGraphicsInsertTool(parent),
     m_item(nullptr)
 {
-    m_action = new QAction(QIcon(":/icons/graphicsbeziertool.svg"),
+    m_action = new QAction(QIcon(":/icons/tool/graphicsbeziertool.svg"),
                            "Place a bezier curve", nullptr);;
     m_toolGroup = "interactive-tools";
 }
@@ -62,8 +62,6 @@ GraphicsObject *GraphicsBezierTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsBezierItem();
     m_item->setPos(pos);
-    m_item->setPen(QPen(QBrush(QColor::fromRgb(0x00, 0x00, 0x80)), 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    m_item->setFlags(QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsMovable);
     return m_item;
 }
 

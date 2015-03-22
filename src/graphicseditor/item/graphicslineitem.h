@@ -17,8 +17,6 @@ public:
 
     QLineF line() const;
     void setLine(const QLineF &line);
-    QPen pen() const;
-    void setPen(const QPen &pen);
 
     // GraphicsObject interface
 public:
@@ -46,7 +44,6 @@ private:
     void markDirty();
     void updateGeometry() const;
 
-    QPen m_pen;
     QLineF m_line;
     GraphicsHandle *m_handle1;
     GraphicsHandle *m_handle2;

@@ -39,18 +39,6 @@ void GraphicsBezierItem::setPath(const QPainterPath &path)
     setBoundingRectDirty();
 }
 
-QPen GraphicsBezierItem::pen() const
-{
-    return m_pen;
-}
-
-void GraphicsBezierItem::setPen(const QPen &pen)
-{
-    m_pen = pen;
-    setShapeDirty();
-    setBoundingRectDirty();
-}
-
 // pos is in local coordinate
 int GraphicsBezierItem::addPoint(const QPointF &pos)
 {
@@ -314,10 +302,10 @@ void GraphicsBezierItem::setShapeDirty()
 void GraphicsBezierItem::computeShape() const
 {
     QPainterPathStroker stroker;
-    stroker.setWidth(m_pen.widthF());
-    stroker.setCapStyle(m_pen.capStyle());
-    stroker.setJoinStyle(m_pen.joinStyle());
-    stroker.setMiterLimit(m_pen.miterLimit());
+    stroker.setWidth(pen().widthF());
+    stroker.setCapStyle(pen().capStyle());
+    stroker.setJoinStyle(pen().joinStyle());
+    stroker.setMiterLimit(pen().miterLimit());
     m_shape = stroker.createStroke(m_path);
     m_shapeIsDirty = false;
 }

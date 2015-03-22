@@ -1,13 +1,13 @@
 #include "graphicscircletool.h"
 
-#include "graphicscircleitem.h"
+#include "item/graphicscircleitem.h"
 
 #include <QAction>
 
 GraphicsCircleTool::GraphicsCircleTool(QObject *parent):
     AbstractGraphicsInsertTool(parent)
 {
-    m_action = new QAction(QIcon(":/icons/graphicscircletool.svg"),
+    m_action = new QAction(QIcon(":/icons/tool/graphicscircletool.svg"),
                            "Place a circle", nullptr);;
     m_toolGroup = "interactive-tools";
 }
@@ -45,9 +45,6 @@ GraphicsObject *GraphicsCircleTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsCircleItem();
     m_item->setPos(pos);
-    m_item->setPen(QPen(QBrush(QColor::fromRgb(0x80, 0x00, 0x00)), 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    m_item->setBrush(QBrush(QColor::fromRgb(0xff, 0xff, 0xb0)));
-    m_item->setFlags(QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsMovable);
     return m_item;
 }
 
@@ -59,7 +56,7 @@ void GraphicsCircleTool::addPoint(int idx, const QPointF &pos)
         return;
 
     QPointF itemPos = m_item->mapFromScene(pos);
-    m_item->setRadius(itemPos.x());
+    m_item->setRadius(qAbs(itemPos.x()));
 }
 
 void GraphicsCircleTool::freezePoint(int idx)
@@ -84,7 +81,7 @@ void GraphicsCircleTool::movePoint(int idx, const QPointF &pos)
     Q_ASSERT(idx == 1);
 
      QPointF itemPos = m_item->mapFromScene(pos);
-     m_item->setRadius(itemPos.x());
+     m_item->setRadius(qAbs(itemPos.x()));
 }
 
 void GraphicsCircleTool::endInsert(const QPointF &pos)

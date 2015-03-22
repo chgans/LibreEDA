@@ -8,6 +8,7 @@
 // TBD: ctrl+space: cycle mode
 // Use template whith GraphicsXyzItem, or use GraphicsObject base class
 // Should work as well for single point (either a "Point" object, or a fixed shape/size object)
+// addPoint return a GraphicsHandle, movePoint has a default impl.
 class AbstractGraphicsInsertTool : public AbstractGraphicsInteractiveTool
 {
     Q_OBJECT

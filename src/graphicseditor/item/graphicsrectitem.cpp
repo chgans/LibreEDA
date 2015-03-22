@@ -40,27 +40,6 @@ void GraphicsRectItem::setRect(const QRectF &rect)
     markDirty();
 }
 
-QPen GraphicsRectItem::pen() const
-{
-    return m_pen;
-}
-
-void GraphicsRectItem::setPen(const QPen &pen)
-{
-    m_pen = pen;
-    markDirty();
-}
-
-QBrush GraphicsRectItem::brush() const
-{
-    return m_brush;
-}
-
-void GraphicsRectItem::setBrush(const QBrush &brush)
-{
-    m_brush = brush;
-}
-
 void GraphicsRectItem::addHandle(GraphicsRectItem::HandleId handleId, GraphicsHandleRole role)
 {
     GraphicsHandle *handle = new GraphicsHandle(this);

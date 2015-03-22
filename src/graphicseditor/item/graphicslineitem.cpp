@@ -35,22 +35,10 @@ void GraphicsLineItem::setLine(const QLineF &line)
     markDirty();
 }
 
-QPen GraphicsLineItem::pen() const
-{
-    return m_pen;
-}
-
-void GraphicsLineItem::setPen(const QPen &pen)
-{
-    m_pen = pen;
-    markDirty();
-}
-
 GraphicsObject *GraphicsLineItem::clone()
 {
     GraphicsLineItem *item = new GraphicsLineItem();
     GraphicsObject::cloneTo(item);
-    item->setPen(m_pen);
     item->setLine(line());
     return item;
 }
@@ -85,7 +73,7 @@ QPainterPath GraphicsLineItem::shape() const
 
 void GraphicsLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter->setPen(m_pen);
+    painter->setPen(pen());
     painter->drawLine(line());
 }
 
@@ -109,10 +97,10 @@ void GraphicsLineItem::updateGeometry() const
 {
     QPainterPath path;
     QPainterPathStroker stroker;
-    stroker.setWidth(m_pen.widthF());
-    stroker.setCapStyle(m_pen.capStyle());
-    stroker.setJoinStyle(m_pen.joinStyle());
-    stroker.setMiterLimit(m_pen.miterLimit());
+    stroker.setWidth(pen().widthF());
+    stroker.setCapStyle(pen().capStyle());
+    stroker.setJoinStyle(pen().joinStyle());
+    stroker.setMiterLimit(pen().miterLimit());
 
     path.moveTo(m_line.p1());
     path.lineTo(m_line.p2());

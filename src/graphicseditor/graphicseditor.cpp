@@ -8,6 +8,9 @@
 #include "tool/graphicslinetool.h"
 #include "tool/graphicsrecttool.h"
 #include "tool/graphicscircletool.h"
+#include "tool/graphicsellipsetool.h"
+#include "tool/graphicspolygontool.h"
+#include "tool/graphicswiretool.h"
 
 #include "grid/graphicscartesiangrid.h"
 
@@ -67,20 +70,14 @@ void GraphicsEditor::addInteractiveTools()
 
     addInteractiveTool(new GraphicsSelectTool(this));
     addInteractiveTool(new GraphicsLineTool(this));
+    addInteractiveTool(new GraphicsWireTool(this));
     addInteractiveTool(new GraphicsRectTool(this));
+    addInteractiveTool(new GraphicsPolygonTool(this));
     addInteractiveTool(new GraphicsCircleTool(this));
+    addInteractiveTool(new GraphicsEllipseTool(this));
     addInteractiveTool(new GraphicsBezierTool(this));
 
     QAction *action;
-    action = new QAction(QIcon(":/icons/graphicspolygontool.svg"),
-                         "Add a polygon", nullptr);
-    m_interactiveToolsToolBar->addAction(action); // regular polygon, TODO: add arbitrary polygone and "advanced" shape
-    action = new QAction(QIcon(":/icons/graphicspolylinetool.svg"),
-                         "Add a polyline", nullptr);
-    m_interactiveToolsToolBar->addAction(action);
-    action = new QAction(QIcon(":/icons/graphicsellipsetool.svg"),
-                         "Add an ellipse", nullptr);
-    m_interactiveToolsToolBar->addAction(action);
     action = new QAction(QIcon(":/icons/graphicsarctool.svg"),
                          "Add an arc", nullptr);
     m_interactiveToolsToolBar->addAction(action);
@@ -98,6 +95,7 @@ void GraphicsEditor::addInteractiveTools()
     //  - BSpline vs bezier curve
     //  - create new data class alongside QPoint, QLine, QRect, ...: Ellipse, circle, arc
     //  - with easy convert to/from QPolygon, QRect, QPainterPath, etc...
+    //  - regular polygon, arbitrary polygon and "advanced" shape
 }
 
 void GraphicsEditor::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)

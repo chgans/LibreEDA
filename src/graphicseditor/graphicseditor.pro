@@ -35,8 +35,14 @@ SOURCES += graphicseditor.cpp \
     tool/graphicsitemaligntool.cpp \
     abstractgraphicsinteractivetool.cpp \
     abstractgraphicsinserttool.cpp \
-    graphicscircleitem.cpp \
-    tool/graphicscircletool.cpp
+    item/graphicscircleitem.cpp \
+    tool/graphicscircletool.cpp \
+    item/graphicsellipseitem.cpp \
+    tool/graphicsellipsetool.cpp \
+    item/graphicspolygonitem.cpp \
+    tool/graphicspolygontool.cpp \
+    item/graphicswireitem.cpp \
+    tool/graphicswiretool.cpp
 
 HEADERS += graphicseditor.h \
     graphicshandle.h \
@@ -60,8 +66,15 @@ HEADERS += graphicseditor.h \
     tool/graphicsitemaligntool.h \
     abstractgraphicsinteractivetool.h \
     abstractgraphicsinserttool.h \
-    graphicscircleitem.h \
-    tool/graphicscircletool.h
+    item/graphicscircleitem.h \
+    tool/graphicscircletool.h \
+    item/graphicsellipseitem.h \
+    tool/graphicsellipsetool.h \
+    item/graphicspolygonitem.h \
+    graphicsobject_p.h \
+    tool/graphicspolygontool.h \
+    item/graphicswireitem.h \
+    tool/graphicswiretool.h
 
 unix {
     target.path = /usr/lib
@@ -72,12 +85,18 @@ FORMS += \
     tool/graphicslinetooldialog.ui
 
 OTHER_FILES += \
+    tool/graphicsarctool.svg \
+    tool/graphicsbeziercurvetool.svg \
+    tool/graphicsbeziersplinetool.svg \
     tool/graphicsbeziertool.svg \
+    tool/graphicscircletool.svg \
+    tool/graphicsellipsetool.svg \
     tool/graphicslinetool.svg \
+    tool/graphicspolygontool.svg \
+    tool/graphicspolylinetool.svg \
     tool/graphicsrecttool.svg
 
-RESOURCES += \
-    graphicseditor.qrc
+RESOURCES += graphicseditor.qrc
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core/release/ -lcore
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../core/debug/ -lcore

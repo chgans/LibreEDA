@@ -16,9 +16,6 @@ public:
     QPainterPath path() const;
     void setPath(const QPainterPath &path);
 
-    QPen pen() const;
-    void setPen(const QPen &pen);
-
     int addPoint(const QPointF &pos);
     void removePoint(int index);
     void movePoint(int index, const QPointF &pos);
@@ -27,7 +24,6 @@ public:
     QPointF pointAt(int idx) const;
 
 private:
-    QPen m_pen;
     QLineF m_line;
     QPainterPath m_path;
     QList<GraphicsPathPoint *> m_pathPoints;

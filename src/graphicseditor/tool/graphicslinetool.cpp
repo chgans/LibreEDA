@@ -14,7 +14,7 @@
 GraphicsLineTool::GraphicsLineTool(QObject *parent):
     AbstractGraphicsInsertTool(parent), m_item(nullptr)
 {
-    m_action = new QAction(QIcon(":/icons/graphicslinetool.svg"),
+    m_action = new QAction(QIcon(":/icons/tool/graphicslinetool.svg"),
                            "Place a line", nullptr);
     m_toolGroup = "interactive-tools";
 }
@@ -52,9 +52,6 @@ void GraphicsLineTool::desactivate(const QAction *which)
 GraphicsObject *GraphicsLineTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsLineItem();
-    m_item->setFlags(QGraphicsItem::ItemIsMovable |
-                     QGraphicsItem::ItemIsSelectable);
-    m_item->setPen(QPen(QBrush(QColor::fromRgb(0x00, 0x00, 0x80)), 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     m_item->setPos(pos);
     return m_item;
 }

@@ -14,27 +14,6 @@ GraphicsCircleItem::~GraphicsCircleItem()
 
 }
 
-QPen GraphicsCircleItem::pen() const
-{
-    return m_pen;
-}
-
-void GraphicsCircleItem::setPen(const QPen &pen)
-{
-    m_pen = pen;
-    markDirty();
-}
-
-QBrush GraphicsCircleItem::brush() const
-{
-    return m_brush;
-}
-
-void GraphicsCircleItem::setBrush(const QBrush &brush)
-{
-    m_brush = brush;
-}
-
 qreal GraphicsCircleItem::radius() const
 {
     return m_radius;
@@ -99,7 +78,7 @@ GraphicsObject *GraphicsCircleItem::clone()
     GraphicsObject::cloneTo(item);
     item->setPen(pen());
     item->setBrush(brush());
-    item->m_radius = m_radius;
+    item->setRadius(radius());
     return item;
 }
 
@@ -108,7 +87,7 @@ void GraphicsCircleItem::itemNotification(IGraphicsObservableItem *item)
     GraphicsHandle *handle = static_cast<GraphicsHandle *>(item);
 
     Q_ASSERT(handle == m_radiusHandle);
-    setRadius(handle->pos().x());
+    setRadius(qAbs(handle->pos().x()));
 }
 
 QRectF GraphicsCircleItem::boundingRect() const

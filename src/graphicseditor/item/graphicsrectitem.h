@@ -35,15 +35,9 @@ public:
 
     QRectF rect() const;
     void setRect(const QRectF &rect);
-    QPen pen() const;
-    void setPen(const QPen &pen);
-    QBrush brush() const;
-    void setBrush(const QBrush &brush);
 
 private:
     QRectF m_rect;
-    QPen m_pen;
-    QBrush m_brush;
     QMap<GraphicsHandle *, HandleId> m_handleToId;
     QMap<HandleId, GraphicsHandle *> m_idToHandle;
     void addHandle(HandleId handleId, GraphicsHandleRole role);

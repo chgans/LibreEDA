@@ -19,11 +19,6 @@ public:
     explicit GraphicsCircleItem(GraphicsObject *parent = 0);
     ~GraphicsCircleItem();
 
-    QPen pen() const;
-    void setPen(const QPen &pen);
-    QBrush brush() const;
-    void setBrush(const QBrush &brush);
-
     qreal radius() const;
     void setRadius(qreal length);
 
@@ -36,8 +31,6 @@ private:
 //    GraphicsHandle *m_centerHandle;
     qreal m_radius;
     GraphicsHandle *m_radiusHandle;
-    QPen m_pen;
-    QBrush m_brush;
     QMap<GraphicsHandle *, HandleId> m_handleToId;
     QMap<HandleId, GraphicsHandle *> m_idToHandle;
     GraphicsHandle *addHandle(HandleId handleId, GraphicsHandleShape shape);

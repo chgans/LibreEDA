@@ -12,7 +12,7 @@
 GraphicsRectTool::GraphicsRectTool(QObject *parent):
     AbstractGraphicsInsertTool(parent), m_item(nullptr)
 {
-    m_toolAction = new QAction(QIcon(":/icons/graphicsrecttool.svg"),
+    m_toolAction = new QAction(QIcon(":/icons/tool/graphicsrecttool.svg"),
                            "Place a rectangle", nullptr);
     m_toolGroup = "interactive-tools";
 }
@@ -44,11 +44,7 @@ void GraphicsRectTool::cancel()
 GraphicsObject *GraphicsRectTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsRectItem();
-    m_item->setFlags(QGraphicsItem::ItemIsMovable |
-                     QGraphicsItem::ItemIsSelectable);
     m_item->setPos(pos);
-    m_item->setPen(QPen(QBrush(QColor::fromRgb(0x80, 0x00, 0x00)), 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    m_item->setBrush(QBrush(QColor::fromRgb(0xff, 0xff, 0xb0)));
     return m_item;
 }
 
