@@ -2,6 +2,7 @@
 #define GRAPHICSCIRCLEITEM_H
 
 #include "graphicsobject.h"
+#include "igraphicsitemobserver.h"
 
 class GraphicsHandle;
 
@@ -18,24 +19,28 @@ public:
     explicit GraphicsCircleItem(GraphicsObject *parent = 0);
     ~GraphicsCircleItem();
 
-    QRectF rect() const;
-    void setRect(const QRectF &rect);
     QPen pen() const;
     void setPen(const QPen &pen);
     QBrush brush() const;
     void setBrush(const QBrush &brush);
+
+    qreal radius() const;
+    void setRadius(qreal length);
 
 signals:
 
 public slots:
 
 private:
-    QRectF m_rect;
+//    QPointF m_center;
+//    GraphicsHandle *m_centerHandle;
+    qreal m_radius;
+    GraphicsHandle *m_radiusHandle;
     QPen m_pen;
     QBrush m_brush;
     QMap<GraphicsHandle *, HandleId> m_handleToId;
     QMap<HandleId, GraphicsHandle *> m_idToHandle;
-    void addHandle(HandleId handleId, GraphicsHandleShape shape);
+    GraphicsHandle *addHandle(HandleId handleId, GraphicsHandleShape shape);
     void updateHandlesSilently();
     bool m_updatingHandles;
     mutable QRectF m_boundingRect;

@@ -35,7 +35,8 @@ SOURCES += graphicseditor.cpp \
     tool/graphicsitemaligntool.cpp \
     abstractgraphicsinteractivetool.cpp \
     abstractgraphicsinserttool.cpp \
-    graphicscircleitem.cpp
+    graphicscircleitem.cpp \
+    tool/graphicscircletool.cpp
 
 HEADERS += graphicseditor.h \
     graphicshandle.h \
@@ -59,7 +60,8 @@ HEADERS += graphicseditor.h \
     tool/graphicsitemaligntool.h \
     abstractgraphicsinteractivetool.h \
     abstractgraphicsinserttool.h \
-    graphicscircleitem.h
+    graphicscircleitem.h \
+    tool/graphicscircletool.h
 
 unix {
     target.path = /usr/lib

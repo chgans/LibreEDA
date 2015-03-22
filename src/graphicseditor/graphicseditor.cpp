@@ -7,6 +7,7 @@
 #include "tool/graphicsselecttool.h"
 #include "tool/graphicslinetool.h"
 #include "tool/graphicsrecttool.h"
+#include "tool/graphicscircletool.h"
 
 #include "grid/graphicscartesiangrid.h"
 
@@ -67,6 +68,7 @@ void GraphicsEditor::addInteractiveTools()
     addInteractiveTool(new GraphicsSelectTool(this));
     addInteractiveTool(new GraphicsLineTool(this));
     addInteractiveTool(new GraphicsRectTool(this));
+    addInteractiveTool(new GraphicsCircleTool(this));
     addInteractiveTool(new GraphicsBezierTool(this));
 
     QAction *action;
@@ -78,9 +80,6 @@ void GraphicsEditor::addInteractiveTools()
     m_interactiveToolsToolBar->addAction(action);
     action = new QAction(QIcon(":/icons/graphicsellipsetool.svg"),
                          "Add an ellipse", nullptr);
-    m_interactiveToolsToolBar->addAction(action);
-    action = new QAction(QIcon(":/icons/graphicscircletool.svg"),
-                         "Add a circle", nullptr);
     m_interactiveToolsToolBar->addAction(action);
     action = new QAction(QIcon(":/icons/graphicsarctool.svg"),
                          "Add an arc", nullptr);
