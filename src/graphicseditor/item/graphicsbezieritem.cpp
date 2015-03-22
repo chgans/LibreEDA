@@ -343,7 +343,6 @@ GraphicsObject *GraphicsBezierItem::clone()
 {
     GraphicsBezierItem *item = new GraphicsBezierItem();
     GraphicsObject::cloneTo(item);
-    item->setPen(pen());
     item->m_path = m_path;
     return item;
 }

@@ -94,8 +94,6 @@ GraphicsObject *GraphicsRectItem::clone()
 {
     GraphicsRectItem *item = new GraphicsRectItem();
     GraphicsObject::cloneTo(item);
-    item->setBrush(brush());
-    item->setPen(pen());
     item->setRect(rect());
     return item;
 }

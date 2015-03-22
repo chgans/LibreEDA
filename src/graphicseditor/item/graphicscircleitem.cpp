@@ -76,8 +76,6 @@ GraphicsObject *GraphicsCircleItem::clone()
 {
     GraphicsCircleItem *item = new GraphicsCircleItem();
     GraphicsObject::cloneTo(item);
-    item->setPen(pen());
-    item->setBrush(brush());
     item->setRadius(radius());
     return item;
 }
