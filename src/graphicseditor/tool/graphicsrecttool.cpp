@@ -47,8 +47,8 @@ GraphicsObject *GraphicsRectTool::beginInsert(const QPointF &pos)
     m_item->setFlags(QGraphicsItem::ItemIsMovable |
                      QGraphicsItem::ItemIsSelectable);
     m_item->setPos(pos);
-    m_item->setPen(QPen(QBrush(Qt::darkBlue), 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    m_item->setBrush(QBrush(Qt::darkYellow));
+    m_item->setPen(QPen(QBrush(QColor::fromRgb(0x80, 0x00, 0x00)), 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    m_item->setBrush(QBrush(QColor::fromRgb(0xff, 0xff, 0xb0)));
     return m_item;
 }
 

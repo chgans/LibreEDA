@@ -54,7 +54,7 @@ GraphicsObject *GraphicsLineTool::beginInsert(const QPointF &pos)
     m_item = new GraphicsLineItem();
     m_item->setFlags(QGraphicsItem::ItemIsMovable |
                      QGraphicsItem::ItemIsSelectable);
-    m_item->setPen(QPen(Qt::darkMagenta, 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    m_item->setPen(QPen(QBrush(QColor::fromRgb(0x00, 0x00, 0x80)), 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     m_item->setPos(pos);
     return m_item;
 }

@@ -159,7 +159,7 @@ void GraphicsView::drawForeground(QPainter *painter, const QRectF &rect)
                   p.y());
     QPointF left(p.x() - length,
                  p.y());
-    painter->setPen(QPen(Qt::white, 0, Qt::SolidLine));
+    painter->setPen(QPen(Qt::black, 0, Qt::SolidLine));
     painter->drawLine(top, bottom);
     painter->drawLine(left, right);
 

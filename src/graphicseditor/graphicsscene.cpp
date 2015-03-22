@@ -38,6 +38,6 @@ void GraphicsScene::setGrid(GraphicsGrid *grid)
 
 void GraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    painter->fillRect(sceneRect().intersected(rect), Qt::black);
+    painter->fillRect(sceneRect().intersected(rect), QColor::fromRgb(0xff, 0xfc, 0xf8));
 }
 

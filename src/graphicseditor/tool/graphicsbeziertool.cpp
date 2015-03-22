@@ -62,7 +62,7 @@ GraphicsObject *GraphicsBezierTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsBezierItem();
     m_item->setPos(pos);
-    m_item->setPen(QPen(QBrush(Qt::darkCyan), 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    m_item->setPen(QPen(QBrush(QColor::fromRgb(0x00, 0x00, 0x80)), 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     m_item->setFlags(QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsMovable);
     return m_item;
 }
