@@ -27,6 +27,8 @@ void GraphicsCircleItem::setRadius(qreal length)
     markDirty();
     m_radius = length;
     updateHandlesSilently();
+
+    emit radiusChanged();
 }
 
 GraphicsHandle *GraphicsCircleItem::addHandle(GraphicsCircleItem::HandleId handleId, GraphicsHandleShape shape)

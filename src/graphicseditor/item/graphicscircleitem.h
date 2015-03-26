@@ -9,6 +9,9 @@ class GraphicsHandle;
 class GraphicsCircleItem : public GraphicsObject, public IGraphicsItemObserver
 {
     Q_OBJECT
+
+    Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusChanged)
+
 public:
     enum HandleId {
         CenterHandle = 0,
@@ -20,11 +23,12 @@ public:
     ~GraphicsCircleItem();
 
     qreal radius() const;
+
+public slots:
     void setRadius(qreal length);
 
 signals:
-
-public slots:
+    void radiusChanged();
 
 private:
 //    QPointF m_center;
