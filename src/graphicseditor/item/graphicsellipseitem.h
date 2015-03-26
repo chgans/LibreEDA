@@ -2,8 +2,9 @@
 #define GRAPHICSELLIPSEITEM_H
 
 #include "graphicsobject.h"
+#include "igraphicsitemobserver.h"
 
-class GraphicsEllipseItem : public GraphicsObject
+class GraphicsEllipseItem : public GraphicsObject, public IGraphicsItemObserver
 {
     Q_OBJECT
 
@@ -11,6 +12,12 @@ class GraphicsEllipseItem : public GraphicsObject
     Q_PROPERTY(qreal yRadius READ yRadius WRITE setYRadius NOTIFY yRadiusChanged)
 
 public:
+    enum HandleId {
+        XRadiusHandle = 0,
+        YRadiusHandle,
+        NbHandles
+    };
+
     GraphicsEllipseItem(GraphicsObject *parent = 0);
     ~GraphicsEllipseItem();
 
@@ -29,6 +36,10 @@ private:
     qreal m_xRadius;
     qreal m_yRadius;
 
+    QMap<GraphicsHandle *, HandleId> m_handleToId;
+    QMap<HandleId, GraphicsHandle *> m_idToHandle;
+    GraphicsHandle *addHandle(HandleId handleId);
+
     // QGraphicsItem interface
 public:
     virtual QRectF boundingRect() const;
@@ -38,6 +49,14 @@ public:
     // GraphicsObject interface
 public:
     virtual GraphicsObject *clone();
+
+    // QGraphicsItem interface
+protected:
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+    // IGraphicsItemObserver interface
+public:
+    virtual void itemNotification(IGraphicsObservableItem *item);
 };
 
 #endif // GRAPHICSELLIPSEITEM_H

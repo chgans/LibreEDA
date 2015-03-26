@@ -3,10 +3,11 @@
 #include <QStyleOptionGraphicsItem>
 
 GraphicsEllipseItem::GraphicsEllipseItem(GraphicsObject *parent):
-    GraphicsObject(parent),
+    GraphicsObject(parent), IGraphicsItemObserver(),
     m_xRadius(0.0f), m_yRadius(0.0f)
 {
-
+    addHandle(XRadiusHandle);
+    addHandle(YRadiusHandle);
 }
 
 GraphicsEllipseItem::~GraphicsEllipseItem()
@@ -29,7 +30,14 @@ void GraphicsEllipseItem::setXRadius(qreal xRadius)
     if (qFuzzyCompare(m_xRadius, xRadius))
         return;
 
+    prepareGeometryChange();
     m_xRadius = xRadius;
+    update();
+
+    blockItemNotification();
+    m_idToHandle[XRadiusHandle]->setPos(m_xRadius, 0);
+    unblockItemNotification();
+
     emit xRadiusChanged(xRadius);
 }
 
@@ -38,8 +46,28 @@ void GraphicsEllipseItem::setYRadius(qreal yRadius)
     if (qFuzzyCompare(m_yRadius, yRadius))
         return;
 
+    prepareGeometryChange();
     m_yRadius = yRadius;
+    update();
+
+    blockItemNotification();
+    m_idToHandle[YRadiusHandle]->setPos(0, m_yRadius);
+    unblockItemNotification();
+
     emit yRadiusChanged(yRadius);
+}
+
+GraphicsHandle *GraphicsEllipseItem::addHandle(GraphicsEllipseItem::HandleId handleId)
+{
+    GraphicsHandle *handle = new GraphicsHandle(this);
+    handle->setHandleShape(DiamondedHandleShape);
+    handle->setRole(MoveHandleRole);
+    m_handleToId[handle] = handleId;
+    m_idToHandle[handleId] = handle;
+    blockItemNotification();
+    addObservedItem(handle);
+    unblockItemNotification();
+    return handle;
 }
 
 QRectF GraphicsEllipseItem::boundingRect() const
@@ -77,4 +105,21 @@ GraphicsObject *GraphicsEllipseItem::clone()
     item->setYRadius(yRadius());
     GraphicsObject::cloneTo(item);
     return item;
+}
+
+QVariant GraphicsEllipseItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+{
+    if (change == QGraphicsItem::ItemSelectedHasChanged) {
+        foreach (GraphicsHandle *handle, m_handleToId.keys()) {
+            handle->setVisible(isSelected());
+        }
+    }
+    return value;
+}
+
+void GraphicsEllipseItem::itemNotification(IGraphicsObservableItem *item)
+{
+    Q_UNUSED(item);
+    setXRadius(qAbs(m_idToHandle[XRadiusHandle]->pos().x()));
+    setYRadius(qAbs(m_idToHandle[YRadiusHandle]->pos().y()));
 }
