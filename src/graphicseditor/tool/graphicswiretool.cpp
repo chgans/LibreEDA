@@ -66,6 +66,12 @@ void GraphicsWireTool::freezePoint(int idx)
 
 bool GraphicsWireTool::removePoint(int idx)
 {
+    QList<QPointF> points = m_item->points();
+    QPointF point = points[idx];
+    points.removeAt(idx);
+    if (points.count() > 1)
+        points[idx - 1] = point;
+    m_item->setPoints(points);
     Q_UNUSED(idx);
     return false;
 }

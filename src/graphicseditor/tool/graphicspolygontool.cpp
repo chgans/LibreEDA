@@ -1,6 +1,8 @@
 #include "graphicspolygontool.h"
 #include "item/graphicspolygonitem.h"
 
+#include <QPolygonF>
+
 #include <QAction>
 
 GraphicsPolygonTool::GraphicsPolygonTool(QObject *parent):
@@ -61,6 +63,12 @@ void GraphicsPolygonTool::freezePoint(int idx)
 
 bool GraphicsPolygonTool::removePoint(int idx)
 {
+    QPolygonF poly = m_item->polygon();
+    QPointF point = poly[idx];
+    poly.removeAt(idx);
+    if (poly.count() > 1)
+        poly[idx - 1] = point;
+    m_item->setPolygon(poly);
     Q_UNUSED(idx);
     return false;
 }

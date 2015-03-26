@@ -32,20 +32,6 @@ void GraphicsTool::setView(GraphicsView *view)
     m_view = view;
 }
 
-//void GraphicsTool::keyPressEvent(QKeyEvent *event)
-//{
-//    switch (event->key()) {
-//    case Qt::Key_Escape:
-//        cancel();
-//        break;
-//    case Qt::Key_Tab:
-//        QDialog *dialog = optionDialog();
-//        if (dialog)
-//            dialog->exec();
-//        break;
-//    }
-//}
-
 void GraphicsTool::cancel()
 {
 

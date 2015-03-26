@@ -56,6 +56,17 @@ public:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+
+    // GraphicsTool interface
+public:
+    QDialog *optionDialog();
+    QString toolGroup() const;
+    QAction *action() const;
+    void activate(const QAction *which);
+    void desactivate(const QAction *which);
+
 };
 
 #endif // ABSTRACTGRAPHICSINSERTTOOL_H

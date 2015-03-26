@@ -8,6 +8,8 @@
 #include <QKeyEvent>
 #include <QWheelEvent>
 
+#include <QDialog>
+
 #include <QDebug>
 
 AbstractGraphicsInsertTool::AbstractGraphicsInsertTool(QObject *parent):
@@ -125,3 +127,48 @@ void AbstractGraphicsInsertTool::mouseDoubleClickEvent(QMouseEvent *event)
     endInsert(m_pressPos);
 }
 
+void AbstractGraphicsInsertTool::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case Qt::Key_Escape:
+        if (m_index >= 0) {
+            removePoint(m_index);
+            m_index--;
+            if (m_index == 0)
+                resetTool();
+        }
+        else {
+            // TODO: we are done, we should return to select mode
+        }
+        break;
+    case Qt::Key_Tab:
+        QDialog *dialog = optionDialog();
+        if (dialog)
+            dialog->exec();
+        break;
+    }
+}
+
+void AbstractGraphicsInsertTool::keyReleaseEvent(QKeyEvent *event)
+{
+}
+
+QDialog *AbstractGraphicsInsertTool::optionDialog()
+{
+}
+
+QString AbstractGraphicsInsertTool::toolGroup() const
+{
+}
+
+QAction *AbstractGraphicsInsertTool::action() const
+{
+}
+
+void AbstractGraphicsInsertTool::activate(const QAction *which)
+{
+}
+
+void AbstractGraphicsInsertTool::desactivate(const QAction *which)
+{
+}
