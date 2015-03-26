@@ -33,7 +33,6 @@ signals:
 private:
     Qt::FillRule m_fillRule;
     QPolygonF m_polygon;
-    mutable QRectF m_boundingRect;
     QList<GraphicsHandle *> m_handles;
     GraphicsHandle *addHandle(const QPointF &pos);
     void removeHandle(int idx);

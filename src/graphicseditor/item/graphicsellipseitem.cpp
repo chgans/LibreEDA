@@ -32,6 +32,7 @@ void GraphicsEllipseItem::setXRadius(qreal xRadius)
 
     prepareGeometryChange();
     m_xRadius = xRadius;
+    m_boundingRect = QRectF();
     update();
 
     blockItemNotification();
@@ -48,6 +49,7 @@ void GraphicsEllipseItem::setYRadius(qreal yRadius)
 
     prepareGeometryChange();
     m_yRadius = yRadius;
+    m_boundingRect = QRectF();
     update();
 
     blockItemNotification();
@@ -72,20 +74,23 @@ GraphicsHandle *GraphicsEllipseItem::addHandle(GraphicsEllipseItem::HandleId han
 
 QRectF GraphicsEllipseItem::boundingRect() const
 {
-    qreal extra = pen().widthF();
-    QRectF rect;
-    rect.setWidth(2*xRadius() + extra);
-    rect.setHeight(2*yRadius() + extra);
-    rect.moveCenter(QPointF(0, 0));
-
-    return rect;
+    if (m_boundingRect.isNull()) {
+        qreal pw = pen().style() == Qt::NoPen ? qreal(0) : pen().widthF();
+        if (pw == 0.0 /*&& m_spanAngle == 360 * 16*/) {
+            m_boundingRect.setWidth(2*xRadius());
+            m_boundingRect.setHeight(2*yRadius());
+        }
+        else
+            m_boundingRect = shape().controlPointRect();
+    }
+    return m_boundingRect;
 }
 
 QPainterPath GraphicsEllipseItem::shape() const
 {
     QPainterPath path;
-    path.addEllipse(boundingRect());
-    return path;
+    path.addEllipse(QPointF(0, 0), m_xRadius, m_yRadius);
+    return shapeFromPath(path, pen());
 }
 
 void GraphicsEllipseItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -119,7 +124,9 @@ QVariant GraphicsEllipseItem::itemChange(QGraphicsItem::GraphicsItemChange chang
 
 void GraphicsEllipseItem::itemNotification(IGraphicsObservableItem *item)
 {
-    Q_UNUSED(item);
-    setXRadius(qAbs(m_idToHandle[XRadiusHandle]->pos().x()));
-    setYRadius(qAbs(m_idToHandle[YRadiusHandle]->pos().y()));
+    GraphicsHandle *handle = static_cast<GraphicsHandle *>(item);
+    if (handle == m_idToHandle[XRadiusHandle])
+        setXRadius(qAbs(handle->pos().x()));
+    else
+        setYRadius(qAbs(handle->pos().y()));
 }

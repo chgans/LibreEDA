@@ -35,7 +35,6 @@ private:
     void pathToHandle();
     QList<GraphicsHandle *> m_handles;
     GraphicsHandle *addHandle(const QPointF &pos);
-    mutable QRectF m_boundingRect;
 
     // QGraphicsItem interface
 public:

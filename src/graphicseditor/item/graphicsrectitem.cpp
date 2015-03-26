@@ -12,7 +12,7 @@
 
 GraphicsRectItem::GraphicsRectItem(GraphicsObject *parent):
     GraphicsObject(parent), m_rect(QRectF(0, 0, 0, 0)),
-    m_updatingHandles(false), m_dirty(true)
+    m_updatingHandles(false)
 {
     addHandle(TopLeft, FDiagSizeHandleRole);
     addHandle(Top, VSizeHandleRole);
@@ -36,8 +36,23 @@ QRectF GraphicsRectItem::rect() const
 
 void GraphicsRectItem::setRect(const QRectF &rect)
 {
+    prepareGeometryChange();
     m_rect = rect;
-    markDirty();
+    m_boundingRect = QRectF();
+    update();
+
+    blockItemNotification();
+    qreal midX = m_rect.right()-m_rect.width()/2.0;
+    qreal midY = m_rect.bottom()-m_rect.height()/2.0;
+    m_idToHandle[TopLeft]->setPos(m_rect.topLeft());
+    m_idToHandle[Top]->setPos(QPointF(midX, m_rect.top()));
+    m_idToHandle[TopRight]->setPos(m_rect.topRight());
+    m_idToHandle[Right]->setPos(QPointF(m_rect.right(), midY));
+    m_idToHandle[BottomRight]->setPos(m_rect.bottomRight());
+    m_idToHandle[Bottom]->setPos(QPointF(midX, m_rect.bottom()));
+    m_idToHandle[BottomLeft]->setPos(m_rect.bottomLeft());
+    m_idToHandle[Left]->setPos(QPointF(m_rect.left(), midY));
+    unblockItemNotification();
 }
 
 void GraphicsRectItem::addHandle(GraphicsRectItem::HandleId handleId, GraphicsHandleRole role)
@@ -51,45 +66,6 @@ void GraphicsRectItem::addHandle(GraphicsRectItem::HandleId handleId, GraphicsHa
     m_idToHandle[handleId] = handle;
 }
 
-void GraphicsRectItem::updateHandlesSilently()
-{
-    m_updatingHandles = true;
-
-    qreal midX = m_rect.right()-m_rect.width()/2.0;
-    qreal midY = m_rect.bottom()-m_rect.height()/2.0;
-
-    m_idToHandle[TopLeft]->setPos(m_rect.topLeft());
-    m_idToHandle[Top]->setPos(QPointF(midX, m_rect.top()));
-    m_idToHandle[TopRight]->setPos(m_rect.topRight());
-    m_idToHandle[Right]->setPos(QPointF(m_rect.right(), midY));
-    m_idToHandle[BottomRight]->setPos(m_rect.bottomRight());
-    m_idToHandle[Bottom]->setPos(QPointF(midX, m_rect.bottom()));
-    m_idToHandle[BottomLeft]->setPos(m_rect.bottomLeft());
-    m_idToHandle[Left]->setPos(QPointF(m_rect.left(), midY));
-
-    m_updatingHandles = false;
-}
-
-void GraphicsRectItem::updateGeometry() const
-{
-
-    QPainterPath path;
-    path.addRect(m_rect);
-    m_shape = path;
-
-    QRectF rect = m_shape.boundingRect();
-    qreal extra = pen().widthF()/2.0;
-    m_boundingRect = rect.adjusted(-extra, -extra, +extra, +extra);
-
-    m_dirty = false;
-}
-
-void GraphicsRectItem::markDirty()
-{
-    prepareGeometryChange();
-    m_dirty = true;
-}
-
 GraphicsObject *GraphicsRectItem::clone()
 {
     GraphicsRectItem *item = new GraphicsRectItem();
@@ -100,58 +76,59 @@ GraphicsObject *GraphicsRectItem::clone()
 
 void GraphicsRectItem::itemNotification(IGraphicsObservableItem *item)
 {
-    //Q_ASSERT(m_handleToId.contains(handle));
-    if (m_updatingHandles)
-        return;
-
     GraphicsHandle *handle = dynamic_cast<GraphicsHandle*>(item);
     Q_ASSERT(handle);
 
     HandleId id = m_handleToId[handle];
+    QRectF r = m_rect;
     switch (id) {
     case TopLeft:
-        m_rect.setTopLeft(handle->pos());
+        r.setTopLeft(handle->pos());
         break;
     case Top:
-        m_rect.setTop(handle->pos().y());
+        r.setTop(handle->pos().y());
         break;
     case TopRight:
-        m_rect.setTopRight(handle->pos());
+        r.setTopRight(handle->pos());
         break;
     case Right:
-        m_rect.setRight(handle->pos().x());
+        r.setRight(handle->pos().x());
         break;
     case BottomRight:
-        m_rect.setBottomRight(handle->pos());
+        r.setBottomRight(handle->pos());
         break;
     case Bottom:
-        m_rect.setBottom(handle->pos().y());
+        r.setBottom(handle->pos().y());
         break;
     case BottomLeft:
-        m_rect.setBottomLeft(handle->pos());
+        r.setBottomLeft(handle->pos());
         break;
     case Left:
-        m_rect.setLeft(handle->pos().x());
+        r.setLeft(handle->pos().x());
         break;
     default:
         break;
     }
-    updateHandlesSilently();
-    markDirty();
+    setRect(r);
 }
 
 QRectF GraphicsRectItem::boundingRect() const
 {
-    if (m_dirty)
-        updateGeometry();
+    if (m_boundingRect.isNull()) {
+        qreal halfpw = pen().style() == Qt::NoPen ? qreal(0) : pen().widthF() / 2;
+        m_boundingRect = m_rect;
+        if (halfpw > 0.0)
+            m_boundingRect.adjust(-halfpw, -halfpw, halfpw, halfpw);
+    }
     return m_boundingRect;
+
 }
 
 QPainterPath GraphicsRectItem::shape() const
 {
-    if (m_dirty)
-        updateGeometry();
-    return m_shape;
+    QPainterPath path;
+    path.addRect(m_rect);
+    return shapeFromPath(path, pen());
 }
 
 void GraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -163,7 +140,6 @@ void GraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->drawRect(m_rect);
 }
 
-// TODO: refactor
 QVariant GraphicsRectItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {

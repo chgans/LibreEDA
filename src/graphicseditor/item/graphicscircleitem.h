@@ -31,20 +31,10 @@ signals:
     void radiusChanged();
 
 private:
-//    QPointF m_center;
-//    GraphicsHandle *m_centerHandle;
     qreal m_radius;
-    GraphicsHandle *m_radiusHandle;
     QMap<GraphicsHandle *, HandleId> m_handleToId;
     QMap<HandleId, GraphicsHandle *> m_idToHandle;
-    GraphicsHandle *addHandle(HandleId handleId, GraphicsHandleShape shape);
-    void updateHandlesSilently();
-    bool m_updatingHandles;
-    mutable QRectF m_boundingRect;
-    mutable QPainterPath m_shape;
-    mutable bool m_dirty;
-    void updateGeometry() const;
-    void markDirty();
+    GraphicsHandle *addHandle(HandleId handleId);
 
     // GraphicsObject interface
 public:

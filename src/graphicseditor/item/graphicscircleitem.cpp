@@ -5,8 +5,7 @@
 GraphicsCircleItem::GraphicsCircleItem(GraphicsObject *parent):
     GraphicsObject(parent)
 {
-    //m_centerHandle = addHandle(CenterHandle, CircularHandleShape);
-    m_radiusHandle = addHandle(RadiusHandle, DiamondedHandleShape);
+    addHandle(RadiusHandle);
 }
 
 GraphicsCircleItem::~GraphicsCircleItem()
@@ -24,18 +23,23 @@ void GraphicsCircleItem::setRadius(qreal length)
     if (qFuzzyCompare(m_radius, length))
         return;
 
-    markDirty();
+    prepareGeometryChange();
     m_radius = length;
-    updateHandlesSilently();
+    m_boundingRect = QRectF();
+    update();
+
+    blockItemNotification();
+    m_idToHandle[RadiusHandle]->setPos(m_radius, 0);
+    unblockItemNotification();
 
     emit radiusChanged();
 }
 
-GraphicsHandle *GraphicsCircleItem::addHandle(GraphicsCircleItem::HandleId handleId, GraphicsHandleShape shape)
+GraphicsHandle *GraphicsCircleItem::addHandle(GraphicsCircleItem::HandleId handleId)
 {
     GraphicsHandle *handle = new GraphicsHandle(this);
     handle->setRole(MoveHandleRole);
-    handle->setHandleShape(shape);
+    handle->setHandleShape(DiamondedHandleShape);
     handle->setPos(QPointF(0, 0));
     addObservedItem(handle);
 
@@ -43,35 +47,6 @@ GraphicsHandle *GraphicsCircleItem::addHandle(GraphicsCircleItem::HandleId handl
     m_idToHandle[handleId] = handle;
 
     return handle;
-}
-
-void GraphicsCircleItem::updateHandlesSilently()
-{
-    blockItemNotification();
-
-    m_radiusHandle->setPos(radius(), 0);
-
-    unblockItemNotification();
-}
-
-void GraphicsCircleItem::updateGeometry() const
-{
-    QPainterPath path;
-    path.addEllipse(QPointF(0, 0),
-                    radius(), radius());
-    m_shape = path;
-
-    qreal extra = pen().widthF();
-    m_boundingRect.setWidth(2*radius() + extra);
-    m_boundingRect.setHeight(2*radius() + extra);
-    m_boundingRect.moveCenter(QPointF(0, 0));
-    m_dirty = false;
-}
-
-void GraphicsCircleItem::markDirty()
-{
-    prepareGeometryChange();
-    m_dirty = true;
 }
 
 GraphicsObject *GraphicsCircleItem::clone()
@@ -86,22 +61,29 @@ void GraphicsCircleItem::itemNotification(IGraphicsObservableItem *item)
 {
     GraphicsHandle *handle = static_cast<GraphicsHandle *>(item);
 
-    Q_ASSERT(handle == m_radiusHandle);
     setRadius(qAbs(handle->pos().x()));
 }
 
 QRectF GraphicsCircleItem::boundingRect() const
 {
-    if (m_dirty)
-        updateGeometry();
+    if (m_boundingRect.isNull()) {
+        qreal pw = pen().style() == Qt::NoPen ? qreal(0) : pen().widthF();
+        if (pw == 0.0 /*&& m_spanAngle == 360 * 16*/) {
+            m_boundingRect.setWidth(2 * m_radius);
+            m_boundingRect.setHeight(2 * m_radius);
+        }
+        else
+            m_boundingRect = shape().controlPointRect();
+    }
+
     return m_boundingRect;
 }
 
 QPainterPath GraphicsCircleItem::shape() const
 {
-    if (m_dirty)
-        updateGeometry();
-    return m_shape;
+    QPainterPath path;
+    path.addEllipse(QPointF(0, 0), m_radius, m_radius);
+    return shapeFromPath(path, pen());
 }
 
 void GraphicsCircleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

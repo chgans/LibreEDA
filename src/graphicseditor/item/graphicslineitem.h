@@ -15,6 +15,11 @@ class GraphicsLineItem : public GraphicsObject, public IGraphicsItemObserver
 
     // GraphicsLineItem
 public:
+    enum HandleId {
+        P1Handle = 0,
+        P2Handle,
+        NbHandles
+    };
     GraphicsLineItem(GraphicsObject *parent = 0);
 
     QLineF line() const;
@@ -24,6 +29,12 @@ public slots:
 
 signals:
     void lineChanged();
+
+private:
+    QLineF m_line;
+    QMap<GraphicsHandle *, HandleId> m_handleToId;
+    QMap<HandleId, GraphicsHandle *> m_idToHandle;
+    GraphicsHandle *addHandle(HandleId handleId);
 
     // GraphicsObject interface
 public:
@@ -42,18 +53,6 @@ public:
     // QGraphicsItem interface
 protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
-    // GraphicsLineItem
-private:
-    mutable QPainterPath m_shape;
-    mutable QRectF m_boundingRect;
-    mutable bool m_dirty;
-    void markDirty();
-    void updateGeometry() const;
-
-    QLineF m_line;
-    GraphicsHandle *m_handle1;
-    GraphicsHandle *m_handle2;
 };
 
 #endif // GRAPHICSLINEITEM_H

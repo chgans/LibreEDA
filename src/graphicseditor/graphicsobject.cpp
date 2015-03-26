@@ -34,15 +34,7 @@ void GraphicsObject::cloneTo(GraphicsObject *dst)
     dst->setScale(scale());
     dst->setVisible(isVisible());
     dst->setZValue(zValue());
-
-#if 0
-    foreach (GraphicsHandle *other, m_handles) {
-        // FIXME: dst.moveHandle(idx, pos);
-        //dst->addHandle(other->clone(dst));
-        Q_UNUSED(other);
-        Q_UNUSED(dst);
-    }
-#endif
+    // Handles don't have to be copied as their creation is controlled by the item itself
 }
 
 // From Qt qgraphicsitem.cpp: qt_graphicsItem_shapeFromPath()
@@ -63,7 +55,7 @@ QPainterPath GraphicsObject::shapeFromPath(const QPainterPath &path, const QPen 
     ps.setJoinStyle(pen.joinStyle());
     ps.setMiterLimit(pen.miterLimit());
     QPainterPath p = ps.createStroke(path);
-    p.addPath(path); // not needed for open path
+    p.addPath(path); // not needed for open path (eg, wire)
     return p;
 }
 
@@ -91,7 +83,9 @@ void GraphicsObject::setPen(const QPen &pen)
 
     m_pen = pen;
     prepareGeometryChange();
+    m_boundingRect = QRectF();
     update();
+
     emit penChanged(pen);
 }
 
@@ -102,5 +96,6 @@ void GraphicsObject::setBrush(const QBrush &brush)
 
     m_brush = brush;
     update();
+
     emit brushChanged(brush);
 }

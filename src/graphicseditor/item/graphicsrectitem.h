@@ -43,11 +43,6 @@ private:
     void addHandle(HandleId handleId, GraphicsHandleRole role);
     void updateHandlesSilently();
     bool m_updatingHandles;
-    mutable QRectF m_boundingRect;
-    mutable QPainterPath m_shape;
-    mutable bool m_dirty;
-    void updateGeometry() const;
-    void markDirty();
 
     // GraphicsObject interface
 public:

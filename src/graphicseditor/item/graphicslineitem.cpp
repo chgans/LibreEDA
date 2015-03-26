@@ -7,21 +7,10 @@
 #include <QDebug>
 
 GraphicsLineItem::GraphicsLineItem(GraphicsObject *parent):
-    GraphicsObject(parent), m_dirty(true)
+    GraphicsObject(parent)
 {
-    // TODO: same way of doing as bezier item
-    // Add handles in mouserelease/move
-    m_handle1 = new GraphicsHandle(this);
-    m_handle1->setRole(MoveHandleRole);
-    m_handle1->setHandleShape(CircularHandleShape);
-    m_handle1->setPos(QPointF(0, 0));
-    addObservedItem(m_handle1);
-
-    m_handle2 = new GraphicsHandle(this);
-    m_handle2->setRole(MoveHandleRole);
-    m_handle2->setHandleShape(CircularHandleShape);
-    m_handle2->setPos(QPointF(0, 0));
-    addObservedItem(m_handle2);
+    addHandle(P1Handle);
+    addHandle(P2Handle);
 }
 
 QLineF GraphicsLineItem::line() const
@@ -34,15 +23,31 @@ void GraphicsLineItem::setLine(const QLineF &line)
     if (m_line == line)
         return;
 
+    prepareGeometryChange();
     m_line = line;
+    m_boundingRect = QRectF();
+    update();
 
     blockItemNotification();
-    m_handle1->setPos(m_line.p1());
-    m_handle2->setPos(m_line.p2());
+    m_idToHandle[P1Handle]->setPos(m_line.p1());
+    m_idToHandle[P2Handle]->setPos(m_line.p2());
     unblockItemNotification();
 
     emit lineChanged();
-    markDirty();
+}
+
+GraphicsHandle *GraphicsLineItem::addHandle(GraphicsLineItem::HandleId handleId)
+{
+    GraphicsHandle *handle = new GraphicsHandle(this);
+    handle->setRole(MoveHandleRole);
+    handle->setHandleShape(CircularHandleShape);
+    handle->setPos(QPointF(0, 0));
+    addObservedItem(handle);
+
+    m_handleToId[handle] = handleId;
+    m_idToHandle[handleId] = handle;
+
+    return handle;
 }
 
 GraphicsObject *GraphicsLineItem::clone()
@@ -58,9 +63,8 @@ void GraphicsLineItem::itemNotification(IGraphicsObservableItem *item)
     GraphicsHandle *handle = dynamic_cast<GraphicsHandle*>(item);
     Q_ASSERT(handle);
 
-    markDirty();
     QLineF l = m_line;
-    if (handle == m_handle1) {
+    if (handle == m_idToHandle[P1Handle]) {
         l.setP1(handle->pos());
     }
     else {
@@ -71,16 +75,33 @@ void GraphicsLineItem::itemNotification(IGraphicsObservableItem *item)
 
 QRectF GraphicsLineItem::boundingRect() const
 {
-    if (m_dirty)
-        updateGeometry();
+    if (pen().widthF() == 0.0) {
+        const qreal x1 = m_line.p1().x();
+        const qreal x2 = m_line.p2().x();
+        const qreal y1 = m_line.p1().y();
+        const qreal y2 = m_line.p2().y();
+        qreal lx = qMin(x1, x2);
+        qreal rx = qMax(x1, x2);
+        qreal ty = qMin(y1, y2);
+        qreal by = qMax(y1, y2);
+        m_boundingRect = QRectF(lx, ty, rx - lx, by - ty);
+    }
+    else
+        m_boundingRect = shape().controlPointRect();
+
     return m_boundingRect;
 }
 
 QPainterPath GraphicsLineItem::shape() const
 {
-    if (m_dirty)
-        updateGeometry();
-    return m_shape;
+    QPainterPath path;
+    if (m_line == QLineF())
+        return path;
+
+    path.moveTo(m_line.p1());
+    path.lineTo(m_line.p2());
+
+    return shapeFromPath(path, pen());
 }
 
 void GraphicsLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -97,31 +118,4 @@ QVariant GraphicsLineItem::itemChange(QGraphicsItem::GraphicsItemChange change, 
         }
     }
     return value;
-}
-
-void GraphicsLineItem::markDirty()
-{
-    prepareGeometryChange();
-    m_dirty = true;
-}
-
-void GraphicsLineItem::updateGeometry() const
-{
-    QPainterPath path;
-    QPainterPathStroker stroker;
-    stroker.setWidth(pen().widthF());
-    stroker.setCapStyle(pen().capStyle());
-    stroker.setJoinStyle(pen().joinStyle());
-    stroker.setMiterLimit(pen().miterLimit());
-
-    path.moveTo(m_line.p1());
-    path.lineTo(m_line.p2());
-
-    m_shape = stroker.createStroke(path);
-
-    QRectF rect = m_shape.boundingRect();
-    qreal extra = pen().widthF()/2.0;
-    m_boundingRect = rect.adjusted(-extra, -extra, +extra, +extra);
-
-    m_dirty = false;
 }

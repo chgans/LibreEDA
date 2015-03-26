@@ -46,14 +46,11 @@ signals:
 
 protected:
     void cloneTo(GraphicsObject *dst);
-    //virtual void handleMoved(const GraphicsHandle *handle) = 0;
-    //friend class GraphicsHandle;
-
     static QPainterPath shapeFromPath(const QPainterPath &path, const QPen &pen);
 
-private:
     QPen m_pen;
     QBrush m_brush;
+    mutable QRectF m_boundingRect;
 };
 
 #endif // GRAPHICSOBJECT_H
