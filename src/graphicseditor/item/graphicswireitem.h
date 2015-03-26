@@ -2,14 +2,13 @@
 #define GRAPHICSWIREITEM_H
 
 #include "graphicsobject.h"
-#include "igraphicsitemobserver.h"
 
 #include <QPointF>
 #include <QList>
 
 class QGraphicsPathItem;
 
-class GraphicsWireItem : public GraphicsObject, public IGraphicsItemObserver
+class GraphicsWireItem : public GraphicsObject
 {
     Q_OBJECT
 
@@ -33,8 +32,6 @@ private:
     QPainterPath m_path;
     void handleToPath();
     void pathToHandle();
-    QList<GraphicsHandle *> m_handles;
-    GraphicsHandle *addHandle(const QPointF &pos);
 
     // QGraphicsItem interface
 public:

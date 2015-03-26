@@ -2,13 +2,12 @@
 #define GRAPHICSBEZIERITEM_H
 
 #include "graphicsobject.h"
-#include "igraphicsitemobserver.h"
 #include "graphicspathpoint.h"
 
 #include <QPen>
 
 
-class GraphicsBezierItem : public GraphicsObject, public IGraphicsItemObserver
+class GraphicsBezierItem : public GraphicsObject
 {
 public:
     GraphicsBezierItem(GraphicsObject *parent = 0);

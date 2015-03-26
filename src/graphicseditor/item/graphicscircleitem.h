@@ -2,11 +2,8 @@
 #define GRAPHICSCIRCLEITEM_H
 
 #include "graphicsobject.h"
-#include "igraphicsitemobserver.h"
 
-class GraphicsHandle;
-
-class GraphicsCircleItem : public GraphicsObject, public IGraphicsItemObserver
+class GraphicsCircleItem : public GraphicsObject
 {
     Q_OBJECT
 
@@ -14,8 +11,7 @@ class GraphicsCircleItem : public GraphicsObject, public IGraphicsItemObserver
 
 public:
     enum HandleId {
-        CenterHandle = 0,
-        RadiusHandle,
+        RadiusHandle = 0,
         NbHandles
     };
 
@@ -32,9 +28,6 @@ signals:
 
 private:
     qreal m_radius;
-    QMap<GraphicsHandle *, HandleId> m_handleToId;
-    QMap<HandleId, GraphicsHandle *> m_idToHandle;
-    GraphicsHandle *addHandle(HandleId handleId);
 
     // GraphicsObject interface
 public:

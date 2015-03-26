@@ -2,12 +2,11 @@
 #define GRAPHICSLINEITEM_H
 
 #include "graphicsobject.h"
-#include "igraphicsitemobserver.h"
 
 #include <QPen>
 #include <QLineF>
 
-class GraphicsLineItem : public GraphicsObject, public IGraphicsItemObserver
+class GraphicsLineItem : public GraphicsObject
 {
     Q_OBJECT
 
@@ -32,9 +31,6 @@ signals:
 
 private:
     QLineF m_line;
-    QMap<GraphicsHandle *, HandleId> m_handleToId;
-    QMap<HandleId, GraphicsHandle *> m_idToHandle;
-    GraphicsHandle *addHandle(HandleId handleId);
 
     // GraphicsObject interface
 public:

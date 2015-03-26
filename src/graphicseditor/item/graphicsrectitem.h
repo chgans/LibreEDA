@@ -2,8 +2,6 @@
 #define GRAPHICSRECTITEM_H
 
 #include "graphicsobject.h"
-#include "graphicshandle.h"
-#include "igraphicsitemobserver.h"
 
 #include <QVector>
 #include <QMap>
@@ -13,7 +11,7 @@
 
 // TODO: AbstractGraphicsShape
 // TODO: add properties
-class GraphicsRectItem : public GraphicsObject, public IGraphicsItemObserver
+class GraphicsRectItem : public GraphicsObject
 {
     Q_OBJECT
 
@@ -38,11 +36,7 @@ public:
 
 private:
     QRectF m_rect;
-    QMap<GraphicsHandle *, HandleId> m_handleToId;
-    QMap<HandleId, GraphicsHandle *> m_idToHandle;
-    void addHandle(HandleId handleId, GraphicsHandleRole role);
     void updateHandlesSilently();
-    bool m_updatingHandles;
 
     // GraphicsObject interface
 public:

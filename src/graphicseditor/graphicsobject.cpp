@@ -66,6 +66,8 @@ GraphicsHandle *GraphicsObject::handleAt(int idx)
 }
 
 
+
+
 QPen GraphicsObject::pen() const
 {
     return m_pen;
@@ -98,4 +100,56 @@ void GraphicsObject::setBrush(const QBrush &brush)
     update();
 
     emit brushChanged(brush);
+}
+
+GraphicsHandle * GraphicsObject::addHandle(int id, GraphicsHandleRole role, GraphicsHandleShape shape, const QPointF &pos)
+{
+    GraphicsHandle *handle = new GraphicsHandle(this);
+
+    Q_ASSERT(!m_idToHandle.keys().contains(id));
+
+    handle->setRole(role);
+    handle->setHandleShape(shape);
+    handle->setPos(pos);
+
+    addObservedItem(handle);
+
+    m_handleToId[handle] = id;
+    m_idToHandle[id] = handle;
+
+    return handle;
+}
+
+void GraphicsObject::removeHandle(int id)
+{
+    Q_ASSERT(m_idToHandle.keys().contains(id));
+
+    removeHandle(m_idToHandle[id]);
+}
+
+void GraphicsObject::removeHandle(GraphicsHandle *handle)
+{
+    Q_ASSERT(m_handleToId.keys().contains(handle));
+
+    blockItemNotification();
+    int id = m_handleToId[handle];
+    m_handleToId.remove(handle);
+    m_idToHandle.remove(id);
+    removeObservedItem(handle);
+    handle->setParentItem(nullptr);
+    delete handle;
+    unblockItemNotification();
+}
+
+void GraphicsObject::removeAllHandles()
+{
+    blockItemNotification();
+    foreach (GraphicsHandle *handle, m_handleToId.keys()) {
+        removeObservedItem(handle);
+        handle->setParentItem(nullptr);
+        delete handle;
+    }
+    unblockItemNotification();
+    m_handleToId.clear();
+    m_idToHandle.clear();
 }

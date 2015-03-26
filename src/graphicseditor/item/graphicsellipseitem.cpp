@@ -3,11 +3,11 @@
 #include <QStyleOptionGraphicsItem>
 
 GraphicsEllipseItem::GraphicsEllipseItem(GraphicsObject *parent):
-    GraphicsObject(parent), IGraphicsItemObserver(),
+    GraphicsObject(parent),
     m_xRadius(0.0f), m_yRadius(0.0f)
 {
-    addHandle(XRadiusHandle);
-    addHandle(YRadiusHandle);
+    addHandle(XRadiusHandle, MoveHandleRole, DiamondedHandleShape);
+    addHandle(YRadiusHandle, MoveHandleRole, DiamondedHandleShape);
 }
 
 GraphicsEllipseItem::~GraphicsEllipseItem()
@@ -57,19 +57,6 @@ void GraphicsEllipseItem::setYRadius(qreal yRadius)
     unblockItemNotification();
 
     emit yRadiusChanged(yRadius);
-}
-
-GraphicsHandle *GraphicsEllipseItem::addHandle(GraphicsEllipseItem::HandleId handleId)
-{
-    GraphicsHandle *handle = new GraphicsHandle(this);
-    handle->setHandleShape(DiamondedHandleShape);
-    handle->setRole(MoveHandleRole);
-    m_handleToId[handle] = handleId;
-    m_idToHandle[handleId] = handle;
-    blockItemNotification();
-    addObservedItem(handle);
-    unblockItemNotification();
-    return handle;
 }
 
 QRectF GraphicsEllipseItem::boundingRect() const

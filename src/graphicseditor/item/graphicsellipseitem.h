@@ -2,9 +2,8 @@
 #define GRAPHICSELLIPSEITEM_H
 
 #include "graphicsobject.h"
-#include "igraphicsitemobserver.h"
 
-class GraphicsEllipseItem : public GraphicsObject, public IGraphicsItemObserver
+class GraphicsEllipseItem : public GraphicsObject
 {
     Q_OBJECT
 
@@ -35,10 +34,6 @@ signals:
 private:
     qreal m_xRadius;
     qreal m_yRadius;
-
-    QMap<GraphicsHandle *, HandleId> m_handleToId;
-    QMap<HandleId, GraphicsHandle *> m_idToHandle;
-    GraphicsHandle *addHandle(HandleId handleId);
 
     // QGraphicsItem interface
 public:

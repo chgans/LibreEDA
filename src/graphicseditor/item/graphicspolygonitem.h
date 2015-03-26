@@ -2,11 +2,8 @@
 #define GRAPHICSPOLYGONITEM_H
 
 #include "graphicsobject.h"
-#include "igraphicsitemobserver.h"
 
-class GraphicsHandle;
-
-class GraphicsPolygonItem : public GraphicsObject, public IGraphicsItemObserver
+class GraphicsPolygonItem : public GraphicsObject
 {
     Q_OBJECT
 
@@ -33,9 +30,6 @@ signals:
 private:
     Qt::FillRule m_fillRule;
     QPolygonF m_polygon;
-    QList<GraphicsHandle *> m_handles;
-    GraphicsHandle *addHandle(const QPointF &pos);
-    void removeHandle(int idx);
     void handleToPolygon();
     void polygonToHandle();
 

@@ -9,8 +9,8 @@
 GraphicsLineItem::GraphicsLineItem(GraphicsObject *parent):
     GraphicsObject(parent)
 {
-    addHandle(P1Handle);
-    addHandle(P2Handle);
+    addHandle(P1Handle, MoveHandleRole, CircularHandleShape);
+    addHandle(P2Handle, MoveHandleRole, CircularHandleShape);
 }
 
 QLineF GraphicsLineItem::line() const
@@ -34,20 +34,6 @@ void GraphicsLineItem::setLine(const QLineF &line)
     unblockItemNotification();
 
     emit lineChanged();
-}
-
-GraphicsHandle *GraphicsLineItem::addHandle(GraphicsLineItem::HandleId handleId)
-{
-    GraphicsHandle *handle = new GraphicsHandle(this);
-    handle->setRole(MoveHandleRole);
-    handle->setHandleShape(CircularHandleShape);
-    handle->setPos(QPointF(0, 0));
-    addObservedItem(handle);
-
-    m_handleToId[handle] = handleId;
-    m_idToHandle[handleId] = handle;
-
-    return handle;
 }
 
 GraphicsObject *GraphicsLineItem::clone()

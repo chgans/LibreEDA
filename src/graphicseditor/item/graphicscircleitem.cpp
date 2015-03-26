@@ -5,7 +5,7 @@
 GraphicsCircleItem::GraphicsCircleItem(GraphicsObject *parent):
     GraphicsObject(parent)
 {
-    addHandle(RadiusHandle);
+    addHandle(RadiusHandle, MoveHandleRole, DiamondedHandleShape);
 }
 
 GraphicsCircleItem::~GraphicsCircleItem()
@@ -33,20 +33,6 @@ void GraphicsCircleItem::setRadius(qreal length)
     unblockItemNotification();
 
     emit radiusChanged();
-}
-
-GraphicsHandle *GraphicsCircleItem::addHandle(GraphicsCircleItem::HandleId handleId)
-{
-    GraphicsHandle *handle = new GraphicsHandle(this);
-    handle->setRole(MoveHandleRole);
-    handle->setHandleShape(DiamondedHandleShape);
-    handle->setPos(QPointF(0, 0));
-    addObservedItem(handle);
-
-    m_handleToId[handle] = handleId;
-    m_idToHandle[handleId] = handle;
-
-    return handle;
 }
 
 GraphicsObject *GraphicsCircleItem::clone()

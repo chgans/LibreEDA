@@ -1,7 +1,7 @@
 #include "graphicspolygonitem.h"
 
 GraphicsPolygonItem::GraphicsPolygonItem(GraphicsObject *parent):
-    GraphicsObject(parent), IGraphicsItemObserver(),
+    GraphicsObject(parent),
     m_fillRule(Qt::OddEvenFill)
 {
 
@@ -37,13 +37,12 @@ void GraphicsPolygonItem::setPolygon(QPolygonF polygon)
     if (m_polygon == polygon)
         return;
 
-    for (int i = 0; i < m_handles.count(); i++)
-        removeHandle(i);
+    removeAllHandles();
 
     prepareGeometryChange();
     m_polygon = polygon;
-    foreach (const QPointF &pos, polygon)
-        addHandle(pos);
+    for (int i = 0; i < polygon.count(); i++)
+        addHandle(i, MoveHandleRole, CircularHandleShape, polygon[i]);
     m_boundingRect = QRectF();
     update();
 
@@ -52,8 +51,8 @@ void GraphicsPolygonItem::setPolygon(QPolygonF polygon)
 
 void GraphicsPolygonItem::addPoint(const QPointF &pos)
 {
+    addHandle(m_polygon.count(), MoveHandleRole, CircularHandleShape, pos);
     m_polygon.append(pos);
-    addHandle(pos);
     handleToPolygon();
 
     emit polygonChanged(m_polygon);
@@ -62,45 +61,19 @@ void GraphicsPolygonItem::addPoint(const QPointF &pos)
 void GraphicsPolygonItem::movePoint(int idx, const QPointF &pos)
 {
     blockItemNotification();
-    m_handles[idx]->setPos(pos);
+    m_idToHandle[idx]->setPos(pos);
     unblockItemNotification();
     handleToPolygon();
 
     emit polygonChanged(m_polygon);
 }
 
-GraphicsHandle *GraphicsPolygonItem::addHandle(const QPointF &pos)
-{
-    GraphicsHandle *handle = new GraphicsHandle(this);
-    handle->setHandleShape(CircularHandleShape);
-    handle->setRole(MoveHandleRole);
-    handle->setPos(pos);
-    m_handles.append(handle);
-    blockItemNotification();
-    addObservedItem(handle);
-    unblockItemNotification();
-    return handle;
-}
-
-void GraphicsPolygonItem::removeHandle(int idx)
-{
-    Q_ASSERT(idx < m_handles.count());
-    GraphicsHandle *handle = m_handles[idx];
-
-    blockItemNotification();
-    removeObservedItem(handle);
-    unblockItemNotification();
-    handle->setParentItem(nullptr);
-    m_handles.removeAt(idx);
-    delete handle;
-}
-
 void GraphicsPolygonItem::handleToPolygon()
 {
     prepareGeometryChange();
     m_polygon = QPolygonF();
-    for (int i = 0; i < m_handles.count(); i++) {
-        m_polygon.append(m_handles[i]->pos());
+    for (int i = 0; i < m_idToHandle.count(); i++) {
+        m_polygon.append(m_idToHandle[i]->pos());
     }
     m_boundingRect = QRectF();
     update();
@@ -110,8 +83,8 @@ void GraphicsPolygonItem::polygonToHandle()
 {
     blockItemNotification();
     for (int i = 0; i < m_polygon.count(); i++) {
-        m_handles[i]->setPos(m_polygon[i].x(),
-                             m_polygon[i].y());
+        m_idToHandle[i]->setPos(m_polygon[i].x(),
+                                m_polygon[i].y());
     }
     unblockItemNotification();
 }
@@ -154,7 +127,7 @@ GraphicsObject *GraphicsPolygonItem::clone()
 QVariant GraphicsPolygonItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (GraphicsHandle *handle, m_handles) {
+        foreach (GraphicsHandle *handle, m_idToHandle) {
             handle->setVisible(isSelected());
         }
     }

@@ -7,7 +7,7 @@
 #include <QDebug>
 
 GraphicsWireItem::GraphicsWireItem(GraphicsObject *parent):
-    GraphicsObject(parent), IGraphicsItemObserver()
+    GraphicsObject(parent)
 {
 }
 
@@ -54,7 +54,7 @@ GraphicsObject *GraphicsWireItem::clone()
 QList<QPointF> GraphicsWireItem::points() const
 {
     QList<QPointF> result;
-    foreach (GraphicsHandle *handle, m_handles)
+    foreach (GraphicsHandle *handle, m_handleToId.keys())
         result.append(handle->pos());
     return result;
 }
@@ -62,7 +62,7 @@ QList<QPointF> GraphicsWireItem::points() const
 
 void GraphicsWireItem::addPoint(const QPointF &pos)
 {
-    addHandle(pos);
+    addHandle(m_path.elementCount(), MoveHandleRole, CircularHandleShape, pos);
     handleToPath();
 
     emit pointsChanged();
@@ -70,10 +70,8 @@ void GraphicsWireItem::addPoint(const QPointF &pos)
 
 void GraphicsWireItem::movePoint(int idx, const QPointF &pos)
 {
-    Q_ASSERT(idx < m_handles.count());
-
     blockItemNotification();
-    m_handles[idx]->setPos(pos);
+    m_idToHandle[idx]->setPos(pos);
     unblockItemNotification();
     handleToPath();
 
@@ -82,17 +80,12 @@ void GraphicsWireItem::movePoint(int idx, const QPointF &pos)
 
 void GraphicsWireItem::setPoints(QList<QPointF> points)
 {
-    blockItemNotification();
-    foreach (GraphicsHandle *handle, m_handles) {
-        removeObservedItem(handle);
-        handle->setParentItem(nullptr);
-        delete handle;
-    }
-    unblockItemNotification();
+    removeAllHandles();
+    m_path = QPainterPath();
 
-    m_handles.clear();
-    foreach (const QPointF &pos, points)
-        addHandle(pos);
+    for (int i = 0; i < points.count(); i++)
+        addHandle(i, MoveHandleRole, CircularHandleShape, points[i]);
+
     handleToPath();
 
     emit pointsChanged();
@@ -102,10 +95,10 @@ void GraphicsWireItem::handleToPath()
 {
     prepareGeometryChange();
     m_path = QPainterPath();
-    if (!m_handles.isEmpty()) {
-        m_path.moveTo(m_handles[0]->pos());
-        for (int i = 1; i < m_handles.count(); i++) {
-            m_path.lineTo(m_handles[i]->pos());
+    if (!m_idToHandle.isEmpty()) {
+        m_path.moveTo(m_idToHandle[0]->pos());
+        for (int i = 1; i < m_idToHandle.count(); i++) {
+            m_path.lineTo(m_idToHandle[i]->pos());
         }
     }
     m_boundingRect = QRectF();
@@ -116,25 +109,11 @@ void GraphicsWireItem::pathToHandle()
 {
     blockItemNotification();
     for (int i = 0; i < m_path.elementCount(); i++) {
-        m_handles[i]->setPos(m_path.elementAt(i).x,
-                             m_path.elementAt(i).y);
+        m_idToHandle[i]->setPos(m_path.elementAt(i).x,
+                                m_path.elementAt(i).y);
     }
     unblockItemNotification();
 }
-
-GraphicsHandle *GraphicsWireItem::addHandle(const QPointF &pos)
-{
-    GraphicsHandle *handle = new GraphicsHandle(this);
-    handle->setHandleShape(CircularHandleShape);
-    handle->setRole(MoveHandleRole);
-    handle->setPos(pos);
-    m_handles.append(handle);
-    blockItemNotification();
-    addObservedItem(handle);
-    unblockItemNotification();
-    return handle;
-}
-
 
 void GraphicsWireItem::itemNotification(IGraphicsObservableItem *item)
 {
@@ -146,7 +125,7 @@ void GraphicsWireItem::itemNotification(IGraphicsObservableItem *item)
 QVariant GraphicsWireItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (GraphicsHandle *handle, m_handles) {
+        foreach (GraphicsHandle *handle, m_idToHandle) {
             handle->setVisible(isSelected());
         }
     }

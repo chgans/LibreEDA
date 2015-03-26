@@ -11,17 +11,16 @@
 // TODO: forbid objects to have write access to handles
 
 GraphicsRectItem::GraphicsRectItem(GraphicsObject *parent):
-    GraphicsObject(parent), m_rect(QRectF(0, 0, 0, 0)),
-    m_updatingHandles(false)
+    GraphicsObject(parent), m_rect(QRectF(0, 0, 0, 0))
 {
-    addHandle(TopLeft, FDiagSizeHandleRole);
-    addHandle(Top, VSizeHandleRole);
-    addHandle(TopRight, BDiagSizeHandleRole);
-    addHandle(Right, HSizeHandleRole);
-    addHandle(BottomRight, FDiagSizeHandleRole);
-    addHandle(Bottom, VSizeHandleRole);
-    addHandle(BottomLeft, BDiagSizeHandleRole);
-    addHandle(Left, HSizeHandleRole);
+    addHandle(TopLeft, FDiagSizeHandleRole, CircularHandleShape);
+    addHandle(Top, VSizeHandleRole, DiamondedHandleShape);
+    addHandle(TopRight, BDiagSizeHandleRole, CircularHandleShape);
+    addHandle(Right, HSizeHandleRole, DiamondedHandleShape);
+    addHandle(BottomRight, FDiagSizeHandleRole, CircularHandleShape);
+    addHandle(Bottom, VSizeHandleRole, DiamondedHandleShape);
+    addHandle(BottomLeft, BDiagSizeHandleRole, CircularHandleShape);
+    addHandle(Left, HSizeHandleRole, DiamondedHandleShape);
 }
 
 GraphicsRectItem::~GraphicsRectItem()
@@ -55,17 +54,6 @@ void GraphicsRectItem::setRect(const QRectF &rect)
     unblockItemNotification();
 }
 
-void GraphicsRectItem::addHandle(GraphicsRectItem::HandleId handleId, GraphicsHandleRole role)
-{
-    GraphicsHandle *handle = new GraphicsHandle(this);
-    handle->setRole(role);
-    handle->setHandleShape(CircularHandleShape);
-    handle->setPos(QPointF(0, 0));
-    addObservedItem(handle);
-    m_handleToId[handle] = handleId;
-    m_idToHandle[handleId] = handle;
-}
-
 GraphicsObject *GraphicsRectItem::clone()
 {
     GraphicsRectItem *item = new GraphicsRectItem();
@@ -79,7 +67,7 @@ void GraphicsRectItem::itemNotification(IGraphicsObservableItem *item)
     GraphicsHandle *handle = dynamic_cast<GraphicsHandle*>(item);
     Q_ASSERT(handle);
 
-    HandleId id = m_handleToId[handle];
+    HandleId id = HandleId(m_handleToId[handle]);
     QRectF r = m_rect;
     switch (id) {
     case TopLeft:
