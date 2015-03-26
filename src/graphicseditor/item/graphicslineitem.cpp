@@ -31,7 +31,17 @@ QLineF GraphicsLineItem::line() const
 
 void GraphicsLineItem::setLine(const QLineF &line)
 {
+    if (m_line == line)
+        return;
+
     m_line = line;
+
+    blockItemNotification();
+    m_handle1->setPos(m_line.p1());
+    m_handle2->setPos(m_line.p2());
+    unblockItemNotification();
+
+    emit lineChanged();
     markDirty();
 }
 
@@ -49,12 +59,14 @@ void GraphicsLineItem::itemNotification(IGraphicsObservableItem *item)
     Q_ASSERT(handle);
 
     markDirty();
+    QLineF l = m_line;
     if (handle == m_handle1) {
-        m_line.setP1(handle->pos());
+        l.setP1(handle->pos());
     }
     else {
-        m_line.setP2(handle->pos());
+        l.setP2(handle->pos());
     }
+    setLine(l);
 }
 
 QRectF GraphicsLineItem::boundingRect() const

@@ -11,12 +11,19 @@ class GraphicsLineItem : public GraphicsObject, public IGraphicsItemObserver
 {
     Q_OBJECT
 
+    Q_PROPERTY(QLineF line READ line WRITE setLine NOTIFY lineChanged)
+
     // GraphicsLineItem
 public:
     GraphicsLineItem(GraphicsObject *parent = 0);
 
     QLineF line() const;
+
+public slots:
     void setLine(const QLineF &line);
+
+signals:
+    void lineChanged();
 
     // GraphicsObject interface
 public:
