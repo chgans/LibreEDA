@@ -4,8 +4,7 @@
 #include "graphicsview.h"
 #include "graphicsobject.h"
 
-#include <QGraphicsOpacityEffect>
-#include <QGraphicsDropShadowEffect>
+#include <QGraphicsColorizeEffect>
 
 #include <QMouseEvent>
 #include <QKeyEvent>
@@ -59,12 +58,13 @@ void AbstractGraphicsInteractiveTool::wheelEvent(QWheelEvent *event)
 GraphicsObject *AbstractGraphicsInteractiveTool::createPhantomItem(GraphicsObject *item)
 {
     GraphicsObject *phantomItem = item->clone();
-    QGraphicsOpacityEffect *itemEffect = new QGraphicsOpacityEffect();
-    itemEffect->setOpacity(0.3);
-    itemEffect->setEnabled(true);
-    item->setGraphicsEffect(itemEffect);
-    QGraphicsDropShadowEffect *phantomEffect = new QGraphicsDropShadowEffect();
+    // Pity we cannot mix effects, drop shadow is nice while moving/clonig
+    // But not good while moving handles with the select tool
+    QGraphicsColorizeEffect *phantomEffect = new QGraphicsColorizeEffect();
+    phantomEffect->setColor(Qt::darkGray);
+    phantomEffect->setStrength(.5);
     phantomEffect->setEnabled(true);
+    phantomItem->setOpacity(phantomItem->opacity()*0.9);
     phantomItem->setGraphicsEffect(phantomEffect);
     scene()->addItem(phantomItem);
     phantomItem->setSelected(false); // force deselected

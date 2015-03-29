@@ -6,7 +6,7 @@
 class GraphicsScene;
 class AbstractGraphicsInteractiveTool;
 class GraphicsObject;
-class GraphicsHandle;
+class AbstractGraphicsHandle;
 
 class GraphicsView : public QGraphicsView
 {
@@ -23,9 +23,9 @@ public:
     void setTool(AbstractGraphicsInteractiveTool *tool);
 
     GraphicsObject *objectAt(const QPoint &pos) const;
-    GraphicsHandle *handleAt(const QPoint &pos) const;
+    AbstractGraphicsHandle *handleAt(const QPoint &pos) const;
 
-    GraphicsHandle *handleUnderMouse() const;
+    AbstractGraphicsHandle *handleUnderMouse() const;
     GraphicsObject *objectUnderMouse() const;
     QPoint mousePosition() const;
 
@@ -52,7 +52,7 @@ protected:
 private:
     AbstractGraphicsInteractiveTool *m_tool;
     GraphicsObject *m_objectUnderMouse;
-    const GraphicsHandle *m_handleUnderMouse;
+    const AbstractGraphicsHandle *m_handleUnderMouse;
     QPoint m_mousePosition;
     bool m_mousePositionChanged;
     void updateMousePos();

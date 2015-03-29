@@ -1,5 +1,5 @@
 #include "graphicslineitem.h"
-#include "graphicshandle.h"
+#include "graphicseditor/abstractgraphicshandle.h"
 
 #include <QPainter>
 #include <QPen>
@@ -9,8 +9,8 @@
 GraphicsLineItem::GraphicsLineItem(GraphicsObject *parent):
     GraphicsObject(parent)
 {
-    addHandle(P1Handle, MoveHandleRole, CircularHandleShape);
-    addHandle(P2Handle, MoveHandleRole, CircularHandleShape);
+    addRegularHandle(P1Handle, MoveHandleRole, CircularHandleShape);
+    addRegularHandle(P2Handle, MoveHandleRole, CircularHandleShape);
 }
 
 QLineF GraphicsLineItem::line() const
@@ -46,7 +46,7 @@ GraphicsObject *GraphicsLineItem::clone()
 
 void GraphicsLineItem::itemNotification(IGraphicsObservableItem *item)
 {
-    GraphicsHandle *handle = dynamic_cast<GraphicsHandle*>(item);
+    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle*>(item);
     Q_ASSERT(handle);
 
     QLineF l = m_line;
@@ -99,8 +99,8 @@ void GraphicsLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 QVariant GraphicsLineItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (QGraphicsItem *h, childItems()) {
-            h->setVisible(isSelected());
+        foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
+            handle->setVisible(isSelected());
         }
     }
     return value;

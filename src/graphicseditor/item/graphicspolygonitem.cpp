@@ -42,7 +42,7 @@ void GraphicsPolygonItem::setPolygon(QPolygonF polygon)
     prepareGeometryChange();
     m_polygon = polygon;
     for (int i = 0; i < polygon.count(); i++)
-        addHandle(i, MoveHandleRole, CircularHandleShape, polygon[i]);
+        addRegularHandle(i, MoveHandleRole, CircularHandleShape, polygon[i]);
     m_boundingRect = QRectF();
     update();
 
@@ -51,7 +51,7 @@ void GraphicsPolygonItem::setPolygon(QPolygonF polygon)
 
 void GraphicsPolygonItem::addPoint(const QPointF &pos)
 {
-    addHandle(m_polygon.count(), MoveHandleRole, CircularHandleShape, pos);
+    addRegularHandle(m_polygon.count(), MoveHandleRole, CircularHandleShape, pos);
     m_polygon.append(pos);
     handleToPolygon();
 
@@ -128,7 +128,7 @@ GraphicsObject *GraphicsPolygonItem::clone()
 QVariant GraphicsPolygonItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (GraphicsHandle *handle, m_idToHandle) {
+        foreach (AbstractGraphicsHandle *handle, m_idToHandle) {
             handle->setVisible(isSelected());
         }
     }

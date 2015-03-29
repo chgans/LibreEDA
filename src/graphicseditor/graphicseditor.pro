@@ -14,9 +14,7 @@ CONFIG += staticlib
 INCLUDEPATH += $$PWD/..
 
 SOURCES += graphicseditor.cpp \
-    graphicshandle.cpp \
     graphicsobject.cpp \
-    graphicspathpoint.cpp \
     graphicsscene.cpp \
     graphicsview.cpp \
     igraphicsitemobserver.cpp \
@@ -42,12 +40,13 @@ SOURCES += graphicseditor.cpp \
     item/graphicspolygonitem.cpp \
     tool/graphicspolygontool.cpp \
     item/graphicswireitem.cpp \
-    tool/graphicswiretool.cpp
+    tool/graphicswiretool.cpp \
+    graphicsbezierhandle.cpp \
+    graphicsregularhandle.cpp \
+    abstractgraphicshandle.cpp
 
 HEADERS += graphicseditor.h \
-    graphicshandle.h \
     graphicsobject.h \
-    graphicspathpoint.h \
     graphicsscene.h \
     graphicsview.h \
     igraphicsitemobserver.h \
@@ -74,7 +73,10 @@ HEADERS += graphicseditor.h \
     graphicsobject_p.h \
     tool/graphicspolygontool.h \
     item/graphicswireitem.h \
-    tool/graphicswiretool.h
+    tool/graphicswiretool.h \
+    graphicsbezierhandle.h \
+    graphicsregularhandle.h \
+    abstractgraphicshandle.h
 
 unix {
     target.path = /usr/lib

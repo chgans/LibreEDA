@@ -1,5 +1,5 @@
 #include "graphicswireitem.h"
-#include "graphicshandle.h"
+#include "graphicseditor/abstractgraphicshandle.h"
 #include "graphicsscene.h"
 
 #include <QGraphicsPathItem>
@@ -64,7 +64,7 @@ QList<QPointF> GraphicsWireItem::points() const
 
 void GraphicsWireItem::addPoint(const QPointF &pos)
 {
-    addHandle(m_path.elementCount(), MoveHandleRole, CircularHandleShape, pos);
+    addRegularHandle(m_path.elementCount(), MoveHandleRole, CircularHandleShape, pos);
 
     prepareGeometryChange();
     if (m_path.elementCount() == 0)
@@ -97,7 +97,7 @@ void GraphicsWireItem::setPoints(QList<QPointF> points)
     m_path = QPainterPath();
 
     for (int i = 0; i < points.count(); i++)
-        addHandle(i, MoveHandleRole, CircularHandleShape, points[i]);
+        addRegularHandle(i, MoveHandleRole, CircularHandleShape, points[i]);
 
     prepareGeometryChange();
     m_path = QPainterPath();
@@ -115,7 +115,7 @@ void GraphicsWireItem::setPoints(QList<QPointF> points)
 
 void GraphicsWireItem::itemNotification(IGraphicsObservableItem *item)
 {
-    GraphicsHandle *handle = static_cast<GraphicsHandle*>(item);
+    AbstractGraphicsHandle *handle = static_cast<AbstractGraphicsHandle*>(item);
     int idx = m_handleToId[handle];
 
     prepareGeometryChange();
@@ -130,7 +130,7 @@ void GraphicsWireItem::itemNotification(IGraphicsObservableItem *item)
 QVariant GraphicsWireItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (GraphicsHandle *handle, m_idToHandle) {
+        foreach (AbstractGraphicsHandle *handle, m_idToHandle) {
             handle->setVisible(isSelected());
         }
     }

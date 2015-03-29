@@ -1,7 +1,7 @@
 #include "graphicsbezieritem.h"
+#include "graphicsbezierhandle.h"
 #include "graphicsscene.h"
 #include "graphicsview.h"
-#include "graphicshandle.h"
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
@@ -40,43 +40,44 @@ void GraphicsBezierItem::setPath(const QPainterPath &path)
 // pos is in local coordinate
 int GraphicsBezierItem::addPoint(const QPointF &pos)
 {
-    DEBUG() << "About to insert GraphicsPathPoint #" << childItems().count() + 1 << "at" << pos;
+    DEBUG() << "About to insert BezierHandle #" << handleCount() + 1 << "at" << pos;
 
-    GraphicsPathPoint *pathPoint = new GraphicsPathPoint(this);
+    int newId = pointCount();
+    GraphicsBezierHandle *newHandle = addBezierHandle(newId);
+    newHandle->setNodePos(pos);
 
-    if (pointCount() == 0) {
-        pathPoint->setFirst(true);
-        pathPoint->setLast(true);
+    if (newId == 0) {
+        newHandle->setFirst(true);
+        newHandle->setLast(true);
     }
     else if (!(qFuzzyCompare(m_px.last(), pos.x()) &&
                qFuzzyCompare(m_py.last(), pos.y()))) {
         // Update the first/last status
-        m_pathPoints.last()->setLast(false);
-        pathPoint->setLast(true);
+        GraphicsBezierHandle *prevHandle = bezierHandleAt(newId - 1);
+        prevHandle->setLast(false);
+        newHandle->setLast(true);
     }
     else {
         WARNING() << "Cannot add a point at same pos as current one";
-        delete pathPoint;
+        removeHandle(newHandle);
         return -1;
     }
 
     m_px.append(pos.x());
     m_py.append(pos.y());
-    if (!pathPoint->isFirst()) {
+    if (!newHandle->isFirst()) {
         m_c2x.append(0);
         m_c2y.append(0);/*
     }
-    if (!pathPoint->isLast()) {*/
+    if (!newHandle->isLast()) {*/
         m_c1x.append(0);
         m_c1y.append(0);
     }
 
-    m_pathPoints.append(pathPoint);
 
     blockItemNotification();
-    addObservedItem(pathPoint);
     smoothBezier();
-    bezierToPathPoints();
+    bezierToHandles();
     unblockItemNotification();
 
     DEBUG() << "Point fully inserted";
@@ -88,31 +89,34 @@ void GraphicsBezierItem::removePoint(int index)
 {
     Q_ASSERT(index < pointCount());
 
+    // Remove data points
     m_px.removeAt(index);
     m_py.removeAt(index);
     if (index != 0) {
         m_c2x.removeAt(index-1);
         m_c2y.removeAt(index-1); /*
     }
-    if (!pathPoint->isLast()) {*/
+    if (!handle->isLast()) {*/
         m_c1x.removeAt(index-1);
         m_c1y.removeAt(index-1);
     }
 
-    GraphicsPathPoint *pathPoint = m_pathPoints.at(index);
+    // Remove handle
+    GraphicsBezierHandle *handle = bezierHandleAt(index);
     bool firstRemoved = index == 0;
-    bool lastRemoved = index == (m_pathPoints.count() - 1);
-    blockItemNotification();
-    removeObservedItem(pathPoint); // TODO: use GraphicsObjects::*handle*
-    m_pathPoints.removeAt(index);
-    pathPoint->setParentItem(nullptr);
-    delete pathPoint;
-    if (firstRemoved && !m_pathPoints.isEmpty())
-        m_pathPoints.first()->setFirst(true);
-    if (lastRemoved && !m_pathPoints.isEmpty())
-        m_pathPoints.last()->setLast(true);
+    bool lastRemoved = index == (handleCount() - 1);
+    removeHandle(handle);
+
+    // Update first/last status: FIXME: now we use index in abstracthandle
+    if (firstRemoved && handleCount() != 0)
+        bezierHandleAt(handleCount() - 1)->setFirst(true);
+    if (lastRemoved && handleCount() != 0)
+        bezierHandleAt(handleCount() - 1)->setLast(true);
+
+    // Update handles
     smoothBezier();
-    bezierToPathPoints();
+    blockItemNotification();
+    bezierToHandles();
     unblockItemNotification();
 }
 
@@ -125,7 +129,7 @@ void GraphicsBezierItem::movePoint(int index, const QPointF &pos)
 
     blockItemNotification();
     smoothBezier();
-    bezierToPathPoints();
+    bezierToHandles();
     unblockItemNotification();
 }
 
@@ -230,60 +234,60 @@ void GraphicsBezierItem::computeBezierControlPoints(const QVector<qreal> &p, QVe
 }
 
 //
-void GraphicsBezierItem::bezierToPathPoints()
+void GraphicsBezierItem::bezierToHandles()
 {
-    Q_ASSERT(pointCount() == m_pathPoints.count());
+    Q_ASSERT(pointCount() == handleCount());
 
     if (pointCount() == 0)
         return;
 
-    Q_ASSERT(m_pathPoints.first()->isFirst());
-    Q_ASSERT(m_pathPoints.last()->isLast());
+    Q_ASSERT(bezierHandleAt(0)->isFirst());
+    Q_ASSERT(bezierHandleAt(handleCount() - 1)->isLast());
 
     for (int i = 0; i < pointCount(); i++) {
-        bezierToPathPoint(i);
+        bezierToHandle(i);
     }
 }
 
-void GraphicsBezierItem::bezierToPathPoint(int idx)
+void GraphicsBezierItem::bezierToHandle(int idx)
 {
-    GraphicsPathPoint *pathPoint = m_pathPoints.at(idx);
+    GraphicsBezierHandle *handle = bezierHandleAt(idx);
 
-    pathPoint->setNodePos(m_px[idx], m_py[idx]);
+    handle->setNodePos(m_px[idx], m_py[idx]);
 
-    if (!pathPoint->isFirst())
-        pathPoint->setControl1Pos(m_c2x[idx-1], m_c2y[idx-1]);
+    if (!handle->isFirst())
+        handle->setControl1Pos(m_c2x[idx-1], m_c2y[idx-1]);
 
-    if (!pathPoint->isLast())
-        pathPoint->setControl2Pos(m_c1x[idx], m_c1y[idx]);
+    if (!handle->isLast())
+        handle->setControl2Pos(m_c1x[idx], m_c1y[idx]);
 }
 
-void GraphicsBezierItem::pathPointsToBezier()
+void GraphicsBezierItem::handlesToBezier()
 {
     for (int i = 0; i < pointCount(); i++)
-        pathPointToBezier(i);
+        handleToBezier(i);
 }
 
-void GraphicsBezierItem::pathPointToBezier(int idx)
+void GraphicsBezierItem::handleToBezier(int idx)
 {
-    Q_ASSERT(pointCount() == m_pathPoints.count());
+    Q_ASSERT(pointCount() == handleCount());
 
     if (pointCount() == 0)
         return;
 
-    GraphicsPathPoint *pathPoint = m_pathPoints.at(idx);
+    GraphicsBezierHandle *handle = bezierHandleAt(idx);
 
-    m_px[idx] = pathPoint->nodePos().x();
-    m_py[idx] = pathPoint->nodePos().y();
+    m_px[idx] = handle->nodePos().x();
+    m_py[idx] = handle->nodePos().y();
 
-    if (!pathPoint->isFirst()) {
-        m_c2x[idx-1] = pathPoint->control1Pos().x();
-        m_c2y[idx-1] = pathPoint->control1Pos().y();
+    if (!handle->isFirst()) {
+        m_c2x[idx-1] = handle->control1Pos().x();
+        m_c2y[idx-1] = handle->control1Pos().y();
     }
 
-    if (!pathPoint->isLast()) {
-        m_c1x[idx] = pathPoint->control2Pos().x();
-        m_c1y[idx] = pathPoint->control2Pos().y();
+    if (!handle->isLast()) {
+        m_c1x[idx] = handle->control2Pos().x();
+        m_c1y[idx] = handle->control2Pos().y();
     }
 }
 
@@ -378,10 +382,10 @@ GraphicsObject *GraphicsBezierItem::clone()
 void GraphicsBezierItem::itemNotification(IGraphicsObservableItem *item)
 {
     blockItemNotification();
-    pathPointsToBezier();
+    handlesToBezier();
     if (m_px.size() >= 2) {
         smoothBezier();
-        bezierToPathPoints();
+        bezierToHandles();
     }
     unblockItemNotification();
 }
@@ -390,8 +394,8 @@ void GraphicsBezierItem::itemNotification(IGraphicsObservableItem *item)
 QVariant GraphicsBezierItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (QGraphicsItem *h, childItems()) {
-            h->setVisible(isSelected());
+        foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
+            handle->setVisible(isSelected());
         }
     }
     return value;

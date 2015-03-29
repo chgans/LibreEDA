@@ -1,5 +1,5 @@
 #include "graphicsrectitem.h"
-#include "graphicshandle.h"
+#include "graphicseditor/abstractgraphicshandle.h"
 
 #include <QBrush>
 #include <QPen>
@@ -13,14 +13,14 @@
 GraphicsRectItem::GraphicsRectItem(GraphicsObject *parent):
     GraphicsObject(parent), m_rect(QRectF(0, 0, 0, 0))
 {
-    addHandle(TopLeft, FDiagSizeHandleRole, CircularHandleShape);
-    addHandle(Top, VSizeHandleRole, DiamondedHandleShape);
-    addHandle(TopRight, BDiagSizeHandleRole, CircularHandleShape);
-    addHandle(Right, HSizeHandleRole, DiamondedHandleShape);
-    addHandle(BottomRight, FDiagSizeHandleRole, CircularHandleShape);
-    addHandle(Bottom, VSizeHandleRole, DiamondedHandleShape);
-    addHandle(BottomLeft, BDiagSizeHandleRole, CircularHandleShape);
-    addHandle(Left, HSizeHandleRole, DiamondedHandleShape);
+    addRegularHandle(TopLeft, FDiagSizeHandleRole, CircularHandleShape);
+    addRegularHandle(Top, VSizeHandleRole, DiamondedHandleShape);
+    addRegularHandle(TopRight, BDiagSizeHandleRole, CircularHandleShape);
+    addRegularHandle(Right, HSizeHandleRole, DiamondedHandleShape);
+    addRegularHandle(BottomRight, FDiagSizeHandleRole, CircularHandleShape);
+    addRegularHandle(Bottom, VSizeHandleRole, DiamondedHandleShape);
+    addRegularHandle(BottomLeft, BDiagSizeHandleRole, CircularHandleShape);
+    addRegularHandle(Left, HSizeHandleRole, DiamondedHandleShape);
 }
 
 GraphicsRectItem::~GraphicsRectItem()
@@ -64,7 +64,7 @@ GraphicsObject *GraphicsRectItem::clone()
 
 void GraphicsRectItem::itemNotification(IGraphicsObservableItem *item)
 {
-    GraphicsHandle *handle = dynamic_cast<GraphicsHandle*>(item);
+    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle*>(item);
     Q_ASSERT(handle);
 
     HandleId id = HandleId(m_handleToId[handle]);
@@ -131,8 +131,8 @@ void GraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 QVariant GraphicsRectItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (QGraphicsItem *h, childItems()) {
-            h->setVisible(isSelected());
+        foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
+            handle->setVisible(isSelected());
         }
     }
     return value;

@@ -1,47 +1,57 @@
-#include "graphicspathpoint.h"
+#include "graphicsbezierhandle.h"
+#include "graphicsregularhandle.h"
 #include "graphicsobject.h"
 
 #include <QDebug>
 
 #include <QLoggingCategory>
-Q_DECLARE_LOGGING_CATEGORY(GraphicsPathPointLog)
-Q_LOGGING_CATEGORY(GraphicsPathPointLog, "graphics.bezier.point")
-#define DEBUG() qCDebug(GraphicsPathPointLog)
-#define WARNING() qCDebug(GraphicsPathPointLog)
+Q_DECLARE_LOGGING_CATEGORY(GraphicsBezierHandleLog)
+Q_LOGGING_CATEGORY(GraphicsBezierHandleLog, "graphics.bezier.handle")
+#define DEBUG() qCDebug(GraphicsBezierHandleLog)
+#define WARNING() qCDebug(GraphicsBezierHandleLog)
 
-GraphicsPathPoint::GraphicsPathPoint(QGraphicsItem *parent):
-    QGraphicsItem(parent),
+GraphicsBezierHandle::GraphicsBezierHandle(GraphicsObject *parent):
+    AbstractGraphicsHandle(parent),
     IGraphicsItemObserver(),
-    IGraphicsObservableItem(),
     m_first(false),
     m_last(false),
     m_closing(false),
-    m_handles(0),
-    m_behaviour(UndefinedHandleBehaviour),
-    m_nodeHandle(new GraphicsHandle()),
-    m_control1Handle(new GraphicsHandle()),
-    m_control2Handle(new GraphicsHandle())
+    m_nodeHandle(new GraphicsRegularHandle()),
+    m_control1Handle(new GraphicsRegularHandle()),
+    m_control2Handle(new GraphicsRegularHandle()),
+    m_behaviour(NormalHandleBehaviour)
 {
     m_typeToHandle[NodeHandle] = &m_nodeHandle;
     m_typeToHandle[Control1Handle] = &m_control1Handle;
     m_typeToHandle[Control2Handle] = &m_control2Handle;
 
     m_nodeHandle->setParentItem(this);
-    m_nodeHandle->setRole(MoveHandleRole);
+    m_nodeHandle->setHandleRole(MoveHandleRole);
     m_nodeHandle->setHandleShape(CircularHandleShape);
     m_nodeHandle->setVisible(false);
+    m_nodeHandle->setHandleId(-1);
+    m_nodeHandle->setParentGraphicsObject(nullptr);
 
     m_control1Handle->setParentItem(this);
-    m_control1Handle->setRole(MoveHandleRole);
+    m_control1Handle->setHandleRole(MoveHandleRole);
     m_control1Handle->setHandleShape(DiamondedHandleShape);
     m_control1Handle->setVisible(false);
+    m_control1Handle->setHandleId(-1);
+    m_control1Handle->setParentGraphicsObject(nullptr);
 
     m_control2Handle->setParentItem(this);
-    m_control2Handle->setRole(MoveHandleRole);
+    m_control2Handle->setHandleRole(MoveHandleRole);
     m_control2Handle->setHandleShape(DiamondedHandleShape);
     m_control2Handle->setVisible(false);
+    m_control2Handle->setHandleId(-1);
+    m_control2Handle->setParentGraphicsObject(nullptr);
 
-    setBehaviour(NormalHandleBehaviour);
+    blockItemNotification();
+    addObservedItem(m_nodeHandle);
+    addObservedItem(m_control1Handle);
+    addObservedItem(m_control2Handle);
+    updateEnabledHandles();
+    unblockItemNotification();
 
     QGraphicsItem::setPos(QPointF(0, 0));
     DEBUG() << "Our pos" << mapToParent(QGraphicsItem::pos());
@@ -51,7 +61,7 @@ GraphicsPathPoint::GraphicsPathPoint(QGraphicsItem *parent):
     setVisible(false);
 }
 
-GraphicsPathPoint::~GraphicsPathPoint()
+GraphicsBezierHandle::~GraphicsBezierHandle()
 {
     // TODO: use map
     if (m_nodeHandle) {
@@ -69,12 +79,12 @@ GraphicsPathPoint::~GraphicsPathPoint()
     // removeItemObserver(); // ?
 }
 
-QPointF GraphicsPathPoint::pos(GraphicsPathPoint::HandleType type) const
+QPointF GraphicsBezierHandle::pos(GraphicsBezierHandle::HandleType type) const
 {
     Q_ASSERT(m_handles.testFlag(type));
 
     // TODO: use map
-    GraphicsHandle *handle;
+    AbstractGraphicsHandle *handle;
     switch (type) {
     case NodeHandle:
         handle = m_nodeHandle;
@@ -95,14 +105,14 @@ QPointF GraphicsPathPoint::pos(GraphicsPathPoint::HandleType type) const
 }
 
 // Pos is in parent coordinate
-void GraphicsPathPoint::setPos(GraphicsPathPoint::HandleType type, const QPointF &pos)
+void GraphicsBezierHandle::setPos(GraphicsBezierHandle::HandleType type, const QPointF &pos)
 {
     Q_ASSERT(m_handles.testFlag(type));
 
     blockItemNotification();
 
     // TODO: use map
-    GraphicsHandle *handle;
+    AbstractGraphicsHandle *handle;
     switch (type) {
     case NodeHandle:
         handle = m_nodeHandle;
@@ -119,8 +129,7 @@ void GraphicsPathPoint::setPos(GraphicsPathPoint::HandleType type, const QPointF
 
     QPointF parentPos = pos;
     QPointF handlePos = mapFromParent(parentPos); // Same if we're at (0, 0)
-    int idx = parentItem()->childItems().indexOf(this); // hack
-    DEBUG() << "Set point " << idx << typeToString(type)
+    DEBUG() << "Set point " << handleId() << typeToString(type)
             << " pos. parent=" << parentPos
             << ", handle=" << handlePos;
 
@@ -129,75 +138,7 @@ void GraphicsPathPoint::setPos(GraphicsPathPoint::HandleType type, const QPointF
     unblockItemNotification();
 }
 
-GraphicsPathPoint::HandleTypes GraphicsPathPoint::handlesEnabled() const
-{
-    return m_handles;
-}
-
-void GraphicsPathPoint::enableHandle(GraphicsPathPoint::HandleType type, bool set)
-{
-    GraphicsHandle **handle = m_typeToHandle[type];
-    Q_ASSERT(handle != nullptr);
-
-    if (set) {
-        m_handles |= type;
-        (*handle)->setVisible(true); // Our visibility take over
-        // We do it here, because it causes contructor issues
-        // If called in constructor, it would cause a call on a member function
-        // while the object is not fully contructed
-        blockItemNotification();
-        addObservedItem(*handle);
-        unblockItemNotification();
-    }
-    else {
-        m_handles &= ~type;
-        (*handle)->setVisible(false);
-        removeObservedItem(*handle);
-    }
-}
-
-bool GraphicsPathPoint::isFirst() const
-{
-    return m_first;
-}
-
-void GraphicsPathPoint::setFirst(bool first)
-{
-    if (m_first == first)
-        return;
-
-    m_first = first;
-    updateEnabledHandles();
-}
-
-bool GraphicsPathPoint::isLast() const
-{
-    return m_last;
-}
-
-void GraphicsPathPoint::setLast(bool last)
-{
-    if (m_last == last)
-        return;
-
-    m_last = last;
-    updateEnabledHandles();
-}
-
-bool GraphicsPathPoint::isClosingPath() const
-{
-    return m_closing;
-}
-
-void GraphicsPathPoint::setClosingPath(bool closing)
-{
-    if (m_closing == closing)
-        return;
-    m_closing = closing;
-    updateEnabledHandles();
-}
-
-void GraphicsPathPoint::setBehaviour(GraphicsHandleBehaviour behaviour)
+void GraphicsBezierHandle::setBehaviour(GraphicsHandleBehaviour behaviour)
 {
     if (m_behaviour == behaviour)
         return;
@@ -206,12 +147,73 @@ void GraphicsPathPoint::setBehaviour(GraphicsHandleBehaviour behaviour)
     updateEnabledHandles();
 }
 
-GraphicsHandleBehaviour GraphicsPathPoint::behaviour() const
+GraphicsHandleBehaviour GraphicsBezierHandle::behaviour() const
 {
     return m_behaviour;
 }
 
-QString GraphicsPathPoint::typeToString(GraphicsPathPoint::HandleType type)
+GraphicsBezierHandle::HandleTypes GraphicsBezierHandle::handlesEnabled() const
+{
+    return m_handles;
+}
+
+void GraphicsBezierHandle::enableHandle(GraphicsBezierHandle::HandleType type, bool set)
+{
+    AbstractGraphicsHandle **handle = m_typeToHandle[type];
+    Q_ASSERT(handle != nullptr);
+
+    if (set) {
+        m_handles |= type;
+        (*handle)->setVisible(true);
+    }
+    else {
+        m_handles &= ~type;
+        (*handle)->setVisible(false);
+    }
+}
+
+bool GraphicsBezierHandle::isFirst() const
+{
+    return m_first;
+}
+
+void GraphicsBezierHandle::setFirst(bool first)
+{
+    if (m_first == first)
+        return;
+
+    m_first = first;
+    updateEnabledHandles();
+}
+
+bool GraphicsBezierHandle::isLast() const
+{
+    return m_last;
+}
+
+void GraphicsBezierHandle::setLast(bool last)
+{
+    if (m_last == last)
+        return;
+
+    m_last = last;
+    updateEnabledHandles();
+}
+
+bool GraphicsBezierHandle::isClosingPath() const
+{
+    return m_closing;
+}
+
+void GraphicsBezierHandle::setClosingPath(bool closing)
+{
+    if (m_closing == closing)
+        return;
+    m_closing = closing;
+    updateEnabledHandles();
+}
+
+QString GraphicsBezierHandle::typeToString(GraphicsBezierHandle::HandleType type)
 {
     switch (type) {
     case NodeHandle:
@@ -225,19 +227,19 @@ QString GraphicsPathPoint::typeToString(GraphicsPathPoint::HandleType type)
     }
 }
 
-bool GraphicsPathPoint::handleEnabled(GraphicsPathPoint::HandleType type)
+bool GraphicsBezierHandle::handleEnabled(GraphicsBezierHandle::HandleType type)
 {
     return m_handles.testFlag(type);
 }
 
-void GraphicsPathPoint::updateEnabledHandles()
+void GraphicsBezierHandle::updateEnabledHandles()
 {
     enableHandle(NodeHandle, true);
     enableHandle(Control1Handle, (isFirst() && isClosingPath()) || !isFirst());
     enableHandle(Control2Handle, (isLast() && isClosingPath()) || !isLast());
 }
 
-void GraphicsPathPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicsBezierHandle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     painter->save();
 
@@ -256,18 +258,9 @@ void GraphicsPathPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     painter->restore();
 }
 
-QVariant GraphicsPathPoint::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+void GraphicsBezierHandle::itemNotification(IGraphicsObservableItem *item)
 {
-
-    if (change == QGraphicsItem::ItemPositionHasChanged) {
-        notifyObservers();
-    }
-    return value;
-}
-
-void GraphicsPathPoint::itemNotification(IGraphicsObservableItem *item)
-{
-    GraphicsHandle *handle = dynamic_cast<GraphicsHandle*>(item);
+    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle*>(item);
     Q_ASSERT(handle != nullptr);
     if (handle == m_nodeHandle) {
         Q_ASSERT(m_handles.testFlag(NodeHandle));
@@ -289,12 +282,30 @@ void GraphicsPathPoint::itemNotification(IGraphicsObservableItem *item)
     update();
 }
 
-QRectF GraphicsPathPoint::boundingRect() const
+QRectF GraphicsBezierHandle::boundingRect() const
 {
     return childrenBoundingRect();
 }
 
-QPainterPath GraphicsPathPoint::shape() const
+QPainterPath GraphicsBezierHandle::shape() const
 {
     return QPainterPath();
+}
+
+void GraphicsBezierHandle::setHandleId(int id)
+{
+    AbstractGraphicsHandle::setHandleId(id);
+    // FIXME: needed because of view->handleUnderMouse()->{parent(),id()}
+    m_nodeHandle->setHandleId(id);
+    m_control1Handle->setHandleId(id);
+    m_control2Handle->setHandleId(id);
+}
+
+void GraphicsBezierHandle::setParentGraphicsObject(GraphicsObject *parent)
+{
+    AbstractGraphicsHandle::setParentGraphicsObject(parent);
+    // FIXME: needed because of view->handleUnderMouse()->{parent(),id()}
+    m_nodeHandle->setParentGraphicsObject(parent);
+    m_control1Handle->setParentGraphicsObject(parent);
+    m_control2Handle->setParentGraphicsObject(parent);
 }

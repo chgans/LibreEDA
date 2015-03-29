@@ -7,7 +7,7 @@
 #include <QPainterPath>
 #include <QVector>
 
-#include "graphicseditor/graphicshandle.h"
+#include "graphicseditor/abstractgraphicshandle.h"
 
 #include "igraphicsitemobserver.h"
 
@@ -15,6 +15,9 @@ class QGraphicsItem;
 class QPainter;
 class QStyleOptionGraphicsItem;
 class QWidget;
+
+class GraphicsRegularHandle;
+class GraphicsBezierHandle;
 
 // TODO: add properties
 // TODO: AbstractPath and AbstractShape (allow to morph between AbstractXYZ impl)
@@ -33,7 +36,7 @@ public:
 
     virtual GraphicsObject *clone() = 0;
     int handleCount() const;
-    GraphicsHandle *handleAt(int idx);
+    AbstractGraphicsHandle *handleAt(int idx);
 
     QPen pen() const;
     QBrush brush() const;
@@ -51,15 +54,22 @@ protected:
     QBrush m_brush;
     mutable QRectF m_boundingRect;
 
-    QMap<GraphicsHandle *, int> m_handleToId;
-    QMap<int, GraphicsHandle *> m_idToHandle;
-    GraphicsHandle *addHandle(int id, GraphicsHandleRole role, GraphicsHandleShape shape, const QPointF &pos = QPointF(0, 0));
+    QMap<AbstractGraphicsHandle *, int> m_handleToId;
+    QMap<int, AbstractGraphicsHandle *> m_idToHandle;
+    GraphicsRegularHandle *addRegularHandle(int id, GraphicsHandleRole role, GraphicsHandleShape shape, const QPointF &pos = QPointF(0, 0));
+    GraphicsBezierHandle *addBezierHandle(int id, const QPointF &pos = QPointF(0, 0));
     void removeHandle(int id);
-    void removeHandle(GraphicsHandle *handle);
+    void removeHandle(AbstractGraphicsHandle *handle);
     void removeAllHandles();
+    GraphicsRegularHandle *regularHandleAt(int id) const;
+    GraphicsBezierHandle *bezierHandleAt(int id) const;
 
     void cloneTo(GraphicsObject *dst);
     static QPainterPath shapeFromPath(const QPainterPath &path, const QPen &pen);
+
+private:
+    void addAbstractHandle(AbstractGraphicsHandle *handle);
+
 };
 
 #endif // GRAPHICSOBJECT_H

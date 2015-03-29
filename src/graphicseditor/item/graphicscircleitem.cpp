@@ -5,7 +5,7 @@
 GraphicsCircleItem::GraphicsCircleItem(GraphicsObject *parent):
     GraphicsObject(parent)
 {
-    addHandle(RadiusHandle, MoveHandleRole, DiamondedHandleShape);
+    addRegularHandle(RadiusHandle, MoveHandleRole, DiamondedHandleShape);
 }
 
 GraphicsCircleItem::~GraphicsCircleItem()
@@ -45,7 +45,7 @@ GraphicsObject *GraphicsCircleItem::clone()
 
 void GraphicsCircleItem::itemNotification(IGraphicsObservableItem *item)
 {
-    GraphicsHandle *handle = static_cast<GraphicsHandle *>(item);
+    AbstractGraphicsHandle *handle = static_cast<AbstractGraphicsHandle *>(item);
 
     setRadius(qAbs(handle->pos().x()));
 }
@@ -88,8 +88,8 @@ void GraphicsCircleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 QVariant GraphicsCircleItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (QGraphicsItem *h, childItems()) {
-            h->setVisible(isSelected());
+        foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
+            handle->setVisible(isSelected());
         }
     }
     return value;

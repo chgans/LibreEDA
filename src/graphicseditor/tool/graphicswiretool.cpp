@@ -1,7 +1,7 @@
 #include "tool/graphicswiretool.h"
 #include "item/graphicswireitem.h"
 
-#include "graphicshandle.h"
+#include "graphicseditor/abstractgraphicshandle.h"
 #include "graphicsscene.h"
 #include "graphicsview.h"
 

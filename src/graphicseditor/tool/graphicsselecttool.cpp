@@ -3,7 +3,7 @@
 #include "graphicsscene.h"
 #include "graphicsview.h"
 #include "graphicsobject.h"
-#include "graphicshandle.h"
+#include "abstractgraphicshandle.h"
 
 #include <QGraphicsItem>
 #include <QGraphicsEffect>
@@ -58,7 +58,7 @@ GraphicsSelectTool::~GraphicsSelectTool()
 
 void GraphicsSelectTool::updateCursor(QMouseEvent *event)
 {
-    GraphicsHandle *handle = view()->handleUnderMouse();
+    AbstractGraphicsHandle *handle = view()->handleUnderMouse();
     GraphicsObject *object = view()->objectUnderMouse();
     if (handle != nullptr) {
         m_handle = handle;
@@ -86,7 +86,7 @@ void GraphicsSelectTool::setOperation(GraphicsSelectTool::Operation operation)
         break;
     case MoveHandle:
         Q_ASSERT(m_handle != nullptr);
-        view()->setCursor(m_handle->cursor());
+        view()->setCursor(m_handle->handleCursor());
         break;
     case CloneItem:
         view()->setCursor(Qt::DragCopyCursor);
@@ -145,7 +145,7 @@ void GraphicsSelectTool::mousePressEvent(QMouseEvent *event)
         return;
 
     if (m_state == HintState) {
-        GraphicsHandle *handle = view()->handleUnderMouse();
+        AbstractGraphicsHandle *handle = view()->handleUnderMouse();
         GraphicsObject *object = view()->objectUnderMouse();
         m_mousePressPosition = event->pos();
         switch (m_operation) {

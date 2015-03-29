@@ -1,5 +1,5 @@
-#ifndef GRAPHICSHANDLE_H
-#define GRAPHICSHANDLE_H
+#ifndef ABSTRACTGRAPHICSHANDLE_H
+#define ABSTRACTGRAPHICSHANDLE_H
 
 #include <QGraphicsPathItem>
 #include "graphicseditor/igraphicsobservableitem.h"
@@ -25,40 +25,48 @@ enum GraphicsHandleRole {
 };
 
 enum GraphicsHandleShape {
-    UndefinedHandleShape = 0,
-    CircularHandleShape,
+    CircularHandleShape = 0,
     SquaredHandleShape,
     DiamondedHandleShape
 };
 
 enum GraphicsHandleBehaviour {
-    UndefinedHandleBehaviour = 0,
-    NormalHandleBehaviour,
+    NormalHandleBehaviour = 0,
     CornerHandleBehaviour,
     SmoothHandleBehaviour,
     SymetricHandleBehaviour,
     AutoSmoothHandleBehaviour
 };
 
-class GraphicsHandle: public QGraphicsPathItem, public IGraphicsObservableItem
+class AbstractGraphicsHandle: public QGraphicsPathItem, public IGraphicsObservableItem
 {
 public:
-    GraphicsHandle(QGraphicsItem *parent = 0);
+    AbstractGraphicsHandle(GraphicsObject *parent);
+    virtual ~AbstractGraphicsHandle();
 
-    QCursor cursor() const;
+    QCursor handleCursor() const;
 
-    void setRole(GraphicsHandleRole role);
-    GraphicsHandleRole role() const;
+    virtual void setHandleId(int id);
+    int handleId() const;
+    void setHandleRole(GraphicsHandleRole role);
+    GraphicsHandleRole handleRole() const;
     void setHandleShape(GraphicsHandleShape shape);
     GraphicsHandleShape handleShape() const;
-
-protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    GraphicsObject *parentGraphicsObject() const;
+    virtual void setParentGraphicsObject(GraphicsObject *parent);
 
 private:
     static QCursor roleToCursor(GraphicsHandleRole role);
+    int m_id;
     GraphicsHandleRole m_role;
     GraphicsHandleShape m_handleShape;
+    GraphicsHandleBehaviour m_behaviour;
+    GraphicsObject *m_parent;
+    void updateShape();
+
+    // QGraphicsItem interface
+protected:
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };
 
-#endif // GRAPHICSHANDLE_H
+#endif // ABSTRACTGRAPHICSHANDLE_H

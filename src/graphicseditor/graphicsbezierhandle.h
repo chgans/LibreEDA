@@ -1,21 +1,19 @@
-#ifndef GRAPHICSPATHPOINT_H
-#define GRAPHICSPATHPOINT_H
+#ifndef GRAPHICSBEZIERHANDLE_H
+#define GRAPHICSBEZIERHANDLE_H
 
 #include <QGraphicsItem>
-#include "graphicseditor/graphicshandle.h"
+#include "graphicseditor/abstractgraphicshandle.h"
 #include "graphicseditor/igraphicsitemobserver.h"
 #include "graphicseditor/igraphicsobservableitem.h"
 
 
-class GraphicsPathPoint:
-        public QGraphicsItem,
-        public IGraphicsItemObserver,
-        public IGraphicsObservableItem
+class GraphicsBezierHandle:
+        public AbstractGraphicsHandle,
+        public IGraphicsItemObserver
 {
 public:
-    // TODO: differentiate parent from observer
-    GraphicsPathPoint(QGraphicsItem *parent = 0);
-    ~GraphicsPathPoint();
+    GraphicsBezierHandle(GraphicsObject *parent = 0);
+    ~GraphicsBezierHandle();
 
     enum HandleType {
         UndefinedHandle = 0,
@@ -68,6 +66,10 @@ public:
         setPos(type, QPointF(x, y));
     }
 
+    void setBehaviour(GraphicsHandleBehaviour behaviour);
+    GraphicsHandleBehaviour behaviour() const;
+
+
     HandleTypes handlesEnabled() const;
     bool handleEnabled(HandleType type);
 
@@ -84,19 +86,16 @@ public:
     bool isClosingPath() const;
     void setClosingPath(bool closing);
 
-    void setBehaviour(GraphicsHandleBehaviour behaviour);
-    GraphicsHandleBehaviour behaviour() const;
-
 private:
     bool m_first;
     bool m_last;
     bool m_closing;
     HandleTypes m_handles;
+    AbstractGraphicsHandle *m_nodeHandle;
+    AbstractGraphicsHandle *m_control1Handle;
+    AbstractGraphicsHandle *m_control2Handle;
     GraphicsHandleBehaviour m_behaviour;
-    GraphicsHandle *m_nodeHandle;
-    GraphicsHandle *m_control1Handle;
-    GraphicsHandle *m_control2Handle;
-    QMap<HandleType, GraphicsHandle **> m_typeToHandle;
+    QMap<HandleType, AbstractGraphicsHandle **> m_typeToHandle;
     IGraphicsItemObserver *m_observer;
     QString typeToString(HandleType type);
 
@@ -110,12 +109,12 @@ public:
     QPainterPath shape() const;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    // QGraphicsItem interface
-protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
+    // AbstractGraphicsHandle interface
+public:
+    void setHandleId(int id);
+    void setParentGraphicsObject(GraphicsObject *parent);
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(GraphicsPathPoint::HandleTypes)
+Q_DECLARE_OPERATORS_FOR_FLAGS(GraphicsBezierHandle::HandleTypes)
 
-#endif // GRAPHICSPATHPOINT_H
+#endif // GRAPHICSBEZIERHANDLE_H

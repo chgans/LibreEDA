@@ -89,12 +89,12 @@ GraphicsObject *GraphicsView::objectAt(const QPoint &pos) const
     return dynamic_cast<GraphicsObject *>(QGraphicsView::itemAt(pos));
 }
 
-GraphicsHandle *GraphicsView::handleAt(const QPoint &pos) const
+AbstractGraphicsHandle *GraphicsView::handleAt(const QPoint &pos) const
 {
-    return dynamic_cast<GraphicsHandle *>(QGraphicsView::itemAt(pos));
+    return dynamic_cast<AbstractGraphicsHandle *>(QGraphicsView::itemAt(pos));
 }
 
-GraphicsHandle *GraphicsView::handleUnderMouse() const
+AbstractGraphicsHandle *GraphicsView::handleUnderMouse() const
 {
     return handleAt(mousePosition());
 }

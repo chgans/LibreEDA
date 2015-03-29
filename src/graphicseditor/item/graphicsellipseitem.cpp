@@ -6,8 +6,8 @@ GraphicsEllipseItem::GraphicsEllipseItem(GraphicsObject *parent):
     GraphicsObject(parent),
     m_xRadius(0.0f), m_yRadius(0.0f)
 {
-    addHandle(XRadiusHandle, MoveHandleRole, DiamondedHandleShape);
-    addHandle(YRadiusHandle, MoveHandleRole, DiamondedHandleShape);
+    addRegularHandle(XRadiusHandle, MoveHandleRole, DiamondedHandleShape);
+    addRegularHandle(YRadiusHandle, MoveHandleRole, DiamondedHandleShape);
 }
 
 GraphicsEllipseItem::~GraphicsEllipseItem()
@@ -102,7 +102,7 @@ GraphicsObject *GraphicsEllipseItem::clone()
 QVariant GraphicsEllipseItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (GraphicsHandle *handle, m_handleToId.keys()) {
+        foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
             handle->setVisible(isSelected());
         }
     }
@@ -111,7 +111,7 @@ QVariant GraphicsEllipseItem::itemChange(QGraphicsItem::GraphicsItemChange chang
 
 void GraphicsEllipseItem::itemNotification(IGraphicsObservableItem *item)
 {
-    GraphicsHandle *handle = static_cast<GraphicsHandle *>(item);
+    AbstractGraphicsHandle *handle = static_cast<AbstractGraphicsHandle *>(item);
     if (handle == m_idToHandle[XRadiusHandle])
         setXRadius(qAbs(handle->pos().x()));
     else

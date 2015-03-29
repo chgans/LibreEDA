@@ -2,10 +2,10 @@
 #define GRAPHICSBEZIERITEM_H
 
 #include "graphicsobject.h"
-#include "graphicspathpoint.h"
 
 #include <QPen>
 
+class GraphicsBezierHandle;
 
 class GraphicsBezierItem : public GraphicsObject
 {
@@ -24,7 +24,6 @@ public:
 
 private:
     QPainterPath m_path;
-    QList<GraphicsPathPoint *> m_pathPoints;
 
     void setBoundingRectDirty();
     void computeBoundingRect() const;
@@ -48,10 +47,10 @@ private:
     void smoothBezier();
     void computeBezierControlPoints(const QVector<qreal> &p, QVector<qreal> &c1, QVector<qreal> &c2);
 
-    void bezierToPathPoints();
-    void bezierToPathPoint(int idx);
-    void pathPointsToBezier();
-    void pathPointToBezier(int idx);
+    void bezierToHandles();
+    void bezierToHandle(int idx);
+    void handlesToBezier();
+    void handleToBezier(int idx);
 
     // QGraphicsItem interface
 public:

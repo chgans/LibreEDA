@@ -1,7 +1,7 @@
 #include "tool/graphicsbeziertool.h"
 #include "item/graphicsbezieritem.h"
 
-#include "graphicshandle.h"
+#include "graphicseditor/abstractgraphicshandle.h"
 #include "graphicsview.h"
 #include "graphicsscene.h"
 

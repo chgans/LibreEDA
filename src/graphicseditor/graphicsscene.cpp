@@ -1,6 +1,6 @@
 #include "graphicsscene.h"
 #include "graphicsobject.h"
-#include "graphicshandle.h"
+#include "graphicseditor/abstractgraphicshandle.h"
 #include "graphicsgrid.h"
 
 #include <QPainter>
