@@ -120,6 +120,7 @@ GraphicsObject *GraphicsPolygonItem::clone()
     GraphicsPolygonItem *item = new GraphicsPolygonItem();
     item->setPolygon(polygon());
     item->setFillRule(fillRule());
+    GraphicsObject::cloneTo(item);
     return item;
 }
 
