@@ -15,7 +15,7 @@ public:
     ~GraphicsPolygonTool();
 
 private:
-    QAction *m_action;
+    QAction *m_toolAction;
     QString m_toolGroup;
     GraphicsPolygonItem *m_item;
 

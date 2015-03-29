@@ -8,8 +8,9 @@
 GraphicsPolygonTool::GraphicsPolygonTool(QObject *parent):
     AbstractGraphicsInsertTool(parent)
 {
-    m_action = new QAction(QIcon(":/icons/tool/graphicspolygontool.svg"),
+    m_toolAction = new QAction(QIcon(":/icons/tool/graphicspolygontool.svg"),
                            "Place a rectangle", nullptr);
+    m_toolAction->setShortcut(QKeySequence("i,p"));
     m_toolGroup = "interactive-tools";
 }
 
@@ -30,17 +31,17 @@ QString GraphicsPolygonTool::toolGroup() const
 
 QAction *GraphicsPolygonTool::action() const
 {
-    return m_action;
+    return m_toolAction;
 }
 
 void GraphicsPolygonTool::activate(const QAction *which)
 {
-    Q_ASSERT(m_action == which);
+    Q_ASSERT(m_toolAction == which);
 }
 
 void GraphicsPolygonTool::desactivate(const QAction *which)
 {
-    Q_ASSERT(m_action == which);
+    Q_ASSERT(m_toolAction == which);
 }
 
 GraphicsObject *GraphicsPolygonTool::beginInsert(const QPointF &pos)

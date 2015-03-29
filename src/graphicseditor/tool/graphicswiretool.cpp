@@ -14,6 +14,7 @@ GraphicsWireTool::GraphicsWireTool(QObject *parent):
 {
     m_toolAction = new QAction(QIcon(":/icons/tool/graphicspolylinetool.svg"), // TODO: rename to wire
                                "Place a wire", nullptr);;
+    m_toolAction->setShortcut(QKeySequence("i,w"));
     m_toolGroup = "interactive-tools";
 }
 

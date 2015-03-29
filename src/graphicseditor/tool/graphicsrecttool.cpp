@@ -14,6 +14,7 @@ GraphicsRectTool::GraphicsRectTool(QObject *parent):
 {
     m_toolAction = new QAction(QIcon(":/icons/tool/graphicsrecttool.svg"),
                            "Place a rectangle", nullptr);
+    m_toolAction->setShortcut(QKeySequence("i,r"));
     m_toolGroup = "interactive-tools";
 }
 

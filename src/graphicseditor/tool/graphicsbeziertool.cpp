@@ -23,8 +23,9 @@ GraphicsBezierTool::GraphicsBezierTool(QObject *parent):
     AbstractGraphicsInsertTool(parent),
     m_item(nullptr)
 {
-    m_action = new QAction(QIcon(":/icons/tool/graphicsbeziertool.svg"),
-                           "Place a bezier curve", nullptr);;
+    m_toolAction = new QAction(QIcon(":/icons/tool/graphicsbeziertool.svg"),
+                           "Place a bezier curve", nullptr);
+    m_toolAction->setShortcut(QKeySequence("i,b"));
     m_toolGroup = "interactive-tools";
 }
 
@@ -45,17 +46,17 @@ QString GraphicsBezierTool::toolGroup() const
 
 QAction *GraphicsBezierTool::action() const
 {
-    return m_action;
+    return m_toolAction;
 }
 
 void GraphicsBezierTool::activate(const QAction *which)
 {
-    Q_ASSERT(m_action == which);
+    Q_ASSERT(m_toolAction == which);
 }
 
 void GraphicsBezierTool::desactivate(const QAction *which)
 {
-    Q_ASSERT(m_action == which);
+    Q_ASSERT(m_toolAction == which);
 }
 
 GraphicsObject *GraphicsBezierTool::beginInsert(const QPointF &pos)

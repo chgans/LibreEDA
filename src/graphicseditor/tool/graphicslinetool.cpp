@@ -14,8 +14,9 @@
 GraphicsLineTool::GraphicsLineTool(QObject *parent):
     AbstractGraphicsInsertTool(parent), m_item(nullptr)
 {
-    m_action = new QAction(QIcon(":/icons/tool/graphicslinetool.svg"),
+    m_toolAction = new QAction(QIcon(":/icons/tool/graphicslinetool.svg"),
                            "Place a line", nullptr);
+    m_toolAction->setShortcut(QKeySequence("i,l"));
     m_toolGroup = "interactive-tools";
 }
 
@@ -32,7 +33,7 @@ QString GraphicsLineTool::toolGroup() const
 
 QAction *GraphicsLineTool::action() const
 {
-    return m_action;
+    return m_toolAction;
 }
 
 void GraphicsLineTool::cancel()
@@ -41,12 +42,12 @@ void GraphicsLineTool::cancel()
 
 void GraphicsLineTool::activate(const QAction *which)
 {
-    Q_ASSERT(m_action == which);
+    Q_ASSERT(m_toolAction == which);
 }
 
 void GraphicsLineTool::desactivate(const QAction *which)
 {
-    Q_ASSERT(m_action == which);
+    Q_ASSERT(m_toolAction == which);
 }
 
 GraphicsObject *GraphicsLineTool::beginInsert(const QPointF &pos)

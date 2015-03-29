@@ -12,7 +12,7 @@ public:
     ~GraphicsCircleTool();
 
 private:
-    QAction *m_action;
+    QAction *m_toolAction;
     QString m_toolGroup;
     GraphicsCircleItem *m_item;
 

@@ -14,7 +14,7 @@ public:
     ~GraphicsBezierTool();
 
 private:
-    QAction *m_action;
+    QAction *m_toolAction;
     QString m_toolGroup;
     GraphicsBezierItem *m_item;
 

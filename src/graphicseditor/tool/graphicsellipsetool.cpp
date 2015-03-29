@@ -6,8 +6,9 @@
 GraphicsEllipseTool::GraphicsEllipseTool(QObject *parent):
     AbstractGraphicsInsertTool(parent)
 {
-    m_action = new QAction(QIcon(":/icons/tool/graphicsellipsetool.svg"),
-                           "Place an ellipse", nullptr);;
+    m_toolAction = new QAction(QIcon(":/icons/tool/graphicsellipsetool.svg"),
+                           "Place an ellipse", nullptr);
+    m_toolAction->setShortcut(QKeySequence("i,e"));
     m_toolGroup = "interactive-tools";
 }
 
@@ -28,17 +29,17 @@ QString GraphicsEllipseTool::toolGroup() const
 
 QAction *GraphicsEllipseTool::action() const
 {
-    return m_action;
+    return m_toolAction;
 }
 
 void GraphicsEllipseTool::activate(const QAction *which)
 {
-    Q_ASSERT(m_action == which);
+    Q_ASSERT(m_toolAction == which);
 }
 
 void GraphicsEllipseTool::desactivate(const QAction *which)
 {
-    Q_ASSERT(m_action == which);
+    Q_ASSERT(m_toolAction == which);
 }
 
 GraphicsObject *GraphicsEllipseTool::beginInsert(const QPointF &pos)

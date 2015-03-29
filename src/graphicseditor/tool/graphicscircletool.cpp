@@ -7,8 +7,9 @@
 GraphicsCircleTool::GraphicsCircleTool(QObject *parent):
     AbstractGraphicsInsertTool(parent)
 {
-    m_action = new QAction(QIcon(":/icons/tool/graphicscircletool.svg"),
-                           "Place a circle", nullptr);;
+    m_toolAction = new QAction(QIcon(":/icons/tool/graphicscircletool.svg"),
+                           "Place a circle", nullptr);
+    m_toolAction->setShortcut(QKeySequence("i,c"));
     m_toolGroup = "interactive-tools";
 }
 
@@ -28,17 +29,17 @@ QString GraphicsCircleTool::toolGroup() const
 
 QAction *GraphicsCircleTool::action() const
 {
-    return m_action;
+    return m_toolAction;
 }
 
 void GraphicsCircleTool::activate(const QAction *which)
 {
-    Q_ASSERT(m_action == which);
+    Q_ASSERT(m_toolAction == which);
 }
 
 void GraphicsCircleTool::desactivate(const QAction *which)
 {
-    Q_ASSERT(m_action == which);
+    Q_ASSERT(m_toolAction == which);
 }
 
 GraphicsObject *GraphicsCircleTool::beginInsert(const QPointF &pos)

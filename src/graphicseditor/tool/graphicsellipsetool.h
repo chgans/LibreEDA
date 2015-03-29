@@ -16,7 +16,7 @@ public:
     ~GraphicsEllipseTool();
 
 private:
-    QAction *m_action;
+    QAction *m_toolAction;
     QString m_toolGroup;
     GraphicsEllipseItem *m_item;
 

@@ -40,7 +40,7 @@ public:
 
 private:
     QString m_toolGroup;
-    QAction *m_action;
+    QAction *m_toolAction;
 
     void setP1(const QPointF &pos);
     void setP2(const QPointF &pos);
