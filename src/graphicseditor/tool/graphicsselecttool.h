@@ -52,8 +52,8 @@ public:
     virtual QString toolGroup() const;
     virtual QAction *action() const;
     QDialog *optionDialog();
-    virtual void activate(const QAction *which);
-    virtual void desactivate(const QAction *which);
+    virtual void activate(const QAction *which, GraphicsView *view);
+    virtual void desactivate(const QAction *which, GraphicsView *view);
 
     // GraphicsTool interface
 public slots:

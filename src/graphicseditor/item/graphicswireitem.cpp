@@ -54,8 +54,10 @@ GraphicsObject *GraphicsWireItem::clone()
 QList<QPointF> GraphicsWireItem::points() const
 {
     QList<QPointF> result;
-    foreach (GraphicsHandle *handle, m_handleToId.keys())
-        result.append(handle->pos());
+    for (int i = 0; i < m_path.elementCount(); i++) {
+        result.append(QPointF(m_path.elementAt(i).x,
+                              m_path.elementAt(i).y));
+    }
     return result;
 }
 
@@ -63,7 +65,14 @@ QList<QPointF> GraphicsWireItem::points() const
 void GraphicsWireItem::addPoint(const QPointF &pos)
 {
     addHandle(m_path.elementCount(), MoveHandleRole, CircularHandleShape, pos);
-    handleToPath();
+
+    prepareGeometryChange();
+    if (m_path.elementCount() == 0)
+        m_path.moveTo(pos);
+    else
+        m_path.lineTo(pos);
+    m_boundingRect = QRectF();
+    update();
 
     emit pointsChanged();
 }
@@ -73,7 +82,11 @@ void GraphicsWireItem::movePoint(int idx, const QPointF &pos)
     blockItemNotification();
     m_idToHandle[idx]->setPos(pos);
     unblockItemNotification();
-    handleToPath();
+
+    prepareGeometryChange();
+    m_path.setElementPositionAt(idx, pos.x(), pos.y());
+    m_boundingRect = QRectF();
+    update();
 
     emit pointsChanged();
 }
@@ -86,13 +99,6 @@ void GraphicsWireItem::setPoints(QList<QPointF> points)
     for (int i = 0; i < points.count(); i++)
         addHandle(i, MoveHandleRole, CircularHandleShape, points[i]);
 
-    handleToPath();
-
-    emit pointsChanged();
-}
-
-void GraphicsWireItem::handleToPath()
-{
     prepareGeometryChange();
     m_path = QPainterPath();
     if (!m_idToHandle.isEmpty()) {
@@ -103,22 +109,21 @@ void GraphicsWireItem::handleToPath()
     }
     m_boundingRect = QRectF();
     update();
-}
 
-void GraphicsWireItem::pathToHandle()
-{
-    blockItemNotification();
-    for (int i = 0; i < m_path.elementCount(); i++) {
-        m_idToHandle[i]->setPos(m_path.elementAt(i).x,
-                                m_path.elementAt(i).y);
-    }
-    unblockItemNotification();
+    emit pointsChanged();
 }
 
 void GraphicsWireItem::itemNotification(IGraphicsObservableItem *item)
 {
-    Q_UNUSED(item);
-    handleToPath();
+    GraphicsHandle *handle = static_cast<GraphicsHandle*>(item);
+    int idx = m_handleToId[handle];
+
+    prepareGeometryChange();
+    m_path.setElementPositionAt(idx, handle->pos().x(), handle->pos().y());
+    m_boundingRect = QRectF();
+    update();
+
+    emit pointsChanged();
 }
 
 

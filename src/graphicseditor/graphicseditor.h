@@ -24,6 +24,7 @@ public slots:
     void desactivate(QMainWindow *win);
 
 private:
+    QMainWindow *m_mainWindow;
     GraphicsView *m_view;
     GraphicsScene *m_scene;
 

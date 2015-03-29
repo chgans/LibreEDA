@@ -59,21 +59,24 @@ void GraphicsWireTool::addPoint(int idx, const QPointF &pos)
     m_item->addPoint(m_item->mapFromScene(pos));
 }
 
-void GraphicsWireTool::freezePoint(int idx)
+void GraphicsWireTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(idx);
 }
 
-bool GraphicsWireTool::removePoint(int idx)
+bool GraphicsWireTool::removePoint(int idx, const QPointF &pos)
 {
     QList<QPointF> points = m_item->points();
     QPointF point = points[idx];
     points.removeAt(idx);
-    if (points.count() > 1)
+    if (points.count() > 1) {
         points[idx - 1] = point;
-    m_item->setPoints(points);
-    Q_UNUSED(idx);
-    return false;
+        m_item->setPoints(points);
+        return true; // Keep going
+    }
+    else {
+        return false; // remove and delete wire
+    }
 }
 
 void GraphicsWireTool::movePoint(int idx, const QPointF &pos)

@@ -32,8 +32,8 @@ private:
 public:
     GraphicsObject *beginInsert(const QPointF &pos);
     void addPoint(int idx, const QPointF &pos);
-    void freezePoint(int idx);
-    bool removePoint(int idx);
+    void freezePoint(int idx, const QPointF &pos);
+    bool removePoint(int idx, const QPointF &pos);
     void movePoint(int idx, const QPointF &pos);
     void endInsert(const QPointF &pos);
     void cancelInsert();

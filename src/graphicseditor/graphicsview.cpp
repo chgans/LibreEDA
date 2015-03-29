@@ -72,12 +72,15 @@ AbstractGraphicsInteractiveTool *GraphicsView::tool()
 
 void GraphicsView::setTool(AbstractGraphicsInteractiveTool *tool)
 {
-    if (m_tool)
-        m_tool->desactivate(m_tool->action()); // FIXME: pass "this" instead, a non active tool doesnt need a view
+    if (m_tool) {
+        m_tool->desactivate(m_tool->action(), this);
+    }
+
     m_tool = tool;
+
     if (m_tool) {
         m_tool->setView(this);
-        m_tool->activate(tool->action());
+        m_tool->activate(tool->action(), this);
     }
 }
 
@@ -243,18 +246,12 @@ void GraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
         event->ignore();
 }
 
-// TODO: manage esc and tab here or tool or tool manager?
-//  => better in AbstractGraphicsTool... no
-//  => a Tool manager? Someone as to manage the "default" tool logic
-//  => Pass the events to tool manager, and then depending of the accepted
-//     state of the event and the kind of event, pass it to the scene
-//  => As well, we should certainly use QAction as well
 void GraphicsView::keyPressEvent(QKeyEvent *event)
 {
     if (m_tool != nullptr)
         m_tool->keyPressEvent(event);
     else
-        event->ignore();
+        QGraphicsView::keyPressEvent(event);
 }
 
 void GraphicsView::keyReleaseEvent(QKeyEvent *event)
@@ -262,7 +259,7 @@ void GraphicsView::keyReleaseEvent(QKeyEvent *event)
     if (m_tool != nullptr)
         m_tool->keyReleaseEvent(event);
     else
-        event->ignore();
+        QGraphicsView::keyReleaseEvent(event);
 }
 
 void GraphicsView::updateMousePos()

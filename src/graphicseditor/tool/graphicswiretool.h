@@ -31,8 +31,8 @@ public:
 public:
     virtual GraphicsObject *beginInsert(const QPointF &pos);
     virtual void addPoint(int idx, const QPointF &pos);
-    virtual void freezePoint(int idx);
-    virtual bool removePoint(int idx);
+    virtual void freezePoint(int idx, const QPointF &pos);
+    virtual bool removePoint(int idx, const QPointF &pos);
     virtual void movePoint(int idx, const QPointF &pos);
     virtual void endInsert(const QPointF &pos);
     virtual void cancelInsert();

@@ -54,6 +54,7 @@ void GraphicsEditor::activate(QMainWindow *win)
     win->addToolBar(m_interactiveToolsToolBar);
     win->addToolBar(m_snapToolBar);
     win->addToolBar(m_pathPointToolBar);
+    m_mainWindow = win;
 }
 
 void GraphicsEditor::desactivate(QMainWindow *win)
@@ -108,21 +109,27 @@ void GraphicsEditor::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
     action->setData(QVariant::fromValue<AbstractGraphicsInteractiveTool *>(tool));
     m_interactiveToolsActionGroup->addAction(action);
     m_interactiveToolsToolBar->addAction(action);
+
     if (firstAction) {
         action->setChecked(true);
         firstAction = false;
     }
-    else
+    else {
         action->setChecked(false);
+    }
+
     connect(m_interactiveToolsActionGroup, &QActionGroup::triggered,
             this, [this](QAction *action) {
         AbstractGraphicsInteractiveTool *tool = action->data().value<AbstractGraphicsInteractiveTool*>();
         m_view->setTool(tool);
     });
-    connect(tool, &GraphicsTool::finished,
-            this, [this]() {
-        // Todo: activate select tool
-    });
+    if (!firstAction) {
+        connect(tool, &GraphicsTool::finished,
+                this, [this]() {
+            m_interactiveTools.first()->action()->trigger();
+        });
+    }
+
     m_interactiveTools.append(tool);
     if (firstTool)
         m_view->setTool(tool);

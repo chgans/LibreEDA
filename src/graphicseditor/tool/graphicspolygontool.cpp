@@ -56,21 +56,23 @@ void GraphicsPolygonTool::addPoint(int idx, const QPointF &pos)
     m_item->addPoint(itemPos);
 }
 
-void GraphicsPolygonTool::freezePoint(int idx)
+void GraphicsPolygonTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(idx);
 }
 
-bool GraphicsPolygonTool::removePoint(int idx)
+bool GraphicsPolygonTool::removePoint(int idx, const QPointF &pos)
 {
     QPolygonF poly = m_item->polygon();
     QPointF point = poly[idx];
     poly.removeAt(idx);
-    if (poly.count() > 1)
+    if (poly.count() > 1) {
         poly[idx - 1] = point;
-    m_item->setPolygon(poly);
-    Q_UNUSED(idx);
-    return false;
+        m_item->setPolygon(poly);
+        return true; // Keep going
+    }
+    else
+        return false; // Remove and delete polygon
 }
 
 void GraphicsPolygonTool::movePoint(int idx, const QPointF &pos)

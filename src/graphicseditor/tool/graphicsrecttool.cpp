@@ -60,7 +60,7 @@ void GraphicsRectTool::addPoint(int idx, const QPointF &pos)
     }
 }
 
-void GraphicsRectTool::freezePoint(int idx)
+void GraphicsRectTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx < 2);
 
@@ -71,10 +71,10 @@ void GraphicsRectTool::freezePoint(int idx)
     resetTool();
 }
 
-bool GraphicsRectTool::removePoint(int idx)
+bool GraphicsRectTool::removePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(idx);
-    return false;
+    return false; // will remove and delete rect
 }
 
 void GraphicsRectTool::movePoint(int idx, const QPointF &pos)

@@ -59,7 +59,7 @@ void GraphicsCircleTool::addPoint(int idx, const QPointF &pos)
     m_item->setRadius(qAbs(itemPos.x()));
 }
 
-void GraphicsCircleTool::freezePoint(int idx)
+void GraphicsCircleTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx < 2);
 
@@ -70,10 +70,10 @@ void GraphicsCircleTool::freezePoint(int idx)
     resetTool();
 }
 
-bool GraphicsCircleTool::removePoint(int idx)
+bool GraphicsCircleTool::removePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(idx);
-    return false;
+    return false; // Remove and delete circles
 }
 
 void GraphicsCircleTool::movePoint(int idx, const QPointF &pos)

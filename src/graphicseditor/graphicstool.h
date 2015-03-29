@@ -34,8 +34,8 @@ public:
     virtual QString toolGroup() const = 0;
     virtual QAction *action() const = 0;
 
-    virtual void activate(const QAction *which) = 0;
-    virtual void desactivate(const QAction *which) = 0;
+    virtual void activate(const QAction *which, GraphicsView *view) = 0;
+    virtual void desactivate(const QAction *which, GraphicsView *view) = 0;
 
 signals:
     void finished();

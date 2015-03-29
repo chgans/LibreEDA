@@ -30,8 +30,8 @@ signals:
 
 private:
     QPainterPath m_path;
-    void handleToPath();
-    void pathToHandle();
+    //void handleToPath();
+    //void pathToHandle();
 
     // QGraphicsItem interface
 public:

@@ -5,6 +5,8 @@
 
 #include <QPointF>
 
+class QAction;
+
 // TBD: ctrl+space: cycle mode
 // Use template whith GraphicsXyzItem, or use GraphicsObject base class
 // Should work as well for single point (either a "Point" object, or a fixed shape/size object)
@@ -21,9 +23,9 @@ public:
     // Typ. first mouse move after mouse clicked, idx > 0
     virtual void addPoint(int idx, const QPointF &pos) = 0;
     // Typ. mouse clicked, idx >= 0
-    virtual void freezePoint(int idx) = 0;
+    virtual void freezePoint(int idx, const QPointF &pos) = 0;
     // Typ. Esc pressed, idx > 0
-    virtual bool removePoint(int idx) = 0;
+    virtual bool removePoint(int idx, const QPointF &pos) = 0;
     // Typ. mouse move, idx > 0
     virtual void movePoint(int idx, const QPointF &pos) = 0;
     // Typ. mouse doubleclick
@@ -42,6 +44,10 @@ public:
 signals:
     void objectInserted(GraphicsObject *object);
 
+public slots:
+    void goBack();
+    void showOptionDialog();
+
 private:
     int m_index;
     QPointF m_pressPos;
@@ -49,6 +55,8 @@ private:
     bool m_addPointOnMouseMove;
     bool m_isActive;
     GraphicsObject *m_item;
+    QAction *m_goBackAction;
+    QAction *m_showDialogAction;
 
     // AbstractGraphicsInteractiveTool interface
 public:
@@ -64,8 +72,8 @@ public:
     QDialog *optionDialog();
     QString toolGroup() const;
     QAction *action() const;
-    void activate(const QAction *which);
-    void desactivate(const QAction *which);
+    void activate(const QAction *which, GraphicsView *view);
+    void desactivate(const QAction *which, GraphicsView *view);
 
 };
 

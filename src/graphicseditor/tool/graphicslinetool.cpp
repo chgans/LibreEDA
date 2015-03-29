@@ -68,7 +68,7 @@ void GraphicsLineTool::addPoint(int idx, const QPointF &pos)
     }
 }
 
-void GraphicsLineTool::freezePoint(int idx)
+void GraphicsLineTool::freezePoint(int idx, const QPointF &pos)
 {
     if (idx == 0)
         return;
@@ -77,10 +77,10 @@ void GraphicsLineTool::freezePoint(int idx)
     resetTool();
 }
 
-bool GraphicsLineTool::removePoint(int idx)
+bool GraphicsLineTool::removePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(idx);
-    return false;
+    return false; // Remove and delete line
 }
 
 void GraphicsLineTool::movePoint(int idx, const QPointF &pos)

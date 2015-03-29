@@ -8,6 +8,8 @@
 #include <QKeyEvent>
 #include <QWheelEvent>
 
+#include <QAction>
+
 #include <QDialog>
 
 #include <QDebug>
@@ -16,6 +18,14 @@ AbstractGraphicsInsertTool::AbstractGraphicsInsertTool(QObject *parent):
     AbstractGraphicsInteractiveTool(parent)
 {
     resetTool();
+    m_goBackAction = new QAction(this);
+    m_goBackAction->setShortcut(QKeySequence(Qt::Key_Escape));
+    connect(m_goBackAction, &QAction::triggered,
+            this, &AbstractGraphicsInsertTool::goBack);
+    m_showDialogAction = new QAction(this);
+    m_showDialogAction->setShortcut(QKeySequence(Qt::Key_Tab));
+    connect(m_showDialogAction, &QAction::triggered,
+            this, &AbstractGraphicsInsertTool::showOptionDialog);
 }
 
 AbstractGraphicsInsertTool::~AbstractGraphicsInsertTool()
@@ -57,6 +67,33 @@ void AbstractGraphicsInsertTool::resetTool()
     m_index = -1;
 }
 
+void AbstractGraphicsInsertTool::goBack()
+{
+    if (m_index >= 0) {
+        if (removePoint(m_index, m_movePos)) {
+            m_index--;
+            // If hit here, then it means that the tool's removePoint forgot to return false
+            Q_ASSERT(m_index >= 0);
+        }
+        else {
+            scene()->removeItem(m_item);
+            resetTool();
+        }
+    }
+    else {
+        emit finished();
+    }
+}
+
+// FIXME: replace dialog with widget, like the "task" widget in FreeCAD
+// FIXME: the dialog or widget needs a pointer to the corresponding tool
+void AbstractGraphicsInsertTool::showOptionDialog()
+{
+    QDialog *dialog = optionDialog();
+    if (dialog)
+        dialog->exec();
+}
+
 void AbstractGraphicsInsertTool::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton) {
@@ -90,7 +127,7 @@ void AbstractGraphicsInsertTool::mouseMoveEvent(QMouseEvent *event)
 
     m_addPointOnMouseMove = false;
 
-    freezePoint(m_index);
+    freezePoint(m_index, m_movePos);
     if (!m_isActive)
         return;
 
@@ -114,7 +151,7 @@ void AbstractGraphicsInsertTool::mouseReleaseEvent(QMouseEvent *event)
         scene()->addItem(m_item);
         m_index = 0;
         addPoint(m_index, m_pressPos);
-        freezePoint(m_index);
+        freezePoint(m_index, m_pressPos);
     }
     m_addPointOnMouseMove = true;
 }
@@ -129,24 +166,6 @@ void AbstractGraphicsInsertTool::mouseDoubleClickEvent(QMouseEvent *event)
 
 void AbstractGraphicsInsertTool::keyPressEvent(QKeyEvent *event)
 {
-    switch (event->key()) {
-    case Qt::Key_Escape:
-        if (m_index >= 0) {
-            removePoint(m_index);
-            m_index--;
-            if (m_index == 0)
-                resetTool();
-        }
-        else {
-            // TODO: we are done, we should return to select mode
-        }
-        break;
-    case Qt::Key_Tab:
-        QDialog *dialog = optionDialog();
-        if (dialog)
-            dialog->exec();
-        break;
-    }
 }
 
 void AbstractGraphicsInsertTool::keyReleaseEvent(QKeyEvent *event)
@@ -165,10 +184,14 @@ QAction *AbstractGraphicsInsertTool::action() const
 {
 }
 
-void AbstractGraphicsInsertTool::activate(const QAction *which)
+void AbstractGraphicsInsertTool::activate(const QAction *which, GraphicsView *view)
 {
+    view->addAction(m_showDialogAction);
+    view->addAction(m_goBackAction);
 }
 
-void AbstractGraphicsInsertTool::desactivate(const QAction *which)
+void AbstractGraphicsInsertTool::desactivate(const QAction *which, GraphicsView *view)
 {
+    view->removeAction(m_showDialogAction);
+    view->removeAction(m_goBackAction);
 }

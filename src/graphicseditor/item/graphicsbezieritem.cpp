@@ -88,6 +88,32 @@ int GraphicsBezierItem::addPoint(const QPointF &pos)
 
 void GraphicsBezierItem::removePoint(int index)
 {
+    Q_ASSERT(index < pointCount());
+
+    m_px.removeAt(index);
+    m_py.removeAt(index);
+    if (index != 0) {
+        m_c2x.removeAt(index-1);
+        m_c2y.removeAt(index-1); /*
+    }
+    if (!pathPoint->isLast()) {*/
+        m_c1x.removeAt(index-1);
+        m_c1y.removeAt(index-1);
+    }
+
+    GraphicsPathPoint *pathPoint = m_pathPoints.at(index);
+    bool firstRemoved = index == 0;
+    bool lastRemoved = index == (m_pathPoints.count() - 1);
+    blockItemNotification();
+    removeObservedItem(pathPoint);
+    m_pathPoints.removeAt(index);
+    if (firstRemoved && !m_pathPoints.isEmpty())
+        m_pathPoints.first()->setFirst(true);
+    if (lastRemoved && !m_pathPoints.isEmpty())
+        m_pathPoints.last()->setLast(true);
+    smoothBezier();
+    bezierToPathPoints();
+    unblockItemNotification();
 }
 
 void GraphicsBezierItem::movePoint(int index, const QPointF &pos)

@@ -101,12 +101,12 @@ QDialog *GraphicsSelectTool::optionDialog()
     return nullptr;
 }
 
-void GraphicsSelectTool::activate(const QAction *which)
+void GraphicsSelectTool::activate(const QAction *which, GraphicsView *view)
 {
     Q_ASSERT(m_action == which);
 }
 
-void GraphicsSelectTool::desactivate(const QAction *which)
+void GraphicsSelectTool::desactivate(const QAction *which, GraphicsView *view)
 {
     Q_ASSERT(m_action == which);
 }

@@ -63,7 +63,7 @@ void GraphicsEllipseTool::addPoint(int idx, const QPointF &pos)
         m_item->setYRadius(qAbs(itemPos.y()));
 }
 
-void GraphicsEllipseTool::freezePoint(int idx)
+void GraphicsEllipseTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx < 3);
 
@@ -74,9 +74,15 @@ void GraphicsEllipseTool::freezePoint(int idx)
     resetTool();
 }
 
-bool GraphicsEllipseTool::removePoint(int idx)
+bool GraphicsEllipseTool::removePoint(int idx, const QPointF &pos)
 {
-    return false;
+    if (idx == 2) {
+        QPointF itemPos = m_item->mapFromScene(pos);
+        m_item->setYRadius(qAbs(itemPos.y()));
+        return true; // Keep going
+    }
+    else
+        return false; // Remove and delete ellipse
 }
 
 void GraphicsEllipseTool::movePoint(int idx, const QPointF &pos)

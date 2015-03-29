@@ -71,14 +71,22 @@ void GraphicsBezierTool::addPoint(int idx, const QPointF &pos)
     m_item->addPoint(m_item->mapFromScene(pos));
 }
 
-void GraphicsBezierTool::freezePoint(int idx)
+void GraphicsBezierTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(idx);
 }
 
-bool GraphicsBezierTool::removePoint(int idx)
+bool GraphicsBezierTool::removePoint(int idx, const QPointF &pos)
 {
-    Q_UNUSED(idx);
+    QPointF oldPos = m_item->pointAt(idx);
+    m_item->removePoint(idx);
+    if (m_item->pointCount() > 1) {
+        m_item->movePoint(idx-1, oldPos);
+        return true; // Keep going
+    }
+    else {
+        return false; // remove and delete bezier
+    }
     return false;
 }
 
