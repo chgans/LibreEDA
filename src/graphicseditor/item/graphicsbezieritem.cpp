@@ -103,8 +103,10 @@ void GraphicsBezierItem::removePoint(int index)
     bool firstRemoved = index == 0;
     bool lastRemoved = index == (m_pathPoints.count() - 1);
     blockItemNotification();
-    removeObservedItem(pathPoint);
+    removeObservedItem(pathPoint); // TODO: use GraphicsObjects::*handle*
     m_pathPoints.removeAt(index);
+    pathPoint->setParentItem(nullptr);
+    delete pathPoint;
     if (firstRemoved && !m_pathPoints.isEmpty())
         m_pathPoints.first()->setFirst(true);
     if (lastRemoved && !m_pathPoints.isEmpty())
