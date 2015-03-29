@@ -107,11 +107,13 @@ public:
     // QGraphicsItem interface
 public:
     virtual QRectF boundingRect() const;
+    QPainterPath shape() const;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     // QGraphicsItem interface
 protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(GraphicsPathPoint::HandleTypes)

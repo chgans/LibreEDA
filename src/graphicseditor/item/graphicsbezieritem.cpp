@@ -17,8 +17,6 @@ Q_LOGGING_CATEGORY(GraphicsBezierItemLog, "graphics.bezier.item")
 /*
  * TODO:
  *  - Add a beginMove/endMove, while moving we don't have to recompute shape
- *  - implement removePoint
- *  - implement clone
  */
 
 GraphicsBezierItem::GraphicsBezierItem(GraphicsObject *parent):
@@ -369,7 +367,9 @@ GraphicsObject *GraphicsBezierItem::clone()
 {
     GraphicsBezierItem *item = new GraphicsBezierItem();
     GraphicsObject::cloneTo(item);
-    item->m_path = m_path;
+    foreach (const QPointF &point, points()) {
+        item->addPoint(point);
+    }
     return item;
 }
 

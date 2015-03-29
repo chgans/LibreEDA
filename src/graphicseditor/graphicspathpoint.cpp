@@ -1,4 +1,5 @@
 #include "graphicspathpoint.h"
+#include "graphicsobject.h"
 
 #include <QDebug>
 
@@ -283,6 +284,9 @@ void GraphicsPathPoint::itemNotification(IGraphicsObservableItem *item)
     blockItemNotification();
     notifyObservers();
     unblockItemNotification();
+
+    prepareGeometryChange();
+    update();
 }
 
 QRectF GraphicsPathPoint::boundingRect() const
@@ -290,3 +294,7 @@ QRectF GraphicsPathPoint::boundingRect() const
     return childrenBoundingRect();
 }
 
+QPainterPath GraphicsPathPoint::shape() const
+{
+    return QPainterPath();
+}

@@ -23,11 +23,8 @@ public:
     QPointF pointAt(int idx) const;
 
 private:
-    QLineF m_line;
     QPainterPath m_path;
     QList<GraphicsPathPoint *> m_pathPoints;
-
-    //bool m_updatingHandles;
 
     void setBoundingRectDirty();
     void computeBoundingRect() const;
