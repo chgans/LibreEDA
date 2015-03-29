@@ -9,13 +9,14 @@ LibreEDA was just born recently, so if you are looking for a usable open-source 
 there no such thing (yet) in here. You might want to have a look
 [here](http://www.gpleda.org) instead.
 
+## Goals
+
+*WIP*
+
 This repository aims to provide such a piece of software, but it will take time,
 and my approach is to start by writing a solid application framework before
 adding any features you would expect from an EDA.
 
-## Goals
-
-*WIP*
 
 ## Roadmap
 
