@@ -5,6 +5,7 @@
 #include "graphicsobject.h"
 
 #include <QGraphicsOpacityEffect>
+#include <QGraphicsDropShadowEffect>
 
 #include <QMouseEvent>
 #include <QKeyEvent>
@@ -58,9 +59,13 @@ void AbstractGraphicsInteractiveTool::wheelEvent(QWheelEvent *event)
 GraphicsObject *AbstractGraphicsInteractiveTool::createPhantomItem(GraphicsObject *item)
 {
     GraphicsObject *phantomItem = item->clone();
-    QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect();
-    effect->setEnabled(true);
-    phantomItem->setGraphicsEffect(effect);
+    QGraphicsOpacityEffect *itemEffect = new QGraphicsOpacityEffect();
+    itemEffect->setOpacity(0.3);
+    itemEffect->setEnabled(true);
+    item->setGraphicsEffect(itemEffect);
+    QGraphicsDropShadowEffect *phantomEffect = new QGraphicsDropShadowEffect();
+    phantomEffect->setEnabled(true);
+    phantomItem->setGraphicsEffect(phantomEffect);
     scene()->addItem(phantomItem);
     phantomItem->setSelected(false); // force deselected
     return phantomItem;
@@ -74,4 +79,3 @@ QList<GraphicsObject *> AbstractGraphicsInteractiveTool::createPhantomItems(cons
     }
     return phantomItems;
 }
-

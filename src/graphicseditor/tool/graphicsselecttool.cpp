@@ -237,6 +237,7 @@ void GraphicsSelectTool::mouseReleaseEvent(QMouseEvent *event)
     case MoveItem:
         if (m_phantomItems.count() > 0) {
             for (int i = 0; i < m_items.count(); i++) {
+                m_items[i]->setGraphicsEffect(nullptr);
                 m_items[i]->setPos(m_phantomItems[i]->pos());
                 scene()->removeItem(m_phantomItems[i]);
                 delete m_phantomItems[i];
@@ -248,6 +249,7 @@ void GraphicsSelectTool::mouseReleaseEvent(QMouseEvent *event)
         break;
     case CloneItem:
         for (int i = 0; i < m_items.count(); i++) {
+            m_items[i]->setGraphicsEffect(nullptr);
             m_phantomItems[i]->setGraphicsEffect(nullptr);
         }
         m_phantomItems.clear();

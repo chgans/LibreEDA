@@ -37,5 +37,4 @@ void GraphicsTool::cancel()
 
 }
 
-// TODO: the original should be dimmed out instead
 
