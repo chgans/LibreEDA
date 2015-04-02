@@ -1,4 +1,7 @@
 # LibreEDA
+
+[![Build Status](https://travis-ci.org/chgans/LibreEDA.png?branch=master)](https://github.com/chgans/LibreEDA)
+
 A (very experimental) [Electronics Design Automation](http://en.wikipedia.org/wiki/Electronic_design_automation)
 [libre software](http://en.wikipedia.org/wiki/Free_software) based on
 [the Qt5 C++ toolkit](http://www.qt.io), and maybe [KDE Framework 5](http://en.wikipedia.org/wiki/KDE_Frameworks_5) too!
