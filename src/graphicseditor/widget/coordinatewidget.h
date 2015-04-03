@@ -8,6 +8,8 @@ class QLabel;
 class QFocusEvent;
 
 // TODO: rename to CoordinateEditWidget
+//       or CoordinateSpinBox
+//       or CartesianCoordinate...
 
 class CoordinateWidget : public QWidget
 {
