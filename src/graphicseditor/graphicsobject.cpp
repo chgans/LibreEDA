@@ -129,6 +129,7 @@ GraphicsRegularHandle *GraphicsObject::addRegularHandle(int id, GraphicsHandleRo
 
 GraphicsBezierHandle *GraphicsObject::addBezierHandle(int id, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     GraphicsBezierHandle *handle = new GraphicsBezierHandle(this);
 
     Q_ASSERT(!m_idToHandle.keys().contains(id));

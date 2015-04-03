@@ -102,11 +102,13 @@ void GraphicsSelectTool::setOperation(GraphicsSelectTool::Operation operation)
 void GraphicsSelectTool::activate(const QAction *which, GraphicsView *view)
 {
     Q_UNUSED(which);
+    Q_UNUSED(view);
 }
 
 void GraphicsSelectTool::desactivate(const QAction *which, GraphicsView *view)
 {
     Q_UNUSED(which);
+    Q_UNUSED(view);
 }
 
 void GraphicsSelectTool::cancel()

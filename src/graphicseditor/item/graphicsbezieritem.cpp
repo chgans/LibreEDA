@@ -356,6 +356,7 @@ QPainterPath GraphicsBezierItem::shape() const
 
 void GraphicsBezierItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(widget);
     // TBD: exposedRect seems to be always equal boudingRect()
     // http://thesmithfam.org/blog/2007/02/03/qt-improving-qgraphicsview-performance/
     if (!shape().intersects(option->exposedRect))
@@ -381,6 +382,7 @@ GraphicsObject *GraphicsBezierItem::clone()
 
 void GraphicsBezierItem::itemNotification(IGraphicsObservableItem *item)
 {
+    Q_UNUSED(item);
     blockItemNotification();
     handlesToBezier();
     if (m_px.size() >= 2) {

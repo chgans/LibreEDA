@@ -65,12 +65,14 @@ void WireOperationWidget::setTool(GraphicsWireTool *tool)
 
 void WireOperationWidget::focusInEvent(QFocusEvent *event)
 {
+    Q_UNUSED(event);
     qDebug() << __PRETTY_FUNCTION__;
     focusNextChild();
 }
 
 void WireOperationWidget::focusOutEvent(QFocusEvent *event)
 {
+    Q_UNUSED(event);
     qDebug() << __PRETTY_FUNCTION__;
     QWidget::focusOutEvent(event);
 }

@@ -41,6 +41,7 @@ GraphicsObject *GraphicsPolygonTool::beginInsert(const QPointF &pos)
 
 void GraphicsPolygonTool::addPoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(idx);
     Q_UNUSED(pos);
     QPointF itemPos = m_item->mapFromScene(pos);
     m_item->addPoint(itemPos);

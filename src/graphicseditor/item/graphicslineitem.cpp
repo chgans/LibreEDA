@@ -92,6 +92,8 @@ QPainterPath GraphicsLineItem::shape() const
 
 void GraphicsLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
     painter->setPen(pen());
     painter->drawLine(line());
 }

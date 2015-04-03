@@ -146,6 +146,7 @@ void GraphicsView::drawBackground(QPainter *painter, const QRectF &rect)
 
 void GraphicsView::drawForeground(QPainter *painter, const QRectF &rect)
 {
+    Q_UNUSED(rect);
     //QGraphicsView::drawForeground(painter, rect);
 
     QPointF p = mapToScene(mousePosition());
