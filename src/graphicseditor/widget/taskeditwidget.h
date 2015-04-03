@@ -22,16 +22,13 @@ private:
     QVBoxLayout *m_layout;
     QPushButton *m_cancelButton;
     QWidget *m_centralWidget;
-    QWidget *m_centralPlaceHolderWidget;
-
-    // QWidget interface
-protected:
-    bool focusNextPrevChild(bool next);
+    QWidget *findLastChildToFocus(QObject *parent);
 
     // QWidget interface
 protected:
     void focusInEvent(QFocusEvent *event);
     void focusOutEvent(QFocusEvent *event);
+    bool focusNextPrevChild(bool next);
 };
 
 #endif // TASKEDITWIDGET_H

@@ -20,12 +20,12 @@ public slots:
 private:
     QVBoxLayout *m_layout;
     QWidget *m_centralWidget;
-    QWidget *m_centralPlaceHolderWidget;
 
     // QWidget interface
 protected:
     void focusInEvent(QFocusEvent *event);
     void focusOutEvent(QFocusEvent *event);
+    bool focusNextPrevChild(bool next);
 };
 
 #endif // TASKOPTIONWIDGET_H

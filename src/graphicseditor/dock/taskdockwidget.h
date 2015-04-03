@@ -28,6 +28,12 @@ private:
     QSplitter *m_splitter;
     TaskEditWidget *m_taskEditWidget;
     TaskOptionWidget *m_taskOptionWidget;
+
+    // QWidget interface
+protected:
+    void focusInEvent(QFocusEvent *event);
+    void focusOutEvent(QFocusEvent *event);
+    bool focusNextPrevChild(bool next);
 };
 
 #endif // TASKDOCKWIDGET_H

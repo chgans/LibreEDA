@@ -22,36 +22,43 @@ TaskOptionWidget::TaskOptionWidget(QWidget *parent) :
     m_layout = new QVBoxLayout();
     setLayout(m_layout);
 
-    m_centralPlaceHolderWidget = new QWidget();
-    m_centralWidget = m_centralPlaceHolderWidget;
-    m_layout->addWidget(m_centralWidget);
-
     m_layout->addStretch();
 }
 
 void TaskOptionWidget::setCentralWidget(QWidget *widget)
 {
-    QWidget *newWidget = widget != nullptr ? widget : m_centralPlaceHolderWidget;
-
-    m_layout->removeWidget(m_centralWidget);
-    m_centralWidget->hide();
-
-    m_centralWidget = newWidget;
-    m_centralWidget->show();
-    m_layout->insertWidget(0, m_centralWidget);
-
-    if (m_centralWidget->layout() != nullptr) {
-        m_centralWidget->layout()->setMargin(0);
+    if (m_centralWidget != nullptr) {
+        m_layout->removeWidget(m_centralWidget);
+        m_centralWidget->hide();
     }
+
+    if (widget != nullptr) {
+        m_layout->insertWidget(0, widget);
+        // Align central widget and our extra ones (cancel button, ...)
+        if (widget->layout() != nullptr) {
+            widget->layout()->setMargin(0);
+        }
+        widget->show();
+    }
+
+    m_centralWidget = widget;
 }
 
 
-void TaskOptionWidget::focusInEvent(QFocusEvent *)
+void TaskOptionWidget::focusInEvent(QFocusEvent *event)
 {
     qDebug() << __PRETTY_FUNCTION__;
+    QGroupBox::focusInEvent(event);
 }
 
-void TaskOptionWidget::focusOutEvent(QFocusEvent *)
+void TaskOptionWidget::focusOutEvent(QFocusEvent *event)
 {
     qDebug() << __PRETTY_FUNCTION__;
+    QGroupBox::focusOutEvent(event);
+}
+
+bool TaskOptionWidget::focusNextPrevChild(bool next)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    return QGroupBox::focusNextPrevChild(next);
 }

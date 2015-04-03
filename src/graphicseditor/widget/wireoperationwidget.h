@@ -36,6 +36,7 @@ private:
 protected:
     void focusInEvent(QFocusEvent *event);
     void focusOutEvent(QFocusEvent *event);
+    bool focusNextPrevChild(bool next);
 };
 
 #endif // WIREOPERATIONWIDGET_H

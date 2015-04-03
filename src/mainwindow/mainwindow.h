@@ -21,6 +21,12 @@ private:
 
     void addGraphicsEditor();
     void addLogViewer();
+
+    // QWidget interface
+protected:
+    void focusInEvent(QFocusEvent *event);
+    void focusOutEvent(QFocusEvent *event);
+    bool focusNextPrevChild(bool next);
 };
 
 #endif // MAINWINDOW_H

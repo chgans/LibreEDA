@@ -3,6 +3,7 @@
 #include "widget/taskeditwidget.h"
 #include "widget/taskoptionwidget.h"
 
+#include <QDebug>
 #include <QSplitter>
 #include <QVBoxLayout>
 
@@ -20,18 +21,15 @@ TaskDockWidget::TaskDockWidget(QWidget *parent) :
     m_splitter->addWidget(m_taskOptionWidget);
     layout->addWidget(m_splitter);
 
-    //layout->addStretch();
     setWidget(widget);
-
-    setFocusPolicy(Qt::StrongFocus);
 }
 
 void TaskDockWidget::setTool(AbstractGraphicsInteractiveTool *tool)
 {
     setOperationWidget(tool->taskWidget());
     setOptionWidget(tool->optionWidget());
-    if (tool->taskWidget())
-        tool->taskWidget()->setFocus(Qt::OtherFocusReason);
+    setFocus();
+    focusNextChild();
 }
 
 void TaskDockWidget::setOperationWidget(QWidget *widget)
@@ -42,4 +40,22 @@ void TaskDockWidget::setOperationWidget(QWidget *widget)
 void TaskDockWidget::setOptionWidget(QWidget *widget)
 {
     m_taskOptionWidget->setCentralWidget(widget);
+}
+
+void TaskDockWidget::focusInEvent(QFocusEvent *event)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    QDockWidget::focusInEvent(event);
+}
+
+void TaskDockWidget::focusOutEvent(QFocusEvent *event)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    QDockWidget::focusOutEvent(event);
+}
+
+bool TaskDockWidget::focusNextPrevChild(bool next)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    return QDockWidget::focusNextPrevChild(next);
 }

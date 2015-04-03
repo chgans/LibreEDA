@@ -37,7 +37,6 @@ CoordinateWidget::CoordinateWidget(QWidget *parent) :
         emit coordinateChanged(m_point);
     });
 
-    setTabOrder(m_xSpinBox, m_ySpinBox);
     m_xSpinBox->installEventFilter(this);
     m_ySpinBox->installEventFilter(this);
 }
@@ -57,8 +56,6 @@ void CoordinateWidget::setCoordinate(const QPointF &point)
 void CoordinateWidget::focusInEvent(QFocusEvent *event)
 {
     qDebug() << __PRETTY_FUNCTION__;
-    m_xSpinBox->selectAll();
-    focusNextChild();
     QWidget::focusInEvent(event);
 }
 
@@ -70,15 +67,17 @@ void CoordinateWidget::focusOutEvent(QFocusEvent *event)
 
 bool CoordinateWidget::eventFilter(QObject *object, QEvent *event)
 {
-    if ((object != m_xSpinBox && object != m_ySpinBox) ||
-            event->type() != QEvent::KeyPress)
+    if ((object != m_xSpinBox && object != m_ySpinBox))
         return QWidget::eventFilter(object, event);
 
-    QKeyEvent *kevent = static_cast<QKeyEvent*>(event);
-    if (kevent->key() != Qt::Key_Enter &&
-            kevent->key() != Qt::Key_Return)
-        return QWidget::eventFilter(object, event);
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent *kevent = static_cast<QKeyEvent*>(event);
+        if (kevent->key() != Qt::Key_Enter &&
+                kevent->key() != Qt::Key_Return)
+            return QWidget::eventFilter(object, event);
 
-    focusNextChild();
-    return true;
+        focusNextChild();
+        return true;
+    }
+    return QWidget::eventFilter(object, event);
 }
