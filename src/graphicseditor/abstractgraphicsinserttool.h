@@ -69,7 +69,6 @@ public:
 
     // GraphicsTool interface
 public:
-    QDialog *optionDialog();
     QString toolGroup() const;
     QAction *action() const;
     void activate(const QAction *which, GraphicsView *view);

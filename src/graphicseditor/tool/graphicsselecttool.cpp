@@ -96,7 +96,7 @@ void GraphicsSelectTool::setOperation(GraphicsSelectTool::Operation operation)
     }
 }
 
-QDialog *GraphicsSelectTool::optionDialog()
+QWidget *GraphicsSelectTool::optionWidget()
 {
     return nullptr;
 }
@@ -136,6 +136,11 @@ QString GraphicsSelectTool::toolGroup() const
 QAction *GraphicsSelectTool::action() const
 {
     return m_action;
+}
+
+QWidget *GraphicsSelectTool::taskWidget()
+{
+    return nullptr;
 }
 
 

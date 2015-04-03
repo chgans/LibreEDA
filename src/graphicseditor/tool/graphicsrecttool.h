@@ -15,7 +15,8 @@ public:
 
     // GraphicsTool interface
 public:
-    virtual QDialog *optionDialog();
+    virtual QWidget *taskWidget();
+    virtual QWidget *optionWidget();
     virtual QString toolGroup() const;
     virtual QAction *action() const;
     virtual void activate(const QAction *which);

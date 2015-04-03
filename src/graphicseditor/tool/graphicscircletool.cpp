@@ -17,7 +17,12 @@ GraphicsCircleTool::~GraphicsCircleTool()
 {
 }
 
-QDialog *GraphicsCircleTool::optionDialog()
+QWidget *GraphicsCircleTool::taskWidget()
+{
+    return nullptr;
+}
+
+QWidget *GraphicsCircleTool::optionWidget()
 {
     return nullptr;
 }

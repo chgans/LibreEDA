@@ -1,6 +1,9 @@
 #include "tool/graphicswiretool.h"
 #include "item/graphicswireitem.h"
 
+#include "widget/pensettingswidget.h"
+#include "widget/wireoperationwidget.h"
+
 #include "graphicseditor/abstractgraphicshandle.h"
 #include "graphicsscene.h"
 #include "graphicsview.h"
@@ -8,23 +11,40 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QAction>
+#include <QLineEdit>
 
 GraphicsWireTool::GraphicsWireTool(QObject *parent):
-    AbstractGraphicsInsertTool(parent)
+    AbstractGraphicsInsertTool(parent),
+    m_item(nullptr)
 {
     m_toolAction = new QAction(QIcon(":/icons/tool/graphicspolylinetool.svg"), // TODO: rename to wire
                                "Place a wire", nullptr);;
     m_toolAction->setShortcut(QKeySequence("i,w"));
     m_toolGroup = "interactive-tools";
+    m_optionWidget = new PenSettingsWidget();
+    connect(m_optionWidget, &PenSettingsWidget::penChanged,
+            [this](const QPen &pen) {
+        if (!m_item)
+            return;
+        // FIXME: we need to set the pen after creating the item
+        m_item->setPen(pen);
+    });
+    m_operationWidget = new WireOperationWidget();
+    m_operationWidget->setTool(this);
 }
 
 GraphicsWireTool::~GraphicsWireTool()
 {
 }
 
-QDialog *GraphicsWireTool::optionDialog()
+QWidget *GraphicsWireTool::taskWidget()
 {
-    return nullptr;
+    return m_operationWidget;
+}
+
+QWidget *GraphicsWireTool::optionWidget()
+{
+    return m_optionWidget;
 }
 
 QString GraphicsWireTool::toolGroup() const

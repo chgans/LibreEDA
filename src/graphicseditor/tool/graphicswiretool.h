@@ -3,8 +3,11 @@
 
 #include "abstractgraphicsinserttool.h"
 
+class PenSettingsWidget;
+class WireOperationWidget;
 class GraphicsWireItem;
 class QAction;
+class QLineEdit;
 
 class GraphicsWireTool : public AbstractGraphicsInsertTool
 {
@@ -18,10 +21,13 @@ private:
     QString m_toolGroup;
     QAction *m_toolAction;
     GraphicsWireItem *m_item;
+    WireOperationWidget *m_operationWidget;
+    PenSettingsWidget *m_optionWidget;
 
     // GraphicsTool interface
 public:
-    virtual QDialog *optionDialog();
+    virtual QWidget *taskWidget();
+    virtual QWidget *optionWidget();
     virtual QString toolGroup() const;
     virtual QAction *action() const;
     virtual void activate(const QAction *which);

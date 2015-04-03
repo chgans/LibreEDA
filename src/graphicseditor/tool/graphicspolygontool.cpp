@@ -19,7 +19,12 @@ GraphicsPolygonTool::~GraphicsPolygonTool()
 
 }
 
-QDialog *GraphicsPolygonTool::optionDialog()
+QWidget *GraphicsPolygonTool::taskWidget()
+{
+    return nullptr;
+}
+
+QWidget *GraphicsPolygonTool::optionWidget()
 {
     return nullptr;
 }

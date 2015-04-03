@@ -51,7 +51,8 @@ public:
     void setView(GraphicsView *view);
     virtual QString toolGroup() const;
     virtual QAction *action() const;
-    QDialog *optionDialog();
+    virtual QWidget *taskWidget();
+    virtual QWidget *optionWidget();
     virtual void activate(const QAction *which, GraphicsView *view);
     virtual void desactivate(const QAction *which, GraphicsView *view);
 

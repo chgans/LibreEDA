@@ -19,4 +19,10 @@
         <file>tool/graphicspolylinetool.svg</file>
         <file>tool/graphicsrecttool.svg</file>
     </qresource>
+    <qresource prefix="/">
+        <file>icons/task_wipe.svg</file>
+        <file>icons/task_undo.svg</file>
+        <file>icons/task_finish.svg</file>
+        <file>icons/task_close_shape.svg</file>
+    </qresource>
 </RCC>

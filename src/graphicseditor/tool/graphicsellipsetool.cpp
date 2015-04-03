@@ -17,7 +17,12 @@ GraphicsEllipseTool::~GraphicsEllipseTool()
 
 }
 
-QDialog *GraphicsEllipseTool::optionDialog()
+QWidget *GraphicsEllipseTool::taskWidget()
+{
+    return nullptr;
+}
+
+QWidget *GraphicsEllipseTool::optionWidget()
 {
     return nullptr;
 }

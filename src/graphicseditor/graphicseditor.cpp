@@ -14,11 +14,14 @@
 
 #include "grid/graphicscartesiangrid.h"
 
+#include "dock/taskdockwidget.h"
+
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <QAction>
 #include <QActionGroup>
 #include <QToolBar>
+#include <QTimer>
 
 GraphicsEditor::GraphicsEditor(QWidget *parent):
     QWidget(parent)
@@ -37,6 +40,7 @@ GraphicsEditor::GraphicsEditor(QWidget *parent):
     m_view->ensureVisible(m_scene->sceneRect());
     layout()->addWidget(m_view);
 
+    m_taskDockWidget = new TaskDockWidget();
     addInteractiveTools();
     addSnapTools();
     addPathPointTools();
@@ -54,6 +58,7 @@ void GraphicsEditor::activate(QMainWindow *win)
     win->addToolBar(m_interactiveToolsToolBar);
     win->addToolBar(m_snapToolBar);
     win->addToolBar(m_pathPointToolBar);
+    win->addDockWidget(Qt::LeftDockWidgetArea, m_taskDockWidget);
     m_mainWindow = win;
 }
 
@@ -110,20 +115,18 @@ void GraphicsEditor::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
     m_interactiveToolsActionGroup->addAction(action);
     m_interactiveToolsToolBar->addAction(action);
 
+    action->setChecked(firstAction);
     if (firstAction) {
-        action->setChecked(true);
+        connect(m_interactiveToolsActionGroup, &QActionGroup::triggered,
+                this, [this](QAction *action) {
+            AbstractGraphicsInteractiveTool *tool = action->data().value<AbstractGraphicsInteractiveTool*>();
+            // tool->activate(); Do this here or in view?
+            m_view->setTool(tool);
+            m_taskDockWidget->setTool(tool);
+        });
         firstAction = false;
     }
     else {
-        action->setChecked(false);
-    }
-
-    connect(m_interactiveToolsActionGroup, &QActionGroup::triggered,
-            this, [this](QAction *action) {
-        AbstractGraphicsInteractiveTool *tool = action->data().value<AbstractGraphicsInteractiveTool*>();
-        m_view->setTool(tool);
-    });
-    if (!firstAction) {
         connect(tool, &GraphicsTool::finished,
                 this, [this]() {
             m_interactiveTools.first()->action()->trigger();
@@ -131,8 +134,18 @@ void GraphicsEditor::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
     }
 
     m_interactiveTools.append(tool);
-    if (firstTool)
-        m_view->setTool(tool);
+    if (firstTool) {
+        QTimer *timer = new QTimer();
+        timer->setSingleShot(true);
+        timer->setInterval(0);
+        // We need to activate default tool once editor is fully created *and* visible
+        connect(timer, &QTimer::timeout,
+                [this, tool, timer]() {
+            m_view->setTool(tool);
+            m_taskDockWidget->setTool(tool);
+            delete timer;
+        });
+    }
 }
 
 void GraphicsEditor::addSnapTools()

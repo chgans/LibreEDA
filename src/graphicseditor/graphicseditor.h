@@ -10,6 +10,7 @@ class QToolBar;
 class GraphicsView;
 class GraphicsScene;
 class AbstractGraphicsInteractiveTool;
+class TaskDockWidget;
 
 class GraphicsEditor: public QWidget
 {
@@ -27,6 +28,7 @@ private:
     QMainWindow *m_mainWindow;
     GraphicsView *m_view;
     GraphicsScene *m_scene;
+    TaskDockWidget *m_taskDockWidget;
 
     void addInteractiveTools();
     void addInteractiveTool(AbstractGraphicsInteractiveTool *tool);

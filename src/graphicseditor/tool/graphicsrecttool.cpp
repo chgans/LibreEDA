@@ -23,7 +23,12 @@ GraphicsRectTool::~GraphicsRectTool()
 
 }
 
-QDialog *GraphicsRectTool::optionDialog()
+QWidget *GraphicsRectTool::taskWidget()
+{
+    return nullptr;
+}
+
+QWidget *GraphicsRectTool::optionWidget()
 {
     return nullptr;
 }

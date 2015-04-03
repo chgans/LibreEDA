@@ -34,7 +34,12 @@ GraphicsBezierTool::~GraphicsBezierTool()
 
 }
 
-QDialog *GraphicsBezierTool::optionDialog()
+QWidget *GraphicsBezierTool::taskWidget()
+{
+    return nullptr;
+}
+
+QWidget *GraphicsBezierTool::optionWidget()
 {
     return nullptr;
 }

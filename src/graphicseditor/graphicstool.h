@@ -7,7 +7,7 @@
 class GraphicsView;
 class GraphicsScene;
 
-class QDialog;
+class QWidget;
 class QAction;
 
 /* TBD:
@@ -29,7 +29,8 @@ public:
     GraphicsScene *scene();
     virtual void setView(GraphicsView *view);
 
-    virtual QDialog *optionDialog() = 0;
+    virtual QWidget *optionWidget() = 0;
+    virtual QWidget *taskWidget() = 0;
 
     virtual QString toolGroup() const = 0;
     virtual QAction *action() const = 0;

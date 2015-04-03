@@ -20,10 +20,14 @@ GraphicsLineTool::GraphicsLineTool(QObject *parent):
     m_toolGroup = "interactive-tools";
 }
 
-
-QDialog *GraphicsLineTool::optionDialog()
+QWidget *GraphicsLineTool::taskWidget()
 {
-    return new GraphicsLineToolDialog();
+    return nullptr;
+}
+
+QWidget *GraphicsLineTool::optionWidget()
+{
+    return nullptr;
 }
 
 QString GraphicsLineTool::toolGroup() const

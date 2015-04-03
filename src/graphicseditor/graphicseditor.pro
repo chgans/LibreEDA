@@ -43,7 +43,17 @@ SOURCES += graphicseditor.cpp \
     tool/graphicswiretool.cpp \
     graphicsbezierhandle.cpp \
     graphicsregularhandle.cpp \
-    abstractgraphicshandle.cpp
+    abstractgraphicshandle.cpp \
+    widget/pensettingswidget.cpp \
+    widget/pencapstylecombobox.cpp \
+    widget/penstylecombobox.cpp \
+    widget/penjoinstylecombobox.cpp \
+    widget/penwidthcombobox.cpp \
+    widget/taskeditwidget.cpp \
+    dock/taskdockwidget.cpp \
+    widget/taskoptionwidget.cpp \
+    widget/coordinatewidget.cpp \
+    widget/wireoperationwidget.cpp
 
 HEADERS += graphicseditor.h \
     graphicsobject.h \
@@ -76,7 +86,17 @@ HEADERS += graphicseditor.h \
     tool/graphicswiretool.h \
     graphicsbezierhandle.h \
     graphicsregularhandle.h \
-    abstractgraphicshandle.h
+    abstractgraphicshandle.h \
+    widget/pensettingswidget.h \
+    widget/pencapstylecombobox.h \
+    widget/penstylecombobox.h \
+    widget/penjoinstylecombobox.h \
+    widget/penwidthcombobox.h \
+    widget/taskeditwidget.h \
+    dock/taskdockwidget.h \
+    widget/taskoptionwidget.h \
+    widget/coordinatewidget.h \
+    widget/wireoperationwidget.h
 
 unix {
     target.path = /usr/lib

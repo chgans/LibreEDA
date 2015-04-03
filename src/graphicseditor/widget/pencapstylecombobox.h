@@ -1,0 +1,25 @@
+#ifndef PENCAPSTYLECOMBOBOX_H
+#define PENCAPSTYLECOMBOBOX_H
+
+#include <QComboBox>
+#include <QPen>
+
+class PenCapStyleComboBox : public QComboBox
+{
+    Q_OBJECT
+
+public:
+    explicit PenCapStyleComboBox(QWidget *parent = 0);
+
+    void addItem(Qt::PenCapStyle style);
+
+public slots:
+    void setCurrentIndex(Qt::PenCapStyle style);
+
+signals:
+    void activated(Qt::PenCapStyle style);
+    void currentIndexChanged(Qt::PenCapStyle style);
+    void highlighted(Qt::PenCapStyle style);
+};
+
+#endif // PENCAPSTYLECOMBOBOX_H
