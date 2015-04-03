@@ -18,18 +18,10 @@ public:
     ~GraphicsWireTool();
 
 private:
-    QString m_toolGroup;
-    QAction *m_toolAction;
     GraphicsWireItem *m_item;
-    WireOperationWidget *m_operationWidget;
-    PenSettingsWidget *m_optionWidget;
 
     // GraphicsTool interface
 public:
-    virtual QWidget *taskWidget();
-    virtual QWidget *optionWidget();
-    virtual QString toolGroup() const;
-    virtual QAction *action() const;
     virtual void activate(const QAction *which);
     virtual void desactivate(const QAction *which);
 

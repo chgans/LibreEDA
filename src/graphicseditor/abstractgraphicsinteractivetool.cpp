@@ -20,6 +20,26 @@ AbstractGraphicsInteractiveTool::~AbstractGraphicsInteractiveTool()
 
 }
 
+QWidget *AbstractGraphicsInteractiveTool::optionWidget()
+{
+    return m_optionWidget;
+}
+
+void AbstractGraphicsInteractiveTool::setOptionWidget(QWidget *widget)
+{
+    m_optionWidget = widget;
+}
+
+QWidget *AbstractGraphicsInteractiveTool::taskWidget()
+{
+    return m_taskWidget;
+}
+
+void AbstractGraphicsInteractiveTool::setOperationWidget(QWidget *widget)
+{
+    m_taskWidget = widget;
+}
+
 void AbstractGraphicsInteractiveTool::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);

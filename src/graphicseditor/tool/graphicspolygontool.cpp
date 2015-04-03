@@ -8,10 +8,13 @@
 GraphicsPolygonTool::GraphicsPolygonTool(QObject *parent):
     AbstractGraphicsInsertTool(parent)
 {
-    m_toolAction = new QAction(QIcon(":/icons/tool/graphicspolygontool.svg"),
+    QAction *action = new QAction(QIcon(":/icons/tool/graphicspolygontool.svg"),
                            "Place a rectangle", nullptr);
-    m_toolAction->setShortcut(QKeySequence("i,p"));
-    m_toolGroup = "interactive-tools";
+    action->setShortcut(QKeySequence("i,p"));
+    setAction(action);
+    setToolGroup("interactive-tools");
+    setOperationWidget(nullptr);
+    setOptionWidget(nullptr);
 }
 
 GraphicsPolygonTool::~GraphicsPolygonTool()
@@ -19,34 +22,14 @@ GraphicsPolygonTool::~GraphicsPolygonTool()
 
 }
 
-QWidget *GraphicsPolygonTool::taskWidget()
-{
-    return nullptr;
-}
-
-QWidget *GraphicsPolygonTool::optionWidget()
-{
-    return nullptr;
-}
-
-QString GraphicsPolygonTool::toolGroup() const
-{
-    return m_toolGroup;
-}
-
-QAction *GraphicsPolygonTool::action() const
-{
-    return m_toolAction;
-}
-
 void GraphicsPolygonTool::activate(const QAction *which)
 {
-    Q_ASSERT(m_toolAction == which);
+    Q_UNUSED(which);
 }
 
 void GraphicsPolygonTool::desactivate(const QAction *which)
 {
-    Q_ASSERT(m_toolAction == which);
+    Q_UNUSED(which);
 }
 
 GraphicsObject *GraphicsPolygonTool::beginInsert(const QPointF &pos)
@@ -58,17 +41,20 @@ GraphicsObject *GraphicsPolygonTool::beginInsert(const QPointF &pos)
 
 void GraphicsPolygonTool::addPoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     QPointF itemPos = m_item->mapFromScene(pos);
     m_item->addPoint(itemPos);
 }
 
 void GraphicsPolygonTool::freezePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     Q_UNUSED(idx);
 }
 
 bool GraphicsPolygonTool::removePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     QPolygonF poly = m_item->polygon();
     QPointF point = poly[idx];
     poly.removeAt(idx);

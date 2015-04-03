@@ -1,4 +1,4 @@
-#include "graphicstool.h"
+#include "abstractgraphicsinteractivetool.h"
 #include "dock/taskdockwidget.h"
 #include "widget/taskeditwidget.h"
 #include "widget/taskoptionwidget.h"
@@ -26,7 +26,7 @@ TaskDockWidget::TaskDockWidget(QWidget *parent) :
     setFocusPolicy(Qt::StrongFocus);
 }
 
-void TaskDockWidget::setTool(GraphicsTool *tool)
+void TaskDockWidget::setTool(AbstractGraphicsInteractiveTool *tool)
 {
     setOperationWidget(tool->taskWidget());
     setOptionWidget(tool->optionWidget());

@@ -46,9 +46,12 @@ GraphicsSelectTool::GraphicsSelectTool(QObject *parent):
     m_handle(nullptr),
     m_rubberBand(new QRubberBand(QRubberBand::Rectangle))
 {
-    m_toolGroup = "interactive-tools";
-    m_action = new QAction(QIcon::fromTheme("edit-select"),
+    QAction *action = new QAction(QIcon::fromTheme("edit-select"),
                            "select", nullptr);
+    setAction(action);
+    setToolGroup("interactive-tools");
+    setOperationWidget(nullptr);
+    setOptionWidget(nullptr);
 }
 
 GraphicsSelectTool::~GraphicsSelectTool()
@@ -96,19 +99,14 @@ void GraphicsSelectTool::setOperation(GraphicsSelectTool::Operation operation)
     }
 }
 
-QWidget *GraphicsSelectTool::optionWidget()
-{
-    return nullptr;
-}
-
 void GraphicsSelectTool::activate(const QAction *which, GraphicsView *view)
 {
-    Q_ASSERT(m_action == which);
+    Q_UNUSED(which);
 }
 
 void GraphicsSelectTool::desactivate(const QAction *which, GraphicsView *view)
 {
-    Q_ASSERT(m_action == which);
+    Q_UNUSED(which);
 }
 
 void GraphicsSelectTool::cancel()
@@ -127,22 +125,6 @@ void GraphicsSelectTool::setView(GraphicsView *other)
         m_rubberBand->setParent(view());
     }
 }
-
-QString GraphicsSelectTool::toolGroup() const
-{
-    return m_toolGroup;
-}
-
-QAction *GraphicsSelectTool::action() const
-{
-    return m_action;
-}
-
-QWidget *GraphicsSelectTool::taskWidget()
-{
-    return nullptr;
-}
-
 
 void GraphicsSelectTool::mousePressEvent(QMouseEvent *event)
 {

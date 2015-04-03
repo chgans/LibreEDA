@@ -12,35 +12,18 @@
 GraphicsRectTool::GraphicsRectTool(QObject *parent):
     AbstractGraphicsInsertTool(parent), m_item(nullptr)
 {
-    m_toolAction = new QAction(QIcon(":/icons/tool/graphicsrecttool.svg"),
+    QAction *action = new QAction(QIcon(":/icons/tool/graphicsrecttool.svg"),
                            "Place a rectangle", nullptr);
-    m_toolAction->setShortcut(QKeySequence("i,r"));
-    m_toolGroup = "interactive-tools";
+    action->setShortcut(QKeySequence("i,r"));
+    setAction(action);
+    setToolGroup("interactive-tools");
+    setOperationWidget(nullptr);
+    setOptionWidget(nullptr);
 }
 
 GraphicsRectTool::~GraphicsRectTool()
 {
 
-}
-
-QWidget *GraphicsRectTool::taskWidget()
-{
-    return nullptr;
-}
-
-QWidget *GraphicsRectTool::optionWidget()
-{
-    return nullptr;
-}
-
-QString GraphicsRectTool::toolGroup() const
-{
-    return m_toolGroup;
-}
-
-QAction *GraphicsRectTool::action() const
-{
-    return m_toolAction;
 }
 
 void GraphicsRectTool::cancel()
@@ -68,6 +51,7 @@ void GraphicsRectTool::addPoint(int idx, const QPointF &pos)
 
 void GraphicsRectTool::freezePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     Q_ASSERT(idx < 2);
 
     if (idx == 0)
@@ -79,6 +63,7 @@ void GraphicsRectTool::freezePoint(int idx, const QPointF &pos)
 
 bool GraphicsRectTool::removePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     Q_UNUSED(idx);
     return false; // will remove and delete rect
 }
@@ -122,10 +107,10 @@ void GraphicsRectTool::setP2(const QPointF &pos)
 
 void GraphicsRectTool::activate(const QAction *which)
 {
-    Q_ASSERT(which == m_toolAction);
+    Q_UNUSED(which);
 }
 
 void GraphicsRectTool::desactivate(const QAction *which)
 {
-    Q_ASSERT(which == m_toolAction);
+    Q_UNUSED(which);
 }

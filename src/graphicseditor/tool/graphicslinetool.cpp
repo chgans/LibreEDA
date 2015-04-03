@@ -14,30 +14,13 @@
 GraphicsLineTool::GraphicsLineTool(QObject *parent):
     AbstractGraphicsInsertTool(parent), m_item(nullptr)
 {
-    m_toolAction = new QAction(QIcon(":/icons/tool/graphicslinetool.svg"),
+    QAction *action = new QAction(QIcon(":/icons/tool/graphicslinetool.svg"),
                            "Place a line", nullptr);
-    m_toolAction->setShortcut(QKeySequence("i,l"));
-    m_toolGroup = "interactive-tools";
-}
-
-QWidget *GraphicsLineTool::taskWidget()
-{
-    return nullptr;
-}
-
-QWidget *GraphicsLineTool::optionWidget()
-{
-    return nullptr;
-}
-
-QString GraphicsLineTool::toolGroup() const
-{
-    return m_toolGroup;
-}
-
-QAction *GraphicsLineTool::action() const
-{
-    return m_toolAction;
+    action->setShortcut(QKeySequence("i,l"));
+    setAction(action);
+    setToolGroup("interactive-tools");
+    setOperationWidget(nullptr);
+    setOptionWidget(nullptr);
 }
 
 void GraphicsLineTool::cancel()
@@ -46,12 +29,12 @@ void GraphicsLineTool::cancel()
 
 void GraphicsLineTool::activate(const QAction *which)
 {
-    Q_ASSERT(m_toolAction == which);
+    Q_UNUSED(which);
 }
 
 void GraphicsLineTool::desactivate(const QAction *which)
 {
-    Q_ASSERT(m_toolAction == which);
+    Q_UNUSED(which);
 }
 
 GraphicsObject *GraphicsLineTool::beginInsert(const QPointF &pos)
@@ -75,6 +58,7 @@ void GraphicsLineTool::addPoint(int idx, const QPointF &pos)
 
 void GraphicsLineTool::freezePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     if (idx == 0)
         return;
 
@@ -84,6 +68,7 @@ void GraphicsLineTool::freezePoint(int idx, const QPointF &pos)
 
 bool GraphicsLineTool::removePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     Q_UNUSED(idx);
     return false; // Remove and delete line
 }

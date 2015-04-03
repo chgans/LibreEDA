@@ -6,15 +6,22 @@
 class QMouseEvent;
 class QKeyEvent;
 class QWheelEvent;
+class QWidget;
 
 class GraphicsObject;
 
 class AbstractGraphicsInteractiveTool: public GraphicsTool
 {
     Q_OBJECT
+
 public:
     AbstractGraphicsInteractiveTool(QObject *parent = 0);
     ~AbstractGraphicsInteractiveTool();
+
+    QWidget *optionWidget();
+    void setOptionWidget(QWidget *widget);
+    QWidget *taskWidget();
+    void setOperationWidget(QWidget *widget);
 
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
@@ -27,6 +34,9 @@ public:
     virtual void wheelEvent(QWheelEvent *event);
 
 protected:
+    QWidget *m_taskWidget;
+    QWidget *m_optionWidget;
+
     GraphicsObject *createPhantomItem(GraphicsObject *item);
     QList<GraphicsObject *> createPhantomItems(const QList<GraphicsObject *> &items);
 };

@@ -29,11 +29,10 @@ public:
     GraphicsScene *scene();
     virtual void setView(GraphicsView *view);
 
-    virtual QWidget *optionWidget() = 0;
-    virtual QWidget *taskWidget() = 0;
-
-    virtual QString toolGroup() const = 0;
-    virtual QAction *action() const = 0;
+    void setToolGroup(const QString &group);
+    QString toolGroup() const;
+    void setAction(QAction *action);
+    QAction *action() const;
 
     virtual void activate(const QAction *which, GraphicsView *view) = 0;
     virtual void desactivate(const QAction *which, GraphicsView *view) = 0;
@@ -46,6 +45,8 @@ public slots:
 
 private:
     GraphicsView *m_view;
+    QString m_toolGroup;
+    QAction *m_action;
 };
 
 Q_DECLARE_METATYPE(GraphicsTool*)

@@ -17,54 +17,41 @@ GraphicsWireTool::GraphicsWireTool(QObject *parent):
     AbstractGraphicsInsertTool(parent),
     m_item(nullptr)
 {
-    m_toolAction = new QAction(QIcon(":/icons/tool/graphicspolylinetool.svg"), // TODO: rename to wire
+    QAction *action = new QAction(QIcon(":/icons/tool/graphicspolylinetool.svg"), // TODO: rename to wire
                                "Place a wire", nullptr);;
-    m_toolAction->setShortcut(QKeySequence("i,w"));
-    m_toolGroup = "interactive-tools";
-    m_optionWidget = new PenSettingsWidget();
-    connect(m_optionWidget, &PenSettingsWidget::penChanged,
+    action->setShortcut(QKeySequence("i,w"));
+
+    PenSettingsWidget *optionWidget = new PenSettingsWidget();
+    connect(optionWidget, &PenSettingsWidget::penChanged,
             [this](const QPen &pen) {
         if (!m_item)
             return;
         // FIXME: we need to set the pen after creating the item
         m_item->setPen(pen);
     });
-    m_operationWidget = new WireOperationWidget();
-    m_operationWidget->setTool(this);
+
+    WireOperationWidget *operationWidget = new WireOperationWidget();
+    // FIXME
+    operationWidget->setTool(this);
+
+    setAction(action);
+    setToolGroup("interactive-tools");
+    setOperationWidget(operationWidget);
+    setOptionWidget(optionWidget);
 }
 
 GraphicsWireTool::~GraphicsWireTool()
 {
 }
 
-QWidget *GraphicsWireTool::taskWidget()
-{
-    return m_operationWidget;
-}
-
-QWidget *GraphicsWireTool::optionWidget()
-{
-    return m_optionWidget;
-}
-
-QString GraphicsWireTool::toolGroup() const
-{
-    return m_toolGroup;
-}
-
-QAction *GraphicsWireTool::action() const
-{
-    return m_toolAction;
-}
-
 void GraphicsWireTool::activate(const QAction *which)
 {
-    Q_ASSERT(m_toolAction == which);
+    Q_UNUSED(which);
 }
 
 void GraphicsWireTool::desactivate(const QAction *which)
 {
-    Q_ASSERT(m_toolAction == which);
+    Q_UNUSED(which);
 }
 
 GraphicsObject *GraphicsWireTool::beginInsert(const QPointF &pos)
@@ -82,11 +69,13 @@ void GraphicsWireTool::addPoint(int idx, const QPointF &pos)
 
 void GraphicsWireTool::freezePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     Q_UNUSED(idx);
 }
 
 bool GraphicsWireTool::removePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     QList<QPointF> points = m_item->points();
     QPointF point = points[idx];
     points.removeAt(idx);

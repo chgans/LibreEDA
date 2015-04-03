@@ -23,10 +23,14 @@ GraphicsBezierTool::GraphicsBezierTool(QObject *parent):
     AbstractGraphicsInsertTool(parent),
     m_item(nullptr)
 {
-    m_toolAction = new QAction(QIcon(":/icons/tool/graphicsbeziertool.svg"),
+    QAction *action = new QAction(QIcon(":/icons/tool/graphicsbeziertool.svg"),
                            "Place a bezier curve", nullptr);
-    m_toolAction->setShortcut(QKeySequence("i,b"));
-    m_toolGroup = "interactive-tools";
+    action->setShortcut(QKeySequence("i,b"));
+    setAction(action);
+    setToolGroup("interactive-tools");
+    setOperationWidget(nullptr);
+    setOptionWidget(nullptr);
+
 }
 
 GraphicsBezierTool::~GraphicsBezierTool()
@@ -34,34 +38,14 @@ GraphicsBezierTool::~GraphicsBezierTool()
 
 }
 
-QWidget *GraphicsBezierTool::taskWidget()
-{
-    return nullptr;
-}
-
-QWidget *GraphicsBezierTool::optionWidget()
-{
-    return nullptr;
-}
-
-QString GraphicsBezierTool::toolGroup() const
-{
-    return m_toolGroup;
-}
-
-QAction *GraphicsBezierTool::action() const
-{
-    return m_toolAction;
-}
-
 void GraphicsBezierTool::activate(const QAction *which)
 {
-    Q_ASSERT(m_toolAction == which);
+    Q_UNUSED(which);
 }
 
 void GraphicsBezierTool::desactivate(const QAction *which)
 {
-    Q_ASSERT(m_toolAction == which);
+    Q_UNUSED(which);
 }
 
 GraphicsObject *GraphicsBezierTool::beginInsert(const QPointF &pos)
@@ -79,11 +63,13 @@ void GraphicsBezierTool::addPoint(int idx, const QPointF &pos)
 
 void GraphicsBezierTool::freezePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     Q_UNUSED(idx);
 }
 
 bool GraphicsBezierTool::removePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     QPointF oldPos = m_item->pointAt(idx);
     m_item->removePoint(idx);
     if (m_item->pointCount() > 1) {

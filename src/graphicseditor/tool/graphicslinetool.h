@@ -10,24 +10,21 @@ class GraphicsLineTool : public AbstractGraphicsInsertTool
 public:
     GraphicsLineTool(QObject *parent = 0);
 
-    // GraphicsTool interface
-public:
-    virtual QWidget *taskWidget();
-    virtual QWidget *optionWidget();
-    virtual QString toolGroup() const;
-    virtual QAction *action() const;
+private:
+    GraphicsLineItem *m_item;
 
-    // GraphicsTool interface
-public slots:
-    virtual void cancel();
+private:
+    void setP1(const QPointF &pos);
+    void setP2(const QPointF &pos);
 
     // GraphicsTool interface
 public:
     virtual void activate(const QAction *which);
     virtual void desactivate(const QAction *which);
 
-private:
-    GraphicsLineItem *m_item;
+    // GraphicsTool interface
+public slots:
+    virtual void cancel();
 
     // AbstractGraphicsInsertTool interface
 public:
@@ -38,13 +35,6 @@ public:
     void movePoint(int idx, const QPointF &pos);
     void endInsert(const QPointF &pos);
     void cancelInsert();
-
-private:
-    QString m_toolGroup;
-    QAction *m_toolAction;
-
-    void setP1(const QPointF &pos);
-    void setP2(const QPointF &pos);
 };
 
 #endif // GRAPHICSLINETOOL_H

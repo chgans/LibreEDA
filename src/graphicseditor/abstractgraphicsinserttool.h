@@ -4,7 +4,10 @@
 #include "abstractgraphicsinteractivetool.h"
 
 #include <QPointF>
+#include <QString>
 
+class AbstractGraphicsHandle;
+class QWidget;
 class QAction;
 
 // TBD: ctrl+space: cycle mode
@@ -64,13 +67,9 @@ public:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *event);
 
     // GraphicsTool interface
 public:
-    QString toolGroup() const;
-    QAction *action() const;
     void activate(const QAction *which, GraphicsView *view);
     void desactivate(const QAction *which, GraphicsView *view);
 

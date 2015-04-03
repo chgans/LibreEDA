@@ -6,7 +6,7 @@
 class QSplitter;
 class TaskEditWidget;
 class TaskOptionWidget;
-class GraphicsTool;
+class AbstractGraphicsInteractiveTool;
 
 class TaskDockWidget : public QDockWidget
 {
@@ -18,7 +18,7 @@ public:
 signals:
 
 public slots:
-    void setTool(GraphicsTool *tool);
+    void setTool(AbstractGraphicsInteractiveTool *tool);
 
 protected:
     void setOperationWidget(QWidget *widget);

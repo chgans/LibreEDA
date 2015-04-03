@@ -7,44 +7,27 @@
 GraphicsCircleTool::GraphicsCircleTool(QObject *parent):
     AbstractGraphicsInsertTool(parent)
 {
-    m_toolAction = new QAction(QIcon(":/icons/tool/graphicscircletool.svg"),
-                           "Place a circle", nullptr);
-    m_toolAction->setShortcut(QKeySequence("i,c"));
-    m_toolGroup = "interactive-tools";
+    QAction *action = new QAction(QIcon(":/icons/tool/graphicscircletool.svg"),
+                                  "Place a circle", nullptr);
+    action->setShortcut(QKeySequence("i,c"));
+    setAction(action);
+    setToolGroup("interactive-tools");
+    setOperationWidget(nullptr);
+    setOptionWidget(nullptr);
 }
 
 GraphicsCircleTool::~GraphicsCircleTool()
 {
 }
 
-QWidget *GraphicsCircleTool::taskWidget()
-{
-    return nullptr;
-}
-
-QWidget *GraphicsCircleTool::optionWidget()
-{
-    return nullptr;
-}
-
-QString GraphicsCircleTool::toolGroup() const
-{
-    return m_toolGroup;
-}
-
-QAction *GraphicsCircleTool::action() const
-{
-    return m_toolAction;
-}
-
 void GraphicsCircleTool::activate(const QAction *which)
 {
-    Q_ASSERT(m_toolAction == which);
+    Q_UNUSED(which);
 }
 
 void GraphicsCircleTool::desactivate(const QAction *which)
 {
-    Q_ASSERT(m_toolAction == which);
+    Q_UNUSED(which);
 }
 
 GraphicsObject *GraphicsCircleTool::beginInsert(const QPointF &pos)
@@ -67,6 +50,7 @@ void GraphicsCircleTool::addPoint(int idx, const QPointF &pos)
 
 void GraphicsCircleTool::freezePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     Q_ASSERT(idx < 2);
 
     if ( idx == 0)
@@ -78,6 +62,7 @@ void GraphicsCircleTool::freezePoint(int idx, const QPointF &pos)
 
 bool GraphicsCircleTool::removePoint(int idx, const QPointF &pos)
 {
+    Q_UNUSED(pos);
     Q_UNUSED(idx);
     return false; // Remove and delete circles
 }

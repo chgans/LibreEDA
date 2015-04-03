@@ -13,12 +13,15 @@ public:
     GraphicsRectTool(QObject *parent);
     ~GraphicsRectTool();
 
+protected:
+    void setP1(const QPointF &pos);
+    void setP2(const QPointF &pos);
+
+private:
+    GraphicsRectItem *m_item;
+
     // GraphicsTool interface
 public:
-    virtual QWidget *taskWidget();
-    virtual QWidget *optionWidget();
-    virtual QString toolGroup() const;
-    virtual QAction *action() const;
     virtual void activate(const QAction *which);
     virtual void desactivate(const QAction *which);
 
@@ -35,16 +38,6 @@ public:
     void movePoint(int idx, const QPointF &pos);
     void endInsert(const QPointF &pos);
     void cancelInsert();
-
-
-protected:
-    void setP1(const QPointF &pos);
-    void setP2(const QPointF &pos);
-
-private:
-    QString m_toolGroup;
-    QAction *m_toolAction;
-    GraphicsRectItem *m_item;
 };
 
 #endif // GRAPHICSRECTTOOL_H

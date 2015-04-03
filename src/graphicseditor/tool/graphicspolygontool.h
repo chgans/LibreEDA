@@ -15,17 +15,10 @@ public:
     ~GraphicsPolygonTool();
 
 private:
-    QAction *m_toolAction;
-    QString m_toolGroup;
     GraphicsPolygonItem *m_item;
-
 
     // GraphicsTool interface
 public:
-    virtual QWidget *taskWidget();
-    virtual QWidget *optionWidget();
-    virtual QString toolGroup() const;
-    virtual QAction *action() const;
     virtual void activate(const QAction *which);
     virtual void desactivate(const QAction *which);
 

@@ -19,9 +19,6 @@ public:
     ~GraphicsSelectTool();
 
 private:
-    QString m_toolGroup;
-    QAction *m_action;
-
     enum ToolState {
         HintState,
         OperationState
@@ -49,17 +46,12 @@ private:
     // GraphicsTool interface
 public:
     void setView(GraphicsView *view);
-    virtual QString toolGroup() const;
-    virtual QAction *action() const;
-    virtual QWidget *taskWidget();
-    virtual QWidget *optionWidget();
     virtual void activate(const QAction *which, GraphicsView *view);
     virtual void desactivate(const QAction *which, GraphicsView *view);
 
     // GraphicsTool interface
 public slots:
     virtual void cancel();
-
 
     // GraphicsTool interface
 public:

@@ -159,37 +159,24 @@ void AbstractGraphicsInsertTool::mouseReleaseEvent(QMouseEvent *event)
 
 void AbstractGraphicsInsertTool::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
+
     if (!m_isActive)
         return;
 
     endInsert(m_pressPos);
 }
 
-void AbstractGraphicsInsertTool::keyPressEvent(QKeyEvent *event)
-{
-}
-
-void AbstractGraphicsInsertTool::keyReleaseEvent(QKeyEvent *event)
-{
-}
-
-
-QString AbstractGraphicsInsertTool::toolGroup() const
-{
-}
-
-QAction *AbstractGraphicsInsertTool::action() const
-{
-}
-
 void AbstractGraphicsInsertTool::activate(const QAction *which, GraphicsView *view)
 {
+    Q_UNUSED(which);
     //view->addAction(m_showDialogAction);
     view->addAction(m_goBackAction);
 }
 
 void AbstractGraphicsInsertTool::desactivate(const QAction *which, GraphicsView *view)
 {
+    Q_UNUSED(which);
     //view->removeAction(m_showDialogAction);
     view->removeAction(m_goBackAction);
 }
