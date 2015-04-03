@@ -34,6 +34,7 @@ WireOperationWidget::WireOperationWidget(QWidget *parent) :
     layout->addWidget(m_wipeButton);
 }
 
+// FIXME: let the tool connect to us instead!
 void WireOperationWidget::setTool(GraphicsWireTool *tool)
 {
     if (m_tool != nullptr) {
@@ -62,6 +63,10 @@ void WireOperationWidget::setTool(GraphicsWireTool *tool)
     }
 }
 
+void WireOperationWidget::setCurrentLocation(const QPointF &pos)
+{
+    m_coordinateWidget->setCoordinate(pos);
+}
 
 void WireOperationWidget::focusInEvent(QFocusEvent *event)
 {

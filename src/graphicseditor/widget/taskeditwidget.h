@@ -4,6 +4,7 @@
 #include <QGroupBox>
 
 class QPushButton;
+class QVBoxLayout;
 
 class TaskEditWidget : public QGroupBox
 {
@@ -18,6 +19,7 @@ signals:
 public slots:
 
 private:
+    QVBoxLayout *m_layout;
     QPushButton *m_cancelButton;
     QWidget *m_centralWidget;
     QWidget *m_centralPlaceHolderWidget;

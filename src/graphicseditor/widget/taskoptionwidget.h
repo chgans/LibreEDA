@@ -3,6 +3,8 @@
 
 #include <QGroupBox>
 
+class QVBoxLayout;
+
 class TaskOptionWidget : public QGroupBox
 {
     Q_OBJECT
@@ -16,6 +18,7 @@ signals:
 public slots:
 
 private:
+    QVBoxLayout *m_layout;
     QWidget *m_centralWidget;
     QWidget *m_centralPlaceHolderWidget;
 

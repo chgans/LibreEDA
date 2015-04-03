@@ -22,6 +22,7 @@ signals:
     void wipeRequested();
 
 public slots:
+    void setCurrentLocation(const QPointF &pos);
 
 private:
     GraphicsWireTool *m_tool;
