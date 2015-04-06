@@ -108,3 +108,9 @@ Simulation oriented schematic editor
 ## fritzing
 
 ## xcircuit
+
+# Other interesting EDA
+
+## EasyEDA
+
+Not open-source, but worth mentionning. [EasyEDA](http://easyeda.com/) is a web based EDA that supports schematic capture, SPICE simulation and PCB layout:
