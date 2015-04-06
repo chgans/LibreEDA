@@ -14,13 +14,23 @@ class QFocusEvent;
 class CoordinateWidget : public QWidget
 {
     Q_OBJECT
+
 public:
+    // TODO: add enableAxis
+    enum Axis {
+        XAxis = 0,
+        YAxis,
+        ZAxis
+    };
+    Q_DECLARE_FLAGS(Axes, Axis)
+
     explicit CoordinateWidget(QWidget *parent = 0);
 
     QPointF coordinate() const;
 
 signals:
-    void coordinateChanged(const QPointF &point);
+    void coordinateChanged(Axis axis, qreal value);
+    void coordinateEditingFinished();
 
 public slots:
     void setCoordinate(const QPointF &point);
@@ -41,5 +51,7 @@ protected:
 public:
     bool eventFilter(QObject *object, QEvent *event);
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(CoordinateWidget::Axes)
 
 #endif // COORDINATEWIDGET_H

@@ -1,6 +1,7 @@
 #include "widget/wireoperationwidget.h"
 #include "widget/coordinatewidget.h"
 #include "tool/graphicswiretool.h"
+#include "abstractgraphicshandle.h"
 
 #include <QDebug>
 #include <QVBoxLayout>
@@ -44,6 +45,15 @@ void WireOperationWidget::setTool(GraphicsWireTool *tool)
     m_tool = tool;
 
     if (m_tool != nullptr) {
+        connect(m_coordinateWidget, &CoordinateWidget::coordinateChanged,
+                [this](CoordinateWidget::Axis axis, qreal value) {
+            qDebug() << "Changing axis value" << axis << value;
+        });
+        connect(m_coordinateWidget, &CoordinateWidget::coordinateEditingFinished,
+                [this]() {
+            qDebug() << "Adding point at" << m_coordinateWidget->coordinate();
+            m_coordinateWidget->setFocus(Qt::TabFocusReason);
+        });
         connect(m_undoButton, &QPushButton::pressed,
                 [this]() {
             qDebug() << "Undoing";
