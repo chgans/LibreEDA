@@ -24,7 +24,6 @@ SOURCES += graphicseditor.cpp \
     item/graphicsrectitem.cpp \
     tool/graphicsbeziertool.cpp \
     tool/graphicslinetool.cpp \
-    tool/graphicslinetooldialog.cpp \
     tool/graphicsrecttool.cpp \
     tool/graphicsselecttool.cpp \
     graphicstool.cpp \
@@ -66,7 +65,6 @@ HEADERS += graphicseditor.h \
     item/graphicsrectitem.h \
     tool/graphicsbeziertool.h \
     tool/graphicslinetool.h \
-    tool/graphicslinetooldialog.h \
     tool/graphicsrecttool.h \
     tool/graphicsselecttool.h \
     graphicstool.h \
@@ -103,8 +101,7 @@ unix {
     INSTALLS += target
 }
 
-FORMS += \
-    tool/graphicslinetooldialog.ui
+FORMS +=
 
 OTHER_FILES += \
     tool/graphicsarctool.svg \

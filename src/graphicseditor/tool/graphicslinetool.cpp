@@ -1,5 +1,4 @@
 #include "tool/graphicslinetool.h"
-#include "tool/graphicslinetooldialog.h"
 #include "item/graphicslineitem.h"
 
 #include "graphicseditor/abstractgraphicshandle.h"
