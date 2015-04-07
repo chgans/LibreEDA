@@ -33,6 +33,9 @@ WireOperationWidget::WireOperationWidget(QWidget *parent) :
     m_wipeButton = new QPushButton(QIcon(":/icons/task_wipe.svg"), "&Wipe");
     m_wipeButton->setShortcut(QKeySequence("w"));
     layout->addWidget(m_wipeButton);
+
+    // m_coordinateWidget will receive the focus instead of us
+    setFocusProxy(m_coordinateWidget);
 }
 
 // FIXME: let the tool connect to us instead!

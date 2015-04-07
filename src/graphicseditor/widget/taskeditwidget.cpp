@@ -53,6 +53,9 @@ void TaskEditWidget::setCentralWidget(QWidget *widget)
     }
 
     m_centralWidget = widget;
+
+    // m_centralWidget will receive the focus instead of us
+    setFocusProxy(m_centralWidget);
 }
 
 QWidget *TaskEditWidget::findLastChildToFocus(QObject *parent)

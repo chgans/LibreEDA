@@ -28,8 +28,7 @@ void TaskDockWidget::setTool(AbstractGraphicsInteractiveTool *tool)
 {
     setOperationWidget(tool->taskWidget());
     setOptionWidget(tool->optionWidget());
-    setFocus();
-    focusNextChild();
+    m_taskEditWidget->setFocus(Qt::TabFocusReason);
 }
 
 void TaskDockWidget::setOperationWidget(QWidget *widget)
