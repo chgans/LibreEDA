@@ -49,7 +49,6 @@ signals:
 
 public slots:
     void goBack();
-    void showOptionDialog();
 
 private:
     int m_index;
@@ -58,8 +57,6 @@ private:
     bool m_addPointOnMouseMove;
     bool m_isActive;
     GraphicsObject *m_item;
-    QAction *m_goBackAction;
-    QAction *m_showDialogAction;
 
     // AbstractGraphicsInteractiveTool interface
 public:

@@ -23,6 +23,7 @@ TaskEditWidget::TaskEditWidget(QWidget *parent) :
     setLayout(m_layout);
 
     m_cancelButton = new QPushButton();
+    m_cancelButton->setShortcut(QKeySequence(Qt::Key_Escape));
     m_cancelButton->setIcon(QIcon::fromTheme("dialog-error"));
     m_cancelButton->setText("Cancel");
     // TODO: connect cancel button

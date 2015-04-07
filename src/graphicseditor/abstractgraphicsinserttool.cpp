@@ -18,16 +18,6 @@ AbstractGraphicsInsertTool::AbstractGraphicsInsertTool(QObject *parent):
     AbstractGraphicsInteractiveTool(parent)
 {
     resetTool();
-    m_goBackAction = new QAction(this);
-    m_goBackAction->setShortcut(QKeySequence(Qt::Key_Escape));
-    connect(m_goBackAction, &QAction::triggered,
-            this, &AbstractGraphicsInsertTool::goBack);
-#if 1
-    m_showDialogAction = new QAction(this);
-    m_showDialogAction->setShortcut(QKeySequence(Qt::Key_Tab));
-    connect(m_showDialogAction, &QAction::triggered,
-            this, &AbstractGraphicsInsertTool::showOptionDialog);
-#endif
 }
 
 AbstractGraphicsInsertTool::~AbstractGraphicsInsertTool()
@@ -85,14 +75,6 @@ void AbstractGraphicsInsertTool::goBack()
     else {
         emit finished();
     }
-}
-
-// FIXME: Give focus to TaskOperationWidget
-// FIXME: Give
-void AbstractGraphicsInsertTool::showOptionDialog()
-{
-    //qDebug() << "Giving focus to" << action()->text() << "task's widget";
-    //taskWidget()->setFocus();
 }
 
 void AbstractGraphicsInsertTool::mousePressEvent(QMouseEvent *event)
@@ -170,13 +152,11 @@ void AbstractGraphicsInsertTool::mouseDoubleClickEvent(QMouseEvent *event)
 void AbstractGraphicsInsertTool::activate(const QAction *which, GraphicsView *view)
 {
     Q_UNUSED(which);
-    //view->addAction(m_showDialogAction);
-    view->addAction(m_goBackAction);
+    Q_UNUSED(view);
 }
 
 void AbstractGraphicsInsertTool::desactivate(const QAction *which, GraphicsView *view)
 {
     Q_UNUSED(which);
-    //view->removeAction(m_showDialogAction);
-    view->removeAction(m_goBackAction);
+    Q_UNUSED(view);
 }
