@@ -82,14 +82,11 @@ bool CoordinateWidget::eventFilter(QObject *object, QEvent *event)
                 emit coordinateEditingFinished();
             return true;
         }
-#if 0 // Attempt to let single key stroke shortcuts go through
-        else if (kevent->text().contains(QRegularExpression("^[[:alpha:]]+$"))) {
-            qDebug() << "seen" << kevent->text();
-            QKeyEvent *fEvent = new QKeyEvent(QEvent::KeyPress, kevent->key(), kevent->modifiers());
-            qApp->sendEvent(qApp->activeWindow(), fEvent);
-            return false;
-        }
-#endif
+    }
+    else if (event->type() == QEvent::ShortcutOverride) {
+        // Filter out shortcuts, it should'nt be a problem, since it is very unlikely
+        // to have a digit or a decimal separator set as a shortcut.
+        return true;
     }
     return QWidget::eventFilter(object, event);
 }
