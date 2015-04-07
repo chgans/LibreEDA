@@ -22,4 +22,6 @@ signals:
     void highlighted(Qt::PenStyle style);
 };
 
+Q_DECLARE_METATYPE(Qt::PenStyle)
+
 #endif // PENSTYLECOMBOBOX_H

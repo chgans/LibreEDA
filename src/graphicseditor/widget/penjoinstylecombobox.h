@@ -23,4 +23,6 @@ signals:
 
 };
 
+Q_DECLARE_METATYPE(Qt::PenJoinStyle)
+
 #endif // PENJOINSTYLECOMBOBOX_H
