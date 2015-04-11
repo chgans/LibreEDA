@@ -1,4 +1,4 @@
-# LibreEDA
+# LibreEDA: [www.libre-eda.org](http://www.libre-eda.org/)
 
 [![Open issues](https://img.shields.io/github/issues/chgans/LibreEDA.svg)](https://github.com/chgans/LibreEDA/issues)
 [![Build Status](https://img.shields.io/travis/chgans/LibreEDA.svg)](https://travis-ci.org/chgans/LibreEDA)
