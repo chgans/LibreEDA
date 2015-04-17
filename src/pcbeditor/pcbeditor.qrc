@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/PCB-icon.png</file>
+        <file>icons/chip-package.png</file>
+        <file>icons/alpha-background.png</file>
+    </qresource>
+</RCC>

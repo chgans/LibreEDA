@@ -1,0 +1,81 @@
+{
+    "document-type": "schematic/symbol",
+    "format-version": "0",
+    "producer": "LibreEDA-0.1",
+    "author": "Ch'Gans <chgans@gna.org>",
+    "license": "CC-BY-SA",
+
+    "designator": "U?",
+    "label": "FSA4157",
+    "description": "Low-Voltage, 1 Ohm SPDT Analog Switch",
+    "comment": "EIA_0603",
+    "uid": "ANQPNMMK",
+    "items": [
+        {
+            "type": "rectangle",
+            "position": [-800, 0, 0],
+            "points": [[-400, -400], [400, 400]],
+            "opacity": 1.0,
+            "locked": 0,
+            "layer": 0
+        },
+        {
+            "type": "rectangle",
+            "position": [800, 0, 0],
+            "points": [[-400, -400], [400, 400]],
+            "opacity": 1.0,
+            "locked": 0,
+            "layer": 0
+        },
+        {
+            "type": "rectangle",
+            "position": [-800, 0, 0],
+            "points": [[-500, -500], [500, 500]],
+            "opacity": 1.0,
+            "locked": 0,
+            "layer": 98
+        },
+        {
+            "type": "rectangle",
+            "position": [800, 0, 0],
+            "points": [[-500, -500], [500, 500]],
+            "opacity": 1.0,
+            "locked": 0,
+            "layer": 98
+        },
+        {
+            "type": "rectangle",
+            "position": [-800, 0, 0],
+            "points": [[-300, -300], [300, 300]],
+            "opacity": 1.0,
+            "locked": 0,
+            "layer": 96
+        },
+        {
+            "type": "rectangle",
+            "position": [800, 0, 0],
+            "points": [[-300, -300], [300, 300]],
+            "opacity": 1.0,
+            "locked": 0,
+            "layer": 96
+        },
+        {
+            "type": "polyline",
+            "position": [0, -300, 0],
+            "points": [[-200, 0], [200, 0]],
+            "width": 100,
+            "opacity": 0.75,
+            "locked": 0,
+            "layer": 104
+        },
+        {
+            "type": "polyline",
+            "position": [0, 300, 0],
+            "points": [[-200, 0], [200, 0]],
+            "width": 100,
+            "opacity": 0.75,
+            "locked": 0,
+            "layer": 104
+        }
+    ]
+}

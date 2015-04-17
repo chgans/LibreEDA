@@ -1,7 +1,7 @@
 #include "tool/graphicswiretool.h"
 #include "item/graphicswireitem.h"
 
-#include "widget/pensettingswidget.h"
+#include "utils/widgets/pensettingswidget.h"
 #include "widget/wireoperationwidget.h"
 
 #include "graphicseditor/abstractgraphicshandle.h"

@@ -21,18 +21,6 @@ HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core/release/ -lcore
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../core/debug/ -lcore
-else:unix: LIBS += -L$$OUT_PWD/../core/ -lcore
-
-DEPENDPATH += $$PWD/../core
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/release/libcore.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/debug/libcore.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/release/core.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/debug/core.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../core/libcore.a
-
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../graphicseditor/release/ -lgraphicseditor
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../graphicseditor/debug/ -lgraphicseditor
 else:unix: LIBS += -L$$OUT_PWD/../graphicseditor/ -lgraphicseditor
@@ -45,6 +33,18 @@ else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PW
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../graphicseditor/debug/graphicseditor.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../graphicseditor/libgraphicseditor.a
 
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../pcbeditor/release/ -lpcbeditor
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../pcbeditor/debug/ -lpcbeditor
+else:unix: LIBS += -L$$OUT_PWD/../pcbeditor/ -lpcbeditor
+
+DEPENDPATH += $$PWD/../pcbeditor
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../pcbeditor/release/libpcbeditor.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../pcbeditor/debug/libpcbeditor.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../pcbeditor/release/pcbeditor.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../pcbeditor/debug/pcbeditor.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../pcbeditor/libpcbeditor.a
+
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../logviewer/release/ -llogviewer
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../logviewer/debug/ -llogviewer
 else:unix: LIBS += -L$$OUT_PWD/../logviewer/ -llogviewer
@@ -56,3 +56,15 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../logv
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../logviewer/release/logviewer.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../logviewer/debug/logviewer.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../logviewer/liblogviewer.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core/release/ -lcore
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../core/debug/ -lcore
+else:unix: LIBS += -L$$OUT_PWD/../core/ -lcore
+
+DEPENDPATH += $$PWD/../core
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/release/libcore.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/debug/libcore.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/release/core.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../core/debug/core.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../core/libcore.a

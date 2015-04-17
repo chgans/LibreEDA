@@ -1,12 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "core/abstracteditor.h"
+#include "pcbeditor/pcbeditorwidget.h"
 #include "graphicseditor/graphicseditor.h"
 #include "logviewer/logviewer.h"
 
 #include <QDebug>
 #include <QDockWidget>
 #include <QApplication>
+#include <QTableWidget>
 
 // Menus
 //  - file
@@ -19,25 +22,31 @@
 // TODO: message format and handler
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_activeEditor(nullptr)
 {
     ui->setupUi(this);
 
-    addGraphicsEditor();
-    addLogViewer();
+    m_editorTabWidget = new QTabWidget();
+    setCentralWidget(m_editorTabWidget);
+    connect(m_editorTabWidget, &QTabWidget::currentChanged,
+            this, &MainWindow::activateEditor);
 
+    GraphicsEditor *geditor = new GraphicsEditor();
+    m_editorTabWidget->addTab(geditor, "sch");
+    PcbEditor *peditor = new PcbEditor();
+    m_editorTabWidget->addTab(peditor, "pcb");
+
+    m_editorTabWidget->setCurrentIndex(0);
+    m_activeEditor = geditor;
+    m_activeEditor->activate(this);
+
+    addLogViewer();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::addGraphicsEditor()
-{
-    GraphicsEditor *editor = new GraphicsEditor();
-    setCentralWidget(editor);
-    editor->activate(this);
 }
 
 void MainWindow::addLogViewer()
@@ -47,6 +56,17 @@ void MainWindow::addLogViewer()
     outputPaneDock->setFeatures(QDockWidget::NoDockWidgetFeatures); // not movable, floatable, ...
     outputPaneDock->setTitleBarWidget(new QWidget); // get rid of empty space at the top
     addDockWidget(Qt::BottomDockWidgetArea, outputPaneDock);
+}
+
+void MainWindow::activateEditor(int tabIndex)
+{
+    if (m_activeEditor)
+        m_activeEditor->desactivate(this);
+
+    m_activeEditor = static_cast<AbstractEditor *>(m_editorTabWidget->widget(tabIndex));
+
+    if (m_activeEditor)
+        m_activeEditor->activate(this);
 }
 
 

@@ -1,7 +1,7 @@
 #ifndef GRAPHICSEDITOR_H
 #define GRAPHICSEDITOR_H
 
-#include <QWidget>
+#include "core/abstracteditor.h"
 
 class QMainWindow;
 class QActionGroup;
@@ -12,7 +12,7 @@ class GraphicsScene;
 class AbstractGraphicsInteractiveTool;
 class TaskDockWidget;
 
-class GraphicsEditor: public QWidget
+class GraphicsEditor: public AbstractEditor
 {
     Q_OBJECT
 

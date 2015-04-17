@@ -24,7 +24,7 @@
 #include <QTimer>
 
 GraphicsEditor::GraphicsEditor(QWidget *parent):
-    QWidget(parent)
+    AbstractEditor(parent)
 {
     setLayout(new QVBoxLayout);
     m_scene = new GraphicsScene(this);
@@ -56,14 +56,19 @@ GraphicsEditor::~GraphicsEditor()
 void GraphicsEditor::activate(QMainWindow *win)
 {
     win->addToolBar(m_interactiveToolsToolBar);
+    m_interactiveToolsToolBar->show();
     win->addToolBar(m_snapToolBar);
+    m_snapToolBar->show();
     win->addToolBar(m_pathPointToolBar);
+    m_pathPointToolBar->show();
     win->addDockWidget(Qt::LeftDockWidgetArea, m_taskDockWidget);
+    m_taskDockWidget->show();
     m_mainWindow = win;
 }
 
 void GraphicsEditor::desactivate(QMainWindow *win)
 {
+    win->removeDockWidget(m_taskDockWidget);
     win->removeToolBar(m_pathPointToolBar);
     win->removeToolBar(m_snapToolBar);
     win->removeToolBar(m_interactiveToolsToolBar);

@@ -12,10 +12,12 @@ TARGET = core
 TEMPLATE = lib
 CONFIG += staticlib
 
-SOURCES += core.cpp
+SOURCES += core.cpp \
+    abstracteditor.cpp
 
 HEADERS += core.h \
-    constants.h
+    constants.h \
+    abstracteditor.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
