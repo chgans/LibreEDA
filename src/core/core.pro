@@ -10,7 +10,8 @@ QT       -= gui
 
 TARGET = core
 TEMPLATE = lib
-CONFIG += staticlib
+
+include($$PWD/../shared.pri)
 
 SOURCES += core.cpp \
     abstracteditor.cpp
@@ -18,10 +19,6 @@ SOURCES += core.cpp \
 HEADERS += core.h \
     constants.h \
     abstracteditor.h
-unix {
-    target.path = /usr/lib
-    INSTALLS += target
-}
 
 DISTFILES += \
     TODO.md

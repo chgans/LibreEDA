@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("graphicsview-1");
 
     PcbPaletteManager *paletteManager = PcbPaletteManager::instance();
-    paletteManager->setPalettesPath(QDir::currentPath() + "/../../../LibreEDA/src/pcbeditor/settings/");
+    paletteManager->setPalettesPath(QDir::currentPath() + "/../../LibreEDA/src/pcbeditor/settings/");
     paletteManager->loadPalettes();
 
     DesignLayerManager *layerManager = DesignLayerManager::instance();

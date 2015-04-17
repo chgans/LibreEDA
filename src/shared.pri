@@ -1,0 +1,3 @@
+DESTDIR = $$OUT_PWD/..
+LIBS += -L$$OUT_PWD/
+INCLUDEPATH += $$PWD

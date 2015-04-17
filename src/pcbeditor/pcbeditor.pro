@@ -9,8 +9,8 @@ CONFIG += c++11
 
 TARGET = pcbeditor
 TEMPLATE = lib
-CONFIG += staticlib
-INCLUDEPATH += $$PWD/..
+
+include($$PWD/../shared.pri)
 
 SOURCES += \
     scene.cpp \
@@ -33,12 +33,7 @@ SOURCES += \
     insight/insightlenswidget.cpp \
     insight/insightheadsupwidget.cpp \
     insight/insightconnectivitywidget.cpp \
-    insight/insightpicklistwidget.cpp \
-    widgets/colorpreview.cpp \
-    widgets/colorwheel.cpp \
-    widgets/gradientslider.cpp \
-    widgets/hueslider.cpp \
-    widgets/colorwidget.cpp 
+    insight/insightpicklistwidget.cpp
 
 HEADERS  += \
     scene.h \
@@ -61,13 +56,7 @@ HEADERS  += \
     insight/insightlenswidget.h \
     insight/insightheadsupwidget.h \
     insight/insightconnectivitywidget.h \
-    insight/insightpicklistwidget.h \
-    widgets/colorpreview.h \
-    widgets/colorwheel.h \
-    widgets/gradientslider.h \
-    widgets/hueslider.h \
-    widgets/paintborder.h \
-    widgets/colorwidget.h 
+    insight/insightpicklistwidget.h
 
 FORMS    += \
     pcbpalettesettingsdialog.ui \
