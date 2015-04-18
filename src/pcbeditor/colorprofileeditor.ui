@@ -132,7 +132,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="profileDirectoryLabel">
        <property name="text">
         <string>&lt;a href=&quot;file:///tmp&quot;&gt;/tmp&lt;/a&gt;</string>
        </property>
@@ -345,7 +345,7 @@
   <customwidget>
    <class>ColorWidget</class>
    <extends>QWidget</extends>
-   <header>widgets/colorwidget.h</header>
+   <header>utils/widgets/colorwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

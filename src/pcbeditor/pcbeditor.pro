@@ -33,7 +33,8 @@ SOURCES += \
     insight/insightlenswidget.cpp \
     insight/insightheadsupwidget.cpp \
     insight/insightconnectivitywidget.cpp \
-    insight/insightpicklistwidget.cpp
+    insight/insightpicklistwidget.cpp \
+    colorprofileeditor.cpp
 
 HEADERS  += \
     scene.h \
@@ -56,7 +57,8 @@ HEADERS  += \
     insight/insightlenswidget.h \
     insight/insightheadsupwidget.h \
     insight/insightconnectivitywidget.h \
-    insight/insightpicklistwidget.h
+    insight/insightpicklistwidget.h \
+    colorprofileeditor.h
 
 FORMS    += \
     pcbpalettesettingsdialog.ui \

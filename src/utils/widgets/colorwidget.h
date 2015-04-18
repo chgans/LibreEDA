@@ -25,8 +25,8 @@
 
 #include <QWidget>
 
-#include "widgets/colorpreview.h"
-#include "widgets/colorwheel.h"
+#include "colorpreview.h"
+#include "colorwheel.h"
 
 class ColorWidget : public QWidget
 {

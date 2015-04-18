@@ -5,6 +5,7 @@
 #include "designlayer.h"
 #include "designlayerset.h"
 #include "pcbpalette.h"
+#include "colorprofileeditor.h"
 
 #include <QAction>
 #include <QActionGroup>
@@ -454,7 +455,9 @@ void LayerBar::connectActions()
     connect(m_showColorDialogAction, &QAction::triggered,
             this, [this](bool checked) {
         Q_UNUSED(checked);
-        // TODO
+        ColorProfileEditor *editor = new ColorProfileEditor();
+        editor->raise();
+        editor->show();
     });
     connect(m_showSetDialogAction, &QAction::triggered,
             this, [this](bool checked) {
