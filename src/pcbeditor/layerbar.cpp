@@ -74,6 +74,7 @@ void LayerBar::activateLayer(int tabIndex)
     qDebug() << "Activating layer" << layer->index() << layer->defaultName();
     if (m_view != nullptr)
         m_view->setActiveLayer(layer);
+    updateLayerIcon();
 }
 
 void LayerBar::activateNextLayer()
@@ -474,8 +475,8 @@ void LayerBar::connectActions()
             this, [this](QAction *action) {
         PcbPalette *palette = action->data().value<PcbPalette *>();
         m_view->setPalette(palette);
-        updateLayerIcon();
         updateTabIcons();
+        updateLayerIcon();
     });
     connect(m_setActionGroup, &QActionGroup::triggered,
             this, [this](QAction *action) {
