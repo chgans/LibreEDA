@@ -34,7 +34,8 @@ SOURCES += \
     insight/insightheadsupwidget.cpp \
     insight/insightconnectivitywidget.cpp \
     insight/insightpicklistwidget.cpp \
-    colorprofileeditor.cpp
+    colorprofileeditor.cpp \
+    items/graphicsitem.cpp
 
 HEADERS  += \
     scene.h \
@@ -58,7 +59,8 @@ HEADERS  += \
     insight/insightheadsupwidget.h \
     insight/insightconnectivitywidget.h \
     insight/insightpicklistwidget.h \
-    colorprofileeditor.h
+    colorprofileeditor.h \
+    items/graphicsitem.h
 
 FORMS    += \
     pcbpalettesettingsdialog.ui \
@@ -75,3 +77,8 @@ OTHER_FILES += \
 
 RESOURCES += \
     pcbeditor.qrc
+
+DISTFILES += \
+    notes/board-shape.txt \
+    notes/layers.txt \
+    notes/TODO.txt
