@@ -10,6 +10,8 @@
 #include <QDockWidget>
 #include <QApplication>
 #include <QTableWidget>
+#include <QSettings>
+#include <QCloseEvent>
 
 // Menus
 //  - file
@@ -32,21 +34,81 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_editorTabWidget, &QTabWidget::currentChanged,
             this, &MainWindow::activateEditor);
 
-    GraphicsEditor *geditor = new GraphicsEditor();
-    m_editorTabWidget->addTab(geditor, "sch");
-    PcbEditor *peditor = new PcbEditor();
-    m_editorTabWidget->addTab(peditor, "pcb");
-
-    m_editorTabWidget->setCurrentIndex(0);
-    m_activeEditor = geditor;
-    m_activeEditor->activate(this);
-
     addLogViewer();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+// TODO: scan all children for implementaion of IGuiStateSmth
+void MainWindow::readSettings()
+{
+    QSettings settings;
+    settings.beginGroup("mainwindow");
+    QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
+    QSize size = settings.value("size", QSize(400, 400)).toSize();
+    resize(size);
+    move(pos);
+
+    int currentIndex;
+    if (!settings.childGroups().contains("tabs")) {
+        qDebug() << "Creating default editors" << settings.childGroups();
+        GraphicsEditor *geditor = new GraphicsEditor();
+        m_editorTabWidget->addTab(geditor, "sch");
+        PcbEditor *peditor = new PcbEditor();
+        m_editorTabWidget->addTab(peditor, "pcb");
+        m_activeEditor = geditor;
+        currentIndex = 0;
+    }
+    settings.beginGroup("tabs");
+    int tabIndex = 0;
+    foreach (const QString &key, settings.childGroups()) {
+        Q_ASSERT(key.toInt() == tabIndex);
+        settings.beginGroup(key);
+        const QString &editorType = settings.value("type").toString();
+        const QString &docName = settings.value("name").toString();
+        AbstractEditor *editor = nullptr;
+        if (editorType == "graphicseditor")
+            editor = new GraphicsEditor();
+        else if (editorType == "pcbeditor")
+            editor = new PcbEditor();
+        Q_ASSERT(editor != nullptr);
+        editor->readSettings(settings);
+        m_editorTabWidget->addTab(editor, docName);
+        bool active = settings.value("active", false).toBool();
+        if (active) {
+            currentIndex = tabIndex;
+            m_activeEditor = editor;
+        }
+        settings.endGroup();
+        tabIndex++;
+    }
+    Q_ASSERT(m_activeEditor != nullptr);
+    m_editorTabWidget->setCurrentIndex(currentIndex);
+    qDebug() << currentIndex << m_activeEditor->type();
+    m_activeEditor->activate(this);
+    settings.endGroup();
+}
+
+void MainWindow::writeSettings()
+{
+    QSettings settings;
+    settings.beginGroup("mainwindow");
+    settings.setValue("pos", pos());
+    settings.setValue("size", size());
+    settings.beginGroup("tabs");
+    for (int tabIndex = 0; tabIndex < m_editorTabWidget->count(); tabIndex++) {
+        settings.beginGroup(QString("%1").arg(tabIndex));
+        AbstractEditor *editor = static_cast<AbstractEditor *>(m_editorTabWidget->widget(tabIndex));
+        editor->writeSettings(settings);
+        settings.setValue("type", editor->type());
+        settings.setValue("name", m_editorTabWidget->tabText(tabIndex));
+        settings.setValue("active", m_activeEditor == editor);
+        settings.endGroup();
+    }
+    settings.endGroup();
 }
 
 void MainWindow::addLogViewer()
@@ -56,6 +118,11 @@ void MainWindow::addLogViewer()
     outputPaneDock->setFeatures(QDockWidget::NoDockWidgetFeatures); // not movable, floatable, ...
     outputPaneDock->setTitleBarWidget(new QWidget); // get rid of empty space at the top
     addDockWidget(Qt::BottomDockWidgetArea, outputPaneDock);
+}
+
+bool MainWindow::maybeSave()
+{
+    return true;
 }
 
 void MainWindow::activateEditor(int tabIndex)
@@ -88,4 +155,15 @@ bool MainWindow::focusNextPrevChild(bool next)
     bool found = QMainWindow::focusNextPrevChild(next);
     qDebug() << __PRETTY_FUNCTION__ << "Next" << QApplication::focusWidget();
     return found;
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (maybeSave()) {
+        writeSettings();
+        event->accept();
+    } else {
+        event->ignore();
+    }
 }

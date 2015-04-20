@@ -53,6 +53,21 @@ GraphicsEditor::~GraphicsEditor()
 
 }
 
+void GraphicsEditor::readSettings(QSettings &settings)
+{
+    Q_UNUSED(settings);
+}
+
+void GraphicsEditor::writeSettings(QSettings &settings)
+{
+    Q_UNUSED(settings);
+}
+
+QString GraphicsEditor::type() const
+{
+    return "graphicseditor";
+}
+
 void GraphicsEditor::activate(QMainWindow *win)
 {
     win->addToolBar(m_interactiveToolsToolBar);

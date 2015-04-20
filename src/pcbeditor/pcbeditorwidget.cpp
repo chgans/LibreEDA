@@ -144,6 +144,21 @@ void PcbEditor::desactivate(QMainWindow *window)
     window->removeDockWidget(m_insightDockWidget);
 }
 
+void PcbEditor::readSettings(QSettings &settings)
+{
+    Q_UNUSED(settings);
+}
+
+void PcbEditor::writeSettings(QSettings &settings)
+{
+    Q_UNUSED(settings);
+}
+
+QString PcbEditor::type() const
+{
+    return "pcbeditor";
+}
+
 void PcbEditor::wheelEvent(QWheelEvent *event)
 {
     Q_UNUSED(event);

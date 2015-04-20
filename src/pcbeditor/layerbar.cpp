@@ -345,8 +345,10 @@ void LayerBar::showTabContextMenu(const QPoint &pos)
                     this, [this, layer](bool checked) {
                 Q_UNUSED(checked);
                 m_view->removeLayer(layer);
+                updateLayerIcon();
             });
             hideMenu->addAction(action);
+            updateLayerIcon();
         }
         else {
             action = new QAction(createColorIcon(layer->color()),
@@ -355,6 +357,7 @@ void LayerBar::showTabContextMenu(const QPoint &pos)
                     this, [this, layer](bool checked) {
                 Q_UNUSED(checked);
                 m_view->addLayer(layer);
+                updateLayerIcon();
             });
             showMenu->addAction(action);
         }

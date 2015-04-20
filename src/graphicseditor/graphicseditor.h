@@ -20,9 +20,14 @@ public:
     GraphicsEditor(QWidget *parent = 0);
     ~GraphicsEditor();
 
-public slots:
     void activate(QMainWindow *win);
     void desactivate(QMainWindow *win);
+
+    void readSettings(QSettings &settings);
+    void writeSettings(QSettings &settings);
+
+    QString type() const;
+
 
 private:
     QMainWindow *m_mainWindow;

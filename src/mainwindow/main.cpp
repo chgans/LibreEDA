@@ -9,9 +9,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QCoreApplication::setOrganizationName("Libre EDA");
+    QCoreApplication::setOrganizationName("LibreEDA");
     QCoreApplication::setOrganizationDomain("libreeda.org");
-    QCoreApplication::setApplicationName("graphicsview-1");
+    QCoreApplication::setApplicationName("leda");
 
     PcbPaletteManager *paletteManager = PcbPaletteManager::instance();
     paletteManager->setPalettesPath(QDir::currentPath() + "/../../LibreEDA/src/pcbeditor/settings/");
@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
     }
 
     MainWindow w;
+    w.readSettings();
     w.show();
 
     return a.exec();

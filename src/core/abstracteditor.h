@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class QMainWindow;
+class QSettings;
 
 class AbstractEditor : public QWidget
 {
@@ -15,6 +16,10 @@ public:
     virtual void activate(QMainWindow *window) = 0;
     virtual void desactivate(QMainWindow *window) = 0;
 
+    virtual void readSettings(QSettings &settings) = 0;
+    virtual void writeSettings(QSettings &settings) = 0;
+
+    virtual QString type() const = 0;
 signals:
 
 public slots:

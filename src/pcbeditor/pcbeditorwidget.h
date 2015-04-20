@@ -30,6 +30,11 @@ public:
     void activate(QMainWindow *window);
     void desactivate(QMainWindow *window);
 
+    void readSettings(QSettings &settings);
+    void writeSettings(QSettings &settings);
+
+    QString type() const;
+
 signals:
 
 public slots:
