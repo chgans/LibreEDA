@@ -35,7 +35,9 @@ SOURCES += \
     insight/insightconnectivitywidget.cpp \
     insight/insightpicklistwidget.cpp \
     colorprofileeditor.cpp \
-    items/graphicsitem.cpp
+    items/graphicsitem.cpp \
+    items/graphicsrect.cpp \
+    items/graphicsline.cpp
 
 HEADERS  += \
     scene.h \
@@ -60,7 +62,9 @@ HEADERS  += \
     insight/insightconnectivitywidget.h \
     insight/insightpicklistwidget.h \
     colorprofileeditor.h \
-    items/graphicsitem.h
+    items/graphicsitem.h \
+    items/graphicsrect.h \
+    items/graphicsline.h
 
 FORMS    += \
     pcbpalettesettingsdialog.ui \

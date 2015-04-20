@@ -9,6 +9,9 @@
 #include "layerbar.h"
 #include "insight/insightdockwidget.h"
 
+#include "items/graphicsrect.h"
+#include "items/graphicsline.h"
+
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -248,62 +251,56 @@ void PcbEditor::populateFakeData()
     Scene *scene = new Scene(-5000, -5000, 10000, 10000); // um
 
     DesignLayer *layer;
-    QGraphicsRectItem *ritem;
-    QGraphicsLineItem *pitem;
-    QGraphicsItem::GraphicsItemFlags flags = QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable;
+    GraphicsRect *ritem;
+    GraphicsLine *litem;
 
     layer = m_layerManager->layerAt(0);
     layer->setOpacity(0.75);
-    ritem = new QGraphicsRectItem(layer);
-    ritem->setFlags(flags);
+    ritem = new GraphicsRect();
     ritem->setPos(-800, 0);
     ritem->setRect(-400, -400, 800, 800);
-    ritem->setBrush(QBrush(layer->color()));
-    ritem = new QGraphicsRectItem(layer);
-    ritem->setFlags(flags);
+    layer->addItem(ritem);
+    ritem = new GraphicsRect();
     ritem->setPos(800, 0);
     ritem->setRect(-400, -400, 800, 800);
-    ritem->setBrush(QBrush(layer->color()));
+    layer->addItem(ritem);
 
     layer = m_layerManager->layerAt(98);
     layer->setOpacity(0.75);
-    ritem = new QGraphicsRectItem(layer);
-    ritem->setFlags(flags);
+    ritem = new GraphicsRect();
     ritem->setPos(-800, 0);
     ritem->setRect(-500, -500, 1000, 1000);
-    ritem->setBrush(QBrush(layer->color()));
-    ritem = new QGraphicsRectItem(layer);
-    ritem->setFlags(flags);
+    ritem->setCornerRadius(50);
+    layer->addItem(ritem);
+    ritem = new GraphicsRect();
     ritem->setPos(800, 0);
     ritem->setRect(-500, -500, 1000, 1000);
-    ritem->setBrush(QBrush(layer->color()));
+    ritem->setCornerRadius(50);
+    layer->addItem(ritem);
 
     layer = m_layerManager->layerAt(96);
     layer->setOpacity(0.75);
-    ritem = new QGraphicsRectItem(layer);
-    ritem->setFlags(flags);
+    ritem = new GraphicsRect();
     ritem->setPos(-800, 0);
     ritem->setRect(-300, -300, 600, 600);
-    ritem->setBrush(QBrush(layer->color()));
-    ritem = new QGraphicsRectItem(layer);
-    ritem->setFlags(flags);
+    layer->addItem(ritem);
+    ritem = new GraphicsRect();
     ritem->setPos(800, 0);
     ritem->setRect(-300, -300, 600, 600);
-    ritem->setBrush(QBrush(layer->color()));
+    layer->addItem(ritem);
 
     layer = m_layerManager->layerAt(104);
     layer->setOpacity(0.75);
-    QPen pen(QBrush(layer->color()), 100, Qt::SolidLine, Qt::RoundCap);
-    pitem = new QGraphicsLineItem(layer);
-    pitem->setFlags(flags);
-    pitem->setPos(0, -300);
-    pitem->setLine(-200, 0, 200, 0);
-    pitem->setPen(pen);
-    pitem = new QGraphicsLineItem(layer);
-    pitem->setFlags(flags);
-    pitem->setPos(0, 300);
-    pitem->setLine(-200, 0, 200, 0);
-    pitem->setPen(pen);
+    litem = new GraphicsLine();
+    litem->setPos(0, -300);
+    litem->setLine(-200, 0, 200, 0);
+    litem->setWidth(100);
+    layer->addItem(litem);
+    litem = new GraphicsLine();
+    litem->setPos(0, 300);
+    litem->setLine(-200, 0, 200, 0);
+    litem->setWidth(100);
+    layer->addItem(litem);
 
     setScene(scene);
 }

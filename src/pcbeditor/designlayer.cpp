@@ -1,4 +1,5 @@
 #include "designlayer.h"
+#include "items/graphicsitem.h"
 
 /*
  * TODO:
@@ -75,6 +76,9 @@ void DesignLayer::setColor(const QColor &color)
 
     m_color = color;
 
+    foreach(GraphicsItem *item, m_items)
+        item->update();
+
     emit colorChanged(m_color);
 }
 
@@ -121,6 +125,18 @@ void DesignLayer::setOpacityForPrimitive(Primitive::Type type, qreal opacity)
 bool DesignLayer::isPresent() const
 {
     return m_present;
+}
+
+void DesignLayer::addItem(GraphicsItem *item)
+{
+    item->setParentItem(this);
+    item->setLayer(this);
+    m_items.append(item);
+}
+
+QList<GraphicsItem *> DesignLayer::items() const
+{
+    return m_items;
 }
 
 DesignLayer::Face DesignLayer::face() const

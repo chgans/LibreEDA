@@ -142,6 +142,8 @@ void MainView::setPalette(PcbPalette *palette)
     if (m_palette == palette)
         return;
 
+    qDebug() << "Switching to palette" << palette->name();
+
     m_palette = palette;
     Q_ASSERT(palette);
 

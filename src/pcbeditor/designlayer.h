@@ -8,6 +8,7 @@
 #include "primitive.h"
 
 class DesignLayerManager;
+class GraphicsItem;
 
 class DesignLayer : public QGraphicsObject
 {
@@ -58,6 +59,9 @@ public:
     void setOpacityForPrimitive(Primitive::Type type, qreal opacity);
     bool isPresent() const;
 
+    void addItem(GraphicsItem *item);
+    QList<GraphicsItem *> items() const;
+
 signals:
     void defaultNameChanged(const QString &defaultName);
     void customNameChanged(const QString &defaultName);
@@ -89,6 +93,7 @@ private:
     DesignLayer* m_pairedLayer;
     QMap<Primitive::Type, qreal> m_primitiveOpacityMap;
     bool m_present;
+    QList<GraphicsItem *> m_items;
 
 protected:
     DesignLayer(QGraphicsItem *parent = 0);
