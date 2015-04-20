@@ -118,6 +118,7 @@ void LayerBar::setActivePalette(PcbPalette *palette)
 
 void LayerBar::onPaletteChanged(PcbPalette *palette)
 {
+    Q_UNUSED(palette);
     updateTabIcons();
     updateLayerIcon();
 }
