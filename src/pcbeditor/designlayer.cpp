@@ -4,8 +4,10 @@
 /*
  * TODO:
  *  - DesignLayer is just a QObject
- *  - DesignLayer has a QGraphicsItem based laterItem
- *  - rename present to enable
+ *  - DesignLayer has a QGraphicsItem based layerItem
+ *  - rename "present" to "enable"
+ *  - Don't use any QGItem for layers as a PCB component is made of items on
+ *    different layers and we'll certainly implement this a a QGItemGroup
  */
 
 DesignLayer::DesignLayer(QGraphicsItem *parent):

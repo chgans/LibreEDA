@@ -32,7 +32,7 @@ InsightConnectivityWidget::InsightConnectivityWidget(QWidget *parent) :
     tree->setItemsExpandable(false);
     tree->setRootIsDecorated(false);
     tree->setFrameStyle(QFrame::NoFrame);
-    // TODO: rempve background, scroll bars and make sure all items are visible
+    // TODO: remove background, scroll bars and make sure all items are visible
     layout()->addWidget(tree);
 }
 

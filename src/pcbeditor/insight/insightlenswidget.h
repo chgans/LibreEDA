@@ -5,6 +5,7 @@
 
 class QGraphicsView;
 
+// TODO: Don't use QFrame, use QWidget (see InsightHeadsUpWidget)
 class InsightLensWidget : public QFrame
 {
     Q_OBJECT
