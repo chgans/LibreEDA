@@ -15,7 +15,8 @@ DesignLayer::DesignLayer(QGraphicsItem *parent):
     m_index(-1),
     m_category(InvalidCategory),
     m_face(InvalidFace),
-    m_pairedLayer(nullptr)
+    m_pairedLayer(nullptr),
+    m_colorMode(NormalColorMode)
 {
     setFlags(ItemHasNoContents);
     for (Primitive::Type type = Primitive::_BeginType; type < Primitive::_EndType; type = Primitive::Type(type + 1)) {
@@ -77,9 +78,7 @@ void DesignLayer::setColor(const QColor &color)
         return;
 
     m_color = color;
-
-    foreach(GraphicsItem *item, m_items)
-        item->update();
+    updateItems();
 
     emit colorChanged(m_color);
 }
@@ -127,6 +126,32 @@ void DesignLayer::setOpacityForPrimitive(Primitive::Type type, qreal opacity)
 bool DesignLayer::isPresent() const
 {
     return m_present;
+}
+
+DesignLayer::ColorMode DesignLayer::colorMode() const
+{
+    return m_colorMode;
+}
+
+QColor DesignLayer::effectiveColor() const
+{
+    switch(m_colorMode)
+    {
+    case NormalColorMode:
+        return color();
+    case MonochromedMode:
+        return QColor(0x2F, 0x2F, 0x2F);
+    case GrayscaledMode: {
+        QColor newColor = color().toHsv();
+        newColor.setHsv(newColor.hsvHue(), 0, newColor.value());
+        return newColor;
+    }
+    case HiddenMode:
+        return QColor();
+    default:
+        Q_ASSERT(false);
+        return QColor();
+    }
 }
 
 void DesignLayer::addItem(GraphicsItem *item)
@@ -199,4 +224,21 @@ void DesignLayer::setPresent(bool arg)
 
     m_present = arg;
     emit presentChanged(arg);
+}
+
+void DesignLayer::setColorMode(DesignLayer::ColorMode mode)
+{
+    if (m_colorMode == mode)
+        return;
+
+    m_colorMode = mode;
+    updateItems();
+    emit colorModeChanged(mode);
+    emit effectiveColorChanged(effectiveColor());
+}
+
+void DesignLayer::updateItems()
+{
+    foreach(GraphicsItem *item, m_items)
+        item->update();
 }

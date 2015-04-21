@@ -1,5 +1,7 @@
 #include "graphicsitem.h"
 
+#include "designlayer.h"
+
 GraphicsItem::GraphicsItem(GraphicsItem *parent):
     QGraphicsItem(parent)
 {
@@ -36,5 +38,16 @@ void GraphicsItem::setLocked(bool locked)
         return;
     setFlag(QGraphicsItem::ItemIsMovable, !locked);
     setFlag(QGraphicsItem::ItemIsSelectable, !locked);
+}
+
+bool GraphicsItem::shouldPaint() const
+{
+    return color().isValid();
+}
+
+QColor GraphicsItem::color() const
+{
+    Q_ASSERT(m_layer);
+    return m_layer->effectiveColor();
 }
 

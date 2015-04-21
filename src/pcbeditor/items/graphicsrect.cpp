@@ -57,7 +57,9 @@ void GraphicsRect::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+    if (!shouldPaint())
+        return;
     painter->setPen(Qt::NoPen);
-    painter->setBrush(QBrush(layer()->color()));
+    painter->setBrush(QBrush(layer()->effectiveColor()));
     painter->drawRoundedRect(m_rect, m_cornerRadius, m_cornerRadius);
 }

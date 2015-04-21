@@ -17,6 +17,8 @@ public:
     bool isLocked() const;
     void setLocked(bool locked);
 
+    bool shouldPaint() const;
+    QColor color() const;
 private:
     DesignLayer *m_layer;
 };

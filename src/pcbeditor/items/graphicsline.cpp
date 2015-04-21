@@ -62,6 +62,8 @@ void GraphicsLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->setPen(QPen(QBrush(layer()->color()), m_width, Qt::SolidLine, Qt::RoundCap));
+    if (!shouldPaint())
+        return;
+    painter->setPen(QPen(QBrush(layer()->effectiveColor()), m_width, Qt::SolidLine, Qt::RoundCap));
     painter->drawLine(m_line);
 }

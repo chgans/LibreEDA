@@ -8,8 +8,6 @@
 #include "designlayer.h"
 
 #include <QGraphicsItem>
-#include <QGraphicsColorizeEffect>
-#include <QGraphicsOpacityEffect>
 #include <QPainter>
 #include <QMouseEvent>
 #include <QFrame>
@@ -159,6 +157,30 @@ PcbPalette *MainView::palette() const
 
 void MainView::updateLayerDisplayModes()
 {
+    foreach (DesignLayer *layer, layers()) {
+        if (m_activeLayer == layer) {
+            layer->setColorMode(DesignLayer::NormalColorMode);
+            continue;
+        }
+        switch (m_layerDisplayMode) {
+        case DisplayAllLayers:
+            layer->setColorMode(DesignLayer::NormalColorMode);
+            break;
+        case GreyscaleOtherLayers:
+            layer->setColorMode(DesignLayer::GrayscaledMode);
+            break;
+        case MonochromeOtherLayers:
+            layer->setColorMode(DesignLayer::MonochromedMode);
+            break;
+        case HideOtherLayers:
+            layer->setColorMode(DesignLayer::HiddenMode);
+            break;
+        default:
+            // Not reached
+            Q_ASSERT(false);
+        }
+    }
+    invalidateScene(QRectF(), QGraphicsScene::ItemLayer);
 }
 
 void MainView::updateLayerZValues()
@@ -206,10 +228,7 @@ void MainView::setLayerDisplayMode(MainView::LayerDisplayMode mode)
         return;
 
     m_layerDisplayMode = mode;
-
-    //updateSceneLayersEffect();
-    //invalidateScene(QRectF(), QGraphicsScene::ItemLayer);
-
+    updateLayerDisplayModes();
     emit layerDisplayModeChanged(m_layerDisplayMode);
 }
 
@@ -447,60 +466,6 @@ bool MainView::eventFilter(QObject *obj, QEvent *event)
 {
     return QGraphicsView::eventFilter(obj, event);
 }
-
-#if 0
-void MainView::updateSceneLayersEffect()
-{
-    foreach (DesignLayer *layer, m_layerManager->allLayers()) {
-        updateSceneLayerEffect(layer, layer == m_scene->activeLayer());
-    }
-}
-
-// TODO: use
-// - layer->setColorMode(NormalColor|GreyScaledColor|MonochromedColor)
-// - layer.setVisible(true|false)
-void MainView::updateSceneLayerEffect(DesignLayer *layer, bool isActive)
-{
-    if (isActive) {
-        layer->setGraphicsEffect(nullptr);
-        return;
-    }
-
-    switch (m_layerDisplayMode) {
-    case DisplayAllLayers:
-        layer->setGraphicsEffect(nullptr);
-        break;
-    case GreyscaleOtherLayers:
-    {
-        // TODO: This is not a real grayscale, it is a graying out
-        QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
-        effect->setColor(Qt::gray);
-        effect->setStrength(0.75);
-        layer->setGraphicsEffect(effect);
-        break;
-    }
-    case MonochromeOtherLayers:
-    {
-        QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
-        effect->setColor(Qt::gray);
-        effect->setStrength(1.0);
-        layer->setGraphicsEffect(effect);
-        break;
-    }
-    case HideOtherLayers:
-    {
-        // TODO: Anything better?
-        QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect();
-        effect->setOpacity(0);
-        layer->setGraphicsEffect(effect);
-        break;
-    }
-    default:
-        // Not reached
-        Q_ASSERT(false);
-    }
-}
-#endif
 
 void MainView::showDesignInsight()
 {
