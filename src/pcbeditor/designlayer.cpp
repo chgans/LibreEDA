@@ -15,8 +15,8 @@ DesignLayer::DesignLayer(QGraphicsItem *parent):
     m_index(-1),
     m_category(InvalidCategory),
     m_face(InvalidFace),
-    m_pairedLayer(nullptr),
-    m_colorMode(NormalColorMode)
+    m_colorMode(NormalColorMode),
+    m_pairedLayer(nullptr)
 {
     setFlags(ItemHasNoContents);
     for (Primitive::Type type = Primitive::_BeginType; type < Primitive::_EndType; type = Primitive::Type(type + 1)) {
