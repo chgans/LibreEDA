@@ -25,7 +25,7 @@
 
 #include <QDebug>
 
-PcbEditor::PcbEditor(QWidget *parent) :
+PcbEditorWidget::PcbEditorWidget(QWidget *parent) :
     AbstractEditor(parent)
 {
     m_paletteManager = PcbPaletteManager::instance();
@@ -95,19 +95,19 @@ PcbEditor::PcbEditor(QWidget *parent) :
     populateFakeData();
 }
 
-PcbEditor::~PcbEditor()
+PcbEditorWidget::~PcbEditorWidget()
 {
 
 }
 
-void PcbEditor::setScene(Scene *scene)
+void PcbEditorWidget::setScene(Scene *scene)
 {
     m_view->setScene(scene);
     m_view->scale(0.75, 0.75);
     m_insightDockWidget->attachView(m_view);
 }
 
-void PcbEditor::activate(QMainWindow *window)
+void PcbEditorWidget::activate(QMainWindow *window)
 {
     window->addAction(m_showBoardInsightPopUpMenuAction);    
     window->addAction(m_toggleHeadsUpDisplayAction);
@@ -126,7 +126,7 @@ void PcbEditor::activate(QMainWindow *window)
     m_insightDockWidget->show();
 }
 
-void PcbEditor::desactivate(QMainWindow *window)
+void PcbEditorWidget::desactivate(QMainWindow *window)
 {
     window->removeAction(m_showBoardInsightPopUpMenuAction);
     window->removeAction(m_toggleHeadsUpDisplayAction);
@@ -144,22 +144,22 @@ void PcbEditor::desactivate(QMainWindow *window)
     window->removeDockWidget(m_insightDockWidget);
 }
 
-void PcbEditor::readSettings(QSettings &settings)
+void PcbEditorWidget::readSettings(QSettings &settings)
 {
     Q_UNUSED(settings);
 }
 
-void PcbEditor::writeSettings(QSettings &settings)
+void PcbEditorWidget::writeSettings(QSettings &settings)
 {
     Q_UNUSED(settings);
 }
 
-QString PcbEditor::type() const
+QString PcbEditorWidget::type() const
 {
     return "pcbeditor";
 }
 
-void PcbEditor::wheelEvent(QWheelEvent *event)
+void PcbEditorWidget::wheelEvent(QWheelEvent *event)
 {
     Q_UNUSED(event);
     // FIXME: doesn't work here, wheel events on MainView
@@ -172,7 +172,7 @@ void PcbEditor::wheelEvent(QWheelEvent *event)
 //    }
 }
 
-void PcbEditor::createActions()
+void PcbEditorWidget::createActions()
 {
     /*
      *  2D Board Insight System
@@ -181,7 +181,7 @@ void PcbEditor::createActions()
     m_showBoardInsightPopUpMenuAction = new QAction("Show Board Insight Pop-Up Menu", this);
     m_showBoardInsightPopUpMenuAction->setShortcut(QKeySequence(Qt::Key_F2));
     connect(m_showBoardInsightPopUpMenuAction, &QAction::triggered,
-            this, &PcbEditor::showBoardInsightPopUpMenu);
+            this, &PcbEditorWidget::showBoardInsightPopUpMenu);
 
     m_toggleHeadsUpDisplayAction = new QAction("Toggle Heads Up Display", this);
     m_toggleHeadsUpDisplayAction->setShortcut(QKeySequence("Shift+H"));
@@ -261,7 +261,7 @@ void PcbEditor::createActions()
 #endif
 }
 
-void PcbEditor::populateFakeData()
+void PcbEditorWidget::populateFakeData()
 {
     Scene *scene = new Scene(-5000, -5000, 10000, 10000); // um
 
@@ -320,7 +320,7 @@ void PcbEditor::populateFakeData()
     setScene(scene);
 }
 
-void PcbEditor::createBoardInsightMenu()
+void PcbEditorWidget::createBoardInsightMenu()
 {
     m_boardInsightPopUpMenu = new QMenu("Board Insight Pop-Up Menu", this);
     m_boardInsightPopUpMenu->addAction(m_toggleHeadsUpDisplayAction);
@@ -337,13 +337,13 @@ void PcbEditor::createBoardInsightMenu()
 }
 
 
-Scene *PcbEditor::scene() const
+Scene *PcbEditorWidget::scene() const
 {
     Q_ASSERT(m_view && m_view->scene());
     return static_cast<Scene *>(m_view->scene());
 }
 
-void PcbEditor::showBoardInsightPopUpMenu()
+void PcbEditorWidget::showBoardInsightPopUpMenu()
 {
     m_boardInsightPopUpMenu->exec(QCursor::pos());
 }

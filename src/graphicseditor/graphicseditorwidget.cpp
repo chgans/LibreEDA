@@ -1,4 +1,4 @@
-#include "graphicseditor.h"
+#include "graphicseditorwidget.h"
 #include "graphicsview.h"
 #include "graphicsscene.h"
 #include "graphicsgrid.h"
@@ -23,7 +23,7 @@
 #include <QToolBar>
 #include <QTimer>
 
-GraphicsEditor::GraphicsEditor(QWidget *parent):
+GraphicsEditorWidget::GraphicsEditorWidget(QWidget *parent):
     AbstractEditor(parent)
 {
     setLayout(new QVBoxLayout);
@@ -48,27 +48,27 @@ GraphicsEditor::GraphicsEditor(QWidget *parent):
     Q_INIT_RESOURCE(graphicseditor);
 }
 
-GraphicsEditor::~GraphicsEditor()
+GraphicsEditorWidget::~GraphicsEditorWidget()
 {
 
 }
 
-void GraphicsEditor::readSettings(QSettings &settings)
-{
-    Q_UNUSED(settings);
-}
-
-void GraphicsEditor::writeSettings(QSettings &settings)
+void GraphicsEditorWidget::readSettings(QSettings &settings)
 {
     Q_UNUSED(settings);
 }
 
-QString GraphicsEditor::type() const
+void GraphicsEditorWidget::writeSettings(QSettings &settings)
+{
+    Q_UNUSED(settings);
+}
+
+QString GraphicsEditorWidget::type() const
 {
     return "graphicseditor";
 }
 
-void GraphicsEditor::activate(QMainWindow *win)
+void GraphicsEditorWidget::activate(QMainWindow *win)
 {
     win->addToolBar(m_interactiveToolsToolBar);
     m_interactiveToolsToolBar->show();
@@ -81,7 +81,7 @@ void GraphicsEditor::activate(QMainWindow *win)
     m_mainWindow = win;
 }
 
-void GraphicsEditor::desactivate(QMainWindow *win)
+void GraphicsEditorWidget::desactivate(QMainWindow *win)
 {
     win->removeDockWidget(m_taskDockWidget);
     win->removeToolBar(m_pathPointToolBar);
@@ -89,7 +89,7 @@ void GraphicsEditor::desactivate(QMainWindow *win)
     win->removeToolBar(m_interactiveToolsToolBar);
 }
 
-void GraphicsEditor::addInteractiveTools()
+void GraphicsEditorWidget::addInteractiveTools()
 {
     m_interactiveToolsActionGroup = new QActionGroup(this);
     m_interactiveToolsToolBar = new QToolBar();
@@ -124,7 +124,7 @@ void GraphicsEditor::addInteractiveTools()
     //  - regular polygon, arbitrary polygon and "advanced" shape
 }
 
-void GraphicsEditor::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
+void GraphicsEditorWidget::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
 {
 
     bool firstTool = m_interactiveTools.count() == 0;
@@ -168,7 +168,7 @@ void GraphicsEditor::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
     }
 }
 
-void GraphicsEditor::addSnapTools()
+void GraphicsEditorWidget::addSnapTools()
 {
     QAction *action;
 
@@ -201,7 +201,7 @@ void GraphicsEditor::addSnapTools()
 
 }
 
-void GraphicsEditor::addPathPointTools()
+void GraphicsEditorWidget::addPathPointTools()
 {
     QAction *action;
 
@@ -233,7 +233,7 @@ void GraphicsEditor::addPathPointTools()
 }
 
 // They all work on one or more items
-void GraphicsEditor::addArrangeTools()
+void GraphicsEditorWidget::addArrangeTools()
 {
     // group/ungroup
     // send to back. front, raise, lower

@@ -3,7 +3,7 @@
 
 #include "core/abstracteditor.h"
 #include "pcbeditor/pcbeditorwidget.h"
-#include "graphicseditor/graphicseditor.h"
+#include "graphicseditor/graphicseditorwidget.h"
 #include "logviewer/logviewer.h"
 
 #include <QDebug>
@@ -55,9 +55,9 @@ void MainWindow::readSettings()
     int currentIndex;
     if (!settings.childGroups().contains("tabs")) {
         qDebug() << "Creating default editors" << settings.childGroups();
-        GraphicsEditor *geditor = new GraphicsEditor();
+        GraphicsEditorWidget *geditor = new GraphicsEditorWidget();
         m_editorTabWidget->addTab(geditor, "sch");
-        PcbEditor *peditor = new PcbEditor();
+        PcbEditorWidget *peditor = new PcbEditorWidget();
         m_editorTabWidget->addTab(peditor, "pcb");
         m_activeEditor = geditor;
         currentIndex = 0;
@@ -71,9 +71,9 @@ void MainWindow::readSettings()
         const QString &docName = settings.value("name").toString();
         AbstractEditor *editor = nullptr;
         if (editorType == "graphicseditor")
-            editor = new GraphicsEditor();
+            editor = new GraphicsEditorWidget();
         else if (editorType == "pcbeditor")
-            editor = new PcbEditor();
+            editor = new PcbEditorWidget();
         Q_ASSERT(editor != nullptr);
         editor->readSettings(settings);
         m_editorTabWidget->addTab(editor, docName);

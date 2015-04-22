@@ -13,7 +13,7 @@ TEMPLATE = lib
 
 include($$PWD/../shared.pri)
 
-SOURCES += graphicseditor.cpp \
+SOURCES += \
     graphicsobject.cpp \
     graphicsscene.cpp \
     graphicsview.cpp \
@@ -47,9 +47,10 @@ SOURCES += graphicseditor.cpp \
     dock/taskdockwidget.cpp \
     widget/taskoptionwidget.cpp \
     widget/coordinatewidget.cpp \
-    widget/wireoperationwidget.cpp
+    widget/wireoperationwidget.cpp \
+    graphicseditorwidget.cpp
 
-HEADERS += graphicseditor.h \
+HEADERS += \
     graphicsobject.h \
     graphicsscene.h \
     graphicsview.h \
@@ -84,7 +85,8 @@ HEADERS += graphicseditor.h \
     dock/taskdockwidget.h \
     widget/taskoptionwidget.h \
     widget/coordinatewidget.h \
-    widget/wireoperationwidget.h
+    widget/wireoperationwidget.h \
+    graphicseditorwidget.h
 
 unix {
     target.path = /usr/lib

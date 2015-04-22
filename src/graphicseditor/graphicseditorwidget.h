@@ -1,5 +1,5 @@
-#ifndef GRAPHICSEDITOR_H
-#define GRAPHICSEDITOR_H
+#ifndef GRAPHICSEDITORWIDGET_H
+#define GRAPHICSEDITORWIDGET_H
 
 #include "core/abstracteditor.h"
 
@@ -12,13 +12,13 @@ class GraphicsScene;
 class AbstractGraphicsInteractiveTool;
 class TaskDockWidget;
 
-class GraphicsEditor: public AbstractEditor
+class GraphicsEditorWidget: public AbstractEditor
 {
     Q_OBJECT
 
 public:
-    GraphicsEditor(QWidget *parent = 0);
-    ~GraphicsEditor();
+    GraphicsEditorWidget(QWidget *parent = 0);
+    ~GraphicsEditorWidget();
 
     void activate(QMainWindow *win);
     void desactivate(QMainWindow *win);
@@ -51,4 +51,4 @@ private:
     QToolBar *m_arrangeToolBar;
 };
 
-#endif // GRAPHICSEDITOR_H
+#endif // GRAPHICSEDITORWIDGET_H

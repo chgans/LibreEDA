@@ -16,12 +16,12 @@ class PcbPaletteManager;
 class DesignLayerManager;
 class InsightDockWidget;
 
-class PcbEditor : public AbstractEditor
+class PcbEditorWidget : public AbstractEditor
 {
     Q_OBJECT
 public:
-    explicit PcbEditor(QWidget *parent = 0);
-    ~PcbEditor();
+    explicit PcbEditorWidget(QWidget *parent = 0);
+    ~PcbEditorWidget();
 
     MainView *graphicsView() { return m_view; }
 
