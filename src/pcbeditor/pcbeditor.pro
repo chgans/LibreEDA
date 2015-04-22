@@ -43,7 +43,10 @@ SOURCES += \
     colorprofileeditor.cpp \
     items/graphicsitem.cpp \
     items/graphicsrect.cpp \
-    items/graphicsline.cpp
+    items/graphicsline.cpp \
+    pcbeditorfactory.cpp \
+    pcbeditor.cpp \
+    pcbdocument.cpp
 
 HEADERS  += \
     scene.h \
@@ -70,7 +73,11 @@ HEADERS  += \
     colorprofileeditor.h \
     items/graphicsitem.h \
     items/graphicsrect.h \
-    items/graphicsline.h
+    items/graphicsline.h \
+    pcbeditorfactory.h \
+    pcbeditor.h \
+    pcbeditorconstants.h \
+    pcbdocument.h
 
 FORMS    += \
     pcbpalettesettingsdialog.ui \

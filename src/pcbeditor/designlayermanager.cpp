@@ -250,6 +250,7 @@ DesignLayer *DesignLayerManager::layerAt(int stackPosition) const
     return m_layerMap[stackPosition];
 }
 
+#if 0
 void DesignLayerManager::setLayerEnabled(int stackPosition, bool enabled)
 {
     qDebug() << __PRETTY_FUNCTION__ << stackPosition << enabled;
@@ -292,6 +293,7 @@ DesignLayerList DesignLayerManager::usedLayers() const
     }
     return list;
 }
+#endif
 
 QString DesignLayerManager::defaultLayerName(DesignLayer::Category category, int categoryIndex)
 {

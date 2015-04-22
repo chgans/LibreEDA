@@ -1,27 +1,8 @@
 #include "layerbar.h"
-
-#include "views/mainview.h"
-#include "scene.h"
 #include "designlayer.h"
-#include "designlayerset.h"
-#include "pcbpalette.h"
-#include "colorprofileeditor.h"
 
-#include <QAction>
-#include <QActionGroup>
-#include <QHBoxLayout>
-#include <QTabBar>
-#include <QToolButton>
-#include <QMenu>
-#include <QKeySequence>
-
+#include <QIcon>
 #include <QDebug>
-
-/*
- * TODO:
- * - layer enabled vs visible
- * - flipped view eg. view->setOrientation(Le::TopFace)
- */
 
 static QIcon createColorIcon(const QColor &color)
 {
@@ -30,483 +11,123 @@ static QIcon createColorIcon(const QColor &color)
     return QIcon(pix);
 }
 
-LayerBar::LayerBar(QWidget *parent) : QWidget(parent)
+LayerTabBar::LayerTabBar(QWidget *parent):
+    QTabBar(parent)
 {
-    m_view = nullptr;
-
-    createConfigToolButton();
-    createTabBar();
-    createActions();
-    createMenus();
-
-    QHBoxLayout *mainLayout = new QHBoxLayout();
-    mainLayout->addWidget(m_configToolButton);
-    mainLayout->addWidget(m_tabBar);
-    setLayout(mainLayout);
-
-    populateConfigMenu();
-
-    connectActions();
-    connectTabBar();
+    setMovable(false);
+    setTabsClosable(false);
+    connect(this, &QTabBar::currentChanged,
+            this, &LayerTabBar::onCurrentIndexChanged);
 }
 
-LayerBar::~LayerBar()
+LayerTabBar::~LayerTabBar()
 {
+
 }
 
-void LayerBar::setView(MainView *view)
+DesignLayer *LayerTabBar::currentLayer() const
 {
-    m_view = view;
-
-    connect(view, &MainView::layerAdded,
-            this, &LayerBar::addLayerTab);
-    connect(view, &MainView::layerRemoved,
-            this, &LayerBar::removeLayerTab);
-
-    updateLayerTabs();
-    updateTabIcons();
-    updateLayerIcon();
+    return indexToLayer(currentIndex());
 }
 
-void LayerBar::activateLayer(int tabIndex)
+void LayerTabBar::addLayerTab(DesignLayer *layer, bool visible)
 {
-    DesignLayer *layer = m_tabBar->tabData(tabIndex).value<DesignLayer *>();
-    qDebug() << "Activating layer" << layer->index() << layer->defaultName();
-    if (m_view != nullptr)
-        m_view->setActiveLayer(layer);
-    updateLayerIcon();
-}
-
-void LayerBar::activateNextLayer()
-{
-    activateLayer((m_tabBar->currentIndex() + 1 ) % m_tabBar->count());
-}
-
-void LayerBar::activatePreviousLayer()
-{
-    activateLayer((m_tabBar->currentIndex() - 1 ) % m_tabBar->count());
-}
-
-void LayerBar::activateNextSignalLayer()
-{
-    activateNextLayer();
-}
-
-void LayerBar::activatePreviousSignalLayer()
-{
-    activatePreviousLayer();
-}
-
-void LayerBar::setActivePalette(PcbPalette *palette)
-{
-    if (m_activePalette == palette)
+    if (m_allLayers.contains(layer)) {
+        qWarning() << __PRETTY_FUNCTION__ << "Layer" << layer->defaultName() << "already added";
         return;
-
-    m_activePalette = palette;
-
-    updateTabIcons();
-    updateLayerIcon();
-
-    foreach (QAction *action, m_colorActionGroup->actions()) {
-        qDebug() << action->data().value<PcbPalette *>();
-        if (action->data().value<PcbPalette *>() == palette) {
-            action ->setChecked(true);
-            return;
+    }
+    if (visible) {
+        int layerTabIndex = -1;
+        // Keep layer tab in layer index (design layer stack position)
+        for (int index = 0; index < count() ; index++) {
+            DesignLayer *current = indexToLayer(index);
+            if (current->index() > layer->index()) {
+                layerTabIndex = index;
+                break;
+            }
         }
+        QIcon icon = createColorIcon(layer->color());
+        QString text = layer->effectiveName();
+        blockSignals(true);
+        if (layerTabIndex == -1)
+            layerTabIndex = addTab(icon, text);
+        else
+            insertTab(layerTabIndex, layer->effectiveName());
+        setTabData(layerTabIndex, QVariant::fromValue<DesignLayer *>(layer));
+        blockSignals(false);
+        m_visibleLayers.append(layer);
     }
-}
-
-void LayerBar::onPaletteChanged(PcbPalette *palette)
-{
-    Q_UNUSED(palette);
-    updateTabIcons();
-    updateLayerIcon();
-}
-
-void LayerBar::addPalette(PcbPalette *palette)
-{
-    QAction *action = new QAction(palette->name(), this);
-    action->setData(QVariant::fromValue<PcbPalette *>(palette));
-    action->setCheckable(true);
-    m_colorActionGroup->addAction(action);
-    m_colorMenu->addAction(action);
-}
-
-void LayerBar::removePalette(PcbPalette *palette)
-{
-    foreach (QAction *action, m_colorActionGroup->actions()) {
-        if (action->data().value<PcbPalette *>() == palette) {
-            m_colorActionGroup->removeAction(action);
-            return;
-        }
+    else {
+        m_hiddenLayers.append(layer);
     }
-    // Should not happen
-    Q_ASSERT(false);
+    m_allLayers.append(layer);
 }
 
-void LayerBar::onLayerSetChanged(DesignLayerSet *set)
+void LayerTabBar::removeLayerTab(DesignLayer *layer)
 {
-    Q_UNUSED(set);
-    disconnectTabBar();
-    updateLayerTabs();
-    updateTabIcons();
-    updateLayerIcon();
-    connectTabBar();
-}
-
-void LayerBar::addLaterSet(DesignLayerSet *set)
-{
-    QAction *action = new QAction(set->effectiveName(), this);
-    action->setData(QVariant::fromValue<DesignLayerSet *>(set));
-    m_setActionGroup->addAction(action);
-    m_setMenu->addAction(action);
-
-    // TODO: monitor set changes here
-}
-
-void LayerBar::removeLayerSet(DesignLayerSet *set)
-{
-    foreach (QAction *action, m_setActionGroup->actions()) {
-        if (action->data().value<DesignLayerSet *>() == set) {
-            m_setActionGroup->removeAction(action);
-            return;
-        }
-    }
-    // Should not happen
-    Q_ASSERT(false);
-}
-
-void LayerBar::addLayer(DesignLayer *layer)
-{
-    Q_ASSERT(!m_availableLayers.contains(layer));
-    m_availableLayers.append(layer);
-    if (layer->isPresent()) {
-        m_view->addLayer(layer);
-    }
-}
-
-void LayerBar::removeLayer(DesignLayer *layer)
-{
-    Q_ASSERT(m_availableLayers.contains(layer));
-    m_availableLayers.removeOne(layer);
-    if (m_view) {
-        if (m_view->activeLayer() == layer && m_availableLayers.count() > 0)
-            m_view->setActiveLayer(m_availableLayers.first());
-        m_view->removeLayer(layer);
-    }
-}
-
-void LayerBar::addLayerTab(DesignLayer *layer)
-{
-    disconnectTabBar();
-    int tabIndex = m_tabBar->addTab(layer->defaultName());
-    m_tabBar->setTabData(tabIndex, QVariant::fromValue<DesignLayer *>(layer));
-    m_tabBar->setTabIcon(tabIndex, createColorIcon(layer->color()));
-    updateLayerIcon();
-    if (layer == m_view->activeLayer())
-        m_tabBar->setCurrentIndex(tabIndex);
-    connectTabBar();
-}
-
-void LayerBar::removeLayerTab(DesignLayer *layer)
-{
-    disconnectTabBar();
-    for (int i = 0; i < m_tabBar->count(); i++) {
-        DesignLayer *tabLayer = m_tabBar->tabData(i).value<DesignLayer *>();
-        if (layer == tabLayer) {
-            m_tabBar->removeTab(i);
-            break;
-        }
-    }
-    connectTabBar();
-}
-
-void LayerBar::createTabBar()
-{
-    m_tabBar = new QTabBar();
-    m_tabBar->setShape(QTabBar::RoundedSouth);
-    m_tabBar->setDrawBase(false);
-    m_tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
-}
-
-void LayerBar::createConfigToolButton()
-{
-    m_configToolButton = new QToolButton;
-    m_configToolButton->setAutoRaise(true);
-    m_configToolButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
-    m_configToolButton->setPopupMode(QToolButton::InstantPopup);
-}
-
-void LayerBar::updateTabIcons()
-{
-    for (int tabIndex = 0; tabIndex < m_tabBar->count(); tabIndex++) {
-        DesignLayer *layer = m_tabBar->tabData(tabIndex).value<DesignLayer *>();
-        QColor color = layer->color();
-        layer->setColor(color);
-        m_tabBar->setTabIcon(tabIndex, createColorIcon(layer->color()));
-    }
-}
-
-void LayerBar::updateLayerIcon()
-{
-    QIcon icon;
-    if (m_tabBar->count() > 0)
-        icon = m_tabBar->tabIcon(m_tabBar->currentIndex());
-    m_configToolButton->setIcon(icon);
-}
-
-void LayerBar::updateLayerTabs()
-{
-    while (m_tabBar->count() > 0)
-        m_tabBar->removeTab(0);
-
-    if (m_view == nullptr)
+    if (!m_allLayers.contains(layer)) {
+        qWarning() << __PRETTY_FUNCTION__ << "Layer" << layer->defaultName() << "not found";
         return;
-
-    int currentIndex = -1;
-    foreach (DesignLayer *layer, m_view->layers()) {
-        int tabIndex = m_tabBar->addTab(layer->defaultName());
-        m_tabBar->setTabData(tabIndex, QVariant::fromValue<DesignLayer *>(layer));
-        if (layer == m_view->activeLayer())
-            currentIndex = tabIndex;
     }
-    if (currentIndex != -1)
-        m_tabBar->setCurrentIndex(currentIndex);
+
+    if (m_visibleLayers.contains(layer)) {
+        removeTab(layerToIndex(layer));
+        m_visibleLayers.removeOne(layer);
+    }
+    else if (m_hiddenLayers.contains(layer)) {
+        m_hiddenLayers.removeOne(layer);
+    }
+    m_allLayers.removeOne(layer);
 }
 
-void LayerBar::populateConfigMenu()
+void LayerTabBar::hideLayerTab(DesignLayer *layer)
 {
-    m_configMenu->clear();
-
-    m_configMenu->addSeparator();
-    m_configMenu->addAction(m_showConfigDialogAction);
-
-    m_colorMenu->addAction(m_showColorDialogAction);
-    m_colorMenu->addSeparator();
-    m_colorMenu->addActions(m_colorActionGroup->actions());
-    m_configMenu->addMenu(m_colorMenu);
-
-    m_setMenu->addAction(m_showSetDialogAction);
-    m_setMenu->addSeparator();
-    m_setMenu->addActions(m_setActionGroup->actions());
-    m_configMenu->addMenu(m_setMenu);
-
-    m_opacityMenu->addAction(m_showOpacityDialogAction);
-    m_opacityMenu->addSeparator();
-    m_opacityMenu->addActions(m_opacityActionGroup->actions());
-    m_configMenu->addMenu(m_opacityMenu);
-
-    m_configToolButton->setMenu(m_configMenu);
-}
-
-void LayerBar::disconnectTabBar()
-{
-    m_tabBar->disconnect(this);
-}
-
-void LayerBar::connectTabBar()
-{
-    connect(m_tabBar, &QTabBar::currentChanged,
-            this, &LayerBar::activateLayer);
-    connect(m_tabBar, &QTabBar::customContextMenuRequested,
-            this, &LayerBar::showTabContextMenu);
-}
-
-void LayerBar::showTabContextMenu(const QPoint &pos)
-{
-    if (m_tabBar->count() == 0 || m_view == nullptr)
+    if (!m_visibleLayers.contains(layer)) {
+        qWarning() << __PRETTY_FUNCTION__ << "Layer" << layer->defaultName() << "not found";
         return;
-
-    int tabIndex = m_tabBar->tabAt(pos);
-    DesignLayer *layer = m_tabBar->tabData(tabIndex).value<DesignLayer *>();
-    QMenu *menu = new QMenu("Layer tab contextual menu");
-    QAction *action;
-    action = new QAction(createColorIcon(layer->color()),
-                         QString("Hide %1").arg(layer->defaultName()), menu);
-    connect(action, &QAction::triggered,
-            this, [this, layer](bool checked) {
-        Q_UNUSED(checked);
-        m_view->removeLayer(layer);
-    });
-    menu->addAction(action);
-
-    menu->addSeparator();
-    QMenu *hideMenu = new QMenu("Hide layers");
-    menu->addMenu(hideMenu);
-    QMenu *showMenu = new QMenu("Show layers");
-    menu->addMenu(showMenu);
-
-    foreach (DesignLayer *layer, m_availableLayers) {
-        qDebug() << __PRETTY_FUNCTION__ << layer->index()
-                 << layer->isEnabled() << layer->isPresent() << layer->isVisible();
-        if (m_view->layers().contains(layer)) {
-            action = new QAction(createColorIcon(layer->color()),
-                                 QString("Hide %1").arg(layer->defaultName()), menu);
-            connect(action, &QAction::triggered,
-                    this, [this, layer](bool checked) {
-                Q_UNUSED(checked);
-                m_view->removeLayer(layer);
-                updateLayerIcon();
-            });
-            hideMenu->addAction(action);
-            updateLayerIcon();
-        }
-        else {
-            action = new QAction(createColorIcon(layer->color()),
-                                 QString("Show %1").arg(layer->defaultName()), menu);
-            connect(action, &QAction::triggered,
-                    this, [this, layer](bool checked) {
-                Q_UNUSED(checked);
-                m_view->addLayer(layer);
-                updateLayerIcon();
-            });
-            showMenu->addAction(action);
-        }
     }
-
-    // Layer sets
-    menu->addMenu(m_setMenu);
-
-    // TODO: not implemented
-    menu->addSeparator();
-    QActionGroup *group = new QActionGroup(menu);
-    action = new QAction("Use short layer names", group);
-    action->setCheckable(true);
-    action->setChecked(true);
-    menu->addAction(action);
-    action = new QAction("Use medium layer names", group);
-    action->setCheckable(true);
-    menu->addAction(action);
-    action = new QAction("Use long layer names", group);
-    action->setCheckable(true);
-    menu->addAction(action);
-
-    // TODO: not implemented
-    menu->addSeparator();
-    action = new QAction("Flipped", menu);
-    action->setCheckable(true);
-    menu->addAction(action);
-
-    menu->exec(m_tabBar->mapToGlobal(pos));
-    delete menu;
+    removeTab(layerToIndex(layer));
+    m_visibleLayers.removeOne(layer);
+    m_hiddenLayers.append(layer);
 }
 
-void LayerBar::createActions()
+void LayerTabBar::showLayerTab(DesignLayer *layer)
 {
-    m_activateNextAction = new QAction(QIcon::fromTheme("go-next"),
-                                       QString("Activate next layer"), this);
-    m_activateNextAction->setShortcut(QKeySequence("+"));
-    m_activatePreviousAction = new QAction(QIcon::fromTheme("go-previous"),
-                                           "Activate next layer", this);
-    m_activatePreviousAction->setShortcut(QKeySequence("-"));
-    m_activateNextSignalAction = new QAction(QIcon::fromTheme("go-next"),
-                                             "Activate next signal layer", this);
-    m_activateNextSignalAction->setShortcut(QKeySequence("/"));
-    m_activatePreviousSignalAction = new QAction(QIcon::fromTheme("go-previous"),
-                                                 "Activate next signal layer", this);
-    m_activatePreviousSignalAction->setShortcut(QKeySequence("*"));
-
-    m_showConfigDialogAction = new QAction(QIcon::fromTheme("preferences-system"),
-                                           "View Configuration...", this);
-    m_showConfigDialogAction->setShortcut(QKeySequence("shift+l"));
-    m_showColorDialogAction = new QAction(QIcon::fromTheme("preferences-other"),
-                                          "Color profiles...", this);
-    m_showSetDialogAction = new QAction(QIcon::fromTheme("preferences-other"),
-                                        "Layer sets...", this);
-    m_showOpacityDialogAction = new QAction(QIcon::fromTheme("preferences-other"),
-                                            "Opacity profiles...", this);
-
-    m_colorActionGroup = new QActionGroup(this);
-    m_setActionGroup  = new QActionGroup(this);
-    m_opacityActionGroup = new QActionGroup(this);
+    if (!m_hiddenLayers.contains(layer)) {
+        qWarning() << __PRETTY_FUNCTION__ << "Layer" << layer->defaultName() << "not found";
+        return;
+    }
+    addLayerTab(layer, true);
 }
 
-void LayerBar::createMenus()
+void LayerTabBar::setCurrentLayer(DesignLayer *layer)
 {
-    m_configMenu = new QMenu("View configuration");
-    m_colorMenu = new QMenu("Color profiles");
-    m_setMenu = new QMenu("Layer sets");
-    m_opacityMenu = new QMenu("Opacity profiles");
+    if (currentIndex() >= 0) {
+        if (layer == indexToLayer(currentIndex()))
+            return;
+    }
+    setCurrentIndex(layerToIndex(layer));
 }
 
-void LayerBar::connectActions()
+void LayerTabBar::onCurrentIndexChanged(int index)
 {
-    connect(m_activateNextAction, &QAction::triggered,
-            this, [this](bool checked) {
-        Q_UNUSED(checked);
-       activateNextLayer();
-    });
-    connect(m_activatePreviousAction, &QAction::triggered,
-            this, [this](bool checked) {
-        Q_UNUSED(checked);
-       activatePreviousLayer();
-    });
-    connect(m_activateNextSignalAction, &QAction::triggered,
-            this, [this](bool checked) {
-        Q_UNUSED(checked);
-       activateNextSignalLayer();
-    });
-    connect(m_activatePreviousSignalAction, &QAction::triggered,
-            this, [this](bool checked) {
-        Q_UNUSED(checked);
-       activatePreviousSignalLayer();
-    });
-
-    connect(m_showConfigDialogAction, &QAction::triggered,
-            this, [this](bool checked) {
-        Q_UNUSED(checked);
-        // TODO
-    });
-    connect(m_showColorDialogAction, &QAction::triggered,
-            this, [this](bool checked) {
-        Q_UNUSED(checked);
-        ColorProfileEditor *editor = new ColorProfileEditor();
-        editor->raise();
-        editor->show();
-    });
-    connect(m_showSetDialogAction, &QAction::triggered,
-            this, [this](bool checked) {
-        Q_UNUSED(checked);
-        // TODO
-    });
-    connect(m_showOpacityDialogAction, &QAction::triggered,
-            this, [this](bool checked) {
-        Q_UNUSED(checked);
-        // TODO
-    });
-
-    connect(m_colorActionGroup, &QActionGroup::triggered,
-            this, [this](QAction *action) {
-        PcbPalette *palette = action->data().value<PcbPalette *>();
-        m_view->setPalette(palette);
-        updateTabIcons();
-        updateLayerIcon();
-    });
-    connect(m_setActionGroup, &QActionGroup::triggered,
-            this, [this](QAction *action) {
-        DesignLayerSet *set = action->data().value<DesignLayerSet *>();
-        if (m_view != nullptr) {
-            m_view->removeLayers(m_view->layers());
-            m_view->addLayers(set->enabledLayers());
-        }
-    });
-    connect(m_opacityActionGroup, &QActionGroup::triggered,
-            this, [this](QAction *action) {
-        Q_UNUSED(action);
-        // TODO
-    });
+    emit currentLayerChanged(indexToLayer(index));
 }
 
-void LayerBar::disconnectActions()
+int LayerTabBar::layerToIndex(DesignLayer *layer)
 {
-    m_activateNextAction->disconnect(this);
-    m_activatePreviousAction->disconnect(this);
-    m_activateNextSignalAction->disconnect(this);
-    m_activatePreviousSignalAction->disconnect(this);
+    for (int index = 0; index < count() ; index++) {
+        if (indexToLayer(index) == layer)
+            return index;
+    }
+    return -1;
 }
 
-
-//ColorProfileEditor *dlg = new ColorProfileEditor(this);
-//dlg->setWindowFlags(Qt::Dialog);
-//dlg->initialise();
-//dlg->show();
+DesignLayer *LayerTabBar::indexToLayer(int index) const
+{
+    if (index < 0 || index >= count()) {
+        qWarning() << __PRETTY_FUNCTION__ << "Index out of range" << index;
+        return nullptr;
+    }
+    return tabData(index).value<DesignLayer *>();
+}

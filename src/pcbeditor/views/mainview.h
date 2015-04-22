@@ -83,7 +83,7 @@ signals:
     void layerAdded(DesignLayer *layer);
     void layerRemoved(DesignLayer *layer);
     void layerVisibilityChanged(int index, bool visible);
-    void activeLayerChanged(int previousIndex, int currentIndex);
+    void activeLayerChanged(DesignLayer *layer);
 
 public slots:
     LayerDisplayMode cycleLayerDisplayMode();

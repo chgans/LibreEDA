@@ -35,31 +35,22 @@ PcbEditorWidget::PcbEditorWidget(QWidget *parent) :
     m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    m_layerTabBar = new LayerTabBar();
+    connect(m_view, &MainView::layerAdded,
+            this, [this](DesignLayer *layer) {
+        m_layerTabBar->addLayerTab(layer);
+    });
+    connect(m_view, &MainView::layerRemoved,
+            this, [this](DesignLayer *layer) {
+        m_layerTabBar->removeLayerTab(layer);
+    });
+    connect(m_view, &MainView::activeLayerChanged,
+            m_layerTabBar, &LayerTabBar::setCurrentLayer);
+    connect(m_layerTabBar, &LayerTabBar::currentLayerChanged,
+            m_view, &MainView::setActiveLayer);
+
+
     m_insightDockWidget = new InsightDockWidget();
-
-    m_layerBar = new LayerBar;
-    m_layerBar->setView(m_view);
-
-    foreach (PcbPalette *palette, m_paletteManager->palettes())
-        m_layerBar->addPalette(palette);
-    m_layerBar->setActivePalette(m_paletteManager->activePalette());
-    connect(m_paletteManager, &PcbPaletteManager::paletteAdded,
-            m_layerBar, &LayerBar::addPalette);
-    connect(m_paletteManager, &PcbPaletteManager::paletteRemoved,
-            m_layerBar, &LayerBar::removePalette);
-    connect(m_paletteManager, &PcbPaletteManager::paletteActivated,
-            m_layerBar, &LayerBar::setActivePalette);
-
-    foreach (DesignLayerSet *set, m_layerManager->allLayerSets())
-        m_layerBar->addLaterSet(set);
-    connect(m_layerManager, &DesignLayerManager::layerSetAdded,
-            m_layerBar, &LayerBar::addLaterSet);
-    connect(m_layerManager, &DesignLayerManager::layerSetRemoved,
-            m_layerBar, &LayerBar::removeLayerSet);
-
-    foreach (DesignLayer *layer, DesignLayerManager::instance()->enabledLayers()) {
-        m_layerBar->addLayer(layer);
-    }
 
     m_snapButton = new QToolButton;
     m_snapButton->setText("Snap");
@@ -77,7 +68,7 @@ PcbEditorWidget::PcbEditorWidget(QWidget *parent) :
     m_clearButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
 
     QHBoxLayout *toolLayout = new QHBoxLayout;
-    toolLayout->addWidget(m_layerBar);
+    toolLayout->addWidget(m_layerTabBar);
     toolLayout->addWidget(m_snapButton);
     toolLayout->addWidget(m_maskButton);
     toolLayout->addWidget(m_clearButton);
@@ -105,6 +96,8 @@ void PcbEditorWidget::setScene(Scene *scene)
     m_view->setScene(scene);
     m_view->scale(0.75, 0.75);
     m_insightDockWidget->attachView(m_view);
+    m_view->addLayers(m_layerManager->allLayers());
+    m_view->setActiveLayer(m_view->layers().first());
 }
 
 void PcbEditorWidget::activate(QMainWindow *window)

@@ -3,13 +3,9 @@
 
 #include <QMainWindow>
 
-namespace Ui {
-class MainWindow;
-}
-
-class QTabWidget;
+class EditorManager;
+class EditorView;
 class QSettings;
-class AbstractEditor;
 
 class MainWindow : public QMainWindow
 {
@@ -23,24 +19,16 @@ public:
     void writeSettings();
 
 private:
-    Ui::MainWindow *ui;
-    QTabWidget *m_editorTabWidget;
-    void addGraphicsEditor();
-    void addPcbEditor();
-    void addLogViewer();
-    bool maybeSave();
 
 private slots:
-    void activateEditor(int tabIndex);
+    void openFileRequested(bool);
 
 private:
-    AbstractEditor *m_activeEditor;
+    EditorManager *m_editorManager;
+    EditorView *m_editorView;
 
     // QWidget interface
 protected:
-    void focusInEvent(QFocusEvent *event);
-    void focusOutEvent(QFocusEvent *event);
-    bool focusNextPrevChild(bool next);
     virtual void closeEvent(QCloseEvent *event);
 };
 

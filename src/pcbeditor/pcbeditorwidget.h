@@ -10,7 +10,7 @@ class QToolButton;
 
 class MainView;
 class Scene;
-class LayerBar;
+class LayerTabBar;
 class PcbPalette;
 class PcbPaletteManager;
 class DesignLayerManager;
@@ -49,7 +49,7 @@ private:
     PcbPaletteManager *m_paletteManager;
     DesignLayerManager *m_layerManager;
     MainView *m_view;
-    LayerBar *m_layerBar;
+    LayerTabBar *m_layerTabBar;
     InsightDockWidget *m_insightDockWidget;
     QToolButton *m_snapButton;
     QToolButton *m_maskButton;

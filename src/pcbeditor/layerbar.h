@@ -1,96 +1,56 @@
 #ifndef LAYERBAR_H
 #define LAYERBAR_H
 
-#include <QWidget>
+#include <QTabBar>
+#include <QList>
+#include <QMap>
 
-class QTabBar;
-class QAction;
-class QActionGroup;
-class QToolButton;
+#include <functional>
+
+class DesignLayer;
 class QMenu;
 
-class MainView;
-class PcbPalette;
-class PcbPaletteManager;
-class DesignLayer;
-class DesignLayerSet;
-class DesignLayerManager;
-
-class LayerBar : public QWidget
+class LayerTabBar : public QTabBar
 {
     Q_OBJECT
 public:
-    explicit LayerBar(QWidget *parent = 0);
-    ~LayerBar();
+    typedef std::function<void(QMenu*)> MenuProvider;
 
-    void setView(MainView *view);
-    MainView *view() const;
+    explicit LayerTabBar(QWidget *parent = 0);
+    ~LayerTabBar();
 
-signals:
+    DesignLayer *currentLayer() const;
 
 public slots:
-    void addPalette(PcbPalette *palette);
-    void removePalette(PcbPalette *palette);
-    void setActivePalette(PcbPalette *palette);
-    void addLaterSet(DesignLayerSet *set);
-    void removeLayerSet(DesignLayerSet *set);
-    void addLayer(DesignLayer *layer);
-    void removeLayer(DesignLayer *layer);
+    void addLayerTab(DesignLayer *layer, bool visible = true);
 
-protected slots:
-    void activateLayer(int tabIndex);
-    void activateNextLayer();
-    void activatePreviousLayer();
-    void activateNextSignalLayer();
-    void activatePreviousSignalLayer();
-
-    void onPaletteChanged(PcbPalette *palette);
-
-    void onLayerSetChanged(DesignLayerSet *set);
-
-    void addLayerTab(DesignLayer *layer);
     void removeLayerTab(DesignLayer *layer);
+    void replaceLayerTabs(QList<DesignLayer *> layers);
+
+    void hideLayerTab(DesignLayer *layer);
+    void showLayerTab(DesignLayer *layer);
+    void hideLayerTabs(QList<DesignLayer *> layers);
+    void showLayerTabs(QList<DesignLayer *> layers);
+
+    void setCurrentLayer(DesignLayer *layer);
+
+signals:
+    void currentLayerChanged(DesignLayer *layer);
+
+    // TBD
+    void hideLayerRequested(DesignLayer *layer);
+    void showLayerRequested(DesignLayer *layer);
+
+private slots:
+    void onCurrentIndexChanged(int index);
 
 private:
-    MainView *m_view;
-    QList<DesignLayer *> m_availableLayers;
+    QList<DesignLayer *> m_allLayers;
+    QList<DesignLayer *> m_visibleLayers;
+    QList<DesignLayer *> m_hiddenLayers;
 
-    // Profile and conf
-    PcbPalette *m_activePalette;
-
-    // Widgets
-    QTabBar *m_tabBar;
-    QToolButton *m_configToolButton;
-    void createTabBar();
-    void createConfigToolButton();
-    void updateTabIcons();
-    void updateLayerIcon();
-    void updateLayerTabs();
-    void populateConfigMenu();
-    void disconnectTabBar();
-    void connectTabBar();
-    void showTabContextMenu(const QPoint &pos);
-
-    // Actions and menus
-    void createActions();
-    void createMenus();
-    void connectActions();
-    void disconnectActions();
-    QAction *m_activateNextAction;
-    QAction *m_activatePreviousAction;
-    QAction *m_activateNextSignalAction;
-    QAction *m_activatePreviousSignalAction;
-    QMenu *m_configMenu;
-    QAction *m_showConfigDialogAction;
-    QMenu *m_colorMenu;
-    QAction *m_showColorDialogAction;
-    QActionGroup *m_colorActionGroup;
-    QMenu *m_setMenu;
-    QAction *m_showSetDialogAction;
-    QActionGroup *m_setActionGroup;
-    QMenu *m_opacityMenu;
-    QAction *m_showOpacityDialogAction;
-    QActionGroup *m_opacityActionGroup;
+    int layerToIndex(DesignLayer *layer);
+    DesignLayer *indexToLayer(int index) const;
 };
 
 #endif // LAYERBAR_H

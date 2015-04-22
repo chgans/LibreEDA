@@ -29,12 +29,14 @@ public:
     DesignLayerList allLayers() const;
     DesignLayerList layersForCategory(DesignLayer::Category category) const;
     DesignLayer *layerAt(int stackPosition) const;
+
+#if 0
     void setLayerEnabled(int stackPosition, bool enabled);
     bool isLayerEnabled(int stackPosition) const;
     DesignLayerList enabledLayers() const;
-
     void enableOnlyUsedLayers();
     DesignLayerList usedLayers() const;
+#endif
 
     static QString defaultLayerName(DesignLayer::Category category, int categoryIndex);
     static QString builtInLayerSetName(int type);
