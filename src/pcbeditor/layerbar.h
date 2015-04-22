@@ -25,12 +25,12 @@ public slots:
     void addLayerTab(DesignLayer *layer, bool visible = true);
 
     void removeLayerTab(DesignLayer *layer);
-    void replaceLayerTabs(QList<DesignLayer *> layers);
+    //void replaceLayerTabs(QList<DesignLayer *> layers);
 
     void hideLayerTab(DesignLayer *layer);
     void showLayerTab(DesignLayer *layer);
-    void hideLayerTabs(QList<DesignLayer *> layers);
-    void showLayerTabs(QList<DesignLayer *> layers);
+    //void hideLayerTabs(QList<DesignLayer *> layers);
+    //void showLayerTabs(QList<DesignLayer *> layers);
 
     void setCurrentLayer(DesignLayer *layer);
 
