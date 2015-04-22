@@ -12,6 +12,12 @@ TEMPLATE = lib
 
 include($$PWD/../shared.pri)
 
+DATA_DIR = $${BASE_DATA_DIR}/pcb
+SETTINGS_DIR = $${BASE_SETTINGS_DIR}/pcb
+SAMPLE_DIR = $${BASE_SAMPLE_DIR}/pcb
+
+DEFINES += DATA_DIR=\\\"$${DATA_DIR}\\\" SETTINGS_DIR=\\\"$${SETTINGS_DIR}\\\" SAMPLE_DIR=\\\"$${SAMPLE_DIR}\\\"
+
 SOURCES += \
     scene.cpp \
     pcbeditorwidget.cpp \

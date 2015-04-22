@@ -13,6 +13,12 @@ TEMPLATE = lib
 
 include($$PWD/../shared.pri)
 
+DATA_DIR = $${BASE_DATA_DIR}/sch
+SETTINGS_DIR = $${BASE_SETTINGS_DIR}/sch
+SAMPLE_DIR = $${BASE_SAMPLE_DIR}/sch
+
+DEFINES += DATA_DIR=\\\"$${DATA_DIR}\\\" SETTINGS_DIR=\\\"$${SETTINGS_DIR}\\\" SAMPLE_DIR=\\\"$${SAMPLE_DIR}\\\"
+
 SOURCES += \
     graphicsobject.cpp \
     graphicsscene.cpp \

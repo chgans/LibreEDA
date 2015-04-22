@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("leda");
 
     PcbPaletteManager *paletteManager = PcbPaletteManager::instance();
-    paletteManager->setPalettesPath(QDir::currentPath() + "/../../LibreEDA/src/pcbeditor/settings/");
+    paletteManager->setPalettesPath(QString(BASE_SETTINGS_DIR"/pcb"));
     paletteManager->loadPalettes();
 
     DesignLayerManager *layerManager = DesignLayerManager::instance();
