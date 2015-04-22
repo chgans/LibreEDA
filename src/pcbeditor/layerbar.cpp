@@ -2,12 +2,20 @@
 #include "designlayer.h"
 
 #include <QIcon>
+#include <QPainter>
+#include <QPalette>
 #include <QDebug>
 
 static QIcon createColorIcon(const QColor &color)
 {
-    QPixmap pix(16, 16);
-    pix.fill(color);
+    int size = 16;
+    QPixmap pix(size, size);
+    QPainter painter(&pix);
+    QPalette palette;
+    painter.setPen(palette.color(QPalette::Shadow));
+    painter.setBrush(color);
+    size--;
+    painter.drawRect(0, 0, size, size);
     return QIcon(pix);
 }
 
