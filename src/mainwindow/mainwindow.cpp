@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 #include "core/editormanager/editormanager.h"
 #include "core/editormanager/editorview.h"
@@ -12,6 +11,9 @@
 #include <QSettings>
 #include <QCloseEvent>
 #include <QFileDialog>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
