@@ -19,7 +19,9 @@ SOURCES += core.cpp \
     editormanager/ieditor.cpp \
     editormanager/ieditorfactory.cpp \
     editormanager/idocument.cpp \
-    editormanager/editorview.cpp
+    editormanager/editorview.cpp \
+    navigationview/inavigationviewfactory.cpp \
+    navigationview/navigationdockwidget.cpp
 
 HEADERS += core.h \
     constants.h \
@@ -29,7 +31,9 @@ HEADERS += core.h \
     editormanager/ieditor.h \
     editormanager/ieditorfactory.h \
     editormanager/idocument.h \
-    editormanager/editorview.h
+    editormanager/editorview.h \
+    navigationview/inavigationviewfactory.h \
+    navigationview/navigationdockwidget.h
 
 DISTFILES += \
     TODO.md
