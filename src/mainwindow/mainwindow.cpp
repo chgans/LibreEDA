@@ -5,6 +5,9 @@
 #include "core/editormanager/ieditor.h"
 #include "core/editormanager/idocument.h"
 
+#include "core/navigationview/navigationdockwidget.h"
+#include "filesystemnavigationview/filesystemnavigationviewfactory.h"
+
 #include <QDebug>
 #include <QDockWidget>
 #include <QApplication>
@@ -21,6 +24,15 @@ MainWindow::MainWindow(QWidget *parent) :
     m_editorManager = EditorManager::instance();
     m_editorView = new EditorView();
     setCentralWidget(m_editorView);
+
+    connect(m_editorManager, &EditorManager::editorOpened,
+            this, &MainWindow::onEditorOpened);
+
+    m_navigationDockWidget = new NavigationDockWidget;
+    QList<INavigationViewFactory *> navigationFactories;
+    navigationFactories << new FileSystemNavigationViewFactory();
+    m_navigationDockWidget->setFactories(navigationFactories);
+    addDockWidget(Qt::LeftDockWidgetArea, m_navigationDockWidget);
 
     QMenu *menu = menuBar()->addMenu("&file");
     QAction *action = menu->addAction("&open");
@@ -60,7 +72,11 @@ void MainWindow::openFileRequested(bool)
                                                     filter);
     if (fileName.isNull())
         return;
-    IEditor *editor = manager->openEditor(fileName);
+    manager->openEditor(fileName);
+}
+
+void MainWindow::onEditorOpened(IEditor *editor)
+{
     m_editorView->addEditor(editor);
 }
 

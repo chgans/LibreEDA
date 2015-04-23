@@ -8,7 +8,7 @@ QT       += core gui opengl
 
 TARGET = libreeda
 TEMPLATE = app
-LIBS += -L$$OUT_PWD/.. -lgraphicseditor -lpcbeditor -llogviewer -lutils -lcore
+LIBS += -L$$OUT_PWD/.. -lfilesystemnavigationview -lgraphicseditor -lpcbeditor -llogviewer -lutils -lcore
 include($$PWD/../shared.pri)
 
 SOURCES += main.cpp\

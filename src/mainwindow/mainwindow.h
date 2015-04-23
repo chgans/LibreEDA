@@ -5,6 +5,9 @@
 
 class EditorManager;
 class EditorView;
+class IEditor;
+class NavigationDockWidget;
+
 class QSettings;
 
 class MainWindow : public QMainWindow
@@ -22,10 +25,12 @@ private:
 
 private slots:
     void openFileRequested(bool);
+    void onEditorOpened(IEditor *editor);
 
 private:
     EditorManager *m_editorManager;
     EditorView *m_editorView;
+    NavigationDockWidget *m_navigationDockWidget;
 
     // QWidget interface
 protected:
