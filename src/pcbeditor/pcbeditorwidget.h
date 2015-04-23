@@ -25,7 +25,7 @@ public:
 
     MainView *graphicsView() { return m_view; }
 
-    void setScene(Scene *scene);
+    Scene *scene() const;
 
     void activate(QMainWindow *window);
     void desactivate(QMainWindow *window);
@@ -49,6 +49,7 @@ private:
     PcbPaletteManager *m_paletteManager;
     DesignLayerManager *m_layerManager;
     MainView *m_view;
+    Scene *m_scene;
     LayerTabBar *m_layerTabBar;
     InsightDockWidget *m_insightDockWidget;
     QToolButton *m_snapButton;
@@ -57,8 +58,6 @@ private:
 
     void createActions();
     void populateFakeData();
-
-    Scene *scene() const;
 
     /** 2D Board Insight System **/
 private:

@@ -8,110 +8,122 @@
 #include <QSettings>
 #include <QDebug>
 
-// TODO:
-//  - system vs user palettes
-//  - Make the owner a friend class, the only one allow to call the constructor
-//    allowing to have a parent and auto-delete
-//  - Palette creation only through the manager (palettes are owned by the manager)
-//
-//  - DesignPalette vs Physical palette (as in DesignLayer and PhysicalLayer)
-//  - Add opacity
-
-static PcbPaletteManager *gPaletteManager = 0;
+PcbPaletteManager *PcbPaletteManager::m_instance = nullptr;
 
 PcbPaletteManager::PcbPaletteManager(QObject *parent) :
-    QObject(parent),
-    m_activePalette(nullptr)
+    QObject(parent)
 {
 }
-
-// TODO: destructor and cleanup
 
 PcbPaletteManager *PcbPaletteManager::instance()
 {
-    if (!gPaletteManager)
-        gPaletteManager = new PcbPaletteManager;
-    return gPaletteManager;
-}
-
-PcbPalette *PcbPaletteManager::palette(const QString &identifier) const
-{
-    Q_ASSERT(m_paletteMap.contains(identifier));
-    return m_paletteMap[identifier];
+    if (m_instance == nullptr)
+        m_instance = new PcbPaletteManager;
+    return m_instance;
 }
 
 QList<PcbPalette *> PcbPaletteManager::palettes() const
 {
-    return m_paletteMap.values();
+    return m_palettes;
 }
 
-PcbPalette *PcbPaletteManager::addPalette(const QString &identifier)
+void PcbPaletteManager::add(PcbPalette *palette)
 {
-    Q_ASSERT(!m_paletteMap.contains(identifier));
-    PcbPalette *palette = new PcbPalette;
-    palette->setName(identifier);
-    m_paletteMap.insert(identifier, palette);
-    emit paletteAdded(palette);
-    return palette;
+    add(QList<PcbPalette *>() << palette);
 }
 
-PcbPalette *PcbPaletteManager::addPalette(const QString &identifier, QSettings &settings)
+void PcbPaletteManager::add(QList<PcbPalette *> palettes)
 {
-    Q_ASSERT(!m_paletteMap.contains(identifier));
-    PcbPalette *palette = new PcbPalette;
-    palette->loadFromSettings(settings);
-    palette->setName(identifier);
-    m_paletteMap.insert(identifier, palette);
-    emit paletteAdded(palette);
-    return palette;
-}
-
-void PcbPaletteManager::removePalette(PcbPalette *palette)
-{
-    Q_ASSERT(m_paletteMap.contains(palette->name()));
-    m_paletteMap.remove(palette->name());
-    if (m_activePalette == palette) {
-        setActivePalette(m_paletteMap.values().last());
+    foreach (PcbPalette *palette, palettes) {
+        if (!m_palettes.contains(palette)) {
+            m_palettes.append(palette);
+            emit paletteAdded(palette);
+        }
     }
-    emit paletteRemoved(palette);
-    delete palette;
 }
 
-PcbPalette *PcbPaletteManager::activePalette() const
+void PcbPaletteManager::remove(PcbPalette *palette)
 {
-    return m_activePalette;
+    remove(QList<PcbPalette *>() << palette);
 }
 
-QString PcbPaletteManager::activePaletteIdentifier() const
+void PcbPaletteManager::remove(QList<PcbPalette *> palettes)
 {
-    return m_activePalette->name();
+    foreach (PcbPalette *palette, palettes) {
+        if (m_palettes.contains(palette)) {
+            m_palettes.removeOne(palette);
+            emit paletteRemoved(palette);
+        }
+    }
 }
 
-void PcbPaletteManager::setActivePalette(PcbPalette *palette)
+QString PcbPaletteManager::systemPath() const
 {
-    qDebug() << "Activating palette" << palette->name();
-    Q_ASSERT(m_paletteMap.contains(palette->name()));
-    m_activePalette = palette;
-    emit paletteActivated(palette);
+    return m_systemPath;
+}
+
+void PcbPaletteManager::setSystemPath(const QString &path)
+{
+    if (path == m_systemPath)
+        return;
+    m_systemPath = path;
+    emit systemPathChanged(m_systemPath);
+}
+
+QString PcbPaletteManager::userPath() const
+{
+    return m_userPath;
+}
+
+void PcbPaletteManager::setUserPath(const QString &path)
+{
+    if (path == m_userPath)
+        return;
+    m_userPath = path;
+    emit userPathChanged(m_userPath);
 }
 
 void PcbPaletteManager::loadPalettes()
 {
-    qDebug() << "Loading palettes from" << m_path;
-    QDir dir(m_path);
+    qDebug() << "Palette manager: Loading palettes";
+    m_palettes.clear();
+    foreach (PcbPalette *palette, m_palettes)
+       emit paletteRemoved(palette);
+    qDeleteAll(m_palettes);
+    m_palettes << loadPalettes(m_systemPath)
+               << loadPalettes(m_userPath);
+    foreach (PcbPalette *palette, m_palettes)
+       emit paletteAdded(palette);
+    qDebug() << "Palette manager: Loaded " << count() << "palettes";
+}
+
+int PcbPaletteManager::count() const
+{
+    return m_palettes.count();
+}
+
+QList<PcbPalette *> PcbPaletteManager::loadPalettes(const QString &path)
+{
+    QDir dir(path);
+    if (path.isEmpty() || !dir.exists() || !dir.isReadable()) {
+        qWarning() << "Palette manager: Skipping" << path << "=>" << dir.canonicalPath();
+        return QList<PcbPalette *>();
+    }
+    qDebug() << "Palette manager: Scanning" << path << "=>" << dir.canonicalPath();
     QStringList filters;
     filters << "*.LedaPcbPalette";
-    PcbPalette *palette = nullptr;
+    QList<PcbPalette *> palettes;
     foreach (QFileInfo fileInfo, dir.entryInfoList(filters)) {
+        PcbPalette *palette = new PcbPalette();
+        palettes.append(palette);
         QString id = fileInfo.baseName();
         QFile file(fileInfo.filePath());
         if (!file.open(QIODevice::ReadOnly))
             continue;
         file.close();
         QSettings settings(fileInfo.filePath(), QSettings::IniFormat);
-        palette = addPalette(id, settings);
-        qDebug() << "Adding" << id;
+        palette->loadFromSettings(settings);
+        qDebug() << "Palette manager: Adding" << id;
     }
-    if (!m_paletteMap.isEmpty()) // Fix me: from user settings
-        setActivePalette(palette);
+    return palettes;
 }

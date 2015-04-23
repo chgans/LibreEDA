@@ -10,6 +10,7 @@
 class DesignLayerManager;
 class GraphicsItem;
 
+// TODO: QObject not QGraphicsObject
 class DesignLayer : public QGraphicsObject
 {
     Q_OBJECT
@@ -18,15 +19,16 @@ class DesignLayer : public QGraphicsObject
     Q_ENUMS(Face)
     Q_ENUMS(ColorMode)
 
+    // TODO: These 3 cannot change
     Q_PROPERTY(QString defaultName READ defaultName WRITE setDefaultName NOTIFY defaultNameChanged)
+    Q_PROPERTY(int index READ index WRITE setIndex NOTIFY indexChanged)
+    Q_PROPERTY(Category category READ category WRITE setCategory NOTIFY categoryChanged)
+
     Q_PROPERTY(QString customName READ customName WRITE setCustomName NOTIFY customNameChanged)
     Q_PROPERTY(QString effectiveName READ effectiveName NOTIFY effectiveNameChanged STORED false)
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
-    Q_PROPERTY(int index READ index WRITE setStackPosition NOTIFY stackPositionChanged)
-    Q_PROPERTY(Category category READ category WRITE setCategory NOTIFY categoryChanged)
     Q_PROPERTY(Face face READ face WRITE setFace NOTIFY faceChanged)
     Q_PROPERTY(DesignLayer* pairedLayer READ pairedLayer WRITE setPairedLayer NOTIFY pairedLayerChanged)
-    Q_PROPERTY(bool present READ isPresent WRITE setPresent NOTIFY presentChanged)
     Q_PROPERTY(ColorMode colorMode READ colorMode WRITE setColorMode NOTIFY colorModeChanged)
     Q_PROPERTY(QColor effectiveColor READ effectiveColor NOTIFY effectiveColorChanged STORED false)
 
@@ -68,7 +70,6 @@ public:
     bool isUsed() const;
     qreal opacityForPrimitive(Primitive::Type type);
     void setOpacityForPrimitive(Primitive::Type type, qreal opacity);
-    bool isPresent() const;
     ColorMode colorMode() const;
     QColor effectiveColor() const;
 
@@ -80,20 +81,19 @@ signals:
     void customNameChanged(const QString &defaultName);
     void effectiveNameChanged(const QString &defaultName);
     void colorChanged(const QColor &color);
-    void stackPositionChanged(int position);
+    void indexChanged(int position);
     void categoryChanged(Category category);
     void faceChanged(Face arg);
     void pairedLayerChanged(DesignLayer* pairedLayer);
     void presentChanged(bool arg);
     void colorModeChanged(ColorMode mode);
-
     void effectiveColorChanged(QColor arg);
 
 public slots:
     void setDefaultName(const QString &defaultName);
     void setCustomName(const QString &defaultName);
     void setColor(const QColor &color);
-    void setStackPosition(int position);
+    void setIndex(int position);
     void setCategory(Category category);
     void setFace(Face arg);
     void setPairedLayer(DesignLayer* layer);

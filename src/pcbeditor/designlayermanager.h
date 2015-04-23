@@ -8,61 +8,51 @@
 
 class QSettings;
 
+/*
+ * TODO:
+ *  - error handling when loading/saving palettes
+ *  - Make PaletteManager and LayerSetManager have a similar API
+ *  - paletteand layer sets are qobject, managers take ownership
+ */
+
 class DesignLayerManager : public QObject
 {
     Q_OBJECT
 
-private:
-    explicit DesignLayerManager(QObject *parent = 0);
+    Q_PROPERTY(QString systemPath READ systemPath WRITE setSystemPath NOTIFY systemPathChanged)
+    Q_PROPERTY(QString userPath READ userPath WRITE setUserPath NOTIFY userPathChanged)
 
 public:    
     ~DesignLayerManager();
 
     static DesignLayerManager *instance();
-    void loadFromSettings(const QSettings &settings);
-    void saveToSettings(QSettings *settings) const;
-    void loadFromDefaults();
-    int layerCount() const;
-    int layerSetCount() const;
-    QList<DesignLayerSet *> allLayerSets() const;
-    DesignLayerSet *layerSet(int type) const;
-    DesignLayerList allLayers() const;
-    DesignLayerList layersForCategory(DesignLayer::Category category) const;
-    DesignLayer *layerAt(int stackPosition) const;
 
-#if 0
-    void setLayerEnabled(int stackPosition, bool enabled);
-    bool isLayerEnabled(int stackPosition) const;
-    DesignLayerList enabledLayers() const;
-    void enableOnlyUsedLayers();
-    DesignLayerList usedLayers() const;
-#endif
+    QString systemPath() const;
+    void setSystemPath(const QString &path);
+    QString userPath() const;
+    void setUserPath(const QString &path);
+    void loadLayerSets();
 
-    static QString defaultLayerName(DesignLayer::Category category, int categoryIndex);
-    static QString builtInLayerSetName(int type);
-    static QString categoryName(DesignLayer::Category category);
+    int count() const;
+    QList<DesignLayerSet *> layerSets() const;
+    void add(DesignLayerSet *set);
+    void add(QList<DesignLayerSet *> sets);
+    void remove(DesignLayerSet *set);
+    void remove(QList<DesignLayerSet *> sets);
 
 signals:
-    void layerAdded(DesignLayer *layer);
-    void layerRemoved(DesignLayer *layer);
-    void layerChanged(DesignLayer *layer);
+    void systemPathChanged(const QString &path);
+    void userPathChanged(const QString &path);
     void layerSetAdded(DesignLayerSet *set);
     void layerSetRemoved(DesignLayerSet *set);
-    void layerSetChanged(DesignLayerSet *set);
 
 private:
-    DesignLayerSet *addLayerSet(int type);
-    DesignLayerSet *addBuiltInLayerSet(int type);
-    void removeLayerSet(int type);
-    DesignLayer *addLayer(DesignLayer::Category category, int stackPosition);
-    void removeLayer(DesignLayer *layer);
-    void addLayerToSet(DesignLayer *layer, DesignLayerSet *set);
-
-private:
+    explicit DesignLayerManager(QObject *parent = 0);
     static DesignLayerManager *m_instance;
-    QMap<int, DesignLayer*> m_layerMap;
-    QMap<int, DesignLayerList> m_layerCategoryMap;
-    QMap<int, DesignLayerSet*> m_layerSetMap;
+    QList<DesignLayerSet *> m_sets;
+    QString m_systemPath;
+    QString m_userPath;
+    QList<DesignLayerSet *> loadLayerSets(const QString &path);
 };
 
 

@@ -1,10 +1,10 @@
 #include "designlayerset.h"
 
-#include "designlayer.h"
+#include <QSettings>
 
 DesignLayerSet::DesignLayerSet(QObject *parent):
     QObject(parent),
-    m_builtIn(false)
+    m_isSystem(false)
 {
 
 }
@@ -23,8 +23,11 @@ void DesignLayerSet::setName(const QString &name)
 {
     if (m_name == name)
         return;
-
     m_name = name;
+    QString ename = effectiveName();
+    emit nameChanged(m_name);
+    if (ename != effectiveName())
+        emit effectiveNameChanged(effectiveName());
 }
 
 QString DesignLayerSet::customName() const
@@ -43,67 +46,87 @@ void DesignLayerSet::setCustomName(const QString &name)
 {
     if (m_customName == name)
         return;
-
     m_customName = name;
+    QString ename = effectiveName();
+    emit customNameChanged(m_customName);
+    if (ename != effectiveName())
+        emit effectiveNameChanged(effectiveName());
 }
 
-bool DesignLayerSet::isBuiltIn() const
+bool DesignLayerSet::isSystem() const
 {
-    return m_builtIn;
+    return m_isSystem;
 }
 
-bool DesignLayerSet::contains(DesignLayer *layer) const
+void DesignLayerSet::setIsSystem(bool isSystem)
 {
-    return m_layers.contains(layer);
+    if (isSystem == m_isSystem)
+        return;
+    m_isSystem = isSystem;
+    // emit isSystemChanged(m_isSystem);
 }
 
-QList<DesignLayer *> DesignLayerSet::allLayers()
+QList<int> DesignLayerSet::layers()
 {
     return m_layers;
 }
 
-void DesignLayerSet::setBuiltIn(bool builtIn)
+void DesignLayerSet::loadFromSettings(QSettings &settings)
 {
-    if (m_builtIn == builtIn)
-        return;
-
-    m_builtIn = builtIn;
-}
-
-void DesignLayerSet::setType(int type)
-{
-    if (m_type == type)
-        return;
-    m_type = type;
-}
-
-QList<DesignLayer *> DesignLayerSet::enabledLayers()
-{
-    QList<DesignLayer *> list;
-    foreach (DesignLayer *layer, m_layers) {
-        if (layer->isPresent())
-            list << layer;
+    settings.beginGroup("PcbLayerSet");
+    setIsSystem(settings.value("system", false).toBool());
+    setName(settings.value("label", "<unknown>").toString());
+    int nb = settings.beginReadArray("layers");
+    QList<int> indexes;
+    for (int i = 0; i < nb; i++) {
+        indexes.append(settings.value(QString("%1").arg(i), -1).toInt());
     }
-    return list;
+    settings.endArray();
+    settings.endGroup();
 }
 
-int DesignLayerSet::layerCount()
+void DesignLayerSet::saveToSettings(QSettings &settings) const
 {
-    return m_layers.count();
+    settings.beginGroup("PcbLayerSet");
+    settings.setValue("system", isSystem());
+    settings.setValue("label", name());
+    settings.beginReadArray("layers");
+    for (int i = 0; i < m_layers.count(); i++) {
+        settings.setValue(QString("%1").arg(i), m_layers.value(i));
+    }
+    settings.endArray();
+    settings.endGroup();
 }
 
-void DesignLayerSet::add(DesignLayer *layer)
+void DesignLayerSet::add(int index)
 {
-    m_layers.append(layer);
+    add(QList<int>() << index);
 }
 
-void DesignLayerSet::add(QList<DesignLayer *> layers)
+void DesignLayerSet::add(const QList<int> &indexes)
 {
-    m_layers.append(layers);
+    bool changed = false;
+    foreach (int idx, indexes) {
+        if (!m_layers.contains(idx)) {
+            changed = true;
+            m_layers.append(idx);
+        }
+    }
+    if (changed)
+        emit layersChanged(m_layers);
 }
 
-void DesignLayerSet::remove(DesignLayer *layer)
+void DesignLayerSet::remove(int index)
 {
-    m_layers.removeOne(layer);
+    remove(QList<int>() << index);
+}
+
+void DesignLayerSet::remove(const QList<int> &indexes)
+{
+    bool changed = false;
+    foreach (int idx, indexes)
+        changed |= m_layers.removeOne(idx);
+    if (changed)
+        emit layersChanged(m_layers);
 }
 

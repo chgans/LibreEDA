@@ -11,13 +11,6 @@
 
 #include <QDebug>
 
-static QIcon icon(const QColor &color)
-{
-    QPixmap pix(16, 16);
-    pix.fill(color);
-    return QIcon(pix);
-}
-
 ColorProfileEditor::ColorProfileEditor(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ColorProfileEditor),
@@ -89,9 +82,8 @@ void ColorProfileEditor::cleanColorView()
 
 void ColorProfileEditor::populateColorView()
 {
+#if 0
     DesignLayerManager *manager = DesignLayerManager::instance();
-
-
     for (DesignLayer::Category category = DesignLayer::SignalCategory;
          category <= DesignLayer::OtherCategory;
          category = DesignLayer::Category(category + 1)) {
@@ -120,6 +112,7 @@ void ColorProfileEditor::populateColorView()
     }
     ui->colorTree->expandAll();
     ui->colorTree->resizeColumnToContents(0);
+#endif
 }
 
 void ColorProfileEditor::profileSelectionChanged()

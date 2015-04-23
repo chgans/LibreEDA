@@ -1,10 +1,12 @@
 #include "pcbeditor.h"
 #include "pcbdocument.h"
 #include "pcbeditorwidget.h"
+#include "scene.h"
 #include <QFileInfo>
 
 PcbEditor::PcbEditor(QObject *parent):
-    IEditor(parent)
+    IEditor(parent),
+    m_document(nullptr)
 {
     setWidget(new PcbEditorWidget());
 }
@@ -20,8 +22,7 @@ bool PcbEditor::open(QString *errorString, const QString &fileName)
     m_document->setFilePath(fileName);
     QFileInfo fileInfo(fileName);
     m_document->setDisplayName(fileInfo.baseName());
-    *errorString = "";
-    return true;
+    return m_document->load(errorString, m_document->filePath());
 }
 
 IDocument *PcbEditor::document()

@@ -5,8 +5,7 @@
 #include <QList>
 #include <QString>
 
-class DesignLayer;
-class DesignLayerManager;
+class QSettings;
 
 class DesignLayerSet: public QObject
 {
@@ -17,52 +16,37 @@ class DesignLayerSet: public QObject
     Q_PROPERTY(QString customName READ customName WRITE setCustomName NOTIFY customNameChanged)
     Q_PROPERTY(QString effectiveName READ effectiveName NOTIFY effectiveNameChanged STORED false)
 public:
-    enum Type {
-        Signal = 0,
-        Plane,
-        Mask,
-        Silkscreen,
-        Mechanical,
-        NonSignal,
-        All,
-        Custom = 1000
-    };
-
     DesignLayerSet(QObject *parent = 0);
     ~DesignLayerSet();
 
     QString name() const;
+    void setName(const QString &name);
     QString customName() const;
+    void setCustomName(const QString &name);
     QString effectiveName() const;
-    bool isBuiltIn() const;
-    int type() const;
+    bool isSystem() const;
+    void setIsSystem(bool isSystem);
+    QList<int> layers();
 
-    bool contains(DesignLayer *layer) const;
+    void loadFromSettings(QSettings &settings);
+    void saveToSettings(QSettings &settings) const;
 
-    QList<DesignLayer *> allLayers();
-    QList<DesignLayer *> enabledLayers();
-    int layerCount();
+    void add(int index);
+    void add(const QList<int> &indexes);
+    void remove(int index);
+    void remove(const QList<int> &indexes);
 
 signals:
+    void layersChanged(const QList<int> &indexes);
     void nameChanged(const QString &name);
     void customNameChanged(const QString &name);
     void effectiveNameChanged(const QString &name);
 
 private:
-    friend class DesignLayerManager;
-    QList<DesignLayer *> m_layers;
-    int m_type;
+    QList<int> m_layers;
+    bool m_isSystem;
     QString m_name;
     QString m_customName;
-    bool m_builtIn;
-
-    void add(DesignLayer *layer);
-    void add(QList<DesignLayer *> layers);
-    void remove(DesignLayer *layer);
-    void setName(const QString &name);
-    void setCustomName(const QString &name);
-    void setBuiltIn(bool builtIn);
-    void setType(int type);
 };
 
 //Q_DECLARE_METATYPE(DesignLayerSet::Type)

@@ -114,10 +114,8 @@ void MainView::setActiveLayer(DesignLayer *layer)
     if (layer == m_activeLayer)
         return;
 
-    int previousIndex;
     if (m_activeLayer != nullptr) {
         m_activeLayer->setEnabled(false);
-        previousIndex = m_activeLayer->index();
     }
 
     m_activeLayer = layer;

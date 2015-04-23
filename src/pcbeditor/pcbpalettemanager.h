@@ -11,42 +11,41 @@ class PcbPaletteManager : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString systemPath READ systemPath WRITE setSystemPath NOTIFY systemPathChanged)
+    Q_PROPERTY(QString userPath READ userPath WRITE setUserPath NOTIFY userPathChanged)
+
 public:
-    explicit PcbPaletteManager(QObject *parent = 0);
 
     static PcbPaletteManager *instance();
 
-    QList<PcbPalette *> palettes() const;
-
-    PcbPalette *palette(const QString &identifier) const;
-
-    PcbPalette *addPalette(const QString &identifier);
-    PcbPalette *addPalette(const QString &identifier, QSettings &settings);
-    void removePalette(PcbPalette *palette);
-
-     PcbPalette *activePalette() const;
-    QString activePaletteIdentifier() const;
-
-    void setActivePalette(PcbPalette *palette);
-
-    // TODO: system, user and project path?
-    QString palettesPath() const { return m_path; }
-    void setPalettesPath(const QString &path) { m_path = path; }
-
+    QString systemPath() const;
+    void setSystemPath(const QString &path);
+    QString userPath() const;
+    void setUserPath(const QString &path);
     void loadPalettes();
 
+    int count() const;
+    QList<PcbPalette *> palettes() const;
+    void add(PcbPalette *palette);
+    void add(QList<PcbPalette *> palettes);
+    void remove(PcbPalette *palette);
+    void remove(QList<PcbPalette *> palettes);
+
 signals:
-    void paletteChanged(PcbPalette *palette);
+    void systemPathChanged(const QString &path);
+    void userPathChanged(const QString &path);
     void paletteAdded(PcbPalette *palette);
     void paletteRemoved(PcbPalette *palette);
-    void paletteActivated(PcbPalette *palette);
 
 public slots:
 
 private:
-    QString m_path;
-    QMap<QString, PcbPalette*> m_paletteMap;
-    PcbPalette *m_activePalette;
+    explicit PcbPaletteManager(QObject *parent = 0);
+    static PcbPaletteManager *m_instance;
+    QList<PcbPalette*> m_palettes;
+    QString m_systemPath;
+    QString m_userPath;
+    QList<PcbPalette*> loadPalettes(const QString &path);
 };
 
 #endif // PCBPALETTEMANAGER_H

@@ -22,17 +22,11 @@ int main(int argc, char *argv[])
 
     // Pcb plugin initialisation
     PcbPaletteManager *paletteManager = PcbPaletteManager::instance();
-    paletteManager->setPalettesPath(QString(BASE_SETTINGS_DIR"/pcb"));
+    paletteManager->setSystemPath(QString(BASE_SETTINGS_DIR"/pcb/palettes"));
     paletteManager->loadPalettes();
     DesignLayerManager *layerManager = DesignLayerManager::instance();
-    // layerManager->setProfilePath();
-    // layerManager->loadProfiles();
-    layerManager->loadFromDefaults();
-    PcbPalette *palette = paletteManager->activePalette();
-    foreach (DesignLayer *layer, layerManager->allLayers()) {
-        QColor color = palette->color(PcbPalette::ColorRole(layer->index() + 1));
-        layer->setColor(color);
-    }
+    layerManager->setSystemPath(QString(BASE_SETTINGS_DIR"/pcb/layersets"));
+    layerManager->loadLayerSets();
 
     // Load documents
 

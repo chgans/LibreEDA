@@ -123,10 +123,6 @@ void DesignLayer::setOpacityForPrimitive(Primitive::Type type, qreal opacity)
     m_primitiveOpacityMap[type] = opacity;
 }
 
-bool DesignLayer::isPresent() const
-{
-    return m_present;
-}
 
 DesignLayer::ColorMode DesignLayer::colorMode() const
 {
@@ -181,13 +177,13 @@ DesignLayer::Category DesignLayer::category() const
     return m_category;
 }
 
-void DesignLayer::setStackPosition(int position)
+void DesignLayer::setIndex(int position)
 {
     if (m_index == position)
         return;
 
     m_index = position;
-    emit stackPositionChanged(position);
+    emit indexChanged(position);
 }
 
 void DesignLayer::setCategory(DesignLayer::Category category)

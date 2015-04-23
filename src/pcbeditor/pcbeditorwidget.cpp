@@ -34,6 +34,8 @@ PcbEditorWidget::PcbEditorWidget(QWidget *parent) :
     m_view = new MainView();
     m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_scene = new Scene(this);
+    m_view->setScene(m_scene);
 
     m_layerTabBar = new LayerTabBar();
     connect(m_view, &MainView::layerAdded,
@@ -51,6 +53,7 @@ PcbEditorWidget::PcbEditorWidget(QWidget *parent) :
 
 
     m_insightDockWidget = new InsightDockWidget();
+    m_insightDockWidget->attachView(m_view);
 
     m_snapButton = new QToolButton;
     m_snapButton->setText("Snap");
@@ -83,7 +86,7 @@ PcbEditorWidget::PcbEditorWidget(QWidget *parent) :
     createActions();
     createBoardInsightMenu();
 
-    populateFakeData();
+    //populateFakeData();
 }
 
 PcbEditorWidget::~PcbEditorWidget()
@@ -91,14 +94,16 @@ PcbEditorWidget::~PcbEditorWidget()
 
 }
 
-void PcbEditorWidget::setScene(Scene *scene)
+#if 0
+void PcbEditorWidget::scene(Scene *scene)
 {
     m_view->setScene(scene);
     m_view->scale(0.75, 0.75);
     m_insightDockWidget->attachView(m_view);
     m_view->addLayers(m_layerManager->allLayers());
-    m_view->setActiveLayer(m_view->layers().first());
+    m_view->setActiveLayer(m_view->layers().at(98));
 }
+#endif
 
 void PcbEditorWidget::activate(QMainWindow *window)
 {
@@ -256,13 +261,13 @@ void PcbEditorWidget::createActions()
 
 void PcbEditorWidget::populateFakeData()
 {
-    Scene *scene = new Scene(-5000, -5000, 10000, 10000); // um
-
+#if 0
     DesignLayer *layer;
     GraphicsRect *ritem;
     GraphicsLine *litem;
 
     layer = m_layerManager->layerAt(0);
+    m_view->addLayer(layer);
     layer->setOpacity(0.75);
     ritem = new GraphicsRect();
     ritem->setPos(-800, 0);
@@ -274,6 +279,7 @@ void PcbEditorWidget::populateFakeData()
     layer->addItem(ritem);
 
     layer = m_layerManager->layerAt(98);
+    m_view->addLayer(layer);
     layer->setOpacity(0.75);
     ritem = new GraphicsRect();
     ritem->setPos(-800, 0);
@@ -287,6 +293,7 @@ void PcbEditorWidget::populateFakeData()
     layer->addItem(ritem);
 
     layer = m_layerManager->layerAt(96);
+    m_view->addLayer(layer);
     layer->setOpacity(0.75);
     ritem = new GraphicsRect();
     ritem->setPos(-800, 0);
@@ -298,6 +305,7 @@ void PcbEditorWidget::populateFakeData()
     layer->addItem(ritem);
 
     layer = m_layerManager->layerAt(104);
+    m_view->addLayer(layer);
     layer->setOpacity(0.75);
     litem = new GraphicsLine();
     litem->setPos(0, -300);
@@ -309,8 +317,7 @@ void PcbEditorWidget::populateFakeData()
     litem->setLine(-200, 0, 200, 0);
     litem->setWidth(100);
     layer->addItem(litem);
-
-    setScene(scene);
+#endif
 }
 
 void PcbEditorWidget::createBoardInsightMenu()
