@@ -57,6 +57,11 @@ IEditor *EditorManager::openEditor(const QString &fileName)
         qWarning() << "No factory found for file" << filePath << "with extension" << fileExtension;
         return nullptr;
     }
+    if (!fileInfo.exists() || !fileInfo.isReadable() || !fileInfo.isFile()) {
+        qWarning() << fileName << "doesn't exists, is not readable or is not a regular file";
+        return nullptr;
+    }
+
     if (m_filePathEditorMap.contains(filePath))
         return m_filePathEditorMap.value(filePath);
 
