@@ -6,7 +6,6 @@
 
 QT       += widgets
 QT       -= gui
-CONFIG += c++11
 
 TARGET = utils
 TEMPLATE = lib

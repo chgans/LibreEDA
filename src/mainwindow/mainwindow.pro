@@ -5,7 +5,6 @@
 #-------------------------------------------------
 
 QT       += core gui opengl
-CONFIG   += c++11
 
 TARGET = libreeda
 TEMPLATE = app

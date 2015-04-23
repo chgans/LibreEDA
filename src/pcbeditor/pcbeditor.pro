@@ -5,7 +5,6 @@
 #-------------------------------------------------
 
 QT       += core gui widgets
-CONFIG += c++11
 
 TARGET = pcbeditor
 TEMPLATE = lib

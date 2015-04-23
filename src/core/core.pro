@@ -7,9 +7,6 @@
 QT       += widgets
 QT       -= gui
 
-# TODO: move to shared.pri
-CONFIG += c++11
-
 TARGET = core
 TEMPLATE = lib
 

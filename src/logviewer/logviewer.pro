@@ -6,7 +6,6 @@
 
 QT       += widgets
 QT       -= gui
-CONFIG   += c++11
 
 TARGET = logviewer
 TEMPLATE = lib
