@@ -6,4 +6,5 @@ SUBDIRS += \
     graphicseditor \
     pcbeditor \
     logviewer \
+    filesystemnavigationview \
     mainwindow
