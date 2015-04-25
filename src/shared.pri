@@ -1,7 +1,5 @@
-DESTDIR = $$OUT_PWD/..
-LIBS += -L$$OUT_PWD/
-INCLUDEPATH += $$PWD
 
+INCLUDEPATH += $$PWD
 CONFIG += c++11
 
 BASE_DATA_DIR = $$PWD/../data

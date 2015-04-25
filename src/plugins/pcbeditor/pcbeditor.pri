@@ -1,0 +1,3 @@
+LIBS += -L$$OUT_PWD -lpcbeditor
+INCLUDEPATH += $$PWD
+DEPENDPATH += $$PWD

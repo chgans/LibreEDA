@@ -37,3 +37,5 @@ HEADERS += utils.h \
     widgets/paintborder.h \
     widgets/colorwidget.h
 
+OTHER_FILES += \
+    utils.pri
