@@ -22,7 +22,8 @@ FileSystemNavigationWidget::FileSystemNavigationWidget(QWidget *parent):
     setFocusProxy(m_dirView);
 
     m_fileSystemModel = new QFileSystemModel(this);
-    QDir::Filters filters = QDir::AllDirs | QDir::Files | QDir::Drives
+    QDir::Filters filters = QDir::Dirs | QDir::NoDot
+                            | QDir::Files | QDir::Drives
                             | QDir::Readable| QDir::Writable
                             | QDir::Executable | QDir::Hidden;
     m_fileSystemModel->setFilter(filters);m_dirView->setModel(m_fileSystemModel);
