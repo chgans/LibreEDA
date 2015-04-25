@@ -9,6 +9,11 @@ class QGridLayout;
 class QLabel;
 class QGraphicsView;
 
+/* TODO:
+ *  - replace pen and brush with border color and start/stop colors, see paintEvent()
+ *  - Remove harcoded color, use default setting from file
+ */
+
 class InsightHeadsUpWidget : public QWidget
 {
     Q_OBJECT
@@ -108,6 +113,7 @@ public slots:
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
+    void prepareUpdateContent();
     void updateContent();
 
 private:
@@ -142,6 +148,8 @@ private:
     void updateItemWidgets();
     QPen m_pen;
     QBrush m_brush;
+    QLinearGradient m_backgroundGradient;
+    QColor m_borderColor;
 
     // QWidget interface
 protected:

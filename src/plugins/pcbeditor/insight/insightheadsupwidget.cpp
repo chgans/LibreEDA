@@ -10,7 +10,8 @@
 #include <QPainter>
 #include <QGradient>
 #include <QEvent>
-
+#include <QDebug>
+#include <QTimer>
 
 // TODO:
 // - InsightDisplayWidget -> Insight{HeadsUp,Popup,Panel}Widget
@@ -75,11 +76,10 @@ InsightHeadsUpWidget::InsightHeadsUpWidget(QWidget *parent) :
     mainLayout->addWidget(m_componentInfoLabel);
 
     // Set default settings
-    QLinearGradient gradient;
-    gradient.setColorAt(0, QColor(0, 0, 0));
-    gradient.setColorAt(1, QColor(26,88,124));
-    setBrush(QBrush(gradient));
-    setPen(QPen(QColor(255, 255, 255), 1));
+    setDisplayMode(HeadsUpMode);
+    m_backgroundGradient.setColorAt(0, QColor(0, 0, 0));
+    m_backgroundGradient.setColorAt(1, QColor(26, 88, 124));
+    m_borderColor = QColor(255, 255, 255);
     setOpacity(0.25);
     setHoverOpacity(0.75);
     QFont font1 = font();
@@ -248,6 +248,7 @@ void InsightHeadsUpWidget::setBuddyView(QGraphicsView *view)
     m_view = view;
     if (m_view != nullptr && m_view->scene() != nullptr)
         m_view->scene()->installEventFilter(this);
+
 }
 
 QGraphicsView *InsightHeadsUpWidget::buddyView() const
@@ -362,6 +363,7 @@ void InsightHeadsUpWidget::setCursorLocation(const QPointF &pos)
     if (m_cursorLocation == pos)
         return;
 
+    prepareUpdateContent();
     m_cursorLocation = pos;
     m_xCursorLocationLabel->setText(QString("%1").arg(pos.x(), 0, 'f', 3));
     m_yCursorLocationLabel->setText(QString("%1").arg(pos.y(), 0, 'f', 3));
@@ -370,6 +372,7 @@ void InsightHeadsUpWidget::setCursorLocation(const QPointF &pos)
 
 void InsightHeadsUpWidget::setCursorDelta(const QPointF &pos)
 {
+    prepareUpdateContent();
     m_xCursorDeltaLabel->setText(QString("%1").arg(pos.x(), 0, 'f', 3));
     m_yCursorDeltaLabel->setText(QString("%1").arg(pos.y(), 0, 'f', 3));
     updateContent();
@@ -380,6 +383,7 @@ void InsightHeadsUpWidget::setCursorDeltaOrigin(const QPointF &pos)
     if (m_cursorDeltaOrigin == pos)
         return;
 
+    prepareUpdateContent();
     m_cursorDeltaOrigin = pos;
     updateContent();
 }
@@ -446,6 +450,18 @@ bool InsightHeadsUpWidget::eventFilter(QObject *watched, QEvent *event)
     return QWidget::eventFilter(watched, event);
 }
 
+void InsightHeadsUpWidget::prepareUpdateContent()
+{
+    if (m_view != nullptr && m_view->viewport() != nullptr) {
+        QPoint topLeft = parentWidget()->mapToGlobal(geometry().topLeft());
+        topLeft = m_view->viewport()->mapFromGlobal(topLeft);
+        QPoint bottomRight = parentWidget()->mapToGlobal(geometry().bottomRight());
+        bottomRight = m_view->viewport()->mapFromGlobal(bottomRight);
+        //m_view->viewport()->update(QRect(topLeft, bottomRight));
+        m_view->viewport()->update();
+    }
+}
+
 void InsightHeadsUpWidget::updateContent()
 {
     adjustSize();
@@ -485,6 +501,7 @@ void InsightHeadsUpWidget::updateItemWidget(InsightHeadsUpWidget::Item item)
     bool enabled = (m_displayedItems.testFlag(item) && m_displayMode == HeadsUpMode) ||
             (m_displayedItemsHover.testFlag(item) && m_displayMode == HoverMode);
 
+    prepareUpdateContent();
     foreach (QWidget *widget, itemWidgets(item)) {
         widget->setVisible(enabled);
     }
@@ -508,8 +525,10 @@ void InsightHeadsUpWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
     QPainter painter(this);
-    painter.setBrush(m_brush);
-    painter.setPen(m_pen);
     painter.setOpacity(effectiveOpacity());
+    m_backgroundGradient.setStart(0, 0);
+    m_backgroundGradient.setFinalStop(0, rect().bottom());
+    painter.setBrush(QBrush(m_backgroundGradient));
+    painter.setPen(QPen(m_borderColor));
     painter.drawRect(rect().adjusted(0, 0, -m_pen.width(), -m_pen.width()));
 }
