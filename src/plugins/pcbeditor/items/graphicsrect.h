@@ -17,6 +17,10 @@ public:
     {
         setRect(QRectF(x, y, width, height));
     }
+    void setRect(const QPointF &topLeft, const QPointF &bottomRight)
+    {
+        setRect(QRectF(topLeft, bottomRight));
+    }
 
     qreal cornerRadius() const;
     void setCornerRadius(qreal radius);
