@@ -65,10 +65,9 @@ void DesignLayerManager::loadLayerSets()
     qDeleteAll(m_sets);
     m_sets << loadLayerSets(m_systemPath)
            << loadLayerSets(m_userPath);
-    qDeleteAll(m_sets);
     foreach (DesignLayerSet *set, m_sets)
         emit layerSetAdded(set);
-    qDebug() << "Layerset manager: Loaded " << count() << "palettes";
+    qDebug() << "Layerset manager: Loaded " << count() << "layersets";
 }
 
 QList<DesignLayerSet *> DesignLayerManager::loadLayerSets(const QString &path)
@@ -92,7 +91,7 @@ QList<DesignLayerSet *> DesignLayerManager::loadLayerSets(const QString &path)
         file.close();
         QSettings settings(fileInfo.filePath(), QSettings::IniFormat);
         set->loadFromSettings(settings);
-        qDebug() << "Layerset manager: Adding" << id;
+        qDebug() << "Layerset manager: Adding" << id << "(" << set->layers().count() << "layers )";
     }
     return sets;
 }

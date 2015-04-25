@@ -1,5 +1,6 @@
 [PcbLayerSet]
 system=true
 label="S&ilkscreen Layers"
+layers/size=2
 layers/0=104
 layers/1=105

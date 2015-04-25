@@ -1,6 +1,7 @@
 [PcbLayerSet]
 system=true
 label="&Mechanical Layers"
+layers/size=32
 layers/0=64
 layers/1=65
 layers/2=66

@@ -1,6 +1,7 @@
 [PcbLayerSet]
 system=true
 label="&All Layers"
+layers/size=106
 layers/0=0
 layers/1=1
 layers/2=2

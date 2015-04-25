@@ -1,6 +1,7 @@
 #include "designlayerset.h"
 
 #include <QSettings>
+#include <QDebug>
 
 DesignLayerSet::DesignLayerSet(QObject *parent):
     QObject(parent),
@@ -77,9 +78,8 @@ void DesignLayerSet::loadFromSettings(QSettings &settings)
     setIsSystem(settings.value("system", false).toBool());
     setName(settings.value("label", "<unknown>").toString());
     int nb = settings.beginReadArray("layers");
-    QList<int> indexes;
     for (int i = 0; i < nb; i++) {
-        indexes.append(settings.value(QString("%1").arg(i), -1).toInt());
+        m_layers.append(settings.value(QString("%1").arg(i), -1).toInt());
     }
     settings.endArray();
     settings.endGroup();

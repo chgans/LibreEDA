@@ -1,6 +1,7 @@
 [PcbLayerSet]
 system=true
 label="&Non Signal"
+layers/size=10
 layers/0=96
 layers/1=97
 layers/2=98

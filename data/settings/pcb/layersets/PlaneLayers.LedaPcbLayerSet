@@ -1,6 +1,7 @@
 [PcbLayerSet]
 system=true
 label="&Plane Layers"
+layers/size=32
 layers/0=32
 layers/1=33
 layers/2=34
@@ -33,4 +34,3 @@ layers/28=60
 layers/29=61
 layers/30=62
 layers/31=63
-layers/32=64
