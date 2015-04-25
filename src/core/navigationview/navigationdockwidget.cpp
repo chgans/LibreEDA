@@ -5,6 +5,7 @@
 #include <QToolBar>
 #include <QSettings>
 #include <QVariant>
+#include <QHBoxLayout>
 
 NavigationDockWidget::NavigationDockWidget(QWidget *parent):
     QDockWidget(parent),
@@ -12,6 +13,7 @@ NavigationDockWidget::NavigationDockWidget(QWidget *parent):
     m_toolBar(new QToolBar)
 {
     setTitleBarWidget(m_toolBar);
+    m_comboBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 }
 
 NavigationDockWidget::~NavigationDockWidget()
