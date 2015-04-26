@@ -2,6 +2,8 @@
 #include "pcbdocument.h"
 #include "pcbeditorwidget.h"
 #include "scene.h"
+#include "items/graphicsitem.h"
+
 #include <QFileInfo>
 
 PcbEditor::PcbEditor(QObject *parent):
@@ -22,10 +24,17 @@ bool PcbEditor::open(QString *errorString, const QString &fileName)
     m_document->setFilePath(fileName);
     QFileInfo fileInfo(fileName);
     m_document->setDisplayName(fileInfo.baseName());
-    return m_document->load(errorString, m_document->filePath());
+    bool result = m_document->load(errorString, m_document->filePath());
+    if (!result)
+        return false;
+    foreach (GraphicsItem *item, pcbDocument()->items()) {
+        pcbWidget()->scene()->addItem(item);
+    }
+    pcbWidget()->scene()->setSceneRect(QRectF(QPointF(0, 0), m_document->boardSize()));
+    return true;
 }
 
-IDocument *PcbEditor::document()
+IDocument *PcbEditor::document() const
 {
     return m_document;
 }
@@ -44,4 +53,9 @@ bool PcbEditor::restoreState(QSettings *settings)
 PcbEditorWidget *PcbEditor::pcbWidget() const
 {
     return static_cast<PcbEditorWidget *>(widget());
+}
+
+PcbDocument *PcbEditor::pcbDocument() const
+{
+    return static_cast<PcbDocument *>(document());
 }

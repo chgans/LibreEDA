@@ -1,5 +1,6 @@
 {
     "leda-document-type": "pcb",
+    "size": [2000, 2000],
     "layers": [0, 78, 96, 98, 103, 104],
     "items": [
         {

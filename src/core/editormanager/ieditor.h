@@ -16,7 +16,7 @@ public:
     ~IEditor();
 
     virtual bool open(QString *errorString, const QString &fileName) = 0;
-    virtual IDocument *document() = 0;
+    virtual IDocument *document() const = 0;
 
     virtual void saveState(QSettings *settings) const;
     virtual bool restoreState(QSettings *settings);

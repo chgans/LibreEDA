@@ -16,13 +16,14 @@ public:
     // IEditor interface
 public:
     bool open(QString *errorString, const QString &fileName);
-    IDocument *document();
+    IDocument *document() const;
     void saveState(QSettings *settings) const;
     bool restoreState(QSettings *settings);
 
 private:
     PcbDocument *m_document = nullptr;
     PcbEditorWidget *pcbWidget() const;
+    PcbDocument *pcbDocument() const;
 };
 
 #endif // PCBEDITOR_H

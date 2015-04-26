@@ -3,6 +3,8 @@
 
 #include "core/editormanager/idocument.h"
 
+#include <QSizeF>
+
 class DesignLayer;
 class GraphicsItem;
 
@@ -14,11 +16,13 @@ public:
 
     bool load(QString *errorString, const QString &fileName);
 
-    QList<DesignLayer *> layers() const;
+    QSizeF boardSize() const;
+    QList<int> layers() const;
     QList<GraphicsItem *> items() const;
 
 private:
-    QList<DesignLayer *> m_layers;
+    QSizeF m_boardSize;
+    QList<int> m_layers;
     QList<GraphicsItem *> m_items;
 
     GraphicsItem *parseItem;
