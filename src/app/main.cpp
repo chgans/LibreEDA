@@ -3,9 +3,14 @@
 #include <QDir>
 
 #include "core/editormanager/editormanager.h"
+
+// PCB editor
 #include "pcbpalettemanager.h"
 #include "designlayermanager.h"
 #include "pcbeditorfactory.h"
+
+// SCH editor
+#include "graphicseditorfactory.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,8 +22,8 @@ int main(int argc, char *argv[])
 
     // Loading plugins
     EditorManager *editorManager = EditorManager::instance();
-    PcbEditorFactory *pcbEditorFactory = new PcbEditorFactory();
-    editorManager->registerEditorFactory(pcbEditorFactory);
+    editorManager->registerEditorFactory(new PcbEditorFactory);
+    editorManager->registerEditorFactory(new GraphicsEditorFactory);
 
     // Pcb plugin initialisation
     PcbPaletteManager *paletteManager = PcbPaletteManager::instance();
@@ -27,6 +32,8 @@ int main(int argc, char *argv[])
     DesignLayerManager *layerManager = DesignLayerManager::instance();
     layerManager->setSystemPath(QString(BASE_SETTINGS_DIR"/pcb/layersets"));
     layerManager->loadLayerSets();
+
+    // Sch plugin initialisation
 
     // Load documents
 

@@ -53,7 +53,10 @@ SOURCES += \
     widget/taskoptionwidget.cpp \
     widget/coordinatewidget.cpp \
     widget/wireoperationwidget.cpp \
-    graphicseditorwidget.cpp
+    graphicseditorwidget.cpp \
+    graphicseditor.cpp \
+    graphicsdocument.cpp \
+    graphicseditorfactory.cpp
 
 HEADERS += \
     graphicsobject.h \
@@ -91,7 +94,11 @@ HEADERS += \
     widget/taskoptionwidget.h \
     widget/coordinatewidget.h \
     widget/wireoperationwidget.h \
-    graphicseditorwidget.h
+    graphicseditorwidget.h \
+    graphicseditor.h \
+    graphicsdocument.h \
+    graphicseditorfactory.h \
+    graphicseditorconstants.h
 
 unix {
     target.path = /usr/lib
