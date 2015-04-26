@@ -38,10 +38,12 @@ private:
     QRectF m_rect;
     void updateHandlesSilently();
 
-    // GraphicsObject interface
+    // ScheItem interface
 public:
     virtual SchItem *clone();
     void itemNotification(IGraphicsObservableItem *item);
+    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
+    virtual void toJson(QJsonObject &jsonObject) const;
 
     // QGraphicsItem interface
 public:

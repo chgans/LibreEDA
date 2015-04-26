@@ -100,6 +100,16 @@ void GraphicsRectItem::itemNotification(IGraphicsObservableItem *item)
     setRect(r);
 }
 
+bool GraphicsRectItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
+{
+    return true;
+}
+
+void GraphicsRectItem::toJson(QJsonObject &jsonObject) const
+{
+
+}
+
 QRectF GraphicsRectItem::boundingRect() const
 {
     if (m_boundingRect.isNull()) {

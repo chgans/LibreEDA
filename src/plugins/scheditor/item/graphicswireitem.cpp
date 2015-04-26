@@ -51,6 +51,16 @@ SchItem *GraphicsWireItem::clone()
     return item;
 }
 
+bool GraphicsWireItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
+{
+    return true;
+}
+
+void GraphicsWireItem::toJson(QJsonObject &jsonObject) const
+{
+
+}
+
 QList<QPointF> GraphicsWireItem::points() const
 {
     QList<QPointF> result;

@@ -1,5 +1,8 @@
 #include "json.h"
 
+#include <QPen>
+#include <QBrush>
+
 namespace Json
 {
 
@@ -124,6 +127,57 @@ bool toReal(QString *errorString, const QJsonValue &jsonValue, qreal &value)
         return false;
     }
     value = jsonValue.toDouble();
+    return true;
+}
+
+bool toColor(QString *errorString, const QJsonValue &jsonValue, QColor &value)
+{
+    if (!jsonValue.isString()) {
+        *errorString = "JSON value is not a color string";
+        return false;
+    }
+    QString name = jsonValue.toString();
+    if (!QColor::isValidColor(name)) {
+        *errorString = "JSON value is not a valid color string";
+        return false;
+    }
+    value.setNamedColor(name);
+    return true;
+}
+
+bool toPen(QString *errorString, const QJsonValue &jsonValue, QPen &value)
+{
+    if (!jsonValue.isObject()) {
+        *errorString = "JSON value is not a pen object";
+        return false;
+    }
+    QJsonObject jsonObject = jsonValue.toObject();
+    qreal width;
+    if (!jsonObject.contains("width") || !toReal(errorString, jsonObject.value("width"), width)) {
+        return false;
+    }
+    QColor color;
+    if (!jsonObject.contains("color") || !toColor(errorString, jsonObject.value("color"), color)) {
+        return false;
+    }
+    value.setWidthF(width);
+    value.setColor(color);
+    return true;
+}
+
+bool toBrush(QString *errorString, const QJsonValue &jsonValue, QBrush &value)
+{
+    if (!jsonValue.isObject()) {
+        *errorString = "JSON value is not a brush object";
+        return false;
+    }
+    QJsonObject jsonObject = jsonValue.toObject();
+    QColor color;
+    if (!jsonObject.contains("color") || !toColor(errorString, jsonObject.value("color"), color)) {
+        return false;
+    }
+    value.setStyle(Qt::SolidPattern);
+    value.setColor(color);
     return true;
 }
 

@@ -28,6 +28,8 @@ public:
 
     QString type() const;
 
+    SchView *view() const;
+    SchScene *scene() const;
 
 private:
     QMainWindow *m_mainWindow;

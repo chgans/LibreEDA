@@ -32,9 +32,11 @@ signals:
 private:
     QLineF m_line;
 
-    // GraphicsObject interface
+    // SchItem interface
 public:
     SchItem *clone();
+    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
+    virtual void toJson(QJsonObject &jsonObject) const;
 
     // IGraphicsItemObserver
 public:

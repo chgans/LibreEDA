@@ -44,6 +44,16 @@ SchItem *GraphicsLineItem::clone()
     return item;
 }
 
+bool GraphicsLineItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
+{
+    return true;
+}
+
+void GraphicsLineItem::toJson(QJsonObject &jsonObject) const
+{
+
+}
+
 void GraphicsLineItem::itemNotification(IGraphicsObservableItem *item)
 {
     AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle*>(item);

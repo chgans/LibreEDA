@@ -3,6 +3,10 @@
 
 #include "core/editormanager/idocument.h"
 
+#include <QList>
+
+class SchItem;
+
 class SchDocument : public IDocument
 {
     Q_OBJECT
@@ -11,10 +15,14 @@ public:
 
     bool load(QString *errorString, const QString &fileName);
 
+    QList<SchItem *> items() const;
+
 signals:
 
 public slots:
 
+private:
+    QList<SchItem *> m_items;
 
     // IDocument interface
 public:

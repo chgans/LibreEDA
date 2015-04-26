@@ -39,9 +39,11 @@ public:
     virtual QPainterPath shape() const;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    // GraphicsObject interface
+    // SchItem interface
 public:
     virtual SchItem *clone();
+    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
+    virtual void toJson(QJsonObject &jsonObject) const;
 
     // IGraphicsItemObserver interface
 public:

@@ -126,6 +126,16 @@ SchItem *GraphicsPolygonItem::clone()
     return item;
 }
 
+bool GraphicsPolygonItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
+{
+    return true;
+}
+
+void GraphicsPolygonItem::toJson(QJsonObject &jsonObject) const
+{
+
+}
+
 
 QVariant GraphicsPolygonItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {

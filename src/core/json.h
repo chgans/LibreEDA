@@ -9,6 +9,9 @@
 #include <QRectF>
 #include <QList>
 #include <QSizeF>
+#include <QPen>
+#include <QBrush>
+
 
 namespace Json
 {
@@ -22,6 +25,9 @@ bool toInt(QString *errorString, const QJsonValue &jsonValue, int &value);
 bool toIntList(QString *errorString, const QJsonValue &jsonValue, QList<int> &value);
 bool toBool(QString *errorString, const QJsonValue &jsonValue, bool &value);
 bool toReal(QString *errorString, const QJsonValue &jsonValue, qreal &value);
+bool toColor(QString *errorString, const QJsonValue &jsonValue, QColor &value);
+bool toPen(QString *errorString, const QJsonValue &jsonValue, QPen &value);
+bool toBrush(QString *errorString, const QJsonValue &jsonValue, QBrush &value);
 
 QJsonArray fromPoint(const QPointF &value);
 QJsonArray fromPointList(const QList<QPointF> &value);

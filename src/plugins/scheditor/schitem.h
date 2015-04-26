@@ -41,6 +41,9 @@ public:
     QPen pen() const;
     QBrush brush() const;
 
+    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
+    virtual void toJson(QJsonObject &jsonObject) const;
+
 public slots:
     void setPen(const QPen &pen);
     void setBrush(const QBrush &brush);
@@ -68,6 +71,13 @@ protected:
     static QPainterPath shapeFromPath(const QPainterPath &path, const QPen &pen);
 
 private:
+    static const QString J_POSITION;
+    static const QString J_ZVALUE;
+    static const QString J_ROTATION;
+    static const QString J_LOCKED;
+    static const QString J_PEN;
+    static const QString J_BRUSH;
+
     void addAbstractHandle(AbstractGraphicsHandle *handle);
 
 };

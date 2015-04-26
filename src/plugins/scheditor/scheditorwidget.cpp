@@ -68,6 +68,16 @@ QString SchEditorWidget::type() const
     return "graphicseditor";
 }
 
+SchView *SchEditorWidget::view() const
+{
+    return m_view;
+}
+
+SchScene *SchEditorWidget::scene() const
+{
+    return m_scene;
+}
+
 void SchEditorWidget::activate(QMainWindow *win)
 {
     win->addToolBar(m_interactiveToolsToolBar);

@@ -99,6 +99,16 @@ SchItem *GraphicsEllipseItem::clone()
     return item;
 }
 
+bool GraphicsEllipseItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
+{
+    return true;
+}
+
+void GraphicsEllipseItem::toJson(QJsonObject &jsonObject) const
+{
+
+}
+
 QVariant GraphicsEllipseItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {

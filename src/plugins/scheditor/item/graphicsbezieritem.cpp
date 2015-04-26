@@ -380,6 +380,16 @@ SchItem *GraphicsBezierItem::clone()
     return item;
 }
 
+bool GraphicsBezierItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
+{
+    return true;
+}
+
+void GraphicsBezierItem::toJson(QJsonObject &jsonObject) const
+{
+
+}
+
 void GraphicsBezierItem::itemNotification(IGraphicsObservableItem *item)
 {
     Q_UNUSED(item);
