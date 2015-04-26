@@ -2,15 +2,17 @@
 
 Physical layers:
 ================
-- top overlay (overlay)
-- top solder (solder mask resist or coverlay)
+- overlay
 - [
-    - signal layer (copper)
-    - dielectric (core or prereg)
-    - signal layer (copper)
-   ]
-- bottom solder
-- bottom overlay
+   - [
+      - components
+      - solder paste
+      - dielectric
+     ]
+   - copper (signal or plane)
+  ]
+
+
 
 These are manage by the Layer stack manager
 

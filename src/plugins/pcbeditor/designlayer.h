@@ -10,7 +10,13 @@
 class DesignLayerManager;
 class GraphicsItem;
 
-// TODO: QObject not QGraphicsObject
+/*
+ * TODO:
+ *  - QObject not QGraphicsObject
+ *  - split data vs visual (Layer vs GraphicsLayer vs 3d whatever)
+ *  - merge physical layer
+ */
+
 class DesignLayer : public QGraphicsObject
 {
     Q_OBJECT
@@ -26,9 +32,13 @@ class DesignLayer : public QGraphicsObject
 
     Q_PROPERTY(QString customName READ customName WRITE setCustomName NOTIFY customNameChanged)
     Q_PROPERTY(QString effectiveName READ effectiveName NOTIFY effectiveNameChanged STORED false)
-    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
+    // TODO: Stack orientation => top, bottom, no orientation
     Q_PROPERTY(Face face READ face WRITE setFace NOTIFY faceChanged)
+    // TODO: This one is stack orientation related, we need as well drill pairing
     Q_PROPERTY(DesignLayer* pairedLayer READ pairedLayer WRITE setPairedLayer NOTIFY pairedLayerChanged)
+
+    // TODO: 2D or 3D Color => palette stuff
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(ColorMode colorMode READ colorMode WRITE setColorMode NOTIFY colorModeChanged)
     Q_PROPERTY(QColor effectiveColor READ effectiveColor NOTIFY effectiveColorChanged STORED false)
 
