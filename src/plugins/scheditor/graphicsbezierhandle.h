@@ -12,7 +12,7 @@ class GraphicsBezierHandle:
         public IGraphicsItemObserver
 {
 public:
-    GraphicsBezierHandle(GraphicsObject *parent = 0);
+    GraphicsBezierHandle(SchItem *parent = 0);
     ~GraphicsBezierHandle();
 
     enum HandleType {
@@ -112,7 +112,7 @@ public:
     // AbstractGraphicsHandle interface
 public:
     void setHandleId(int id);
-    void setParentGraphicsObject(GraphicsObject *parent);
+    void setParentGraphicsObject(SchItem *parent);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(GraphicsBezierHandle::HandleTypes)

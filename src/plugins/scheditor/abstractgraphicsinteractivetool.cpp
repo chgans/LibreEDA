@@ -10,7 +10,7 @@
 #include <QKeyEvent>
 
 AbstractGraphicsInteractiveTool::AbstractGraphicsInteractiveTool(QObject *parent):
-    GraphicsTool(parent)
+    SchTool(parent)
 {
 
 }
@@ -75,9 +75,9 @@ void AbstractGraphicsInteractiveTool::wheelEvent(QWheelEvent *event)
     Q_UNUSED(event);
 }
 
-GraphicsObject *AbstractGraphicsInteractiveTool::createPhantomItem(GraphicsObject *item)
+SchItem *AbstractGraphicsInteractiveTool::createPhantomItem(SchItem *item)
 {
-    GraphicsObject *phantomItem = item->clone();
+    SchItem *phantomItem = item->clone();
     // Pity we cannot mix effects, drop shadow is nice while moving/clonig
     // But not good while moving handles with the select tool
     QGraphicsColorizeEffect *phantomEffect = new QGraphicsColorizeEffect();
@@ -91,10 +91,10 @@ GraphicsObject *AbstractGraphicsInteractiveTool::createPhantomItem(GraphicsObjec
     return phantomItem;
 }
 
-QList<GraphicsObject *> AbstractGraphicsInteractiveTool::createPhantomItems(const QList<GraphicsObject *> &items)
+QList<SchItem *> AbstractGraphicsInteractiveTool::createPhantomItems(const QList<SchItem *> &items)
 {
-    QList<GraphicsObject *> phantomItems;
-    foreach (GraphicsObject *item, items) {
+    QList<SchItem *> phantomItems;
+    foreach (SchItem *item, items) {
         phantomItems.append(createPhantomItem(item));
     }
     return phantomItems;

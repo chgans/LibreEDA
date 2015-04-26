@@ -30,7 +30,7 @@ void GraphicsRectTool::cancel()
 {
 }
 
-GraphicsObject *GraphicsRectTool::beginInsert(const QPointF &pos)
+SchItem *GraphicsRectTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsRectItem();
     m_item->setPos(pos);

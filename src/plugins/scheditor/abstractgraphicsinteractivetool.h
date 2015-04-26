@@ -8,9 +8,9 @@ class QKeyEvent;
 class QWheelEvent;
 class QWidget;
 
-class GraphicsObject;
+class SchItem;
 
-class AbstractGraphicsInteractiveTool: public GraphicsTool
+class AbstractGraphicsInteractiveTool: public SchTool
 {
     Q_OBJECT
 
@@ -37,8 +37,8 @@ protected:
     QWidget *m_taskWidget;
     QWidget *m_optionWidget;
 
-    GraphicsObject *createPhantomItem(GraphicsObject *item);
-    QList<GraphicsObject *> createPhantomItems(const QList<GraphicsObject *> &items);
+    SchItem *createPhantomItem(SchItem *item);
+    QList<SchItem *> createPhantomItems(const QList<SchItem *> &items);
 };
 
 #endif // ABSTRACTGRAPHICSINTERACTIVETOOL_H

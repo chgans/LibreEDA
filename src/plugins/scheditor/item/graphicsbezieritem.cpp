@@ -19,8 +19,8 @@ Q_LOGGING_CATEGORY(GraphicsBezierItemLog, "graphics.bezier.item")
  *  - Add a beginMove/endMove, while moving we don't have to recompute shape
  */
 
-GraphicsBezierItem::GraphicsBezierItem(GraphicsObject *parent):
-    GraphicsObject(parent)
+GraphicsBezierItem::GraphicsBezierItem(SchItem *parent):
+    SchItem(parent)
 {
     setFlag(QGraphicsItem::ItemUsesExtendedStyleOption, true);
 }
@@ -370,10 +370,10 @@ void GraphicsBezierItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     painter->drawPath(m_path);
 }
 
-GraphicsObject *GraphicsBezierItem::clone()
+SchItem *GraphicsBezierItem::clone()
 {
     GraphicsBezierItem *item = new GraphicsBezierItem();
-    GraphicsObject::cloneTo(item);
+    SchItem::cloneTo(item);
     foreach (const QPointF &point, points()) {
         item->addPoint(point);
     }

@@ -10,8 +10,8 @@
 
 // TODO: forbid objects to have write access to handles
 
-GraphicsRectItem::GraphicsRectItem(GraphicsObject *parent):
-    GraphicsObject(parent), m_rect(QRectF(0, 0, 0, 0))
+GraphicsRectItem::GraphicsRectItem(SchItem *parent):
+    SchItem(parent), m_rect(QRectF(0, 0, 0, 0))
 {
     addRegularHandle(TopLeft, FDiagSizeHandleRole, CircularHandleShape);
     addRegularHandle(Top, VSizeHandleRole, DiamondedHandleShape);
@@ -54,10 +54,10 @@ void GraphicsRectItem::setRect(const QRectF &rect)
     unblockItemNotification();
 }
 
-GraphicsObject *GraphicsRectItem::clone()
+SchItem *GraphicsRectItem::clone()
 {
     GraphicsRectItem *item = new GraphicsRectItem();
-    GraphicsObject::cloneTo(item);
+    SchItem::cloneTo(item);
     item->setRect(rect());
     return item;
 }

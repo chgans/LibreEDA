@@ -23,7 +23,7 @@ public:
 
     // AbstractGraphicsInsertTool interface
 public:
-    GraphicsObject *beginInsert(const QPointF &pos);
+    SchItem *beginInsert(const QPointF &pos);
     void addPoint(int idx, const QPointF &pos);
     void freezePoint(int idx, const QPointF &pos);
     bool removePoint(int idx, const QPointF &pos);

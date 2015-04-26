@@ -23,7 +23,7 @@ class GraphicsBezierHandle;
 // TODO: AbstractPath and AbstractShape (allow to morph between AbstractXYZ impl)
 // TODO: See qcad explodable concept
 
-class GraphicsObject: public QGraphicsObject, public IGraphicsItemObserver
+class SchItem: public QGraphicsObject, public IGraphicsItemObserver
 {
     Q_OBJECT
 
@@ -31,10 +31,10 @@ class GraphicsObject: public QGraphicsObject, public IGraphicsItemObserver
     Q_PROPERTY(QBrush brush READ brush WRITE setBrush NOTIFY brushChanged)
 
 public:
-    GraphicsObject(GraphicsObject *parent = 0);
-    virtual ~GraphicsObject();
+    SchItem(SchItem *parent = 0);
+    virtual ~SchItem();
 
-    virtual GraphicsObject *clone() = 0;
+    virtual SchItem *clone() = 0;
     int handleCount() const;
     AbstractGraphicsHandle *handleAt(int idx);
 
@@ -64,7 +64,7 @@ protected:
     GraphicsRegularHandle *regularHandleAt(int id) const;
     GraphicsBezierHandle *bezierHandleAt(int id) const;
 
-    void cloneTo(GraphicsObject *dst);
+    void cloneTo(SchItem *dst);
     static QPainterPath shapeFromPath(const QPainterPath &path, const QPen &pen);
 
 private:

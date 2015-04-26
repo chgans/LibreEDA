@@ -3,16 +3,16 @@
 
 #include <QGraphicsScene>
 
-class GraphicsObject;
+class SchItem;
 class GraphicsGrid;
 
-class GraphicsScene : public QGraphicsScene
+class SchScene : public QGraphicsScene
 {
 public:
-    GraphicsScene(QObject *parent);
-    ~GraphicsScene();
+    SchScene(QObject *parent);
+    ~SchScene();
 
-    QList<GraphicsObject *> selectedObjects();
+    QList<SchItem *> selectedObjects();
 
     GraphicsGrid *grid();
     void setGrid(GraphicsGrid *grid);

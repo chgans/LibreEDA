@@ -3,30 +3,30 @@
 
 #include <QGraphicsView>
 
-class GraphicsScene;
+class SchScene;
 class AbstractGraphicsInteractiveTool;
-class GraphicsObject;
+class SchItem;
 class AbstractGraphicsHandle;
 
-class GraphicsView : public QGraphicsView
+class SchView : public QGraphicsView
 {
     Q_OBJECT
 
 public:
-    GraphicsView(QWidget *parent = 0);
-    ~GraphicsView();
+    SchView(QWidget *parent = 0);
+    ~SchView();
 
-    GraphicsScene *scene();
-    void setScene(GraphicsScene *scene);
+    SchScene *scene();
+    void setScene(SchScene *scene);
 
     AbstractGraphicsInteractiveTool *tool();
     void setTool(AbstractGraphicsInteractiveTool *tool);
 
-    GraphicsObject *objectAt(const QPoint &pos) const;
+    SchItem *objectAt(const QPoint &pos) const;
     AbstractGraphicsHandle *handleAt(const QPoint &pos) const;
 
     AbstractGraphicsHandle *handleUnderMouse() const;
-    GraphicsObject *objectUnderMouse() const;
+    SchItem *objectUnderMouse() const;
     QPoint mousePosition() const;
 
     void scaleView(qreal scaleFactor);
@@ -51,7 +51,7 @@ protected:
 
 private:
     AbstractGraphicsInteractiveTool *m_tool;
-    GraphicsObject *m_objectUnderMouse;
+    SchItem *m_objectUnderMouse;
     const AbstractGraphicsHandle *m_handleUnderMouse;
     QPoint m_mousePosition;
     bool m_mousePositionChanged;

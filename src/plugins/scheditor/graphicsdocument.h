@@ -3,11 +3,11 @@
 
 #include "core/editormanager/idocument.h"
 
-class GraphicsDocument : public IDocument
+class SchDocument : public IDocument
 {
     Q_OBJECT
 public:
-    explicit GraphicsDocument(QObject *parent = 0);
+    explicit SchDocument(QObject *parent = 0);
 
     bool load(QString *errorString, const QString &fileName);
 

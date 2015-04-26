@@ -27,7 +27,7 @@
  *   - properties
  */
 
-GraphicsView::GraphicsView(QWidget *parent):
+SchView::SchView(QWidget *parent):
     QGraphicsView(parent),
     m_tool(nullptr),
     m_objectUnderMouse(nullptr),
@@ -50,27 +50,27 @@ GraphicsView::GraphicsView(QWidget *parent):
     setResizeAnchor(NoAnchor);
 }
 
-GraphicsView::~GraphicsView()
+SchView::~SchView()
 {
 
 }
 
-GraphicsScene *GraphicsView::scene()
+SchScene *SchView::scene()
 {
-    return static_cast<GraphicsScene *>(QGraphicsView::scene());
+    return static_cast<SchScene *>(QGraphicsView::scene());
 }
 
-void GraphicsView::setScene(GraphicsScene *scene)
+void SchView::setScene(SchScene *scene)
 {
     QGraphicsView::setScene(scene);
 }
 
-AbstractGraphicsInteractiveTool *GraphicsView::tool()
+AbstractGraphicsInteractiveTool *SchView::tool()
 {
     return m_tool;
 }
 
-void GraphicsView::setTool(AbstractGraphicsInteractiveTool *tool)
+void SchView::setTool(AbstractGraphicsInteractiveTool *tool)
 {
     if (m_tool) {
         m_tool->desactivate(m_tool->action(), this);
@@ -84,32 +84,32 @@ void GraphicsView::setTool(AbstractGraphicsInteractiveTool *tool)
     }
 }
 
-GraphicsObject *GraphicsView::objectAt(const QPoint &pos) const
+SchItem *SchView::objectAt(const QPoint &pos) const
 {
-    return dynamic_cast<GraphicsObject *>(QGraphicsView::itemAt(pos));
+    return dynamic_cast<SchItem *>(QGraphicsView::itemAt(pos));
 }
 
-AbstractGraphicsHandle *GraphicsView::handleAt(const QPoint &pos) const
+AbstractGraphicsHandle *SchView::handleAt(const QPoint &pos) const
 {
     return dynamic_cast<AbstractGraphicsHandle *>(QGraphicsView::itemAt(pos));
 }
 
-AbstractGraphicsHandle *GraphicsView::handleUnderMouse() const
+AbstractGraphicsHandle *SchView::handleUnderMouse() const
 {
     return handleAt(mousePosition());
 }
 
-GraphicsObject *GraphicsView::objectUnderMouse() const
+SchItem *SchView::objectUnderMouse() const
 {
     return objectAt(mousePosition());
 }
 
-QPoint GraphicsView::mousePosition() const
+QPoint SchView::mousePosition() const
 {
     return m_mousePosition;
 }
 
-void GraphicsView::scaleView(qreal scaleFactor)
+void SchView::scaleView(qreal scaleFactor)
 {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
     if (factor < 0.07 || factor > 100)
@@ -119,17 +119,17 @@ void GraphicsView::scaleView(qreal scaleFactor)
     updateMousePos();
 }
 
-void GraphicsView::enableSnapToGrid(bool enabled)
+void SchView::enableSnapToGrid(bool enabled)
 {
     m_snapToGridEnabled = enabled;
 }
 
-bool GraphicsView::isSnapToGridEnabled() const
+bool SchView::isSnapToGridEnabled() const
 {
     return m_snapToGridEnabled;
 }
 
-void GraphicsView::drawBackground(QPainter *painter, const QRectF &rect)
+void SchView::drawBackground(QPainter *painter, const QRectF &rect)
 {
 
     QLinearGradient gradient(rect.topLeft(), rect.bottomLeft());
@@ -144,7 +144,7 @@ void GraphicsView::drawBackground(QPainter *painter, const QRectF &rect)
     }
 }
 
-void GraphicsView::drawForeground(QPainter *painter, const QRectF &rect)
+void SchView::drawForeground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
     //QGraphicsView::drawForeground(painter, rect);
@@ -170,7 +170,7 @@ void GraphicsView::drawForeground(QPainter *painter, const QRectF &rect)
 }
 
 // TODO: Zoom here or tool
-void GraphicsView::wheelEvent(QWheelEvent *event)
+void SchView::wheelEvent(QWheelEvent *event)
 {
     if (!event->modifiers().testFlag(Qt::ControlModifier)) {
         QGraphicsView::wheelEvent(event);
@@ -184,7 +184,7 @@ void GraphicsView::wheelEvent(QWheelEvent *event)
     event->accept();
 }
 
-void GraphicsView::mousePressEvent(QMouseEvent *event)
+void SchView::mousePressEvent(QMouseEvent *event)
 {
     updateMousePos();
 
@@ -200,7 +200,7 @@ void GraphicsView::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void GraphicsView::mouseMoveEvent(QMouseEvent *event)
+void SchView::mouseMoveEvent(QMouseEvent *event)
 {
     updateMousePos();
 
@@ -227,7 +227,7 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *event)
         event->ignore();
 }
 
-void GraphicsView::mouseReleaseEvent(QMouseEvent *event)
+void SchView::mouseReleaseEvent(QMouseEvent *event)
 {
     updateMousePos();
 
@@ -239,7 +239,7 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent *event)
         event->ignore();
 }
 
-void GraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
+void SchView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (m_tool != nullptr)
         m_tool->mouseDoubleClickEvent(event);
@@ -247,7 +247,7 @@ void GraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
         event->ignore();
 }
 
-void GraphicsView::keyPressEvent(QKeyEvent *event)
+void SchView::keyPressEvent(QKeyEvent *event)
 {
     if (m_tool != nullptr)
         m_tool->keyPressEvent(event);
@@ -255,7 +255,7 @@ void GraphicsView::keyPressEvent(QKeyEvent *event)
         QGraphicsView::keyPressEvent(event);
 }
 
-void GraphicsView::keyReleaseEvent(QKeyEvent *event)
+void SchView::keyReleaseEvent(QKeyEvent *event)
 {
     if (m_tool != nullptr)
         m_tool->keyReleaseEvent(event);
@@ -263,7 +263,7 @@ void GraphicsView::keyReleaseEvent(QKeyEvent *event)
         QGraphicsView::keyReleaseEvent(event);
 }
 
-void GraphicsView::updateMousePos()
+void SchView::updateMousePos()
 {
     QPoint viewPos = mapFromGlobal(QCursor::pos());
     QPointF scenePos = mapToScene(viewPos);
@@ -286,7 +286,7 @@ void GraphicsView::updateMousePos()
     }
 }
 
-QMouseEvent GraphicsView::snapMouseEvent(QMouseEvent *event)
+QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)
 {
     return QMouseEvent(event->type(),
                        m_mousePosition,
@@ -295,7 +295,7 @@ QMouseEvent GraphicsView::snapMouseEvent(QMouseEvent *event)
                        event->modifiers());
 }
 
-QSizeF GraphicsView::pixelSize() const
+QSizeF SchView::pixelSize() const
 {
     return QSizeF(transform().m11(), transform().m22());
 }

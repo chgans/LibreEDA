@@ -32,7 +32,7 @@ void GraphicsPolygonTool::desactivate(const QAction *which)
     Q_UNUSED(which);
 }
 
-GraphicsObject *GraphicsPolygonTool::beginInsert(const QPointF &pos)
+SchItem *GraphicsPolygonTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsPolygonItem();
     m_item->setPos(pos);

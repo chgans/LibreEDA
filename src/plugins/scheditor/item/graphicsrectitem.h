@@ -11,7 +11,7 @@
 
 // TODO: AbstractGraphicsShape
 // TODO: add properties
-class GraphicsRectItem : public GraphicsObject
+class GraphicsRectItem : public SchItem
 {
     Q_OBJECT
 
@@ -28,7 +28,7 @@ public:
         NbHandles
     };
 
-    GraphicsRectItem(GraphicsObject *parent = 0);
+    GraphicsRectItem(SchItem *parent = 0);
     ~GraphicsRectItem();
 
     QRectF rect() const;
@@ -40,7 +40,7 @@ private:
 
     // GraphicsObject interface
 public:
-    virtual GraphicsObject *clone();
+    virtual SchItem *clone();
     void itemNotification(IGraphicsObservableItem *item);
 
     // QGraphicsItem interface

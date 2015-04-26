@@ -149,13 +149,13 @@ void AbstractGraphicsInsertTool::mouseDoubleClickEvent(QMouseEvent *event)
     endInsert(m_pressPos);
 }
 
-void AbstractGraphicsInsertTool::activate(const QAction *which, GraphicsView *view)
+void AbstractGraphicsInsertTool::activate(const QAction *which, SchView *view)
 {
     Q_UNUSED(which);
     Q_UNUSED(view);
 }
 
-void AbstractGraphicsInsertTool::desactivate(const QAction *which, GraphicsView *view)
+void AbstractGraphicsInsertTool::desactivate(const QAction *which, SchView *view)
 {
     Q_UNUSED(which);
     Q_UNUSED(view);

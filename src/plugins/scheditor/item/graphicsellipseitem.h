@@ -3,7 +3,7 @@
 
 #include "graphicsobject.h"
 
-class GraphicsEllipseItem : public GraphicsObject
+class GraphicsEllipseItem : public SchItem
 {
     Q_OBJECT
 
@@ -17,7 +17,7 @@ public:
         NbHandles
     };
 
-    GraphicsEllipseItem(GraphicsObject *parent = 0);
+    GraphicsEllipseItem(SchItem *parent = 0);
     ~GraphicsEllipseItem();
 
     qreal xRadius() const;
@@ -43,7 +43,7 @@ public:
 
     // GraphicsObject interface
 public:
-    virtual GraphicsObject *clone();
+    virtual SchItem *clone();
 
     // QGraphicsItem interface
 protected:

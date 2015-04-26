@@ -30,7 +30,7 @@ void GraphicsEllipseTool::desactivate(const QAction *which)
     Q_UNUSED(which);
 }
 
-GraphicsObject *GraphicsEllipseTool::beginInsert(const QPointF &pos)
+SchItem *GraphicsEllipseTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsEllipseItem();
     m_item->setPos(pos);

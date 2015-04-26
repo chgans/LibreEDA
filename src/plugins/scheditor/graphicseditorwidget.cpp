@@ -23,18 +23,18 @@
 #include <QToolBar>
 #include <QTimer>
 
-GraphicsEditorWidget::GraphicsEditorWidget(QWidget *parent):
+SchEditorWidget::SchEditorWidget(QWidget *parent):
     AbstractEditor(parent)
 {
     setLayout(new QVBoxLayout);
-    m_scene = new GraphicsScene(this);
+    m_scene = new SchScene(this);
     m_scene->setSceneRect(0, 0, 297, 210);
     GraphicsCartesianGrid *grid = new GraphicsCartesianGrid();
     grid->setOrigin(QPointF(0, 0));
     grid->setSize(QSize(m_scene->sceneRect().width(),
                         m_scene->sceneRect().height()));
     m_scene->setGrid(grid);
-    m_view = new GraphicsView();
+    m_view = new SchView();
     m_view->setScene(m_scene);
     m_view->fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
     m_view->ensureVisible(m_scene->sceneRect());
@@ -48,27 +48,27 @@ GraphicsEditorWidget::GraphicsEditorWidget(QWidget *parent):
     Q_INIT_RESOURCE(scheditor);
 }
 
-GraphicsEditorWidget::~GraphicsEditorWidget()
+SchEditorWidget::~SchEditorWidget()
 {
 
 }
 
-void GraphicsEditorWidget::readSettings(QSettings &settings)
-{
-    Q_UNUSED(settings);
-}
-
-void GraphicsEditorWidget::writeSettings(QSettings &settings)
+void SchEditorWidget::readSettings(QSettings &settings)
 {
     Q_UNUSED(settings);
 }
 
-QString GraphicsEditorWidget::type() const
+void SchEditorWidget::writeSettings(QSettings &settings)
+{
+    Q_UNUSED(settings);
+}
+
+QString SchEditorWidget::type() const
 {
     return "graphicseditor";
 }
 
-void GraphicsEditorWidget::activate(QMainWindow *win)
+void SchEditorWidget::activate(QMainWindow *win)
 {
     win->addToolBar(m_interactiveToolsToolBar);
     m_interactiveToolsToolBar->show();
@@ -81,7 +81,7 @@ void GraphicsEditorWidget::activate(QMainWindow *win)
     m_mainWindow = win;
 }
 
-void GraphicsEditorWidget::desactivate(QMainWindow *win)
+void SchEditorWidget::desactivate(QMainWindow *win)
 {
     win->removeDockWidget(m_taskDockWidget);
     win->removeToolBar(m_pathPointToolBar);
@@ -89,7 +89,7 @@ void GraphicsEditorWidget::desactivate(QMainWindow *win)
     win->removeToolBar(m_interactiveToolsToolBar);
 }
 
-void GraphicsEditorWidget::addInteractiveTools()
+void SchEditorWidget::addInteractiveTools()
 {
     m_interactiveToolsActionGroup = new QActionGroup(this);
     m_interactiveToolsToolBar = new QToolBar();
@@ -124,7 +124,7 @@ void GraphicsEditorWidget::addInteractiveTools()
     //  - regular polygon, arbitrary polygon and "advanced" shape
 }
 
-void GraphicsEditorWidget::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
+void SchEditorWidget::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
 {
 
     bool firstTool = m_interactiveTools.count() == 0;
@@ -147,7 +147,7 @@ void GraphicsEditorWidget::addInteractiveTool(AbstractGraphicsInteractiveTool *t
         firstAction = false;
     }
     else {
-        connect(tool, &GraphicsTool::finished,
+        connect(tool, &SchTool::finished,
                 this, [this]() {
             m_interactiveTools.first()->action()->trigger();
         });
@@ -168,7 +168,7 @@ void GraphicsEditorWidget::addInteractiveTool(AbstractGraphicsInteractiveTool *t
     }
 }
 
-void GraphicsEditorWidget::addSnapTools()
+void SchEditorWidget::addSnapTools()
 {
     QAction *action;
 
@@ -186,7 +186,7 @@ void GraphicsEditorWidget::addSnapTools()
     action->setChecked(true);
     m_snapToolBar->addAction(action);
     connect(action, &QAction::triggered,
-            m_view, &GraphicsView::enableSnapToGrid);
+            m_view, &SchView::enableSnapToGrid);
     m_view->enableSnapToGrid(action->isChecked());
 
     action = new QAction(QIcon(":/icons/graphicssnapobject.svg"),
@@ -201,7 +201,7 @@ void GraphicsEditorWidget::addSnapTools()
 
 }
 
-void GraphicsEditorWidget::addPathPointTools()
+void SchEditorWidget::addPathPointTools()
 {
     QAction *action;
 
@@ -233,7 +233,7 @@ void GraphicsEditorWidget::addPathPointTools()
 }
 
 // They all work on one or more items
-void GraphicsEditorWidget::addArrangeTools()
+void SchEditorWidget::addArrangeTools()
 {
     // group/ungroup
     // send to back. front, raise, lower

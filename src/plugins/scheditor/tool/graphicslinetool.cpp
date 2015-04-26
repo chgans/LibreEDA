@@ -36,7 +36,7 @@ void GraphicsLineTool::desactivate(const QAction *which)
     Q_UNUSED(which);
 }
 
-GraphicsObject *GraphicsLineTool::beginInsert(const QPointF &pos)
+SchItem *GraphicsLineTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsLineItem();
     m_item->setPos(pos);

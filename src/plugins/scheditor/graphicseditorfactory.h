@@ -3,11 +3,11 @@
 
 #include "core/editormanager/ieditorfactory.h"
 
-class GraphicsEditorFactory : public IEditorFactory
+class SchEditorFactory : public IEditorFactory
 {
     Q_OBJECT
 public:
-    explicit GraphicsEditorFactory(QObject *parent = 0);
+    explicit SchEditorFactory(QObject *parent = 0);
 
 signals:
 

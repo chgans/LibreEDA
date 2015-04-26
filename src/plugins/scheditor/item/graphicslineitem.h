@@ -6,7 +6,7 @@
 #include <QPen>
 #include <QLineF>
 
-class GraphicsLineItem : public GraphicsObject
+class GraphicsLineItem : public SchItem
 {
     Q_OBJECT
 
@@ -19,7 +19,7 @@ public:
         P2Handle,
         NbHandles
     };
-    GraphicsLineItem(GraphicsObject *parent = 0);
+    GraphicsLineItem(SchItem *parent = 0);
 
     QLineF line() const;
 
@@ -34,7 +34,7 @@ private:
 
     // GraphicsObject interface
 public:
-    GraphicsObject *clone();
+    SchItem *clone();
 
     // IGraphicsItemObserver
 public:

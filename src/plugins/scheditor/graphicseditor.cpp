@@ -4,16 +4,16 @@
 
 #include <QFileInfo>
 
-GraphicsEditor::GraphicsEditor(QObject *parent) :
+SchEditor::SchEditor(QObject *parent) :
     IEditor(parent)
 {
-    setWidget(new GraphicsEditorWidget());
+    setWidget(new SchEditorWidget());
 }
 
 
-bool GraphicsEditor::open(QString *errorString, const QString &fileName)
+bool SchEditor::open(QString *errorString, const QString &fileName)
 {
-    m_document = new GraphicsDocument();
+    m_document = new SchDocument();
     m_document->setFilePath(fileName);
     QFileInfo fileInfo(fileName);
     m_document->setDisplayName(fileInfo.baseName());
@@ -23,12 +23,12 @@ bool GraphicsEditor::open(QString *errorString, const QString &fileName)
     return true;
 }
 
-IDocument *GraphicsEditor::document() const
+IDocument *SchEditor::document() const
 {
     return m_document;
 }
 
-GraphicsEditorWidget *GraphicsEditor::schWidget() const
+SchEditorWidget *SchEditor::schWidget() const
 {
-    return static_cast<GraphicsEditorWidget *>(widget());
+    return static_cast<SchEditorWidget *>(widget());
 }

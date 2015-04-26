@@ -48,7 +48,7 @@ void GraphicsBezierTool::desactivate(const QAction *which)
     Q_UNUSED(which);
 }
 
-GraphicsObject *GraphicsBezierTool::beginInsert(const QPointF &pos)
+SchItem *GraphicsBezierTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsBezierItem();
     m_item->setPos(pos);

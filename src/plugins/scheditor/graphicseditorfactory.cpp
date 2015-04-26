@@ -2,7 +2,7 @@
 #include "graphicseditorconstants.h"
 #include "graphicseditor.h"
 
-GraphicsEditorFactory::GraphicsEditorFactory(QObject *parent) :
+SchEditorFactory::SchEditorFactory(QObject *parent) :
     IEditorFactory(parent)
 {
     setId(SCHEDITOR_ID);
@@ -10,7 +10,7 @@ GraphicsEditorFactory::GraphicsEditorFactory(QObject *parent) :
     setDisplayName("SCH editor");
 }
 
-IEditor *GraphicsEditorFactory::createEditor()
+IEditor *SchEditorFactory::createEditor()
 {
-    return new GraphicsEditor();
+    return new SchEditor();
 }

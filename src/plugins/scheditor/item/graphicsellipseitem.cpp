@@ -2,8 +2,8 @@
 
 #include <QStyleOptionGraphicsItem>
 
-GraphicsEllipseItem::GraphicsEllipseItem(GraphicsObject *parent):
-    GraphicsObject(parent),
+GraphicsEllipseItem::GraphicsEllipseItem(SchItem *parent):
+    SchItem(parent),
     m_xRadius(0.0f), m_yRadius(0.0f)
 {
     addRegularHandle(XRadiusHandle, MoveHandleRole, DiamondedHandleShape);
@@ -90,12 +90,12 @@ void GraphicsEllipseItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
     painter->drawEllipse(QPointF(0, 0), xRadius(), yRadius());
 }
 
-GraphicsObject *GraphicsEllipseItem::clone()
+SchItem *GraphicsEllipseItem::clone()
 {
     GraphicsEllipseItem *item = new GraphicsEllipseItem();
     item->setXRadius(xRadius());
     item->setYRadius(yRadius());
-    GraphicsObject::cloneTo(item);
+    SchItem::cloneTo(item);
     return item;
 }
 

@@ -7,10 +7,10 @@
 
 class GraphicsBezierHandle;
 
-class GraphicsBezierItem : public GraphicsObject
+class GraphicsBezierItem : public SchItem
 {
 public:
-    GraphicsBezierItem(GraphicsObject *parent = 0);
+    GraphicsBezierItem(SchItem *parent = 0);
 
     QPainterPath path() const;
     void setPath(const QPainterPath &path);
@@ -60,7 +60,7 @@ public:
 
     // GraphicsObject interface
 public:
-    virtual GraphicsObject *clone();
+    virtual SchItem *clone();
 
     // IGraphicsItemObserver interface
 protected:

@@ -6,8 +6,8 @@
 
 #include <QDebug>
 
-GraphicsLineItem::GraphicsLineItem(GraphicsObject *parent):
-    GraphicsObject(parent)
+GraphicsLineItem::GraphicsLineItem(SchItem *parent):
+    SchItem(parent)
 {
     addRegularHandle(P1Handle, MoveHandleRole, CircularHandleShape);
     addRegularHandle(P2Handle, MoveHandleRole, CircularHandleShape);
@@ -36,10 +36,10 @@ void GraphicsLineItem::setLine(const QLineF &line)
     emit lineChanged();
 }
 
-GraphicsObject *GraphicsLineItem::clone()
+SchItem *GraphicsLineItem::clone()
 {
     GraphicsLineItem *item = new GraphicsLineItem();
-    GraphicsObject::cloneTo(item);
+    SchItem::cloneTo(item);
     item->setLine(line());
     return item;
 }

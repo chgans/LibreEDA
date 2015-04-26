@@ -10,7 +10,7 @@ Q_LOGGING_CATEGORY(GraphicsBezierHandleLog, "graphics.bezier.handle")
 #define DEBUG() qCDebug(GraphicsBezierHandleLog)
 #define WARNING() qCDebug(GraphicsBezierHandleLog)
 
-GraphicsBezierHandle::GraphicsBezierHandle(GraphicsObject *parent):
+GraphicsBezierHandle::GraphicsBezierHandle(SchItem *parent):
     AbstractGraphicsHandle(parent),
     IGraphicsItemObserver(),
     m_first(false),
@@ -303,7 +303,7 @@ void GraphicsBezierHandle::setHandleId(int id)
     m_control2Handle->setHandleId(id);
 }
 
-void GraphicsBezierHandle::setParentGraphicsObject(GraphicsObject *parent)
+void GraphicsBezierHandle::setParentGraphicsObject(SchItem *parent)
 {
     AbstractGraphicsHandle::setParentGraphicsObject(parent);
     // FIXME: needed because of view->handleUnderMouse()->{parent(),id()}

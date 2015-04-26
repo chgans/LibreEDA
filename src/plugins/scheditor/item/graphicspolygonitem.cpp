@@ -1,7 +1,7 @@
 #include "graphicspolygonitem.h"
 
-GraphicsPolygonItem::GraphicsPolygonItem(GraphicsObject *parent):
-    GraphicsObject(parent),
+GraphicsPolygonItem::GraphicsPolygonItem(SchItem *parent):
+    SchItem(parent),
     m_fillRule(Qt::OddEvenFill)
 {
 
@@ -117,12 +117,12 @@ void GraphicsPolygonItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
     painter->drawPolygon(polygon(), fillRule());
 }
 
-GraphicsObject *GraphicsPolygonItem::clone()
+SchItem *GraphicsPolygonItem::clone()
 {
     GraphicsPolygonItem *item = new GraphicsPolygonItem();
     item->setPolygon(polygon());
     item->setFillRule(fillRule());
-    GraphicsObject::cloneTo(item);
+    SchItem::cloneTo(item);
     return item;
 }
 

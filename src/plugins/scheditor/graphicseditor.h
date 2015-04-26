@@ -3,14 +3,14 @@
 
 #include "core/editormanager/ieditor.h"
 
-class GraphicsDocument;
-class GraphicsEditorWidget;
+class SchDocument;
+class SchEditorWidget;
 
-class GraphicsEditor : public IEditor
+class SchEditor : public IEditor
 {
     Q_OBJECT
 public:
-    explicit GraphicsEditor(QObject *parent = 0);
+    explicit SchEditor(QObject *parent = 0);
 
 signals:
 
@@ -23,8 +23,8 @@ public:
     IDocument *document() const;
 
 private:
-    GraphicsDocument *m_document = nullptr;
-    GraphicsEditorWidget *schWidget() const;
+    SchDocument *m_document = nullptr;
+    SchEditorWidget *schWidget() const;
 };
 
 #endif // GRAPHICSEDITOR_H

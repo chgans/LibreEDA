@@ -54,7 +54,7 @@ void GraphicsWireTool::desactivate(const QAction *which)
     Q_UNUSED(which);
 }
 
-GraphicsObject *GraphicsWireTool::beginInsert(const QPointF &pos)
+SchItem *GraphicsWireTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsWireItem();
     m_item->setPos(pos);

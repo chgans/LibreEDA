@@ -5,38 +5,38 @@
 
 #include <QPainter>
 
-GraphicsScene::GraphicsScene(QObject *parent):
+SchScene::SchScene(QObject *parent):
     QGraphicsScene(parent), m_grid(nullptr)
 {
 }
 
-GraphicsScene::~GraphicsScene()
+SchScene::~SchScene()
 {
 
 }
 
-QList<GraphicsObject *> GraphicsScene::selectedObjects()
+QList<SchItem *> SchScene::selectedObjects()
 {
-    QList<GraphicsObject *> objects;
+    QList<SchItem *> objects;
     foreach (QGraphicsItem *item, selectedItems()) {
-        GraphicsObject *object = dynamic_cast<GraphicsObject *>(item);
+        SchItem *object = dynamic_cast<SchItem *>(item);
         if (object != nullptr)
             objects.append(object);
     }
     return objects;
 }
 
-GraphicsGrid *GraphicsScene::grid()
+GraphicsGrid *SchScene::grid()
 {
     return m_grid;
 }
 
-void GraphicsScene::setGrid(GraphicsGrid *grid)
+void SchScene::setGrid(GraphicsGrid *grid)
 {
     m_grid = grid;
 }
 
-void GraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
+void SchScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     painter->fillRect(sceneRect().intersected(rect), QColor::fromRgb(0xff, 0xfc, 0xf8));
 }

@@ -22,7 +22,7 @@ public:
     ~AbstractGraphicsInsertTool();
 
     // Typ. mouse clicked, idx == 0
-    virtual GraphicsObject *beginInsert(const QPointF &pos) = 0;
+    virtual SchItem *beginInsert(const QPointF &pos) = 0;
     // Typ. first mouse move after mouse clicked, idx > 0
     virtual void addPoint(int idx, const QPointF &pos) = 0;
     // Typ. mouse clicked, idx >= 0
@@ -45,7 +45,7 @@ public:
     void resetTool();
 
 signals:
-    void objectInserted(GraphicsObject *object);
+    void objectInserted(SchItem *object);
 
 public slots:
     void goBack();
@@ -56,7 +56,7 @@ private:
     QPointF m_movePos;
     bool m_addPointOnMouseMove;
     bool m_isActive;
-    GraphicsObject *m_item;
+    SchItem *m_item;
 
     // AbstractGraphicsInteractiveTool interface
 public:
@@ -67,8 +67,8 @@ public:
 
     // GraphicsTool interface
 public:
-    void activate(const QAction *which, GraphicsView *view);
-    void desactivate(const QAction *which, GraphicsView *view);
+    void activate(const QAction *which, SchView *view);
+    void desactivate(const QAction *which, SchView *view);
 
 };
 

@@ -6,8 +6,8 @@
 
 #include <QDebug>
 
-GraphicsWireItem::GraphicsWireItem(GraphicsObject *parent):
-    GraphicsObject(parent)
+GraphicsWireItem::GraphicsWireItem(SchItem *parent):
+    SchItem(parent)
 {
 }
 
@@ -43,7 +43,7 @@ void GraphicsWireItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->drawPath(m_path);
 }
 
-GraphicsObject *GraphicsWireItem::clone()
+SchItem *GraphicsWireItem::clone()
 {
     GraphicsWireItem *item = new GraphicsWireItem();
     item->setPoints(points());

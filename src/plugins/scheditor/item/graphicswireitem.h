@@ -8,14 +8,14 @@
 
 class QGraphicsPathItem;
 
-class GraphicsWireItem : public GraphicsObject
+class GraphicsWireItem : public SchItem
 {
     Q_OBJECT
 
     Q_PROPERTY(QList<QPointF> points READ points WRITE setPoints NOTIFY pointsChanged)
 
 public:
-    GraphicsWireItem(GraphicsObject *parent = 0);
+    GraphicsWireItem(SchItem *parent = 0);
     ~GraphicsWireItem();
 
     QList<QPointF> points() const;
@@ -41,7 +41,7 @@ public:
 
     // GraphicsObject interface
 public:
-    virtual GraphicsObject *clone();
+    virtual SchItem *clone();
 
     // IGraphicsItemObserver interface
 public:

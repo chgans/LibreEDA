@@ -7,7 +7,7 @@
 class GraphicsRegularHandle : public AbstractGraphicsHandle
 {
 public:
-    GraphicsRegularHandle(GraphicsObject *parent = 0);
+    GraphicsRegularHandle(SchItem *parent = 0);
     ~GraphicsRegularHandle();
 
 };

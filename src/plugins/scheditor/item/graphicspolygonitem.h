@@ -3,7 +3,7 @@
 
 #include "graphicsobject.h"
 
-class GraphicsPolygonItem : public GraphicsObject
+class GraphicsPolygonItem : public SchItem
 {
     Q_OBJECT
 
@@ -11,7 +11,7 @@ class GraphicsPolygonItem : public GraphicsObject
     Q_PROPERTY(QPolygonF polygon READ polygon WRITE setPolygon NOTIFY polygonChanged)
 
 public:
-    GraphicsPolygonItem(GraphicsObject *parent = 0);
+    GraphicsPolygonItem(SchItem *parent = 0);
     ~GraphicsPolygonItem();
 
     Qt::FillRule fillRule() const;
@@ -41,7 +41,7 @@ public:
 
     // GraphicsObject interface
 public:
-    virtual GraphicsObject *clone();
+    virtual SchItem *clone();
 
     // QGraphicsItem interface
 protected:

@@ -62,7 +62,7 @@ GraphicsSelectTool::~GraphicsSelectTool()
 void GraphicsSelectTool::updateCursor(QMouseEvent *event)
 {
     AbstractGraphicsHandle *handle = view()->handleUnderMouse();
-    GraphicsObject *object = view()->objectUnderMouse();
+    SchItem *object = view()->objectUnderMouse();
     if (handle != nullptr) {
         m_handle = handle;
         setOperation(MoveHandle);
@@ -99,13 +99,13 @@ void GraphicsSelectTool::setOperation(GraphicsSelectTool::Operation operation)
     }
 }
 
-void GraphicsSelectTool::activate(const QAction *which, GraphicsView *view)
+void GraphicsSelectTool::activate(const QAction *which, SchView *view)
 {
     Q_UNUSED(which);
     Q_UNUSED(view);
 }
 
-void GraphicsSelectTool::desactivate(const QAction *which, GraphicsView *view)
+void GraphicsSelectTool::desactivate(const QAction *which, SchView *view)
 {
     Q_UNUSED(which);
     Q_UNUSED(view);
@@ -115,13 +115,13 @@ void GraphicsSelectTool::cancel()
 {
 }
 
-void GraphicsSelectTool::setView(GraphicsView *other)
+void GraphicsSelectTool::setView(SchView *other)
 {
     if (view()) {
         //destroyStateMachine();
         m_rubberBand->setParent(nullptr);
     }
-    GraphicsTool::setView(other);
+    SchTool::setView(other);
     if (other) {
         //buildStateMachine();
         m_rubberBand->setParent(view());
@@ -135,7 +135,7 @@ void GraphicsSelectTool::mousePressEvent(QMouseEvent *event)
 
     if (m_state == HintState) {
         AbstractGraphicsHandle *handle = view()->handleUnderMouse();
-        GraphicsObject *object = view()->objectUnderMouse();
+        SchItem *object = view()->objectUnderMouse();
         m_mousePressPosition = event->pos();
         switch (m_operation) {
         case DragSelect:

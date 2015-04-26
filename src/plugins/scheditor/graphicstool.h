@@ -4,8 +4,8 @@
 #include <QObject>
 
 
-class GraphicsView;
-class GraphicsScene;
+class SchView;
+class SchScene;
 
 class QWidget;
 class QAction;
@@ -18,24 +18,24 @@ class QAction;
  *  - replace option dialog w/ option widget: allow to dosplay widget in a QDock or something
  */
 
-class GraphicsTool : public QObject
+class SchTool : public QObject
 {
     Q_OBJECT
 public:
-    explicit GraphicsTool(QObject *parent = 0);
-    ~GraphicsTool();
+    explicit SchTool(QObject *parent = 0);
+    ~SchTool();
 
-    GraphicsView *view();
-    GraphicsScene *scene();
-    virtual void setView(GraphicsView *view);
+    SchView *view();
+    SchScene *scene();
+    virtual void setView(SchView *view);
 
     void setToolGroup(const QString &group);
     QString toolGroup() const;
     void setAction(QAction *action);
     QAction *action() const;
 
-    virtual void activate(const QAction *which, GraphicsView *view) = 0;
-    virtual void desactivate(const QAction *which, GraphicsView *view) = 0;
+    virtual void activate(const QAction *which, SchView *view) = 0;
+    virtual void desactivate(const QAction *which, SchView *view) = 0;
 
 signals:
     void finished();
@@ -44,11 +44,11 @@ public slots:
     virtual void cancel();
 
 private:
-    GraphicsView *m_view;
+    SchView *m_view;
     QString m_toolGroup;
     QAction *m_action;
 };
 
-Q_DECLARE_METATYPE(GraphicsTool*)
+Q_DECLARE_METATYPE(SchTool*)
 
 #endif // GRAPHICSTOOL_H

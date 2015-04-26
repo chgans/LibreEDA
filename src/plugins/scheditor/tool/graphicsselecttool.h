@@ -5,7 +5,7 @@
 
 #include <QPoint>
 
-class GraphicsObject;
+class SchItem;
 class AbstractGraphicsHandle;
 
 class QRubberBand;
@@ -34,9 +34,9 @@ private:
     Operation m_operation;
 
     QPoint m_mousePressPosition;
-    GraphicsObject *m_item;
-    QList<GraphicsObject *> m_items;
-    QList<GraphicsObject *> m_phantomItems;
+    SchItem *m_item;
+    QList<SchItem *> m_items;
+    QList<SchItem *> m_phantomItems;
     AbstractGraphicsHandle *m_handle;
     QRubberBand *m_rubberBand;
 
@@ -45,9 +45,9 @@ private:
 
     // GraphicsTool interface
 public:
-    void setView(GraphicsView *view);
-    virtual void activate(const QAction *which, GraphicsView *view);
-    virtual void desactivate(const QAction *which, GraphicsView *view);
+    void setView(SchView *view);
+    virtual void activate(const QAction *which, SchView *view);
+    virtual void desactivate(const QAction *which, SchView *view);
 
     // GraphicsTool interface
 public slots:

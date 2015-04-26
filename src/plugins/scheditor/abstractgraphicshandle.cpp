@@ -7,7 +7,7 @@
 
 #include <QDebug>
 
-AbstractGraphicsHandle::AbstractGraphicsHandle(GraphicsObject *parent):
+AbstractGraphicsHandle::AbstractGraphicsHandle(SchItem *parent):
     QGraphicsPathItem(parent),
     IGraphicsObservableItem(),
     m_role(MoveHandleRole),
@@ -76,12 +76,12 @@ GraphicsHandleShape AbstractGraphicsHandle::handleShape() const
     return m_handleShape;
 }
 
-GraphicsObject *AbstractGraphicsHandle::parentGraphicsObject() const
+SchItem *AbstractGraphicsHandle::parentGraphicsObject() const
 {
     return m_parent;
 }
 
-void AbstractGraphicsHandle::setParentGraphicsObject(GraphicsObject *parent)
+void AbstractGraphicsHandle::setParentGraphicsObject(SchItem *parent)
 {
     m_parent = parent;
     // TBD: we could auto-add the observer

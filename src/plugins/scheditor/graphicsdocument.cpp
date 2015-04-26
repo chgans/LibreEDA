@@ -1,11 +1,11 @@
 #include "graphicsdocument.h"
 
-GraphicsDocument::GraphicsDocument(QObject *parent) :
+SchDocument::SchDocument(QObject *parent) :
     IDocument(parent)
 {
 }
 
-bool GraphicsDocument::load(QString *errorString, const QString &fileName)
+bool SchDocument::load(QString *errorString, const QString &fileName)
 {
     Q_UNUSED(errorString);
     Q_UNUSED(fileName);
@@ -13,7 +13,7 @@ bool GraphicsDocument::load(QString *errorString, const QString &fileName)
 }
 
 
-bool GraphicsDocument::save(QString *errorString, const QString &fileName)
+bool SchDocument::save(QString *errorString, const QString &fileName)
 {
     Q_UNUSED(errorString);
     Q_UNUSED(fileName);

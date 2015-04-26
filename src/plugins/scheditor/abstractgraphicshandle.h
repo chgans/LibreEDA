@@ -8,7 +8,7 @@
 #include <QPointer>
 #include <QCursor>
 
-class GraphicsObject;
+class SchItem;
 class QStyleOptionGraphicsItem;
 class QPainter;
 class QWidget;
@@ -41,7 +41,7 @@ enum GraphicsHandleBehaviour {
 class AbstractGraphicsHandle: public QGraphicsPathItem, public IGraphicsObservableItem
 {
 public:
-    AbstractGraphicsHandle(GraphicsObject *parent);
+    AbstractGraphicsHandle(SchItem *parent);
     virtual ~AbstractGraphicsHandle();
 
     QCursor handleCursor() const;
@@ -52,8 +52,8 @@ public:
     GraphicsHandleRole handleRole() const;
     void setHandleShape(GraphicsHandleShape shape);
     GraphicsHandleShape handleShape() const;
-    GraphicsObject *parentGraphicsObject() const;
-    virtual void setParentGraphicsObject(GraphicsObject *parent);
+    SchItem *parentGraphicsObject() const;
+    virtual void setParentGraphicsObject(SchItem *parent);
 
 private:
     static QCursor roleToCursor(GraphicsHandleRole role);
@@ -61,7 +61,7 @@ private:
     GraphicsHandleRole m_role;
     GraphicsHandleShape m_handleShape;
     GraphicsHandleBehaviour m_behaviour;
-    GraphicsObject *m_parent;
+    SchItem *m_parent;
     void updateShape();
 
     // QGraphicsItem interface

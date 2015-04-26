@@ -7,18 +7,18 @@ class QMainWindow;
 class QActionGroup;
 class QToolBar;
 
-class GraphicsView;
-class GraphicsScene;
+class SchView;
+class SchScene;
 class AbstractGraphicsInteractiveTool;
 class TaskDockWidget;
 
-class GraphicsEditorWidget: public AbstractEditor
+class SchEditorWidget: public AbstractEditor
 {
     Q_OBJECT
 
 public:
-    GraphicsEditorWidget(QWidget *parent = 0);
-    ~GraphicsEditorWidget();
+    SchEditorWidget(QWidget *parent = 0);
+    ~SchEditorWidget();
 
     void activate(QMainWindow *win);
     void desactivate(QMainWindow *win);
@@ -31,8 +31,8 @@ public:
 
 private:
     QMainWindow *m_mainWindow;
-    GraphicsView *m_view;
-    GraphicsScene *m_scene;
+    SchView *m_view;
+    SchScene *m_scene;
     TaskDockWidget *m_taskDockWidget;
 
     void addInteractiveTools();

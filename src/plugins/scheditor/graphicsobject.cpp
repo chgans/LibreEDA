@@ -5,7 +5,7 @@
 
 #include <QDebug>
 
-GraphicsObject::GraphicsObject(GraphicsObject *parent):
+SchItem::SchItem(SchItem *parent):
     QGraphicsObject(parent)
 {
     setPen(QPen(QBrush(QColor::fromRgb(0x80, 0x00, 0x00)), 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
@@ -13,17 +13,17 @@ GraphicsObject::GraphicsObject(GraphicsObject *parent):
     setFlags(QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsMovable);
 }
 
-GraphicsObject::~GraphicsObject()
+SchItem::~SchItem()
 {
 }
 
-int GraphicsObject::handleCount() const
+int SchItem::handleCount() const
 {
     return m_idToHandle.count();
 }
 
 
-void GraphicsObject::cloneTo(GraphicsObject *dst)
+void SchItem::cloneTo(SchItem *dst)
 {
     dst->setBrush(brush());
     dst->setEnabled(isEnabled());
@@ -40,7 +40,7 @@ void GraphicsObject::cloneTo(GraphicsObject *dst)
 }
 
 // From Qt qgraphicsitem.cpp: qt_graphicsItem_shapeFromPath()
-QPainterPath GraphicsObject::shapeFromPath(const QPainterPath &path, const QPen &pen)
+QPainterPath SchItem::shapeFromPath(const QPainterPath &path, const QPen &pen)
 {
     // We unfortunately need this hack as QPainterPathStroker will set a width of 1.0
     // if we pass a value of 0.0 to QPainterPathStroker::setWidth()
@@ -61,7 +61,7 @@ QPainterPath GraphicsObject::shapeFromPath(const QPainterPath &path, const QPen 
     return p;
 }
 
-void GraphicsObject::addAbstractHandle(AbstractGraphicsHandle *handle)
+void SchItem::addAbstractHandle(AbstractGraphicsHandle *handle)
 {
     // could be done by abstracthandle
     addObservedItem(handle);
@@ -70,23 +70,23 @@ void GraphicsObject::addAbstractHandle(AbstractGraphicsHandle *handle)
     m_idToHandle[handle->handleId()] = handle;
 }
 
-AbstractGraphicsHandle *GraphicsObject::handleAt(int idx)
+AbstractGraphicsHandle *SchItem::handleAt(int idx)
 {
     Q_ASSERT(idx < handleCount());
     return m_idToHandle[idx];
 }
 
-QPen GraphicsObject::pen() const
+QPen SchItem::pen() const
 {
     return m_pen;
 }
 
-QBrush GraphicsObject::brush() const
+QBrush SchItem::brush() const
 {
     return m_brush;
 }
 
-void GraphicsObject::setPen(const QPen &pen)
+void SchItem::setPen(const QPen &pen)
 {
     if (m_pen == pen)
         return;
@@ -99,7 +99,7 @@ void GraphicsObject::setPen(const QPen &pen)
     emit penChanged(pen);
 }
 
-void GraphicsObject::setBrush(const QBrush &brush)
+void SchItem::setBrush(const QBrush &brush)
 {
     if (m_brush == brush)
         return;
@@ -110,7 +110,7 @@ void GraphicsObject::setBrush(const QBrush &brush)
     emit brushChanged(brush);
 }
 
-GraphicsRegularHandle *GraphicsObject::addRegularHandle(int id, GraphicsHandleRole role, GraphicsHandleShape shape, const QPointF &pos)
+GraphicsRegularHandle *SchItem::addRegularHandle(int id, GraphicsHandleRole role, GraphicsHandleShape shape, const QPointF &pos)
 {
     GraphicsRegularHandle *handle = new GraphicsRegularHandle(this);
 
@@ -127,7 +127,7 @@ GraphicsRegularHandle *GraphicsObject::addRegularHandle(int id, GraphicsHandleRo
     return handle;
 }
 
-GraphicsBezierHandle *GraphicsObject::addBezierHandle(int id, const QPointF &pos)
+GraphicsBezierHandle *SchItem::addBezierHandle(int id, const QPointF &pos)
 {
     Q_UNUSED(pos);
     GraphicsBezierHandle *handle = new GraphicsBezierHandle(this);
@@ -144,14 +144,14 @@ GraphicsBezierHandle *GraphicsObject::addBezierHandle(int id, const QPointF &pos
     return handle;
 }
 
-void GraphicsObject::removeHandle(int id)
+void SchItem::removeHandle(int id)
 {
     Q_ASSERT(m_idToHandle.keys().contains(id));
 
     removeHandle(m_idToHandle[id]);
 }
 
-void GraphicsObject::removeHandle(AbstractGraphicsHandle *handle)
+void SchItem::removeHandle(AbstractGraphicsHandle *handle)
 {
     Q_ASSERT(m_handleToId.keys().contains(handle));
 
@@ -165,7 +165,7 @@ void GraphicsObject::removeHandle(AbstractGraphicsHandle *handle)
     unblockItemNotification();
 }
 
-void GraphicsObject::removeAllHandles()
+void SchItem::removeAllHandles()
 {
     blockItemNotification();
     foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
@@ -178,13 +178,13 @@ void GraphicsObject::removeAllHandles()
     m_idToHandle.clear();
 }
 
-GraphicsRegularHandle *GraphicsObject::regularHandleAt(int id) const
+GraphicsRegularHandle *SchItem::regularHandleAt(int id) const
 {
     Q_ASSERT(id < handleCount());
     return static_cast<GraphicsRegularHandle *>(m_idToHandle[id]);
 }
 
-GraphicsBezierHandle *GraphicsObject::bezierHandleAt(int id) const
+GraphicsBezierHandle *SchItem::bezierHandleAt(int id) const
 {
     Q_ASSERT(id < handleCount());
     return static_cast<GraphicsBezierHandle *>(m_idToHandle[id]);

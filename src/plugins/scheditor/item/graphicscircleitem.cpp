@@ -2,8 +2,8 @@
 
 #include <QStyleOptionGraphicsItem>
 
-GraphicsCircleItem::GraphicsCircleItem(GraphicsObject *parent):
-    GraphicsObject(parent)
+GraphicsCircleItem::GraphicsCircleItem(SchItem *parent):
+    SchItem(parent)
 {
     addRegularHandle(RadiusHandle, MoveHandleRole, DiamondedHandleShape);
 }
@@ -35,10 +35,10 @@ void GraphicsCircleItem::setRadius(qreal length)
     emit radiusChanged();
 }
 
-GraphicsObject *GraphicsCircleItem::clone()
+SchItem *GraphicsCircleItem::clone()
 {
     GraphicsCircleItem *item = new GraphicsCircleItem();
-    GraphicsObject::cloneTo(item);
+    SchItem::cloneTo(item);
     item->setRadius(radius());
     return item;
 }

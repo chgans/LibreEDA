@@ -30,7 +30,7 @@ void GraphicsCircleTool::desactivate(const QAction *which)
     Q_UNUSED(which);
 }
 
-GraphicsObject *GraphicsCircleTool::beginInsert(const QPointF &pos)
+SchItem *GraphicsCircleTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsCircleItem();
     m_item->setPos(pos);
