@@ -2,8 +2,8 @@
 #include "item/graphicsrectitem.h"
 
 #include "abstractgraphicshandle.h"
-#include "graphicsscene.h"
-#include "graphicsview.h"
+#include "schscene.h"
+#include "schview.h"
 
 #include <QMouseEvent>
 #include <QKeyEvent>

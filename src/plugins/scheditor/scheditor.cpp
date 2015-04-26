@@ -1,6 +1,6 @@
-#include "graphicseditor.h"
-#include "graphicseditorwidget.h"
-#include "graphicsdocument.h"
+#include "scheditor.h"
+#include "scheditorwidget.h"
+#include "schdocument.h"
 
 #include <QFileInfo>
 

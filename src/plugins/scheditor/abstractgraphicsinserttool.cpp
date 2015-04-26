@@ -1,8 +1,8 @@
 #include "abstractgraphicsinserttool.h"
 
-#include "graphicsobject.h"
-#include "graphicsscene.h"
-#include "graphicsview.h"
+#include "schitem.h"
+#include "schscene.h"
+#include "schview.h"
 
 #include <QMouseEvent>
 #include <QKeyEvent>

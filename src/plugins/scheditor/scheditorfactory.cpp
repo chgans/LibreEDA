@@ -1,6 +1,6 @@
-#include "graphicseditorfactory.h"
-#include "graphicseditorconstants.h"
-#include "graphicseditor.h"
+#include "scheditorfactory.h"
+#include "scheditorconstants.h"
+#include "scheditor.h"
 
 SchEditorFactory::SchEditorFactory(QObject *parent) :
     IEditorFactory(parent)

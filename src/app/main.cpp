@@ -10,7 +10,7 @@
 #include "pcbeditorfactory.h"
 
 // SCH editor
-#include "graphicseditorfactory.h"
+#include "scheditorfactory.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     // Loading plugins
     EditorManager *editorManager = EditorManager::instance();
     editorManager->registerEditorFactory(new PcbEditorFactory);
-    editorManager->registerEditorFactory(new GraphicsEditorFactory);
+    editorManager->registerEditorFactory(new SchEditorFactory);
 
     // Pcb plugin initialisation
     PcbPaletteManager *paletteManager = PcbPaletteManager::instance();

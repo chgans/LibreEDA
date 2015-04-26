@@ -1,6 +1,6 @@
 #include "graphicswireitem.h"
 #include "abstractgraphicshandle.h"
-#include "graphicsscene.h"
+#include "schscene.h"
 
 #include <QGraphicsPathItem>
 

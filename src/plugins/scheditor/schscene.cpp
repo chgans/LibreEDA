@@ -1,5 +1,5 @@
-#include "graphicsscene.h"
-#include "graphicsobject.h"
+#include "schscene.h"
+#include "schitem.h"
 #include "abstractgraphicshandle.h"
 #include "graphicsgrid.h"
 

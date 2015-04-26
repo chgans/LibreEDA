@@ -1,7 +1,7 @@
-#include "graphicstool.h"
+#include "schtool.h"
 
-#include "graphicsscene.h"
-#include "graphicsview.h"
+#include "schscene.h"
+#include "schview.h"
 
 #include <QDialog>
 

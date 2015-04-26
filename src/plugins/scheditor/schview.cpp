@@ -1,6 +1,6 @@
-#include "graphicsview.h"
-#include "graphicsscene.h"
-#include "graphicsobject.h"
+#include "schview.h"
+#include "schscene.h"
+#include "schitem.h"
 #include "abstractgraphicsinteractivetool.h"
 #include "graphicsgrid.h"
 

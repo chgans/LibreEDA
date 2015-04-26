@@ -1,7 +1,7 @@
 #ifndef GRAPHICSLINEITEM_H
 #define GRAPHICSLINEITEM_H
 
-#include "graphicsobject.h"
+#include "schitem.h"
 
 #include <QPen>
 #include <QLineF>

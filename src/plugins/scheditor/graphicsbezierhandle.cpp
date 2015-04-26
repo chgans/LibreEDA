@@ -1,6 +1,6 @@
 #include "graphicsbezierhandle.h"
 #include "graphicsregularhandle.h"
-#include "graphicsobject.h"
+#include "schitem.h"
 
 #include <QDebug>
 

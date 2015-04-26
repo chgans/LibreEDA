@@ -2,8 +2,8 @@
 #include "item/graphicsbezieritem.h"
 
 #include "abstractgraphicshandle.h"
-#include "graphicsview.h"
-#include "graphicsscene.h"
+#include "schview.h"
+#include "schscene.h"
 
 #include <QMouseEvent>
 

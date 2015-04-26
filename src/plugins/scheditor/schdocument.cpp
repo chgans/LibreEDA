@@ -1,4 +1,4 @@
-#include "graphicsdocument.h"
+#include "schdocument.h"
 
 SchDocument::SchDocument(QObject *parent) :
     IDocument(parent)

@@ -1,7 +1,7 @@
 #include "graphicsbezieritem.h"
 #include "graphicsbezierhandle.h"
-#include "graphicsscene.h"
-#include "graphicsview.h"
+#include "schscene.h"
+#include "schview.h"
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>

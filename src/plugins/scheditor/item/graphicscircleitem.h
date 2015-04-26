@@ -1,7 +1,7 @@
 #ifndef GRAPHICSCIRCLEITEM_H
 #define GRAPHICSCIRCLEITEM_H
 
-#include "graphicsobject.h"
+#include "schitem.h"
 
 class GraphicsCircleItem : public SchItem
 {

@@ -19,9 +19,6 @@ SAMPLE_DIR = $${BASE_SAMPLE_DIR}/sch
 DEFINES += DATA_DIR=\\\"$${DATA_DIR}\\\" SETTINGS_DIR=\\\"$${SETTINGS_DIR}\\\" SAMPLE_DIR=\\\"$${SAMPLE_DIR}\\\"
 
 SOURCES += \
-    graphicsobject.cpp \
-    graphicsscene.cpp \
-    graphicsview.cpp \
     igraphicsitemobserver.cpp \
     igraphicsobservableitem.cpp \
     item/graphicsbezieritem.cpp \
@@ -31,7 +28,6 @@ SOURCES += \
     tool/graphicslinetool.cpp \
     tool/graphicsrecttool.cpp \
     tool/graphicsselecttool.cpp \
-    graphicstool.cpp \
     graphicsgrid.cpp \
     grid/graphicscartesiangrid.cpp \
     tool/graphicsitemaligntool.cpp \
@@ -53,15 +49,16 @@ SOURCES += \
     widget/taskoptionwidget.cpp \
     widget/coordinatewidget.cpp \
     widget/wireoperationwidget.cpp \
-    graphicseditorwidget.cpp \
-    graphicseditor.cpp \
-    graphicsdocument.cpp \
-    graphicseditorfactory.cpp
+    schview.cpp \
+    schtool.cpp \
+    schscene.cpp \
+    schitem.cpp \
+    scheditorwidget.cpp \
+    scheditorfactory.cpp \
+    scheditor.cpp \
+    schdocument.cpp
 
 HEADERS += \
-    graphicsobject.h \
-    graphicsscene.h \
-    graphicsview.h \
     igraphicsitemobserver.h \
     igraphicsobservableitem.h \
     item/graphicsbezieritem.h \
@@ -71,7 +68,6 @@ HEADERS += \
     tool/graphicslinetool.h \
     tool/graphicsrecttool.h \
     tool/graphicsselecttool.h \
-    graphicstool.h \
     graphicsgrid.h \
     grid/graphicscartesiangrid.h \
     tool/graphicsitemaligntool.h \
@@ -94,11 +90,15 @@ HEADERS += \
     widget/taskoptionwidget.h \
     widget/coordinatewidget.h \
     widget/wireoperationwidget.h \
-    graphicseditorwidget.h \
-    graphicseditor.h \
-    graphicsdocument.h \
-    graphicseditorfactory.h \
-    graphicseditorconstants.h
+    schview.h \
+    schtool.h \
+    schscene.h \
+    scheditorwidget.h \
+    scheditorfactory.h \
+    scheditorconstants.h \
+    schdocument.h \
+    schitem.h \
+    scheditor.h
 
 unix {
     target.path = /usr/lib

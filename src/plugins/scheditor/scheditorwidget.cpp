@@ -1,6 +1,6 @@
-#include "graphicseditorwidget.h"
-#include "graphicsview.h"
-#include "graphicsscene.h"
+#include "scheditorwidget.h"
+#include "schview.h"
+#include "schscene.h"
 #include "graphicsgrid.h"
 
 #include "tool/graphicsbeziertool.h"

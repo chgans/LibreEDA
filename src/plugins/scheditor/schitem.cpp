@@ -1,4 +1,4 @@
-#include "graphicsobject.h"
+#include "schitem.h"
 #include "abstractgraphicshandle.h"
 #include "graphicsregularhandle.h"
 #include "graphicsbezierhandle.h"
