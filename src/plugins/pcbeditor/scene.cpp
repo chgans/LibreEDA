@@ -30,11 +30,6 @@ void Scene::init()
 // For more information: http://www.qtcentre.org/threads/5609-Drawing-grids-efficiently-in-QGraphicsScene?p=28905#post28905
 void Scene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    QLinearGradient gradient(rect.topLeft(), rect.bottomLeft());
-    gradient.setColorAt(0, Qt::darkGray);
-    gradient.setColorAt(1, Qt::lightGray);
-    painter->fillRect(rect, QBrush(gradient));
-
     painter->fillRect(sceneRect(), Qt::black);
 
     QRectF rect2 = rect.intersected(sceneRect());

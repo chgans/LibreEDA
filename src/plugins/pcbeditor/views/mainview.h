@@ -140,6 +140,10 @@ protected slots:
 
     void onItemSelectedFromPickList(QGraphicsItem* item);
 
+
+    // QGraphicsView interface
+protected:
+    void drawBackground(QPainter *painter, const QRectF &rect);
 };
 
 #endif // MAINVIEW_H

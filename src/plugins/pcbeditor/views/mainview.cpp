@@ -484,3 +484,15 @@ void MainView::onItemSelectedFromPickList(QGraphicsItem *item)
     QCursor::setPos(mapToGlobal(mapFromScene(item->scenePos())));
     m_pickList->hide();
 }
+
+
+void MainView::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    QLinearGradient gradient(rect.topLeft(), rect.bottomLeft());
+    gradient.setColorAt(0, Qt::darkBlue);
+    gradient.setColorAt(1, Qt::lightGray);
+    painter->fillRect(rect, QBrush(gradient));
+
+    QGraphicsView::drawBackground(painter, rect);
+    // TODO: Draw grids here or use a special layer
+}
