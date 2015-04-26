@@ -1,7 +1,8 @@
 #ifndef MAINVIEW_H
 #define MAINVIEW_H
 
-#include <QGraphicsView>
+#include "layoutview.h"
+
 #include <QTimer>
 #include <QList>
 #include <QMap>
@@ -21,7 +22,7 @@ class PcbPalette;
 // TODO: rename to Pcb2dView
 //  Add flags to enable tools (lens, ...)
 
-class MainView : public QGraphicsView
+class MainView : public LayoutView
 {
     Q_OBJECT
 
@@ -41,6 +42,7 @@ public:
     };
 
     explicit MainView(QWidget *parent = 0);
+    explicit MainView(Scene *layoutScene, QWidget *parent = 0);
 
     void addLayer(DesignLayer *layer);
     void removeLayer(DesignLayer *layer);
@@ -62,9 +64,6 @@ public:
 
     void setLayerDisplayMode(LayerDisplayMode mode);
     LayerDisplayMode layerDisplayMode() const;
-
-    virtual void setScene(Scene *scene);
-    virtual Scene *scene() const;
 
     bool headsUpEnabled() const;
     bool headsUpTrackingEnabled() const;
@@ -114,8 +113,6 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event);
 
 private:
-
-    Scene *m_scene;
     QMap<int, DesignLayer *> m_indexToLayer;
     DesignLayer *m_activeLayer;
     LayerDisplayMode m_layerDisplayMode;

@@ -16,12 +16,11 @@
 #include <QDebug>
 #include <QToolTip>
 
-MainView::MainView(QWidget *parent) :
-    QGraphicsView(parent)
+MainView::MainView(Scene *scene, QWidget *parent) :
+    LayoutView(scene, parent)
 {
     m_pickedItem = 0;
 
-    m_scene = nullptr;
     m_activeLayer = nullptr;
     m_palette = nullptr;
 
@@ -62,8 +61,8 @@ void MainView::addLayer(DesignLayer *layer)
 
     int index = layer->index();
     m_indexToLayer[index] = layer;
-    if (m_scene != nullptr)
-        m_scene->addItem(layer);
+    if (layoutScene() != nullptr)
+        layoutScene()->addItem(layer);
     if (m_palette)
         layer->setColor(m_palette->color(PcbPalette::ColorRole(layer->index() + 1)));
     emit layerAdded(layer);
@@ -77,8 +76,8 @@ void MainView::removeLayer(DesignLayer *layer)
     int index = layer->index();
     Q_ASSERT(m_indexToLayer[layer->index()] == layer);
     m_indexToLayer.remove(index);
-    if (m_scene != nullptr)
-        m_scene->removeItem(layer);
+    if (layoutScene() != nullptr)
+        layoutScene()->removeItem(layer);
     emit layerRemoved(layer);
 }
 
@@ -246,6 +245,7 @@ MainView::LayerDisplayMode MainView::cycleLayerDisplayMode()
     return layerDisplayMode();
 }
 
+#if 0
 void MainView::setScene(Scene *scene)
 {
     if (m_scene) {
@@ -277,10 +277,11 @@ void MainView::setScene(Scene *scene)
     emit sceneAdded();
 }
 
-Scene *MainView::scene() const
+Scene *MainView::layoutScene() const
 {
     return m_scene;
 }
+#endif
 
 // Should we instead provide access to the design insights object and monitor
 // their property changes?
@@ -427,7 +428,7 @@ void MainView::mousePressEvent(QMouseEvent *event)
                 enabledItems << item;
         }
         if (enabledItems.isEmpty() > 1) {
-            m_pickList->setPickList(scene(), enabledItems);
+            m_pickList->setPickList(layoutScene(), enabledItems);
             m_pickList->move(mapFromGlobal(QCursor::pos()));
             // FIXME: we want it to grab the focus
             m_pickList->show();
@@ -479,7 +480,7 @@ void MainView::hideDesignInsight()
 void MainView::onItemSelectedFromPickList(QGraphicsItem *item)
 {
     m_pickedItem = item;
-    scene()->clearSelection();
+    layoutScene()->clearSelection();
     item->setSelected(true);
     QCursor::setPos(mapToGlobal(mapFromScene(item->scenePos())));
     m_pickList->hide();
