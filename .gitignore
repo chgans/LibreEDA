@@ -33,3 +33,6 @@ Makefile*
 
 # gwenview
 .directory
+
+# emacs
+*~
