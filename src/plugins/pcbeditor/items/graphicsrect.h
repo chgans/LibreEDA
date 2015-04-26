@@ -25,7 +25,13 @@ public:
     qreal cornerRadius() const;
     void setCornerRadius(qreal radius);
 
+    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
+    virtual void toJson(QJsonObject &jsonObject) const;
+
 private:
+    static const QString J_RECT;
+    static const QString J_CORNER_RADIUS;
+
     QRectF m_rect;
     qreal m_cornerRadius;
 

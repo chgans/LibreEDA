@@ -2,8 +2,16 @@
 #define GRAPHICSITEM_H
 
 #include <QGraphicsItem>
+#include <QColor>
+#include <QList>
+#include <QPointF>
+#include <QJsonObject>
 
-class DesignLayer;
+class LayoutView;
+
+class QWidget;
+class QStyleOptionGraphicsItem;
+class QPainter;
 
 class GraphicsItem : public QGraphicsItem
 {
@@ -11,16 +19,27 @@ public:
     GraphicsItem(GraphicsItem *parent = nullptr);
     ~GraphicsItem();
 
-    DesignLayer *layer() const;
-    void setLayer(DesignLayer *layer);
+    int layer() const;
+    void setLayer(int layer);
 
     bool isLocked() const;
     void setLocked(bool locked);
 
-    bool shouldPaint() const;
-    QColor color() const;
+    LayoutView *paintedView(QWidget *paintedWidget) const;
+    bool shouldPaint(const QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *paintedWidget) const;
+    QColor color(QWidget *paintedWidget) const;
+    qreal opacity(QWidget *paintedWidget) const;
+
+    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
+    virtual void toJson(QJsonObject &jsonObject) const;
+
 private:
-    DesignLayer *m_layer;
+    static const QString J_POSITION;
+    static const QString J_ROTATION;
+    static const QString J_LAYER;
+    static const QString J_LOCKED;
+    int m_layer;
+    bool m_isLocked;
 };
 
 #endif // GRAPHICSITEM_H

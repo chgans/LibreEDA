@@ -25,7 +25,12 @@ public:
     qreal width() const;
     void setWidth(qreal width);
 
+    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
+    virtual void toJson(QJsonObject &jsonObject) const;
+
 private:
+    static const QString J_LINE;
+    static const QString J_WIDTH;
     QLineF m_line;
     qreal m_width;
 

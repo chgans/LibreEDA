@@ -17,12 +17,12 @@ public:
     bool load(QString *errorString, const QString &fileName);
 
     QSizeF boardSize() const;
-    QList<int> layers() const;
+    QList<int> layerStack() const;
     QList<GraphicsItem *> items() const;
 
 private:
     QSizeF m_boardSize;
-    QList<int> m_layers;
+    QList<int> m_layerStack;
     QList<GraphicsItem *> m_items;
 
     GraphicsItem *parseItem;

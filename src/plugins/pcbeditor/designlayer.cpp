@@ -153,7 +153,7 @@ QColor DesignLayer::effectiveColor() const
 void DesignLayer::addItem(GraphicsItem *item)
 {
     item->setParentItem(this);
-    item->setLayer(this);
+    item->setLayer(index());
     m_items.append(item);
 }
 

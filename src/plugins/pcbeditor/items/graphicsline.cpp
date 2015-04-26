@@ -1,9 +1,13 @@
 #include "graphicsline.h"
 #include "designlayer.h"
+#include "core/json.h"
 
 #include <QPainter>
 #include <QPainterPath>
 #include <QPainterPathStroker>
+
+const QString GraphicsLine::J_LINE = QStringLiteral("points");
+const QString GraphicsLine::J_WIDTH = QStringLiteral("width");
 
 GraphicsLine::GraphicsLine(GraphicsItem *parent):
     GraphicsItem(parent),
@@ -43,6 +47,28 @@ void GraphicsLine::setWidth(qreal width)
     m_width = width;
 }
 
+bool GraphicsLine::fromJson(QString *errorString, const QJsonObject &jsonObject)
+{
+    if (!GraphicsItem::fromJson(errorString, jsonObject))
+        return false;
+    QLineF line;
+    if (!Json::toLine(errorString, jsonObject.value(J_LINE), line))
+        return false;
+    qreal width;
+    if (!Json::toReal(errorString, jsonObject.value(J_WIDTH), width))
+        return false;
+    setLine(line);
+    setWidth(width);
+    return true;
+}
+
+void GraphicsLine::toJson(QJsonObject &jsonObject) const
+{
+    GraphicsItem::toJson(jsonObject);
+    jsonObject.insert(J_LINE, Json::fromLine(m_line));
+    jsonObject.insert(J_WIDTH, m_width);
+}
+
 QRectF GraphicsLine::boundingRect() const
 {
     return shape().boundingRect();
@@ -60,10 +86,8 @@ QPainterPath GraphicsLine::shape() const
 
 void GraphicsLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-    if (!shouldPaint())
+    if (!shouldPaint(painter, option, widget))
         return;
-    painter->setPen(QPen(QBrush(layer()->effectiveColor()), m_width, Qt::SolidLine, Qt::RoundCap));
+    painter->setPen(QPen(QBrush(color(widget)), m_width, Qt::SolidLine, Qt::RoundCap));
     painter->drawLine(m_line);
 }
