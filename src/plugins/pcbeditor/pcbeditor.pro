@@ -45,7 +45,8 @@ SOURCES += \
     items/graphicsline.cpp \
     pcbeditorfactory.cpp \
     pcbeditor.cpp \
-    pcbdocument.cpp
+    pcbdocument.cpp \
+    views/layoutview.cpp
 
 HEADERS  += \
     scene.h \
@@ -76,7 +77,8 @@ HEADERS  += \
     pcbeditorfactory.h \
     pcbeditor.h \
     pcbeditorconstants.h \
-    pcbdocument.h
+    pcbdocument.h \
+    views/layoutview.h
 
 FORMS    += \
     pcbpalettesettingsdialog.ui \
