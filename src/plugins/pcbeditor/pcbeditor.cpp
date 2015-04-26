@@ -30,7 +30,10 @@ bool PcbEditor::open(QString *errorString, const QString &fileName)
     foreach (GraphicsItem *item, pcbDocument()->items()) {
         pcbWidget()->scene()->addItem(item);
     }
-    pcbWidget()->scene()->setSceneRect(QRectF(QPointF(0, 0), m_document->boardSize()));
+    QRectF rect = QRectF(QPointF(0, 0), m_document->boardSize());
+    rect.moveTop(-rect.center().y());
+    rect.moveLeft(-rect.center().x());
+    pcbWidget()->scene()->setSceneRect(rect);
     return true;
 }
 

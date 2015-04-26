@@ -31,11 +31,10 @@ PcbEditorWidget::PcbEditorWidget(QWidget *parent) :
     m_paletteManager = PcbPaletteManager::instance();
     m_layerManager = DesignLayerManager::instance();
 
-    m_view = new MainView();
+    m_scene = new Scene(this);
+    m_view = new MainView(m_scene);
     m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_scene = new Scene(this);
-    m_view->setScene(m_scene);
 
     m_layerTabBar = new LayerTabBar();
     connect(m_view, &MainView::layerAdded,
@@ -339,8 +338,8 @@ void PcbEditorWidget::createBoardInsightMenu()
 
 Scene *PcbEditorWidget::scene() const
 {
-    Q_ASSERT(m_view && m_view->scene());
-    return static_cast<Scene *>(m_view->scene());
+    Q_ASSERT(m_view && m_view->layoutScene());
+    return static_cast<Scene *>(m_view->layoutScene());
 }
 
 void PcbEditorWidget::showBoardInsightPopUpMenu()
