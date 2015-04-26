@@ -40,12 +40,12 @@ void NavigationDockWidget::setFactories(const QList<INavigationViewFactory *> &f
 
 void NavigationDockWidget::saveSettings(QSettings *settings)
 {
-
+    Q_UNUSED(settings);
 }
 
 void NavigationDockWidget::restoreSettings(QSettings *settings)
 {
-
+    Q_UNUSED(settings);
 }
 
 void NavigationDockWidget::activateNavigationView(int index)
