@@ -45,7 +45,7 @@ GraphicsEditorWidget::GraphicsEditorWidget(QWidget *parent):
     addSnapTools();
     addPathPointTools();
 
-    Q_INIT_RESOURCE(graphicseditor);
+    Q_INIT_RESOURCE(scheditor);
 }
 
 GraphicsEditorWidget::~GraphicsEditorWidget()

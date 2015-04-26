@@ -7,7 +7,7 @@
 QT       += widgets opengl
 QT       -= gui
 
-TARGET = graphicseditor
+TARGET = scheditor
 TEMPLATE = lib
 
 include($$PWD/../../shared.pri)
@@ -120,7 +120,7 @@ OTHER_FILES += \
     tool/graphicsrecttool.svg \
     graphicseditor.pri
 
-RESOURCES += graphicseditor.qrc
+RESOURCES += scheditor.qrc
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../core/release/ -lcore

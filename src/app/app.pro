@@ -30,12 +30,12 @@ else:unix: LIBS += -L$$OUT_PWD/../utils/ -lutils
 INCLUDEPATH += $$PWD/../utils
 DEPENDPATH += $$PWD/../utils
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../plugins/graphicseditor/release/ -lgraphicseditor
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../plugins/graphicseditor/debug/ -lgraphicseditor
-else:unix: LIBS += -L$$OUT_PWD/../plugins/graphicseditor/ -lgraphicseditor
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../plugins/scheditor/release/ -lscheditor
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../plugins/scheditor/debug/ -lscheditor
+else:unix: LIBS += -L$$OUT_PWD/../plugins/scheditor/ -lscheditor
 
-INCLUDEPATH += $$PWD/../plugins/graphicseditor
-DEPENDPATH += $$PWD/../plugins/graphicseditor
+INCLUDEPATH += $$PWD/../plugins/scheditor
+DEPENDPATH += $$PWD/../plugins/scheditor
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../plugins/filesystemnavigationview/release/ -lfilesystemnavigationview
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../plugins/filesystemnavigationview/debug/ -lfilesystemnavigationview

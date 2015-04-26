@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS += \
     filesystemnavigationview \
-    graphicseditor \
+    scheditor \
     logviewer \
     pcbeditor
