@@ -23,7 +23,6 @@ public:
 private:
     PcbDocument *m_document = nullptr;
     PcbEditorWidget *pcbWidget() const;
-    PcbDocument *pcbDocument() const;
 };
 
 #endif // PCBEDITOR_H

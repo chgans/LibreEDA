@@ -2,9 +2,6 @@
 #include "views/layoutview.h"
 #include "core/json.h"
 
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QJsonValue>
 #include <QStyleOptionGraphicsItem>
 
 const QString GraphicsItem::J_POSITION = QStringLiteral("position");

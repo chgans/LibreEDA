@@ -27,7 +27,7 @@ bool PcbEditor::open(QString *errorString, const QString &fileName)
     bool result = m_document->load(errorString, m_document->filePath());
     if (!result)
         return false;
-    foreach (GraphicsItem *item, pcbDocument()->items()) {
+    foreach (GraphicsItem *item, m_document->items()) {
         pcbWidget()->scene()->addItem(item);
     }
     QRectF rect = QRectF(QPointF(0, 0), m_document->boardSize());
@@ -56,9 +56,4 @@ bool PcbEditor::restoreState(QSettings *settings)
 PcbEditorWidget *PcbEditor::pcbWidget() const
 {
     return static_cast<PcbEditorWidget *>(widget());
-}
-
-PcbDocument *PcbEditor::pcbDocument() const
-{
-    return static_cast<PcbDocument *>(document());
 }

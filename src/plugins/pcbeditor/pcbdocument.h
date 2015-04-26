@@ -25,12 +25,6 @@ private:
     QList<int> m_layerStack;
     QList<GraphicsItem *> m_items;
 
-    GraphicsItem *parseItem;
-    DesignLayer *mparseLayer;
-    int parseLayerIndex();
-    QPointF parsePoint();
-    QLineF parseLine();
-
     // IDocument interface
 public:
     bool save(QString *errorString, const QString &fileName);

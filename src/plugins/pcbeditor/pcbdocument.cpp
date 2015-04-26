@@ -5,9 +5,7 @@
 #include "core/json.h"
 
 #include <QFile>
-#include <QJsonDocument>
-#include <QJsonArray>
-#include <QJsonObject>
+#include <QJsonParseError>
 
 PcbDocument::PcbDocument(QObject *parent):
     IDocument(parent)
