@@ -9,6 +9,7 @@ class IEditor;
 class NavigationDockWidget;
 
 class QSettings;
+class QAction;
 
 class MainWindow : public QMainWindow
 {
@@ -25,12 +26,13 @@ private:
 
 private slots:
     void openFileRequested(bool);
+    void populateRecentFilesMenu();
     void onEditorOpened(IEditor *editor);
 
 private:
-    EditorManager *m_editorManager;
     EditorView *m_editorView;
     NavigationDockWidget *m_navigationDockWidget;
+    QMenu *m_recentFilesMenu;
 
     // QWidget interface
 protected:

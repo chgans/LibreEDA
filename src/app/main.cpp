@@ -3,6 +3,7 @@
 #include <QDir>
 
 #include "core/editormanager/editormanager.h"
+#include "core/editormanager/documentmanager.h"
 
 // PCB editor
 #include "pcbpalettemanager.h"
@@ -21,9 +22,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("leda");
 
     // Loading plugins
-    EditorManager *editorManager = EditorManager::instance();
-    editorManager->registerEditorFactory(new PcbEditorFactory);
-    editorManager->registerEditorFactory(new SchEditorFactory);
+    EditorManager::registerEditorFactory(new PcbEditorFactory);
+    EditorManager::registerEditorFactory(new SchEditorFactory);
+    DocumentManager::loadSettings();
 
     // Pcb plugin initialisation
     PcbPaletteManager *paletteManager = PcbPaletteManager::instance();

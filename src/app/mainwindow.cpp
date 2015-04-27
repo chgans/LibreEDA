@@ -4,7 +4,7 @@
 #include "core/editormanager/editorview.h"
 #include "core/editormanager/ieditor.h"
 #include "core/editormanager/idocument.h"
-
+#include "core/editormanager/documentmanager.h"
 #include "core/navigationview/navigationdockwidget.h"
 #include "filesystemnavigationviewfactory.h"
 
@@ -21,11 +21,10 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    m_editorManager = EditorManager::instance();
     m_editorView = new EditorView();
     setCentralWidget(m_editorView);
 
-    connect(m_editorManager, &EditorManager::editorOpened,
+    connect(EditorManager::instance(), &EditorManager::editorOpened,
             this, &MainWindow::onEditorOpened);
 
     m_navigationDockWidget = new NavigationDockWidget;
@@ -34,10 +33,15 @@ MainWindow::MainWindow(QWidget *parent) :
     m_navigationDockWidget->setFactories(navigationFactories);
     addDockWidget(Qt::LeftDockWidgetArea, m_navigationDockWidget);
 
-    QMenu *menu = menuBar()->addMenu("&file");
-    QAction *action = menu->addAction("&open");
+    QAction *action;
+    QMenu *fileMenu = menuBar()->addMenu("&file");
+    action = fileMenu->addAction("&open");
     connect(action, &QAction::triggered,
             this, &MainWindow::openFileRequested);
+    m_recentFilesMenu = fileMenu->addMenu("Recent &Files");
+    connect(m_recentFilesMenu, &QMenu::aboutToShow,
+            this, &MainWindow::populateRecentFilesMenu);
+
 }
 
 MainWindow::~MainWindow()
@@ -64,29 +68,43 @@ void MainWindow::writeSettings()
 
 void MainWindow::openFileRequested(bool)
 {
-    EditorManager *manager = EditorManager::instance();
-    QString filter = QString("Libre EDA files (%1)").arg(manager->supportedFileFilter());
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    "Open file",
-                                                    BASE_SAMPLE_DIR,
-                                                    filter);
-    if (fileName.isNull())
+    QString filter = QString("Libre EDA files (%1)").arg(EditorManager::supportedFileFilter());
+    QStringList fileNames = DocumentManager::getOpenFileNames(filter, BASE_SAMPLE_DIR);
+    foreach (const QString &fileName, fileNames)
+        EditorManager::openEditor(fileName);
+}
+
+void MainWindow::populateRecentFilesMenu()
+{
+    m_recentFilesMenu->clear();
+    if (DocumentManager::recentFiles().isEmpty())
         return;
-    manager->openEditor(fileName);
+    QAction *action;
+    foreach (const QString &file, DocumentManager::recentFiles()) {
+        action = m_recentFilesMenu->addAction(file);
+        connect(action, &QAction::triggered,
+                this, [this, file](bool) {
+           EditorManager::openEditor(file);
+        });
+    }
+    m_recentFilesMenu->addSeparator();
+    action = m_recentFilesMenu->addAction("&Clear");
+    connect(action, &QAction::triggered,
+            this, [this](bool) {
+         DocumentManager::clearRecentFiles();
+    });
 }
 
 void MainWindow::onEditorOpened(IEditor *editor)
 {
     m_editorView->addEditor(editor);
+    DocumentManager::addToRecentFiles(editor->document()->filePath());
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
-//    if (maybeSave()) {
-//        writeSettings();
-//        event->accept();
-//    } else {
-//        event->ignore();
-//    }
+    EditorManager::saveState();
+    DocumentManager::saveSettings();
+    event->accept();
 }
