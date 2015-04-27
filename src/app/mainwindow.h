@@ -28,6 +28,7 @@ private slots:
     void openFileRequested(bool);
     void populateRecentFilesMenu();
     void onEditorOpened(IEditor *editor);
+    void onEditorCloseRequested(IEditor *editor);
 
 private:
     EditorView *m_editorView;

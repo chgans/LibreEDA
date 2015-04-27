@@ -9,7 +9,7 @@
 
 IDocument::IDocument(QObject *parent) : QObject(parent)
 {
-
+    setModified(false);
 }
 
 IDocument::~IDocument()
@@ -52,5 +52,18 @@ void IDocument::setDisplayName(const QString &name)
         return;
     m_displayName = name;
     emit displayNameChanged(m_displayName);
+}
+
+bool IDocument::isModified() const
+{
+    return m_modified;
+}
+
+void IDocument::setModified(bool modified)
+{
+    if (modified == m_modified)
+        return;
+    m_modified = modified;
+    emit modifiedChanged(m_modified);
 }
 

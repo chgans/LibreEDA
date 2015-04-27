@@ -25,11 +25,15 @@ public:
     virtual QWidget *widget() const;
     virtual void setWidget(QWidget *widget);
 
-    virtual QIcon icon() const = 0;
-    virtual QString displayName() const = 0;
+    virtual QIcon icon() const;
+    virtual void setIcon(const QIcon &icon);
+    virtual QString displayName() const;
+    virtual void setDisplayName(const QString &displayName);
 
 private:
     QPointer<QWidget> m_widget;
+    QIcon m_icon;
+    QString m_displayName;
 };
 
 #endif // IEDITOR_H

@@ -10,7 +10,7 @@
 PcbDocument::PcbDocument(QObject *parent):
     IDocument(parent)
 {
-
+    setModified(true);
 }
 
 PcbDocument::~PcbDocument()

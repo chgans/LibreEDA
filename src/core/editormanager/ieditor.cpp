@@ -61,3 +61,40 @@ void IEditor::setWidget(QWidget *widget)
     m_widget = widget;
 }
 
+/*!
+ * Returns the icon for this editor
+ * \sa IEditor::setIcon()
+ */
+QIcon IEditor::icon() const
+{
+    return m_icon;
+}
+
+/*!
+ * Set the icon for this editor to \a icon
+ * \sa IEditor::icon()
+ */
+void IEditor::setIcon(const QIcon &icon)
+{
+    m_icon = icon;
+}
+
+/*!
+ * Returns the user visible description of the document
+ * \sa IEditor::setDisplayName()
+ */
+QString IEditor::displayName() const
+{
+    return m_displayName;
+}
+
+/*!
+ * Set the user visible description of the document to \a displayName (usually filename w/o path).
+ * \sa IEditor::displayName()
+ */
+void IEditor::setDisplayName(const QString &displayName)
+{
+    if (displayName == m_displayName)
+        return;
+    m_displayName = displayName;
+}

@@ -29,6 +29,7 @@ public:
 
 signals:
     void currentEditorChanged(IEditor *editor);
+    void editorCloseRequested(IEditor *editor);
 
 private slots:
     void onTabCloseRequested(int index);

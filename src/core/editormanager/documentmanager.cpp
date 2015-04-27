@@ -1,9 +1,12 @@
 #include "documentmanager.h"
+#include "idocument.h"
 
 #include <QSettings>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QApplication>
+#include <QMessageBox>
+
 /*!
   \class DocumentManager
   \preliminary
@@ -63,6 +66,41 @@ QStringList DocumentManager::getOpenFileNames(const QString &filters, const QStr
         setFileDialogLastVisitedDirectory(QFileInfo(files.front()).absolutePath());
     return files;
 }
+
+/*!
+ * Close the document \a document, asking the user if the document should be saved or not prior closing.
+ * Return value:
+ * \list A
+ *  \li \c true if the user accepted to close the document.
+ *  \li \c false if the user refused to close the document or if the document couldn't be saved.
+ * \endlist
+ */
+bool DocumentManager::closeDocument(IDocument *document)
+{
+    if (!document->isModified())
+        return true;
+    QMessageBox::StandardButton answer;
+    answer = QMessageBox::warning(QApplication::activeWindow(),
+                                  "Save changes",
+                                  QString("Document %1 has unsaved changes, do you want to save it?"),
+                                  QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
+                                  QMessageBox::Cancel);
+    if (answer == QMessageBox::Discard)
+        return true;
+    if (answer == QMessageBox::Cancel)
+        return false;
+
+    QString errorString;
+    if (document->save(&errorString, document->filePath()))
+        return true;
+    QString errorMessage = QString("Error while saving %1: %2").arg(document->displayName()).arg(errorString);
+    QMessageBox::critical(QApplication::activeWindow(),
+                          "Save failed",
+                          errorMessage,
+                          QMessageBox::Ok);
+    return false;
+}
+
 
 /*!
     Adds the \a fileName to the list of recent files.

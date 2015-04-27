@@ -24,8 +24,12 @@ MainWindow::MainWindow(QWidget *parent) :
     m_editorView = new EditorView();
     setCentralWidget(m_editorView);
 
+    connect(m_editorView, &EditorView::editorCloseRequested,
+            this, &MainWindow::onEditorCloseRequested);
     connect(EditorManager::instance(), &EditorManager::editorOpened,
             this, &MainWindow::onEditorOpened);
+    connect(EditorManager::instance(), &EditorManager::editorAboutToClose,
+            m_editorView, &EditorView::removeEditor);
 
     m_navigationDockWidget = new NavigationDockWidget;
     QList<INavigationViewFactory *> navigationFactories;
@@ -99,6 +103,11 @@ void MainWindow::onEditorOpened(IEditor *editor)
 {
     m_editorView->addEditor(editor);
     DocumentManager::addToRecentFiles(editor->document()->filePath());
+}
+
+void MainWindow::onEditorCloseRequested(IEditor *editor)
+{
+    EditorManager::closeEditor(editor);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

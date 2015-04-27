@@ -17,6 +17,7 @@
 SchDocument::SchDocument(QObject *parent) :
     IDocument(parent)
 {
+    setModified(true);
 }
 
 bool SchDocument::load(QString *errorString, const QString &fileName)

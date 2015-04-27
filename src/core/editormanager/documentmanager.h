@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+class IDocument;
+
 class DocumentManager : public QObject
 {
     Q_OBJECT
@@ -13,6 +15,8 @@ public:
     static QStringList getOpenFileNames(const QString &filters,
                                         const QString &path = QString(),
                                         QString *selectedFilter = 0);
+
+    static bool closeDocument(IDocument *document);
 
     static void addToRecentFiles(const QString &fileName/*, const QString &editorId = Id()*/);
     static void clearRecentFiles();

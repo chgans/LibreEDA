@@ -39,12 +39,14 @@ void EditorView::addEditor(IEditor *editor)
     QWidget *widget = editor->widget();
     int index = m_tabWidget->addTab(widget, editor->icon(), editor->displayName());
     m_editorTabIndexMap.insert(editor, index);
+    m_widgetEditorMap.insert(editor->widget(), editor);
 }
 
 void EditorView::removeEditor(IEditor *editor)
 {
     m_tabWidget->removeTab(m_editorTabIndexMap.value(editor));
     m_editorTabIndexMap.remove(editor);
+    m_widgetEditorMap.remove(editor->widget());
 }
 
 IEditor *EditorView::currentEditor() const
@@ -72,10 +74,8 @@ QList<IEditor *> EditorView::editors() const
 void EditorView::onTabCloseRequested(int index)
 {
     QWidget *widget = m_tabWidget->widget(index);
-    m_tabWidget->removeTab(index);
     IEditor *editor = m_widgetEditorMap.value(widget);
-    removeEditor(editor);
-    // TODO: call EditorManager closeEditor() which will manage file saving and IEditor deletion
+    emit editorCloseRequested(editor);
 }
 
 void EditorView::onCurrentTabChanged(int /*index*/)

@@ -2,6 +2,7 @@
 #include "ieditor.h"
 #include "ieditorfactory.h"
 #include "idocument.h"
+#include "documentmanager.h"
 
 #include <QSettings>
 #include <QFileInfo>
@@ -19,7 +20,6 @@
 
 QMap<QString, IEditorFactory *> EditorManager::m_factoryMap;
 QMap<QString, IEditor*> EditorManager::m_filePathEditorMap;
-QMap<QMainWindow *, EditorView *> EditorManager::m_mainWindowEditorMap;
 IEditor *EditorManager::m_currentEditor = nullptr;
 EditorManager *EditorManager::m_instance = nullptr;
 
@@ -31,12 +31,6 @@ EditorManager::EditorManager(QObject *parent) : QObject(parent)
 EditorManager::~EditorManager()
 {
 
-}
-
-IEditor *EditorManager::createEditor(const QString &fileName)
-{
-    Q_UNUSED(fileName);
-    return nullptr;
 }
 
 // TODO:
@@ -89,71 +83,27 @@ IEditor *EditorManager::openEditor(const QString &fileName)
     }
 
     EditorManager::addEditor(editor, filePath);
-    EditorManager::activateEditor(editor);
     QApplication::restoreOverrideCursor();
     return editor;
 }
 
-void EditorManager::activateEditor(IEditor *editor)
+bool EditorManager::closeEditor(IEditor *editor)
 {
-    m_currentEditor = editor;
-    emit EditorManager::instance()->currentEditorChanged(editor);
+    if (!DocumentManager::closeDocument(editor->document()))
+        return false;
+    emit instance()->editorAboutToClose(editor);
+    m_filePathEditorMap.remove(editor->document()->filePath());// FIXME
+    delete editor;
+    emit instance()->editorClosed(editor);
+    return true;
 }
 
-IEditor *EditorManager::activateEditorForDocument(IDocument *document)
+void EditorManager::saveState()
 {
-    Q_UNUSED(document);
-    return nullptr;
 }
 
-bool EditorManager::closeDocument(IDocument *document, bool askAboutModifiedEditors)
+bool EditorManager::restoreState()
 {
-    Q_UNUSED(document);
-    Q_UNUSED(askAboutModifiedEditors);
-    return false;
-}
-
-bool EditorManager::closeDocuments(const QList<IDocument *> &documents, bool askAboutModifiedEditors)
-{
-    Q_UNUSED(documents);
-    Q_UNUSED(askAboutModifiedEditors);
-    return false;
-}
-
-void EditorManager::closeOtherDocuments(IDocument *document)
-{
-    Q_UNUSED(document);
-    return;
-}
-
-bool EditorManager::saveDocument(IDocument *document)
-{
-    Q_UNUSED(document);
-    return false;
-}
-
-bool EditorManager::closeEditors(const QList<IEditor *> &editors, bool askAboutModifiedEditors)
-{
-    Q_UNUSED(editors);
-    Q_UNUSED(askAboutModifiedEditors);
-    return false;
-}
-
-void EditorManager::closeEditor(IEditor *editor, bool askAboutModifiedEditors)
-{
-    Q_UNUSED(editor);
-    Q_UNUSED(askAboutModifiedEditors);
-    return;
-}
-
-void EditorManager::saveState(QSettings *settings)
-{
-    Q_UNUSED(settings);
-}
-
-bool EditorManager::restoreState(QSettings *settings)
-{
-    Q_UNUSED(settings);
     return false;
 }
 
@@ -183,35 +133,4 @@ QString EditorManager::supportedFileFilter()
         filters.append(QString("*.%1").arg(ext));
     }
     return filters.join(' ');
-}
-
-void EditorManager::saveDocument()
-{
-
-}
-
-void EditorManager::saveDocumentAs()
-{
-
-}
-
-void EditorManager::revertToSaved()
-{
-
-}
-
-bool EditorManager::closeAllEditors(bool askAboutModifiedEditors)
-{
-    Q_UNUSED(askAboutModifiedEditors);
-    return false;
-}
-
-void EditorManager::slotCloseCurrentDocument()
-{
-
-}
-
-void EditorManager::closeOtherDocuments()
-{
-
 }
