@@ -21,6 +21,8 @@ public slots:
 public:
     bool open(QString *errorString, const QString &fileName);
     IDocument *document() const;
+    QIcon icon() const;
+    QString displayName() const;
 
 private:
     SchDocument *m_document = nullptr;

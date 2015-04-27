@@ -37,3 +37,13 @@ SchEditorWidget *SchEditor::schWidget() const
 {
     return static_cast<SchEditorWidget *>(widget());
 }
+
+QIcon SchEditor::icon() const
+{
+    return QIcon(":/icons/sch.png");
+}
+
+QString SchEditor::displayName() const
+{
+    return m_document->displayName();
+}

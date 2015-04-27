@@ -19,10 +19,13 @@ public:
     IDocument *document() const;
     void saveState(QSettings *settings) const;
     bool restoreState(QSettings *settings);
+    QIcon icon() const;
+    QString displayName() const;
 
 private:
     PcbDocument *m_document = nullptr;
     PcbEditorWidget *pcbWidget() const;
+
 };
 
 #endif // PCBEDITOR_H

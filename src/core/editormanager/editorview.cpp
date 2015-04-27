@@ -1,6 +1,5 @@
 #include "editorview.h"
 #include "ieditor.h"
-#include "idocument.h"
 
 #include <QTabWidget>
 #include <QVBoxLayout>
@@ -32,17 +31,13 @@ int EditorView::editorCount() const
 void EditorView::addEditor(IEditor *editor)
 {
     QWidget *widget = editor->widget();
-    IDocument *doc = editor->document();
-    int index = m_tabWidget->addTab(widget, doc->displayName());
-    m_widgetEditorMap.insert(widget, editor);
+    int index = m_tabWidget->addTab(widget, editor->icon(), editor->displayName());
     m_editorTabIndexMap.insert(editor, index);
 }
 
 void EditorView::removeEditor(IEditor *editor)
 {
-    QWidget *widget = editor->widget();
     m_tabWidget->removeTab(m_editorTabIndexMap.value(editor));
-    m_widgetEditorMap.remove(widget);
     m_editorTabIndexMap.remove(editor);
 }
 
@@ -66,15 +61,6 @@ bool EditorView::hasEditor(IEditor *editor) const
 QList<IEditor *> EditorView::editors() const
 {
     return m_editorTabIndexMap.keys();
-}
-
-IEditor *EditorView::editorForDocument(const IDocument *document) const
-{
-    foreach (IEditor *editor, editors()) {
-        if (editor->document() == document)
-            return editor;
-    }
-    return nullptr;
 }
 
 void EditorView::onTabCloseRequested(int index)

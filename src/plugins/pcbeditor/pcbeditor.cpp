@@ -57,3 +57,13 @@ PcbEditorWidget *PcbEditor::pcbWidget() const
 {
     return static_cast<PcbEditorWidget *>(widget());
 }
+
+QIcon PcbEditor::icon() const
+{
+    return QIcon(":/icons/pcb.png");
+}
+
+QString PcbEditor::displayName() const
+{
+    return m_document->displayName();
+}

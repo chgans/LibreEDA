@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QIcon>
 
 class IDocument;
 class QSettings;
@@ -23,6 +24,9 @@ public:
 
     virtual QWidget *widget() const;
     virtual void setWidget(QWidget *widget);
+
+    virtual QIcon icon() const = 0;
+    virtual QString displayName() const = 0;
 
 private:
     QPointer<QWidget> m_widget;

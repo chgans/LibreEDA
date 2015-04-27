@@ -24,5 +24,6 @@
         <file>icons/task_undo.svg</file>
         <file>icons/task_finish.svg</file>
         <file>icons/task_close_shape.svg</file>
+        <file>icons/sch.png</file>
     </qresource>
 </RCC>
