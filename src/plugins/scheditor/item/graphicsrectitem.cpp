@@ -1,5 +1,6 @@
 #include "graphicsrectitem.h"
 #include "abstractgraphicshandle.h"
+#include "core/json.h"
 
 #include <QBrush>
 #include <QPen>
@@ -9,6 +10,8 @@
 #include <QDebug>
 
 // TODO: forbid objects to have write access to handles
+
+const QString GraphicsRectItem::J_POINTS = QStringLiteral("points");
 
 GraphicsRectItem::GraphicsRectItem(SchItem *parent):
     SchItem(parent), m_rect(QRectF(0, 0, 0, 0))
@@ -102,12 +105,23 @@ void GraphicsRectItem::itemNotification(IGraphicsObservableItem *item)
 
 bool GraphicsRectItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
 {
+    if (!SchItem::fromJson(errorString, jsonObject))
+        return false;
+    if (!jsonObject.contains(J_POINTS)) {
+        *errorString = "Rectangle item: missing points";
+        return false;
+    }
+    QRectF rect;
+    if (!Json::toRect(errorString, jsonObject.value(J_POINTS), rect))
+        return false;
+    setRect(rect);
     return true;
 }
 
 void GraphicsRectItem::toJson(QJsonObject &jsonObject) const
 {
-
+    SchItem::toJson(jsonObject);
+    jsonObject.insert(J_POINTS, Json::fromRect(rect()));
 }
 
 QRectF GraphicsRectItem::boundingRect() const

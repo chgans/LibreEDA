@@ -58,6 +58,16 @@ bool toRect(QString *errorString, const QJsonValue &jsonValue, QRectF &value)
     return true;
 }
 
+
+bool toPolygon(QString *errorString, const QJsonValue &jsonValue, QPolygonF &value)
+{
+    QList<QPointF> points;
+    if (!toPointList(errorString, jsonValue, points))
+        return false;
+    value = QPolygonF(points.toVector());
+    return true;
+}
+
 bool toLine(QString *errorString, const QJsonValue &jsonValue, QLineF &value)
 {
     QList<QPointF> points;
@@ -203,6 +213,11 @@ QJsonValue fromRect(const QRectF &value)
     return fromPointList(QList<QPointF>() << value.topLeft() << value.bottomRight());
 }
 
+QJsonValue fromPolygon(const QPolygonF &value)
+{
+    return fromPointList(value.toList());
+}
+
 QJsonValue fromLine(const QLineF &value)
 {
     return fromPointList(QList<QPointF>() << value.p1() << value.p2());
@@ -227,6 +242,7 @@ QJsonValue fromReal(qreal value)
 {
     return QJsonValue(value);
 }
+
 
 
 } // namespace Json

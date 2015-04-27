@@ -55,8 +55,10 @@ bool GraphicsCircleItem::fromJson(QString *errorString, const QJsonObject &jsonO
 {
     if (!SchItem::fromJson(errorString, jsonObject))
         return false;
+    if (!SchItem::fromJson(errorString, jsonObject))
+        return false;
     if (!jsonObject.contains("radius")) {
-        *errorString = "Missing radius";
+        *errorString = "Circle item: missing radius";
         return false;
     }
     qreal radius;
@@ -69,7 +71,8 @@ bool GraphicsCircleItem::fromJson(QString *errorString, const QJsonObject &jsonO
 
 void GraphicsCircleItem::toJson(QJsonObject &jsonObject) const
 {
-
+    SchItem::toJson(jsonObject);
+    jsonObject.insert("radius", Json::fromReal(radius()));
 }
 
 QRectF GraphicsCircleItem::boundingRect() const

@@ -29,6 +29,7 @@ signals:
     void pointsChanged();
 
 private:
+    static const QString J_POINTS;
     QPainterPath m_path;
     //void handleToPath();
     //void pathToHandle();

@@ -28,6 +28,7 @@ signals:
     void polygonChanged(QPolygonF polygon);
 
 private:
+    static const QString J_POINTS;
     Qt::FillRule m_fillRule;
     QPolygonF m_polygon;
     void handleToPolygon();

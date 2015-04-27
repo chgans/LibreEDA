@@ -30,6 +30,8 @@ signals:
     void lineChanged();
 
 private:
+    static const QString J_POINTS;
+
     QLineF m_line;
 
     // SchItem interface

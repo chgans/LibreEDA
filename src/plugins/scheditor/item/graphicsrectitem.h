@@ -35,6 +35,7 @@ public:
     void setRect(const QRectF &rect);
 
 private:
+    static const QString J_POINTS;
     QRectF m_rect;
     void updateHandlesSilently();
 

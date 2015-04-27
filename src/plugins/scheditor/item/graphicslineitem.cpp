@@ -1,10 +1,13 @@
 #include "graphicslineitem.h"
 #include "abstractgraphicshandle.h"
+#include "core/json.h"
 
 #include <QPainter>
 #include <QPen>
 
 #include <QDebug>
+
+const QString GraphicsLineItem::J_POINTS = QStringLiteral("points");
 
 GraphicsLineItem::GraphicsLineItem(SchItem *parent):
     SchItem(parent)
@@ -46,12 +49,23 @@ SchItem *GraphicsLineItem::clone()
 
 bool GraphicsLineItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
 {
+    if (!SchItem::fromJson(errorString, jsonObject))
+        return false;
+    if (!jsonObject.contains(J_POINTS)) {
+        *errorString = "Line item: missing line points";
+        return false;
+    }
+    QLineF line;
+    if (!Json::toLine(errorString, jsonObject.value(J_POINTS), line))
+        return false;
+    setLine(line);
     return true;
 }
 
 void GraphicsLineItem::toJson(QJsonObject &jsonObject) const
 {
-
+    SchItem::toJson(jsonObject);
+    jsonObject.insert(J_POINTS, Json::fromLine(line()));
 }
 
 void GraphicsLineItem::itemNotification(IGraphicsObservableItem *item)

@@ -16,7 +16,7 @@
         },
         {
             "type": "line",
-            "position": [50, 10],
+            "position": [50, 70],
             "points": [[0, 0], [115, -25]],
             "pen" : {
                 "width": 1.0,
@@ -28,7 +28,7 @@
         },
         {
             "type": "circle",
-            "position": [200, 105],
+            "position": [150, 105],
             "radius": 25,
             "pen" : {
                 "width": 1.0,
@@ -40,9 +40,21 @@
         },
         {
             "type": "ellipse",
-            "position": [0, 300],
+            "position": [50, 150],
             "x-radius": 15,
             "y-radius": 30,
+            "pen" : {
+                "width": 1.0,
+                "color": "#cc6633"
+            },
+            "brush": {
+                "color": "#336699"
+            }
+        },
+        {
+            "type": "wire",
+            "position": [200, 120],
+            "points": [[0, 0], [20, 20], [40, 0], [60, 20]],
             "pen" : {
                 "width": 1.0,
                 "color": "#cc6633"
