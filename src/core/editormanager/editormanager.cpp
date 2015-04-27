@@ -9,6 +9,14 @@
 #include <QMessageBox>
 #include <QDebug>
 
+/*!
+  \class EditorManager
+  \preliminary
+  \mainclass
+  \brief The EditorManager class manages a set of \c IEditor and \c EditorView objects.
+
+*/
+
 QMap<QString, IEditorFactory *> EditorManager::m_factoryMap;
 QMap<QString, IEditor*> EditorManager::m_filePathEditorMap;
 QMap<QMainWindow *, EditorView *> EditorManager::m_mainWindowEditorMap;

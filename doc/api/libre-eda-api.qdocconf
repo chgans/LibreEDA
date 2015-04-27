@@ -1,0 +1,63 @@
+project                 = LibreEda
+description             = Libre EDA Reference Documentation
+url                     = http://doc.libre-eda.org/dev/0.0
+version                 = 0.0
+
+##################################################################################
+
+outputdir   = html
+outputformats = HTML
+
+##################################################################################
+
+spurious = "No documentation for.*"
+
+##################################################################################
+language = Cpp
+
+# indexes = $QTDIR/doc/html/qt.index
+
+sources.fileextensions = "*.cpp *.qdoc"
+headers.fileextensions = "*.h"
+examples.fileextensions = "*.cpp *.h"
+examples.imageextensions = "*.png"
+
+headerdirs  = \
+    ../../src/core \
+    ../../src/core/actionmanager \
+    ../../src/core/editormanager \
+    ../../src/core/navigationview \
+    ../../src/utils/ \
+    ../../src/utils/widgets
+
+sourcedirs  = . \
+    ../../src/core \
+    ../../src/core/actionmanager \
+    ../../src/core/editormanager \
+    ../../src/core/navigationview \
+    ../../src/utils/ \
+    ../../src/utils/widgets
+
+exampledirs = .
+
+imagedirs   = ./images
+
+##################################################################################
+HTML.headerstyles	= "<link rel=\"stylesheet\" type=\"text/css\" href=\"../classic.css\" />"
+HTML.stylesheets        = ./classic.css
+HTML.postheader         = "<div class=\"api-postheader\"><div class=\"api-menu\">" \
+			  " <a href=\"index.html\">Home</a>" \
+                          " <a href=\"namespaces.html\">All Namespaces</a>" \
+                          " <a href=\"classes.html\">All Classes</a>" \
+                          " <a href=\"mainclasses.html\">Main Classes</a>" \
+                          " <a href=\"functions.html\">All Functions</a>" \
+			  "</div></div>"
+
+HTML.footer             = "<p /><address><hr /><div align=\"center\">\n" \
+                          "<table width=\"100%\" cellspacing=\"0\" border=\"0\"><tr class=\"address\">\n" \
+                          "<td width=\"30%\" align=\"left\">Copyright &copy; %THISYEAR% The libre-eda.org project</td>\n" \
+                          "<td width=\"40%\" align=\"center\"></a></td>\n" \
+                          "<td width=\"30%\" align=\"right\"><div align=\"right\">Libre EDA \\version</div></td>\n" \
+                          "</tr></table></div></address>"
+
+##################################################################################

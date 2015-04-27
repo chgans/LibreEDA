@@ -1,5 +1,12 @@
 #include "idocument.h"
 
+/*!
+  \class IDocument
+  \preliminary
+  \mainclass
+  \brief The IDocument class ...
+*/
+
 IDocument::IDocument(QObject *parent) : QObject(parent)
 {
 

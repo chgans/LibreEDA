@@ -1,5 +1,11 @@
 #include "ieditorfactory.h"
 
+/*!
+  \class IEditorFactory
+  \preliminary
+  \brief The IEditorFactory class ...
+  */
+
 IEditorFactory::IEditorFactory(QObject *parent) : QObject(parent)
 {
 

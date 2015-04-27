@@ -36,3 +36,6 @@ Makefile*
 
 # emacs
 *~
+
+# generated Libre EDA documentation
+doc/api/html

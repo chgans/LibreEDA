@@ -4,6 +4,12 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
+/*!
+  \class EditorView
+  \preliminary
+  \brief The EditorView class ...
+*/
+
 EditorView::EditorView(QWidget *parent) : QWidget(parent)
 {
     setLayout(new QVBoxLayout);

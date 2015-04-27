@@ -6,19 +6,19 @@
 #include <QApplication>
 /*!
   \class DocumentManager
+  \preliminary
   \mainclass
-  \inheaderfile documentmanager.h
   \brief The DocumentManager class manages a set of IDocument objects.
 
   The \c DocumentManager service provides convenience functions for saving and opening
   files:
-  \l
+  \list
    \li \c saveModifiedDocuments() and \c saveModifiedDocumentsSilently(). Both take a list
        of IDocument as an argument, and return the list of files which were _not_ saved.
    \li \c getOpenFileNames(), \c getSaveFileName() and \c getSaveAsFileName() which ask
        the user for file names to open or save.
    \li \c addToRecentFiles() and \c recentFiles() for managing the list of recently opened files.
-
+  \endlist
  */
 
 static const char SETTINGS[] = "DocumentManager";
@@ -94,7 +94,7 @@ QList<QString> DocumentManager::recentFiles()
 /*!
   Returns the last visited directory of a file dialog.
 
-  \sa setFileDialogLastVisitedDirectory
+  \sa setFileDialogLastVisitedDirectory()
 */
 QString DocumentManager::fileDialogLastVisitedDirectory()
 {
@@ -102,9 +102,9 @@ QString DocumentManager::fileDialogLastVisitedDirectory()
 }
 
 /*!
-  Set the last visited directory of a file dialog which will be remembered for the next file dialog.
+  Set the last visited directory of a file dialog to \a dir, this will be remembered for the next file dialog.
 
-  \sa fileDialogLastVisitedDirectory
+  \sa fileDialogLastVisitedDirectory()
 */
 void DocumentManager::setFileDialogLastVisitedDirectory(const QString &dir)
 {
