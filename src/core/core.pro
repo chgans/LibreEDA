@@ -22,7 +22,8 @@ SOURCES += core.cpp \
     editormanager/editorview.cpp \
     navigationview/inavigationviewfactory.cpp \
     navigationview/navigationdockwidget.cpp \
-    json.cpp
+    json.cpp \
+    editormanager/documentmanager.cpp
 
 HEADERS += core.h \
     constants.h \
@@ -35,7 +36,8 @@ HEADERS += core.h \
     editormanager/editorview.h \
     navigationview/inavigationviewfactory.h \
     navigationview/navigationdockwidget.h \
-    json.h
+    json.h \
+    editormanager/documentmanager.h
 
 DISTFILES += \
     TODO.md
