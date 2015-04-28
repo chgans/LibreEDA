@@ -1,0 +1,15 @@
+#Include this file to inherit configuration related to Qt Project based modules.
+
+dita.metadata.default.author      = Libre EDA
+dita.metadata.default.permissions = all
+dita.metadata.default.publisher   = Libre EDA
+dita.metadata.default.copyryear = 2015
+dita.metadata.default.copyrholder = Libre EDA
+dita.metadata.default.audience = programmer
+
+#Set the main Qt index.html
+navigation.homepage = "Libre EDA 2015.04"
+
+sourcedirs += includes
+
+url = https://www.libre-eda.org

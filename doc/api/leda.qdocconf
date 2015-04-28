@@ -1,0 +1,50 @@
+include(leda-defaults.qdocconf)
+
+project                 = LibreEDA
+description             = Libre EDA Reference Documentation
+version                 = $LEDA_VERSION
+
+examplesinstallpath     = network
+
+qhp.projects            = LibreEDA
+
+qhp.LibreEDA.file         = leda.qhp
+qhp.LibreEDA.namespace           = org.libre-eda.leda.$LEDA_VERSION_TAG
+qhp.LibreEDA.virtualFolder       = leda
+qhp.LibreEDA.indexTitle          = Libre EDA
+qhp.LibreEDA.indexRoot           =
+
+# qhp.LibreEDA.filterAttributes    = qtnetwork $LEDA_VERSION qtrefdoc
+# qhp.LibreEDA.customFilters.Qt.name = LibreEDA $LEDA_VERSION
+# qhp.LibreEDA.customFilters.Qt.filterAttributes = qtnetwork $LEDA_VERSION
+
+qhp.LibreEDA.subprojects         = classes
+qhp.LibreEDA.subprojects.classes.title = C++ Classes
+qhp.LibreEDA.subprojects.classes.indexTitle = Libre EDA C++ Classes
+qhp.LibreEDA.subprojects.classes.selectors = class fake:headerfile
+qhp.LibreEDA.subprojects.classes.sortPages = true
+
+navigation.landingpage = "Libre EDA"
+navigation.cppclassespage = "Libre EDA C++ Classes"
+
+headerdirs  = \
+    ../../src/core \
+    ../../src/core/actionmanager \
+    ../../src/core/editormanager \
+    ../../src/core/navigationview \
+    ../../src/utils/ \
+    ../../src/utils/widgets
+
+sourcedirs  = . \
+    ../../src/core \
+    ../../src/core/actionmanager \
+    ../../src/core/editormanager \
+    ../../src/core/navigationview \
+    ../../src/utils/ \
+    ../../src/utils/widgets
+
+exampledirs = .
+
+imagedirs   = ./images
+
+##################################################################################

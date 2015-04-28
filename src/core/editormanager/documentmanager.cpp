@@ -69,8 +69,9 @@ QStringList DocumentManager::getOpenFileNames(const QString &filters, const QStr
 
 /*!
  * Close the document \a document, asking the user if the document should be saved or not prior closing.
+ *
  * Return value:
- * \list A
+ * \list
  *  \li \c true if the user accepted to close the document.
  *  \li \c false if the user refused to close the document or if the document couldn't be saved.
  * \endlist
