@@ -1,50 +1,36 @@
-include(leda-defaults.qdocconf)
-
 project                 = LibreEDA
 description             = Libre EDA Reference Documentation
 version                 = $LEDA_VERSION
 
-examplesinstallpath     = network
+headerdirs = $SRCDIR/..
+sourcedirs = $SRCDIR/..
+imagedirs = $SRCDIR
+outputdir = $OUTDIR
+exampledirs = $SRCDIR
+
+include(config/compat.qdocconf)
+include(config/macros.qdocconf)
+include(config/qt-cpp-defines.qdocconf)
+include(config/fileextensions.qdocconf)
 
 qhp.projects            = LibreEDA
-
 qhp.LibreEDA.file         = leda.qhp
 qhp.LibreEDA.namespace           = org.libre-eda.leda.$LEDA_VERSION_TAG
-qhp.LibreEDA.virtualFolder       = leda
+qhp.LibreEDA.virtualFolder       = doc
 qhp.LibreEDA.indexTitle          = Libre EDA
 qhp.LibreEDA.indexRoot           =
 
-# qhp.LibreEDA.filterAttributes    = qtnetwork $LEDA_VERSION qtrefdoc
-# qhp.LibreEDA.customFilters.Qt.name = LibreEDA $LEDA_VERSION
-# qhp.LibreEDA.customFilters.Qt.filterAttributes = qtnetwork $LEDA_VERSION
+#Include this file to inherit configuration related to Qt Project based modules.
 
-qhp.LibreEDA.subprojects         = classes
-qhp.LibreEDA.subprojects.classes.title = C++ Classes
-qhp.LibreEDA.subprojects.classes.indexTitle = Libre EDA C++ Classes
-qhp.LibreEDA.subprojects.classes.selectors = class fake:headerfile
-qhp.LibreEDA.subprojects.classes.sortPages = true
+dita.metadata.default.author      = Libre EDA
+dita.metadata.default.permissions = all
+dita.metadata.default.publisher   = Libre EDA
+dita.metadata.default.copyryear   = 2015
+dita.metadata.default.copyrholder = Libre EDA
+dita.metadata.default.audience    = programmer
 
-navigation.landingpage = "Libre EDA"
-navigation.cppclassespage = "Libre EDA C++ Classes"
+navigation.homepage = "Overview"
+url = https://www.libre-eda.org
 
-headerdirs  = \
-    ../../src/core \
-    ../../src/core/actionmanager \
-    ../../src/core/editormanager \
-    ../../src/core/navigationview \
-    ../../src/utils/ \
-    ../../src/utils/widgets
-
-sourcedirs  = . \
-    ../../src/core \
-    ../../src/core/actionmanager \
-    ../../src/core/editormanager \
-    ../../src/core/navigationview \
-    ../../src/utils/ \
-    ../../src/utils/widgets
-
-exampledirs = .
-
-imagedirs   = ./images
-
-##################################################################################
+HTML.templatedir = $SRCDIR/template
+include(config/html-templates-online.qdocconf)
