@@ -1,3 +1,0 @@
-DEPENDPATH += $$PWD
-LIBS += -lutils
-LIBPATH += $$OUT_PWD/

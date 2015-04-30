@@ -6,12 +6,12 @@
 #include "core/editormanager/documentmanager.h"
 
 // PCB editor
-#include "pcbpalettemanager.h"
-#include "designlayermanager.h"
-#include "pcbeditorfactory.h"
+#include "pcbeditor/pcbpalettemanager.h"
+#include "pcbeditor/designlayermanager.h"
+#include "pcbeditor/pcbeditorfactory.h"
 
 // SCH editor
-#include "scheditorfactory.h"
+#include "scheditor/scheditorfactory.h"
 
 int main(int argc, char *argv[])
 {

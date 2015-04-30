@@ -1,3 +1,0 @@
-LIBS += -L$$OUT_PWD -logviewer
-INCLUDEPATH += $$PWD
-DEPENDPATH += $$PWD
