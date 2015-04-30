@@ -24,19 +24,6 @@ LedaProduct {
     }
 
     cpp.defines: base.concat([name.toUpperCase() + "_LIBRARY"])
-    cpp.installNamePrefix: "@rpath/PlugIns/"
-    cpp.rpaths: qbs.targetOS.contains("osx")
-        ? ["@loader_path/..", "@loader_path/", "@executable_path/.."]
-        : ["$ORIGIN", "$ORIGIN/.."]
-    cpp.linkerFlags: {
-        var flags = base;
-        if (qbs.buildVariant == "debug" && qbs.toolchain.contains("msvc"))
-            flags.push("/INCREMENTAL:NO"); // Speed up startup time when debugging with cdb
-        return flags;
-    }
-
-    // For #include <pluginname/header.h>, <lib/header.h> and #include "ui_header.h"
-    cpp.includePaths: [".", "..", "../..", buildDirectory]
 
     Group {
         name: "PluginMetaData"

@@ -3,8 +3,7 @@ import qbs
 Project {
     name: "Sources"
     references: [
-        "utils",
-        "core",
+        "libs",
         "plugins",
         "app",
     ]

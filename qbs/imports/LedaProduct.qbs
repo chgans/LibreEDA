@@ -7,20 +7,18 @@ Product {
     Depends { name: "cpp" }
     cpp.defines: project.generalDefines
     cpp.cxxLanguageVersion: "c++11"
-    cpp.linkerFlags: {
-        var flags = [];
-        if (qbs.buildVariant == "release" && (qbs.toolchain.contains("gcc") || qbs.toolchain.contains("mingw")))
-            flags.push("-Wl,-s");
-        return flags;
-    }
-    cpp.minimumOsxVersion: "10.7"
-    cpp.minimumWindowsVersion: qbs.architecture === "x86" ? "5.1" : "5.2"
-    cpp.visibility: "minimal"
-
-    // For #include <lib/header.h> and #include "ui_header.h"
-    cpp.includePaths: ["..", "../plugins", buildDirectory]
 
     Depends { name: "Qt.core" }
+
+    Properties {
+        condition: qbs.targetOS.contains("darwin")
+        cpp.rpaths: base.concat(["@loader_path/../" + project.leda_library_path])
+    }
+
+    Properties {
+        condition: qbs.targetOS.contains("linux")
+        cpp.rpaths: base.concat(["$ORIGIN/../" + project.leda_library_path])
+    }
 
     Group {
         fileTagsFilter: product.type

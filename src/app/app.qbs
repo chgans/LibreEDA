@@ -1,8 +1,8 @@
 import qbs
 
-LedaProduct {
-    type: ["application"]
-    name: "LibreEDA"
+LedaApplication {
+    type: "application"
+    name: "Application"
     targetName: project.leda_app_target
     consoleApplication: qbs.debugInformation
 
@@ -12,10 +12,10 @@ LedaProduct {
     Depends { name: "Core" }
 
     // TODO: use real plugins
-    Depends { name: "SchEditor" }
     Depends { name: "PcbEditor" }
     Depends { name: "LogViewer" }
     Depends { name: "FilesystemNavigationView" }
+    Depends { name: "SchEditor" }
 
     files : [
         "main.cpp",

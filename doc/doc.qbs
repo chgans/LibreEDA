@@ -1,0 +1,31 @@
+import qbs 1.0
+import LedaFunctions
+
+Product {
+    name: "Documentation"
+    type: "qch"
+    Depends { name: "Qt"; submodules: ["core"] }
+
+    files: [
+        "leda.qdoc",
+        "config/*.qdocconf",
+    ]
+    Group {
+        name: "main qdocconf file"
+        files: "leda.qdocconf"
+        fileTags: "qdocconf-main"
+    }
+
+    Qt.core.qdocQhpFileName: "leda.qhp"
+    Qt.core.qdocEnvironment: [
+        "LEDA_VERSION=" + project.leda_version,
+        "SRCDIR=" + path,
+        "QT_INSTALL_DOCS=" + Qt.core.docPath,
+        "LEDA_VERSION_TAG=" + project.leda_version.replace(/\.|-/g, "")
+    ]
+    Group {
+        fileTagsFilter: "qdoc-html"
+        qbs.install: true
+        qbs.installDir: project.leda_doc_path
+    }
+}
