@@ -11,12 +11,6 @@ LedaApplication {
     Depends { name: "Utils" }
     Depends { name: "Core" }
 
-    // TODO: use real plugins
-    Depends { name: "PcbEditor" }
-    Depends { name: "LogViewer" }
-    Depends { name: "FilesystemNavigationView" }
-    Depends { name: "SchEditor" }
-
     files : [
         "main.cpp",
         "mainwindow.cpp",

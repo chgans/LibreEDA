@@ -1,10 +1,9 @@
 import qbs 1.0
 
-LedaLibrary {
+LedaPlugin {
     name: "PcbEditor"
     
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets"] }
-    Depends { name: "Core" }
     Depends { name: "Utils" }
 
     files: [
@@ -17,13 +16,8 @@ LedaLibrary {
         "designlayermanager.h",
         "designlayerset.cpp",
         "designlayerset.h",
-//        "document.cpp",
-//        "document.h",
         "layerbar.cpp",
         "layerbar.h",
-//        "main.cpp",
-//        "mainwindow.cpp",
-//        "mainwindow.h",
         "pcbdocument.cpp",
         "pcbdocument.h",
         "pcbeditorconstants.h",
@@ -31,13 +25,13 @@ LedaLibrary {
         "pcbeditorfactory.cpp",
         "pcbeditorfactory.h",
         "pcbeditor.h",
+        "pcbeditorplugin.cpp",
+        "pcbeditorplugin.h",
         "pcbeditorwidget.cpp",
         "pcbeditorwidget.h",
         "pcbpalette.cpp",
         "pcbpalette.h",
         "pcbpalettemanager.cpp",
-//        "pcbpalettemanagerdialog.cpp",
-//        "pcbpalettemanagerdialog.h",
         "pcbpalettemanager.h",
         "pcbpalettesettingsdialog.cpp",
         "pcbpalettesettingsdialog.h",

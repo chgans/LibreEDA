@@ -1,1 +1,15 @@
+{
+    "Name" : "File System Navigation",
+    "Version" : "$$LEDA_VERSION",
+    "CompatVersion" : "$$LEDA_COMPAT_VERSION",
+    "Experimental" : true,
+    "Vendor" : "Christian Gagneraud",
+    "Copyright" : "(C) 2015 Christian Gagneraud",
+    "License" : "GNU Lesser General Public License Usage",
+    "Description" : "Adds a file system based navigation view.",
+    "Url" : "http://www.libre-eda.org",
+    "Category" : "Libre EDA",
+    $$dependencyList
 
+
+}

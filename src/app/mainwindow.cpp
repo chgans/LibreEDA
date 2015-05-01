@@ -6,7 +6,6 @@
 #include "core/editormanager/idocument.h"
 #include "core/editormanager/documentmanager.h"
 #include "core/navigationview/navigationdockwidget.h"
-#include "filesystemnavigationview/filesystemnavigationviewfactory.h"
 
 #include <QDebug>
 #include <QDockWidget>
@@ -32,9 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
             m_editorView, &EditorView::removeEditor);
 
     m_navigationDockWidget = new NavigationDockWidget;
-    QList<INavigationViewFactory *> navigationFactories;
-    navigationFactories << new FileSystemNavigationViewFactory();
-    m_navigationDockWidget->setFactories(navigationFactories);
     addDockWidget(Qt::LeftDockWidgetArea, m_navigationDockWidget);
 
     QAction *action;

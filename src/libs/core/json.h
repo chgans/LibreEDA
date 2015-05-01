@@ -30,6 +30,7 @@ bool toReal(QString *errorString, const QJsonValue &jsonValue, qreal &value);
 bool toColor(QString *errorString, const QJsonValue &jsonValue, QColor &value);
 bool toPen(QString *errorString, const QJsonValue &jsonValue, QPen &value);
 bool toBrush(QString *errorString, const QJsonValue &jsonValue, QBrush &value);
+bool toString(QString *errorString, const QJsonValue &jsonValue, QString &value);
 
 QJsonArray fromPoint(const QPointF &value);
 QJsonArray fromPointList(const QList<QPointF> &value);

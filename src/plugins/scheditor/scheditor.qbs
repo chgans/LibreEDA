@@ -1,10 +1,9 @@
 import qbs 1.0
 
-LedaLibrary {
+LedaPlugin {
     name: "SchEditor"
     
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets", "opengl"] }
-    Depends { name: "Core" }
     Depends { name: "Utils" }
 
     files: [
@@ -33,6 +32,8 @@ LedaLibrary {
         "scheditorconstants.h",
         "scheditorfactory.cpp",
         "scheditorfactory.h",
+        "scheditorplugin.cpp",
+        "scheditorplugin.h",
         "scheditorwidget.cpp",
         "scheditorwidget.h",
         "schitem.cpp",
@@ -87,6 +88,5 @@ LedaLibrary {
         "widget/taskoptionwidget.h",
         "widget/wireoperationwidget.cpp",
         "widget/wireoperationwidget.h",
-
     ]
 }

@@ -11,6 +11,15 @@ LedaLibrary {
         "constants.h",
         "core.cpp",
         "core.h",
+        "extension/extension.h",
+        "extension/iplugin.cpp",
+        "extension/iplugin.h",
+        "extension/plugincollection.cpp",
+        "extension/plugincollection.h",
+        "extension/pluginmanager.cpp",
+        "extension/pluginmanager.h",
+        "extension/pluginspec.cpp",
+        "extension/pluginspec.h",
         "json.cpp",
         "json.h",
         "actionmanager/actionmanager.cpp",
@@ -30,6 +39,6 @@ LedaLibrary {
         "navigationview/inavigationviewfactory.cpp",
         "navigationview/inavigationviewfactory.h",
         "navigationview/navigationdockwidget.cpp",
-        "navigationview/navigationdockwidget.h"
+        "navigationview/navigationdockwidget.h",
     ]
 }

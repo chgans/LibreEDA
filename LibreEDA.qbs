@@ -23,10 +23,15 @@ Project {
         "LIBRE_EDA",
         'BASE_SAMPLE_DIR="' + sourceDirectory + '/data/samples"',
         'BASE_SETTINGS_DIR="' + sourceDirectory + '/data/settings"',
-        'LEDA_LIBRARY_PATH="' + leda_library_path + '"'
+        // FIXME: use installRoot only for debug.
+        'LEDA_PLUGIN_PATH="' +  qbs.installRoot + "/" + leda_plugin_path + '"'
         // "QT_NO_CAST_TO_ASCII",
         // "QT_NO_CAST_FROM_ASCII"
     ]
+    property pathList additionalPlugins: []
+    property pathList additionalLibs: []
+    property pathList additionalTools: []
+    property pathList additionalAutotests: []
     qbsSearchPaths: "qbs"
 
     references: [

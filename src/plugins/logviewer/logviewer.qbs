@@ -1,10 +1,9 @@
 import qbs 1.0
 
-LedaLibrary {
+LedaPlugin {
     name: "LogViewer"
 
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets"] }
-    Depends { name: "Core" }
     Depends { name: "Utils" }
 
     files: [
@@ -17,8 +16,10 @@ LedaLibrary {
         "logviewer.cpp",
         "logviewer_global.h",
         "logviewer.h",
+        "logviewerplugin.cpp",
+        "logviewerplugin.h",
         "logwidget.cpp",
         "logwidget.h",
-        "logwidget.ui"
+        "logwidget.ui",
     ]
 }

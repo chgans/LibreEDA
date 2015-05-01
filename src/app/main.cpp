@@ -2,16 +2,9 @@
 #include <QApplication>
 #include <QDir>
 
+#include "core/extension/pluginmanager.h"
 #include "core/editormanager/editormanager.h"
 #include "core/editormanager/documentmanager.h"
-
-// PCB editor
-#include "pcbeditor/pcbpalettemanager.h"
-#include "pcbeditor/designlayermanager.h"
-#include "pcbeditor/pcbeditorfactory.h"
-
-// SCH editor
-#include "scheditor/scheditorfactory.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,21 +15,10 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("leda");
 
     // Loading plugins
-    EditorManager::registerEditorFactory(new PcbEditorFactory);
-    EditorManager::registerEditorFactory(new SchEditorFactory);
-    DocumentManager::loadSettings();
-
-    // Pcb plugin initialisation
-    PcbPaletteManager *paletteManager = PcbPaletteManager::instance();
-    paletteManager->setSystemPath(QString(BASE_SETTINGS_DIR"/pcb/palettes"));
-    paletteManager->loadPalettes();
-    DesignLayerManager *layerManager = DesignLayerManager::instance();
-    layerManager->setSystemPath(QString(BASE_SETTINGS_DIR"/pcb/layersets"));
-    layerManager->loadLayerSets();
-
-    // Sch plugin initialisation
-
-    // Load documents
+    PluginManager::setPluginIID("org.libre-eda.leda.plugin");
+    PluginManager::setPluginPaths(QStringList() << LEDA_PLUGIN_PATH);
+    PluginManager::discoverPlugins();
+    PluginManager::loadPlugins();
 
     // Go!
     MainWindow w;

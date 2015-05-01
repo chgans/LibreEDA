@@ -44,7 +44,7 @@ Module {
                 var inf = new TextFile(input.filePath);
                 var all = inf.readAll();
                 // replace quoted quotes
-                all = all.replace(/\\\"/g, '"');
+                // all = all.replace(/\\\"/g, '"');
                 // replace config vars
                 vars['LEDA_VERSION'] = project.leda_version;
                 vars['LEDA_COMPAT_VERSION'] = project.leda_compat_version;

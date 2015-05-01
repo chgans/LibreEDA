@@ -7,5 +7,5 @@ Project {
         "logviewer",
         "pcbeditor",
         "scheditor",
-    ]
+    ].concat(project.additionalPlugins)
 }

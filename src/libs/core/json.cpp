@@ -191,6 +191,20 @@ bool toBrush(QString *errorString, const QJsonValue &jsonValue, QBrush &value)
     return true;
 }
 
+bool toString(QString *errorString, const QJsonValue &jsonValue, QString &value)
+{
+    if (jsonValue.isUndefined()) {
+        *errorString = "JSON value is undefined";
+        return false;
+    }
+    if (!jsonValue.isString()) {
+        *errorString = "JSON value is not a string";
+        return false;
+    }
+    value = jsonValue.toString();
+    return true;
+}
+
 QJsonArray fromPoint(const QPointF &value)
 {
     QJsonArray jsonArray;
@@ -242,6 +256,7 @@ QJsonValue fromReal(qreal value)
 {
     return QJsonValue(value);
 }
+
 
 
 
