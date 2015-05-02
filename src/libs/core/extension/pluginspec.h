@@ -57,19 +57,19 @@ public:
     bool hasError() const;
     QString errorString() const;
 
+
+private:
+    friend class PluginManager;
+    PluginSpec();
+    bool reportError(const QString &message);
     bool read(const QString &fileName);
+    bool readMetaData(const QJsonObject &metaData);
     bool resolveDependencies(const QList<PluginSpec *> &specs);
     bool load();
     bool initialise();
     bool extensionsInitialised();
     void stop();
 
-private:
-    bool readMetaData(const QJsonObject &metaData);
-    bool reportError(const QString &message);
-
-    friend class PluginManager;
-    PluginSpec();
     QPluginLoader m_loader;
     QString m_name;
     QString m_version;
