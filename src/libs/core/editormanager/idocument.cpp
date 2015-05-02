@@ -3,6 +3,8 @@
 /*!
   \class IDocument
   \preliminary
+  \inmodule LibreEDA
+  \ingroup LeEditorManager
   \mainclass
   \brief The IDocument class ...
 */

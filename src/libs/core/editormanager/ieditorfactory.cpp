@@ -3,6 +3,8 @@
 /*!
   \class IEditorFactory
   \preliminary
+  \inmodule LibreEDA
+  \ingroup LeEditorManager
   \brief The IEditorFactory class ...
   */
 

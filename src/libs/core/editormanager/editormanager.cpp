@@ -13,6 +13,8 @@
 /*!
   \class EditorManager
   \preliminary
+  \inmodule LibreEDA
+  \ingroup LeEditorManager
   \mainclass
   \brief The EditorManager class manages a set of \c IEditor and \c EditorView objects.
 

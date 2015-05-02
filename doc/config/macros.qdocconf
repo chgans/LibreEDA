@@ -38,4 +38,3 @@ macro.clearfloat.HTML       = "<br style=\"clear: both\" />"
 macro.emptyspan.HTML        = "<span></span>"
 
 macro.LEDA               = "\\e{Libre EDA}"
-macro.QTC                = "\\e{Qt Creator}"

@@ -5,6 +5,8 @@
 /*!
   \class IEditor
   \preliminary
+  \inmodule LibreEDA
+  \ingroup LeEditorManager
   \mainclass
   \brief The IEditor class is an interface for providing different editors for
   different file types.
@@ -54,7 +56,7 @@ QWidget *IEditor::widget() const
 }
 
 /*!
- * Set the widget implementing the GUI interface for this editor.
+ * Set \a widget as the widget implementing the GUI interface for this editor.
  */
 void IEditor::setWidget(QWidget *widget)
 {

@@ -6,6 +6,7 @@
 #include "core/editormanager/editormanager.h"
 #include "core/editormanager/documentmanager.h"
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

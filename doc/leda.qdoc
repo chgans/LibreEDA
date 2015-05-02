@@ -1,58 +1,56 @@
 /*!
     \page index.html
-    \title Overview
-
-    Libre EDA is ...
-
-    To get an overview ...
-
-    \section1 Plugins
-    ...
-    
-    \table
-     \header
-      \li Plugin Name
-      \li Description
-     \row
-      \li \l{Core}
-      \li The core plugin. Provides the main window and managers for editors,
-          documents, actions, and files, just to mention the most important ones.
-     \row
-      \li \l{Find}
-      \li Support for searching text in arbitrary things.
-     \row
-      \li \l{Navigator}
-      \li Support for navigation through project, documents, file system, ...
-     \row
-      \li \l{OutputPane}
-      \li Support for output messages comming from processes such as ERC, DRC, project compilation, to/from SCH/PCB, ...
-     \row
-      \li \l{Locator}
-      \li Hooks for providing content for Locator.
-    \endtable
+    \title Leda Documentation
 
 */
 
 /*!
    \page classes.html
-   \title Classes
+   \title All Classes
+   This is a list of all documented Leda classes.
    \generatelist classes
 */
 
 /*!
+   \title All Modules
+   \group Modules
+   This is a list of all Leda moduless.
+*/
+
+/*!
    \page namespaces.html
-   \title Namespaces
+   \title All Namespaces
+   This is a list of all documented Leda namespaces.
    \generatelist namespaces
 */
 
 /*!
-   \page mainclasses.html
-   \title Main Classes
-   \generatelist mainclasses
+   \page functions.html
+   \title All Functions
+   This is the list of all documented member functions and global functions in the Leda API.
+   Each function has a link to the class or header file where it is declared and documented.
+   \generatelist functionindex
 */
 
 /*!
-   \page functions.html
-   \title Functions
-   \generatelist functionindex
-*/
+   \group LeExtensionSystem
+   \title Extension System Module
+   \ingroup Modules
+
+   \brief Contains classes for creating and managing extensions (plugins).
+
+    More blah blah here...
+
+ */
+
+/*!
+   \group LeEditorManager
+   \title Editors and Documents Module
+   \ingroup Modules
+
+   \brief Contains classes for creating and managing editors and documents.
+
+    More blah blah here...
+
+
+ */

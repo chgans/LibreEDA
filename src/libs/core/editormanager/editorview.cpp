@@ -7,6 +7,8 @@
 /*!
   \class EditorView
   \preliminary
+  \inmodule LibreEDA
+  \ingroup LeEditorManager
   \brief The EditorView class ...
 */
 

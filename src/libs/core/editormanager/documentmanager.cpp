@@ -10,7 +10,8 @@
 /*!
   \class DocumentManager
   \preliminary
-  \mainclass
+  \inmodule LibreEDA
+  \ingroup LeEditorManager
   \brief The DocumentManager class manages a set of IDocument objects.
 
   The \c DocumentManager service provides convenience functions for saving and opening

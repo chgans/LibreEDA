@@ -7,7 +7,7 @@ Product {
     Depends { name: "Qt"; submodules: ["core"] }
 
     files: [
-        "leda.qdoc",
+        "*.qdoc",
         "config/*.qdocconf",
     ]
     Group {

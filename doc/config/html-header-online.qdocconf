@@ -63,6 +63,7 @@ HTML.postheader = \
     "  <div class=\"navigationbar\">\n" \
     "   <ul class=\"sub-navigation\">\n" \
     "    <li><a href=\"index.html\">Overview</a></li>\n" \
+    "    <li><a href=\"modules.html\">Modules</a></li>\n" \
     "    <li><a href=\"classes.html\">Classes</a></li>\n" \
     "    <li><a href=\"functions.html\">Functions</a></li>\n" \
     "    <li><a href=\"namespaces.html\">Namespaces</a></li>\n" \

@@ -15,6 +15,7 @@ public:
 
     virtual bool initialize(QString *errorString) = 0;
     virtual void extensionsInitialized() = 0;
+    virtual void shutdown() = 0;
 
     PluginSpec *pluginSpec() const;
 

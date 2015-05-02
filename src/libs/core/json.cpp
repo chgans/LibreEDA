@@ -3,6 +3,13 @@
 #include <QPen>
 #include <QBrush>
 
+//  TODO: move to utils?
+/*!
+ * \namespace Json
+ * \inmodule LibreEDA
+ * \brief Contains helper functions to convert objects to/from JSON.
+ */
+
 namespace Json
 {
 
