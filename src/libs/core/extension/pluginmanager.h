@@ -6,6 +6,7 @@
 #include <QPointer>
 #include <QHash>
 #include <QSet>
+#include <QReadWriteLock>
 
 class QSettings;
 
@@ -25,6 +26,7 @@ public:
     static QList<QObject *> allObjects();
     template <typename T> static QList<T *> getObjects()
     {
+        QReadLocker lock(&m_lock);
         QList<T *> results;
         QList<QObject *> all = allObjects();
         foreach (QObject *obj, all) {
@@ -37,6 +39,7 @@ public:
     template <typename T, typename Predicate>
     static QList<T *> getObjects(Predicate predicate)
     {
+        QReadLocker lock(&m_lock);
         QList<T *> results;
         QList<QObject *> all = allObjects();
         foreach (QObject *obj, all) {
@@ -48,6 +51,7 @@ public:
     }
     template <typename T> static T *getObject()
     {
+        QReadLocker lock(&m_lock);
         QList<QObject *> all = allObjects();
         foreach (QObject *obj, all) {
             if (T *result = qobject_cast<T *>(obj))
@@ -57,6 +61,7 @@ public:
     }
     template <typename T, typename Predicate> static T *getObject(Predicate predicate)
     {
+        QReadLocker lock(&m_lock);
         QList<QObject *> all = allObjects();
         foreach (QObject *obj, all) {
             if (T *result = qobject_cast<T *>(obj))
@@ -84,13 +89,11 @@ public:
     static QSet<PluginSpec *> pluginsRequiredByPlugin(PluginSpec *spec);
 
     // Settings
-#if 0
     static void setSettings(QSettings *settings);
     static QSettings *settings();
     static void setGlobalSettings(QSettings *settings);
     static QSettings *globalSettings();
     static void writeSettings();
-#endif
 
 signals:
     void objectAdded(QObject *obj);
@@ -102,19 +105,28 @@ signals:
 public slots:
     void shutdown();
 
-
 private:
     PluginManager();
     static QList<PluginSpec *> loadQueue();
+    static bool loadQueue(PluginSpec *spec, QList<PluginSpec *> &queue,
+                          QList<PluginSpec *> &circularityCheckQueue);
     static void resolveDependencies();
+    static void readSettings();
 
     static PluginManager *m_instance;
+    static QReadWriteLock m_lock;
     static QList<QObject *> m_objectPool;
     static QString m_pluginIID;
     static QStringList m_pluginPaths;
     static QList<PluginSpec *> m_pluginSpecs;
     static QHash<QString, PluginCollection *> m_pluginCollections;
     static PluginCollection *m_defaultPluginCollection;
+    static QStringList m_defaultDisabledPlugins;
+    static QStringList m_defaultEnabledPlugins;
+    static QStringList m_disabledPlugins;
+    static QStringList m_forceEnabledPlugins;
+    static QSettings *m_settings;
+    static QSettings *m_globalSettings;
 };
 
 

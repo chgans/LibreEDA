@@ -20,3 +20,8 @@ void LogViewerPlugin::extensionsInitialized()
 
 }
 
+void LogViewerPlugin::shutdown()
+{
+
+}
+

@@ -6,6 +6,7 @@
 
 #include <QRegExp>
 #include <QFileInfo>
+
 /*!
     \class PluginDependency
     \inmodule LibreEDA
@@ -41,7 +42,7 @@
 /*!
     \variable PluginDependency::type
     Defines whether the dependency is required or optional.
-    \sa ExtensionSystem::PluginDependency::Type
+    \sa PluginDependency::Type
 */
 
 /*!
@@ -100,10 +101,40 @@
             The plugin instance has been deleted.
 */
 
+/*!
+    \class PluginArgumentDescription
+    \inmodule LibreEDA
+    \ingroup LeExtensionSystem
+    \preliminary
+    \brief The PluginArgumentDescription class contains the name, the parameter and the
+           description of a plugin's argument
+ */
+
+/*!
+    \variable PluginArgumentDescription::name
+    The name of the argument.
+    \sa PluginDependency::Type
+*/
+
+/*!
+    \variable PluginArgumentDescription::parameter
+    Short description of the argument's value.
+    \sa PluginDependency::Type
+*/
+
+/*!
+    \variable PluginArgumentDescription::description
+    The description of the argument (has to be one line only).
+    \sa PluginDependency::Type
+*/
+
 static const QString PLUGIN_METADATA      = QStringLiteral("MetaData");
 static const QString PLUGIN_NAME          = QStringLiteral("Name");
 static const QString PLUGIN_VERSION       = QStringLiteral("Version");
 static const QString PLUGIN_COMPATVERSION = QStringLiteral("CompatVersion");
+static const QString PLUGIN_REQUIRED      = QStringLiteral("Required");
+static const QString PLUGIN_EXPERIMENTAL  = QStringLiteral("Experimental");
+static const QString PLUGIN_DISABLED_BY_DEFAULT  = QStringLiteral("DisabledByDefault");
 static const QString VENDOR               = QStringLiteral("Vendor");
 static const QString COPYRIGHT            = QStringLiteral("Copyright");
 static const QString LICENSE              = QStringLiteral("License");
@@ -111,6 +142,16 @@ static const QString DESCRIPTION          = QStringLiteral("Description");
 static const QString URL                  = QStringLiteral("Url");
 static const QString CATEGORY             = QStringLiteral("Category");
 static const QString DEPENDENCIES         = QStringLiteral("Dependencies");
+static const QString DEPENDENCY_NAME      = QStringLiteral("Name");
+static const QString DEPENDENCY_VERSION   = QStringLiteral("Version");
+static const QString DEPENDENCY_TYPE      = QStringLiteral("Type");
+static const QString DEPENDENCY_TYPE_SOFT = QStringLiteral("Optional");
+static const QString DEPENDENCY_TYPE_HARD = QStringLiteral("Required");
+static const QString DEPENDENCY_TYPE_TEST = QStringLiteral("Test");
+static const QString ARGUMENTS            = QStringLiteral("Arguments");
+static const QString ARGUMENT_NAME        = QStringLiteral("Name");
+static const QString ARGUMENT_PARAMETER   = QStringLiteral("Parameter");
+static const QString ARGUMENT_DESCRIPTION = QStringLiteral("Description");
 
 static QRegExp VERSION_REGEXP = QRegExp(QStringLiteral("([0-9]+)(?:[.]([0-9]+))?(?:[.]([0-9]+))?(?:_([0-9]+))?"));
 
@@ -150,17 +191,49 @@ uint qHash(const PluginDependency &value)
 */
 bool PluginDependency::operator==(const PluginDependency &other) const
 {
-    return name == other.name && version == other.version;
+    return name == other.name && version == other.version && type == other.type;
 }
 
 /*!
     \internal
 */
-PluginSpec::PluginSpec():
-    m_plugin(nullptr),
-    m_state(PluginSpec::Invalid)
+PluginSpec::PluginSpec()
 {
+    clearData();
+}
 
+/*!
+    \internal
+*/
+void PluginSpec::clearData()
+{
+    m_plugin= nullptr;
+    m_state = PluginSpec::Invalid;
+    m_isRequired = false;
+    m_isExperimental = false,
+    m_isDisabledByDefault = false;
+    m_isEnabledBySettings = true;
+    m_isEnabledIndirectly = false;
+    m_isForceEnabled = false;
+    m_isForceDisabled = false;
+    m_hasError = false;
+    m_name
+        = m_version
+        = m_compatVersion
+        = m_vendor
+        = m_copyright
+        = m_license
+        = m_description
+        = m_url
+        = m_category
+        = m_location
+        = m_filePath
+        = QString();
+    m_errorString.clear();
+    m_dependencies.clear();
+    m_dependencySpecs.clear();
+    m_argumentDescriptions.clear();
+    m_arguments.clear();
 }
 
 /*!
@@ -247,11 +320,95 @@ QString PluginSpec::category() const
 }
 
 /*!
+    Returns whether the plugin has its required flag set.
+*/
+bool PluginSpec::isRequired() const
+{
+    return m_isRequired;
+}
+
+/*!
+    Returns whether the plugin has its experimental flag set.
+*/
+bool PluginSpec::isExperimental() const
+{
+    return m_isExperimental;
+}
+
+/*!
+    Returns whether the plugin is enabled by default.
+    A plugin might be disabled because the plugin is experimental, or because
+    the install settings define it as disabled by default.
+*/
+bool PluginSpec::isEnabledByDefault() const
+{
+    return !m_isDisabledByDefault;
+}
+
+/*!
+    Returns whether the plugin should be loaded at startup,
+    taking into account the default enabled state, and the user's settings.
+
+    \note This function might return false even if the plugin is loaded as a requirement of another
+    enabled plugin.
+    \sa PluginSpec::isEffectivelyEnabled
+*/
+bool PluginSpec::isEnabledBySettings() const
+{
+    return m_isEnabledBySettings;
+}
+
+/*!
+    Returns whether the plugin is loaded at startup.
+    \sa PluginSpec::isEnabledBySettings
+*/
+bool PluginSpec::isEffectivelyEnabled() const
+{
+    if (isForceEnabled() || isEnabledIndirectly())
+        return true;
+    if (isForceDisabled())
+        return false;
+    return isEnabledBySettings();
+}
+
+/*!
+    Returns true if loading was not done due to user unselecting this plugin or its dependencies.
+*/
+bool PluginSpec::isEnabledIndirectly() const
+{
+    return m_isEnabledIndirectly;
+}
+
+/*!
+    Returns whether the plugin is enabled via the -load option on the command line.
+*/
+bool PluginSpec::isForceEnabled() const
+{
+    return m_isForceEnabled;
+}
+
+/*!
+    Returns whether the plugin is disabled via the -noload option on the command line.
+*/
+bool PluginSpec::isForceDisabled() const
+{
+    return m_isForceDisabled;
+}
+
+/*!
     The plugin dependencies. This is valid after the PluginSpec::Read state is reached.
 */
 QVector<PluginDependency> PluginSpec::dependencies() const
 {
     return m_dependencies;
+}
+
+/*!
+    Returns a list of descriptions of command line arguments the plugin processes.
+*/
+PluginSpec::PluginArgumentDescriptions PluginSpec::argumentDescriptions() const
+{
+    return m_argumentDescriptions;
 }
 
 /*!
@@ -270,6 +427,30 @@ QString PluginSpec::location() const
 QString PluginSpec::filePath() const
 {
     return m_filePath;
+}
+
+/*!
+    Command line arguments specific to the plugin. Set at startup.
+*/
+QStringList PluginSpec::arguments() const
+{
+    return m_arguments;
+}
+
+/*!
+    Sets the command line arguments specific to the plugin to \a arguments.
+*/
+void PluginSpec::setArguments(const QStringList &arguments)
+{
+    m_arguments = arguments;
+}
+
+/*!
+    Adds \a argument to the command line arguments specific to the plugin.
+*/
+void PluginSpec::addArgument(const QString &argument)
+{
+    m_arguments.push_back(argument);
 }
 
 /*!
@@ -321,7 +502,7 @@ PluginSpec::State PluginSpec::state() const
 */
 bool PluginSpec::hasError() const
 {
-    return !m_errorString.isEmpty();
+    return m_hasError;
 }
 
 /*!
@@ -337,22 +518,7 @@ QString PluginSpec::errorString() const
 */
 bool PluginSpec::read(const QString &fileName)
 {
-    m_name
-        = m_version
-        = m_compatVersion
-        = m_vendor
-        = m_copyright
-        = m_license
-        = m_description
-        = m_url
-        = m_category
-        = m_location
-        = m_filePath
-        = QString();
-    m_state = PluginSpec::Invalid;
-    m_errorString.clear();
-    m_dependencies.clear();
-    m_dependencySpecs.clear();
+    clearData();
     QFileInfo fileInfo(fileName);
     ExtensionDebug() << "Reading" << fileInfo.fileName();
     m_location = fileInfo.absolutePath();
@@ -478,6 +644,44 @@ void PluginSpec::stop()
 /*!
     \internal
 */
+void PluginSpec::setEnabledBySettings(bool value)
+{
+    m_isEnabledBySettings = value;
+}
+
+/*!
+    \internal
+*/
+void PluginSpec::setEnabledByDefault(bool value)
+{
+    m_isDisabledByDefault = !value;
+}
+
+/*!
+    \internal
+*/
+void PluginSpec::setForceEnabled(bool value)
+{
+    m_isForceEnabled = value;
+    if (value)
+        m_isForceDisabled = false;
+}
+
+/*!
+    \internal
+*/
+void PluginSpec::setForceDisabled(bool value)
+{
+    if (value)
+        m_isForceEnabled = false;
+    m_isForceDisabled = value;
+}
+
+/*!
+    \internal
+*/
+// FIXME: always use reportError(), since it sets the error flag.
+// TODO: Better error reporting
 bool PluginSpec::readMetaData(const QJsonObject &metaData)
 {
     QJsonValue value;
@@ -504,10 +708,25 @@ bool PluginSpec::readMetaData(const QJsonObject &metaData)
         return reportError("Invalid version");
 
     value = pluginInfo.value(PLUGIN_COMPATVERSION);
-    if (!Json::toString(&m_errorString, value, m_compatVersion))
+    m_compatVersion = m_version;
+    if (!value.isUndefined()) {
+        if (!Json::toString(&m_errorString, value, m_compatVersion))
+            return false;
+        if (!isValidVersion(m_version))
+            return reportError("Invalid compat version");
+    }
+
+    value = pluginInfo.value(PLUGIN_REQUIRED);
+    if (!value.isUndefined() && !Json::toBool(&m_errorString, value, m_isRequired))
         return false;
-    if (!isValidVersion(m_version))
-        return reportError("Invalid compat version");
+
+    value = pluginInfo.value(PLUGIN_EXPERIMENTAL);
+    if (!value.isUndefined() && !Json::toBool(&m_errorString, value, m_isExperimental))
+        return false;
+
+    value = pluginInfo.value(PLUGIN_DISABLED_BY_DEFAULT);
+    if (!value.isUndefined() && !Json::toBool(&m_errorString, value, m_isDisabledByDefault))
+        return false;
 
     value = pluginInfo.value(VENDOR);
     if (!Json::toString(&m_errorString, value, m_vendor))
@@ -544,18 +763,53 @@ bool PluginSpec::readMetaData(const QJsonObject &metaData)
             }
             QJsonObject depObj = depVal.toObject();
             PluginDependency dep;
-            value = depObj.value(PLUGIN_NAME);
+            value = depObj.value(DEPENDENCY_NAME);
             if (!Json::toString(&m_errorString, value, dep.name))
                 return false;
-            value = depObj.value(PLUGIN_VERSION);
+            value = depObj.value(DEPENDENCY_VERSION);
             if (!Json::toString(&m_errorString, value, dep.version))
                 return false;
             if (!isValidVersion(dep.version))
                 return reportError("Invalid dependency version");
+            value = depObj.value(DEPENDENCY_TYPE);
+            QString str = DEPENDENCY_TYPE_HARD;
+            if (!value.isUndefined() && !Json::toString(&m_errorString, value, str))
+                return false;
+            if (str == DEPENDENCY_TYPE_HARD)
+                dep.type = PluginDependency::Required;
+            else if (str == DEPENDENCY_TYPE_SOFT)
+                dep.type = PluginDependency::Optional;
+            else if (str == DEPENDENCY_TYPE_TEST)
+                dep.type = PluginDependency::Test;
+            else {
+                return reportError("Invalid depemdency type");
+            }
             m_dependencies.append(dep);
         }
     }
 
+    value = pluginInfo.value(ARGUMENTS);
+    if (!value.isUndefined() && !value.isArray())
+        return reportError("Invalid argument array");
+    if (!value.isUndefined()) {
+        QJsonArray array = value.toArray();
+        foreach (const QJsonValue &v, array) {
+            if (!v.isObject())
+                return reportError("Invalid argument entry");
+            QJsonObject argumentObject = v.toObject();
+            PluginArgumentDescription arg;
+            value = argumentObject.value(ARGUMENT_NAME);
+            if (!Json::toString(&m_errorString, value, arg.name))
+                return false;
+            value = argumentObject.value(ARGUMENT_PARAMETER);
+            if (!Json::toString(&m_errorString, argumentObject, arg.parameter))
+                return false;
+            value = argumentObject.value(ARGUMENT_DESCRIPTION);
+            if (!Json::toString(&m_errorString, argumentObject, arg.description))
+                return false;
+            m_argumentDescriptions.append(arg);
+        }
+    }
     ExtensionDebug() << "Plugin" << m_name << "version" << m_version << "/" << m_compatVersion;
     return true;
 }
@@ -565,6 +819,7 @@ bool PluginSpec::readMetaData(const QJsonObject &metaData)
 */
 bool PluginSpec::reportError(const QString &message)
 {
+    m_hasError = true;
     m_errorString = message;
     return false;
 }

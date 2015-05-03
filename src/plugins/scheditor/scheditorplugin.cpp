@@ -21,3 +21,8 @@ void SchEditorPlugin::extensionsInitialized()
 
 }
 
+void SchEditorPlugin::shutdown()
+{
+
+}
+

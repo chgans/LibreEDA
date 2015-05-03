@@ -21,3 +21,8 @@ void PcbEditorPlugin::extensionsInitialized()
 
 }
 
+void PcbEditorPlugin::shutdown()
+{
+
+}
+

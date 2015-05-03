@@ -16,6 +16,7 @@ public:
 
     bool initialize(QString *errorString);
     void extensionsInitialized();
+    void shutdown();
 
 private:
 };

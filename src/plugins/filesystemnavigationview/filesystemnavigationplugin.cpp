@@ -21,3 +21,8 @@ void FileSystemNavigationPlugin::extensionsInitialized()
 
 }
 
+void FileSystemNavigationPlugin::shutdown()
+{
+
+}
+

@@ -1,11 +1,11 @@
 #include "plugincollection.h"
 
 /*!
- * \class PluginCollection
+    \class PluginCollection
     \inmodule LibreEDA
     \ingroup LeExtensionSystem
     \preliminary
- * \brief The PluginCollection class is a convenience class to logically group PluginSpec objects.
+    \brief The PluginCollection class is a convenience class to logically group PluginSpec objects.
  */
 
 /*!

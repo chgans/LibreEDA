@@ -14,6 +14,7 @@ public:
 
     bool initialize(QString *errorString);
     void extensionsInitialized();
+    void shutdown();
 };
 
 #endif // FILESYSTEMNAVIGATIONPLUGIN_H
