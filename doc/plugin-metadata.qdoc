@@ -27,7 +27,7 @@
     who created the plugin, what it is for, and where to find more information about it.
     The file must be located in one of the include search paths when compiling the plugin,
     and must have the \c .json extension. The JSON file is compiled into the plugin as meta data,
-    which then is read by \QC when loading plugins.
+    which then is read by \LEDA when loading plugins.
 
     \section2 Main Keys
 
