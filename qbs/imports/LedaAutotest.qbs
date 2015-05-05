@@ -29,6 +29,6 @@ LedaProduct {
     // absolute paths to resources in the build directory.
     //    cpp.rpaths: qbs.targetOS.contains("osx")
     //            ? ["@executable_path/.."]
-    //            : ["$ORIGIN/../" + project.libDirName + "/libreeda",
-    //               "$ORIGIN/../" project.libDirName + "/libreeda/plugins"]
+    //            : ["$ORIGIN/../" + project.libDirName + "/qtcreator",
+    //               "$ORIGIN/../" project.libDirName + "/qtcreator/plugins"]
 }

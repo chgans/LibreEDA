@@ -10,7 +10,7 @@ LogViewerPlugin::~LogViewerPlugin()
 {
 }
 
-bool LogViewerPlugin::initialize(QString *errorString)
+bool LogViewerPlugin::initialize(const QStringList &arguments, QString *errorString)
 {
     return true;
 }

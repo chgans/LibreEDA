@@ -13,7 +13,7 @@ public:
     explicit IPlugin(QObject *parent = 0);
     virtual ~IPlugin();
 
-    virtual bool initialize(QString *errorString) = 0;
+    virtual bool initialize(const QStringList &arguments, QString *errorString) = 0;
     virtual void extensionsInitialized() = 0;
     virtual void shutdown() = 0;
 

@@ -12,7 +12,7 @@ public:
     SchEditorPlugin(QObject *parent = nullptr);
     ~SchEditorPlugin();
 
-    bool initialize(QString *errorString);
+    bool initialize(const QStringList &arguments, QString *errorString);
     void extensionsInitialized();
     void shutdown();
 };

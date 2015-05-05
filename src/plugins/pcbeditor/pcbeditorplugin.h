@@ -12,7 +12,7 @@ public:
     PcbEditorPlugin(QObject *parent = nullptr);
     ~PcbEditorPlugin();
 
-    bool initialize(QString *errorString);
+    bool initialize(const QStringList &arguments, QString *errorString);
     void extensionsInitialized();
     void shutdown();
 };

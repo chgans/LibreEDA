@@ -11,7 +11,7 @@ PcbEditorPlugin::~PcbEditorPlugin()
 
 }
 
-bool PcbEditorPlugin::initialize(QString *errorString)
+bool PcbEditorPlugin::initialize(const QStringList &arguments, QString *errorString)
 {
     return true;
 }

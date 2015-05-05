@@ -609,7 +609,7 @@ bool PluginSpec::initialise()
     Q_ASSERT(m_plugin != nullptr);
 
     QString error;
-    if (!m_plugin->initialize(&error))
+    if (!m_plugin->initialize(m_arguments, &error))
         return reportError(QString("Initialisation failed: %1").arg(error));
 
     m_state = PluginSpec::Initialized;

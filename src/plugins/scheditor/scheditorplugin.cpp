@@ -11,7 +11,7 @@ SchEditorPlugin::~SchEditorPlugin()
 
 }
 
-bool SchEditorPlugin::initialize(QString *errorString)
+bool SchEditorPlugin::initialize(const QStringList &arguments, QString *errorString)
 {
     return true;
 }

@@ -28,6 +28,7 @@ Project {
         // "QT_NO_CAST_TO_ASCII",
         // "QT_NO_CAST_FROM_ASCII"
     ]
+    property bool withAutotests: qbs.buildVariant === "debug"
     property pathList additionalPlugins: []
     property pathList additionalLibs: []
     property pathList additionalTools: []
@@ -36,6 +37,7 @@ Project {
 
     references: [
         "doc/doc.qbs",
-        "src/src.qbs"
+        "src/src.qbs",
+        "tests/tests.qbs"
     ]
 }

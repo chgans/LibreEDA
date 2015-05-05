@@ -12,7 +12,7 @@ public:
     FileSystemNavigationPlugin(QObject *parent = nullptr);
     ~FileSystemNavigationPlugin();
 
-    bool initialize(QString *errorString);
+    bool initialize(const QStringList &arguments, QString *errorString);
     void extensionsInitialized();
     void shutdown();
 };

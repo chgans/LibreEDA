@@ -11,7 +11,7 @@ FileSystemNavigationPlugin::~FileSystemNavigationPlugin()
 
 }
 
-bool FileSystemNavigationPlugin::initialize(QString *errorString)
+bool FileSystemNavigationPlugin::initialize(const QStringList &arguments, QString *errorString)
 {
     return true;
 }

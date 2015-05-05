@@ -14,7 +14,7 @@ public:
     LogViewerPlugin(QObject *parent = nullptr);
     ~LogViewerPlugin();
 
-    bool initialize(QString *errorString);
+    bool initialize(const QStringList &arguments, QString *errorString);
     void extensionsInitialized();
     void shutdown();
 
