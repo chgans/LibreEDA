@@ -1,5 +1,8 @@
 #include "graphicsellipsetool.h"
 #include "item/graphicsellipseitem.h"
+#include "schview.h"
+
+#include "palette.h"
 
 #include <QAction>
 
@@ -33,6 +36,10 @@ void GraphicsEllipseTool::desactivate(const QAction *which)
 SchItem *GraphicsEllipseTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsEllipseItem();
+    QPen pen(SchView().palette()->orange(), 1);
+    pen.setJoinStyle(Qt::RoundJoin);
+    m_item->setPen(pen);
+    m_item->setBrush(QBrush(SchView().palette()->yellow()));
     m_item->setPos(pos);
     return m_item;
 }

@@ -2,6 +2,7 @@
 #define GRAPHICSVIEW_H
 
 #include <QGraphicsView>
+#include "palette.h"
 
 class SchScene;
 class AbstractGraphicsInteractiveTool;
@@ -31,6 +32,11 @@ public:
 
     void scaleView(qreal scaleFactor);
 
+    void setPaletteMode(Palette::Mode mode);
+    Palette::Mode paletteMode() const;
+
+    const Palette *palette() const;
+
 public slots:
     void enableSnapToGrid(bool enabled);
     bool isSnapToGridEnabled() const;
@@ -59,6 +65,7 @@ private:
     QMouseEvent snapMouseEvent(QMouseEvent *event);
     QSizeF pixelSize() const;
     bool m_snapToGridEnabled;
+    Palette *m_palette;
 };
 
 #endif // GRAPHICSVIEW_H

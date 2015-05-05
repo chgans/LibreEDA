@@ -1,5 +1,6 @@
 #include "schitem.h"
 #include "abstractgraphicshandle.h"
+#include "palette.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <QPainterPathStroker>
@@ -15,8 +16,12 @@ AbstractGraphicsHandle::AbstractGraphicsHandle(SchItem *parent):
     m_behaviour(NormalHandleBehaviour),
     m_parent(parent) // hackish: Because BezierHandle act as a proxy
 {
+    // FIXME: From palette
     setPen(QPen(QBrush(Qt::red), 0));
     setBrush(QBrush(Qt::white));
+
+//    setPen(QPen(gpalette::Content2, 0));
+//    setBrush(QBrush(gpalette::Content4));
 
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);

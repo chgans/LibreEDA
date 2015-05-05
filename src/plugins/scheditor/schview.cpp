@@ -3,6 +3,7 @@
 #include "schitem.h"
 #include "abstractgraphicsinteractivetool.h"
 #include "graphicsgrid.h"
+#include "palette.h"
 
 #include <QGLWidget>
 
@@ -33,7 +34,8 @@ SchView::SchView(QWidget *parent):
     m_objectUnderMouse(nullptr),
     m_handleUnderMouse(nullptr),
     m_mousePositionChanged(true),
-    m_snapToGridEnabled(true)
+    m_snapToGridEnabled(true),
+    m_palette(new Palette(this))
 {    
     setViewport(new QGLWidget);
 
@@ -119,6 +121,27 @@ void SchView::scaleView(qreal scaleFactor)
     updateMousePos();
 }
 
+void SchView::setPaletteMode(Palette::Mode mode)
+{
+    if (mode == m_palette->mode())
+        return;
+    m_palette->setMode(mode);
+    scene()->setBackgroundBrush(QBrush(m_palette->background1()));
+    scene()->grid()->setCoarseLineColor(m_palette->content6());
+    scene()->grid()->setFineLineColor(m_palette->content3());
+    update();
+}
+
+Palette::Mode SchView::paletteMode() const
+{
+    return m_palette->mode();
+}
+
+const Palette *SchView::palette() const
+{
+    return m_palette;
+}
+
 void SchView::enableSnapToGrid(bool enabled)
 {
     m_snapToGridEnabled = enabled;
@@ -131,14 +154,10 @@ bool SchView::isSnapToGridEnabled() const
 
 void SchView::drawBackground(QPainter *painter, const QRectF &rect)
 {
-
-    QLinearGradient gradient(rect.topLeft(), rect.bottomLeft());
-    gradient.setColorAt(0, Qt::darkBlue);
-    gradient.setColorAt(1, Qt::lightGray);
-    painter->fillRect(rect, QBrush(gradient));
-
+    painter->fillRect(rect, QBrush(m_palette->background2()));
     QGraphicsView::drawBackground(painter, rect);
 
+    // Grid
     if (scene() && scene()->grid()) {
         scene()->grid()->draw(pixelSize(), painter, rect);
     }
@@ -154,6 +173,7 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
     if (p.isNull())
         return;
 
+    // Cursor
     qreal length = 50.0/transform().m11();
     QPointF top(p.x(),
                 p.y() - length);

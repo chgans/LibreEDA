@@ -7,6 +7,8 @@
 #include "core/editormanager/documentmanager.h"
 #include "core/navigationview/navigationdockwidget.h"
 
+#include "scheditor/scheditorwidget.h"
+
 #include <QDebug>
 #include <QDockWidget>
 #include <QApplication>
@@ -20,18 +22,18 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    m_editorView = new EditorView();
-    setCentralWidget(m_editorView);
+//    m_editorView = new EditorView();
+//    setCentralWidget(m_editorView);
 
-    connect(m_editorView, &EditorView::editorCloseRequested,
-            this, &MainWindow::onEditorCloseRequested);
-    connect(EditorManager::instance(), &EditorManager::editorOpened,
-            this, &MainWindow::onEditorOpened);
-    connect(EditorManager::instance(), &EditorManager::editorAboutToClose,
-            m_editorView, &EditorView::removeEditor);
+//    connect(m_editorView, &EditorView::editorCloseRequested,
+//            this, &MainWindow::onEditorCloseRequested);
+//    connect(EditorManager::instance(), &EditorManager::editorOpened,
+//            this, &MainWindow::onEditorOpened);
+//    connect(EditorManager::instance(), &EditorManager::editorAboutToClose,
+//            m_editorView, &EditorView::removeEditor);
 
-    m_navigationDockWidget = new NavigationDockWidget;
-    addDockWidget(Qt::LeftDockWidgetArea, m_navigationDockWidget);
+//    m_navigationDockWidget = new NavigationDockWidget;
+//    addDockWidget(Qt::LeftDockWidgetArea, m_navigationDockWidget);
 
     QAction *action;
     QMenu *fileMenu = menuBar()->addMenu("&file");
@@ -42,6 +44,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_recentFilesMenu, &QMenu::aboutToShow,
             this, &MainWindow::populateRecentFilesMenu);
 
+    SchEditorWidget *editor = new SchEditorWidget();
+    setCentralWidget(editor);
+    editor->activate(this);
 }
 
 MainWindow::~MainWindow()

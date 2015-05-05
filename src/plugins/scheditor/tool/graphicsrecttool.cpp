@@ -4,6 +4,7 @@
 #include "abstractgraphicshandle.h"
 #include "schscene.h"
 #include "schview.h"
+#include "palette.h"
 
 #include <QMouseEvent>
 #include <QKeyEvent>
@@ -33,6 +34,10 @@ void GraphicsRectTool::cancel()
 SchItem *GraphicsRectTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsRectItem();
+    QPen pen(SchView().palette()->orange(), 1);
+    pen.setJoinStyle(Qt::RoundJoin);
+    m_item->setPen(pen);
+    m_item->setBrush(QBrush(SchView().palette()->yellow()));
     m_item->setPos(pos);
     return m_item;
 }

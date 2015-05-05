@@ -6,6 +6,7 @@
 class QMainWindow;
 class QActionGroup;
 class QToolBar;
+class QComboBox;
 
 class SchView;
 class SchScene;
@@ -31,11 +32,15 @@ public:
     SchView *view() const;
     SchScene *scene() const;
 
+private slots:
+    void onPaletteComboBoxIndexChanged(int index);
+
 private:
     QMainWindow *m_mainWindow;
     SchView *m_view;
     SchScene *m_scene;
     TaskDockWidget *m_taskDockWidget;
+    QComboBox *m_paletteModeComboBox;
 
     void addInteractiveTools();
     void addInteractiveTool(AbstractGraphicsInteractiveTool *tool);

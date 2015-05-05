@@ -2,6 +2,7 @@
 #include "schitem.h"
 #include "abstractgraphicshandle.h"
 #include "graphicsgrid.h"
+#include "palette.h"
 
 #include <QPainter>
 
@@ -38,6 +39,10 @@ void SchScene::setGrid(GraphicsGrid *grid)
 
 void SchScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    painter->fillRect(sceneRect().intersected(rect), QColor::fromRgb(0xff, 0xfc, 0xf8));
+    // FIXME: Get access to the view's palette
+    //painter->setPen(QPen(gpalette::Content1, 0));
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(backgroundBrush());
+    painter->drawRect(sceneRect());
 }
 

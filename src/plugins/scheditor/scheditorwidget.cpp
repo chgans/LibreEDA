@@ -2,6 +2,7 @@
 #include "schview.h"
 #include "schscene.h"
 #include "graphicsgrid.h"
+#include "palette.h"
 
 #include "tool/graphicsbeziertool.h"
 #include "tool/graphicsselecttool.h"
@@ -22,6 +23,7 @@
 #include <QActionGroup>
 #include <QToolBar>
 #include <QTimer>
+#include <QComboBox>
 
 SchEditorWidget::SchEditorWidget(QWidget *parent):
     AbstractEditor(parent)
@@ -34,10 +36,12 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
     grid->setSize(QSize(m_scene->sceneRect().width(),
                         m_scene->sceneRect().height()));
     m_scene->setGrid(grid);
+    grid->setCoarseMultiplier(5);
     m_view = new SchView();
     m_view->setScene(m_scene);
     m_view->fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
     m_view->ensureVisible(m_scene->sceneRect());
+    m_view->setPaletteMode(Palette::Dark);
     layout()->addWidget(m_view);
 
     m_taskDockWidget = new TaskDockWidget();
@@ -82,13 +86,29 @@ void SchEditorWidget::activate(QMainWindow *win)
 {
     win->addToolBar(m_interactiveToolsToolBar);
     m_interactiveToolsToolBar->show();
+    QToolBar *bar = win->addToolBar("theme");
+    m_paletteModeComboBox = new QComboBox;
+    m_paletteModeComboBox->addItem("Dark", QVariant::fromValue<Palette::Mode>(Palette::Dark));
+    m_paletteModeComboBox->addItem("Light", QVariant::fromValue<Palette::Mode>(Palette::Light));
+    m_paletteModeComboBox->setCurrentIndex(0);
+    connect(m_paletteModeComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onPaletteComboBoxIndexChanged(int)));
+    bar->addWidget(m_paletteModeComboBox);
+
+#if 0
     win->addToolBar(m_snapToolBar);
     m_snapToolBar->show();
     win->addToolBar(m_pathPointToolBar);
     m_pathPointToolBar->show();
     win->addDockWidget(Qt::LeftDockWidgetArea, m_taskDockWidget);
     m_taskDockWidget->show();
+#endif
     m_mainWindow = win;
+}
+
+void SchEditorWidget::onPaletteComboBoxIndexChanged(int index)
+{
+    m_view->setPaletteMode(m_paletteModeComboBox->itemData(index).value<Palette::Mode>());
 }
 
 void SchEditorWidget::desactivate(QMainWindow *win)
@@ -106,23 +126,26 @@ void SchEditorWidget::addInteractiveTools()
 
     addInteractiveTool(new GraphicsSelectTool(this));
     addInteractiveTool(new GraphicsLineTool(this));
-    addInteractiveTool(new GraphicsWireTool(this));
+    //addInteractiveTool(new GraphicsWireTool(this));
     addInteractiveTool(new GraphicsRectTool(this));
-    addInteractiveTool(new GraphicsPolygonTool(this));
-    addInteractiveTool(new GraphicsCircleTool(this));
+    //addInteractiveTool(new GraphicsPolygonTool(this));
+    //addInteractiveTool(new GraphicsCircleTool(this));
     addInteractiveTool(new GraphicsEllipseTool(this));
-    addInteractiveTool(new GraphicsBezierTool(this));
+    //addInteractiveTool(new GraphicsBezierTool(this));
 
     QAction *action;
     action = new QAction(QIcon(":/icons/graphicsarctool.svg"),
                          "Add an arc", nullptr);
     m_interactiveToolsToolBar->addAction(action);
+
+#if 0
     action = new QAction(QIcon(":/icons/graphicsbeziercurvetool.svg"),
                          "Add a a bezier curve", nullptr);
     m_interactiveToolsToolBar->addAction(action);
     action = new QAction(QIcon(":/icons/graphicsbeziersplinetool.svg"), // TODO: rename to basisspline
                          "Add a basis spline (B-spline)", nullptr);
     m_interactiveToolsToolBar->addAction(action);
+#endif
 
     // TODO:
     //  - polyline => wire
@@ -213,6 +236,7 @@ void SchEditorWidget::addSnapTools()
 
 void SchEditorWidget::addPathPointTools()
 {
+#if 0
     QAction *action;
 
     m_pathPointToolBar = new QToolBar();
@@ -240,6 +264,7 @@ void SchEditorWidget::addPathPointTools()
     action = new QAction(QIcon(":/icons/graphicspathpointsmooth.svg"),
                          "Make selected path points auto-smooth", nullptr);
     m_pathPointToolBar->addAction(action);
+#endif
 }
 
 // They all work on one or more items
