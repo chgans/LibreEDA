@@ -220,6 +220,7 @@ void SchView::mousePressEvent(QMouseEvent *event)
     }
 }
 
+// FIXME: Don't snap cursor for handles
 void SchView::mouseMoveEvent(QMouseEvent *event)
 {
     updateMousePos();
