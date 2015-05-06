@@ -12,6 +12,7 @@
 #include "tool/graphicsellipsetool.h"
 #include "tool/graphicspolygontool.h"
 #include "tool/graphicswiretool.h"
+#include "tool/graphicsarctool.h"
 
 #include "grid/graphicscartesiangrid.h"
 
@@ -130,6 +131,7 @@ void SchEditorWidget::addInteractiveTools()
     addInteractiveTool(new GraphicsRectTool(this));
     //addInteractiveTool(new GraphicsPolygonTool(this));
     //addInteractiveTool(new GraphicsCircleTool(this));
+    addInteractiveTool(new GraphicsArcTool(this));
     addInteractiveTool(new GraphicsEllipseTool(this));
     //addInteractiveTool(new GraphicsBezierTool(this));
 
