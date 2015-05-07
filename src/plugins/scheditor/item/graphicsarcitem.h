@@ -3,38 +3,45 @@
 
 #include "schitem.h"
 
+// TODO: Pie vs chord vs whole shape
+// TODO: keep ratio (ellipse vs circle)
+
 class GraphicsArcItem : public SchItem
 {
 
 public:
     enum HandleId {
-        RectHandle = 0,
+        XRadiusHandle = 0,
+        YRadiusHandle,
         StartAngleHandle,
         SpanAngleHandle
     };
 
     GraphicsArcItem(SchItem *parent = 0);
-    GraphicsArcItem(const QRectF &rect, SchItem *parent = 0);
-    GraphicsArcItem(qreal x, qreal y, qreal w, qreal h, SchItem *parent = 0);
+    GraphicsArcItem(qreal xRadius, qreal yRadius, SchItem *parent = 0);
+    GraphicsArcItem(qreal xRadius, qreal yRadius, int startAngle, int spanAngle, SchItem *parent = 0);
     ~GraphicsArcItem();
 
-    QRectF rect() const;
+    qreal xRadius() const;
+    qreal yRadius() const;
     int startAngle() const;
     int spanAngle() const;
 
 public slots:
-    void setRect(const QRectF &rect);
-    inline void setRect(qreal x, qreal y, qreal w, qreal h)
-    { setRect(QRectF(x, y, w, h)); }
+    void setXRadius(qreal radius);
+    void setYRadius(qreal radius);
     void setStartAngle(int angle);
     void setSpanAngle(int angle);
 
 private:
     void addHandles();
     void updateHandles();
-    QPointF pointAt(int angle);
-    int angleAt(const QPointF &pos);
-    QRectF m_rect;
+    QPointF pointAt(int angle) const;
+    qreal angleAt(const QPointF &pos) const;
+    QRectF rect() const;
+    //inline qreal spanAngle() const;
+    qreal m_xRadius;
+    qreal m_yRadius;
     int m_startAngle;
     int m_spanAngle;
     mutable QRectF m_boundingRect;

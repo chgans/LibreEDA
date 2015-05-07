@@ -7,24 +7,26 @@
 
 GraphicsArcItem::GraphicsArcItem(SchItem *parent):
     SchItem(parent),
-    m_startAngle(0.0), m_spanAngle(360.0*16)
+    m_xRadius(0.0), m_yRadius(0.0),
+    m_startAngle(0.0), m_spanAngle(360.0 * 16)
 {
     addHandles();
 }
 
-GraphicsArcItem::GraphicsArcItem(const QRectF &rect, SchItem *parent):
+GraphicsArcItem::GraphicsArcItem(qreal xRadius, qreal yRadius, SchItem *parent):
     SchItem(parent),
-    m_startAngle(0.0), m_spanAngle(360.0*16)
+    m_xRadius(xRadius), m_yRadius(yRadius),
+    m_startAngle(0.0), m_spanAngle(360.0 * 16)
 {
-    setRect(rect);
     addHandles();
 }
 
-GraphicsArcItem::GraphicsArcItem(qreal x, qreal y, qreal w, qreal h, SchItem *parent):
+GraphicsArcItem::GraphicsArcItem(qreal xRadius, qreal yRadius,
+                                 int startAngle, int spanAngle, SchItem *parent):
     SchItem(parent),
-    m_startAngle(0.0), m_spanAngle(360.0*16)
+    m_xRadius(xRadius), m_yRadius(yRadius),
+    m_startAngle(startAngle), m_spanAngle(spanAngle)
 {
-    setRect(x, y, w, h);
     addHandles();
 }
 
@@ -33,9 +35,14 @@ GraphicsArcItem::~GraphicsArcItem()
 
 }
 
-QRectF GraphicsArcItem::rect() const
+qreal GraphicsArcItem::xRadius() const
 {
-    return m_rect;
+    return m_xRadius;
+}
+
+qreal GraphicsArcItem::yRadius() const
+{
+    return m_yRadius;
 }
 
 int GraphicsArcItem::startAngle() const
@@ -48,73 +55,89 @@ int GraphicsArcItem::spanAngle() const
     return m_spanAngle;
 }
 
-void GraphicsArcItem::setRect(const QRectF &rect)
+void GraphicsArcItem::setXRadius(qreal r)
 {
-    if (rect == m_rect)
+    qreal radius = qAbs(r);
+    if (qFuzzyCompare(radius, m_xRadius))
         return;
     prepareGeometryChange();
     m_boundingRect = QRectF();
-    m_rect = rect;
+    m_xRadius = radius;
     update();
     updateHandles();
 }
 
-void GraphicsArcItem::setStartAngle(int angle)
+void GraphicsArcItem::setYRadius(qreal r)
 {
+    qreal radius = qAbs(r);
+    if (qFuzzyCompare(radius, m_yRadius))
+        return;
+    prepareGeometryChange();
+    m_boundingRect = QRectF();
+    m_yRadius = radius;
+    update();
+    updateHandles();
+}
+
+void GraphicsArcItem::setStartAngle(int a)
+{
+    qreal angle = fmod(a, 360*16);
     if (angle == m_startAngle)
         return;
-    qDebug() << "Start angle" << angle/16.0;
     prepareGeometryChange();
     m_boundingRect = QRectF();
     m_startAngle = angle;
     update();
     updateHandles();
+    qDebug() << "start" << m_startAngle/16 << "span" << m_spanAngle/16;
 }
 
-void GraphicsArcItem::setSpanAngle(int angle)
+void GraphicsArcItem::setSpanAngle(int a)
 {
+    qreal angle = fmod(a, 360*16);
     if (angle == m_spanAngle)
         return;
-    qDebug() << "Span angle" << angle/16.0;
     prepareGeometryChange();
     m_boundingRect = QRectF();
     m_spanAngle = angle;
     update();
     updateHandles();
+    qDebug() << "start" << m_startAngle/16 << "span" << m_spanAngle/16;
 }
 
 void GraphicsArcItem::addHandles()
 {
-    addRegularHandle(RectHandle, MoveHandleRole, CircularHandleShape);
-    addRegularHandle(StartAngleHandle, MoveHandleRole, DiamondedHandleShape);
-    addRegularHandle(SpanAngleHandle, MoveHandleRole, SquaredHandleShape);
+    addRegularHandle(XRadiusHandle, MoveHandleRole, DiamondedHandleShape);
+    addRegularHandle(YRadiusHandle, MoveHandleRole, DiamondedHandleShape);
+    addRegularHandle(StartAngleHandle, MoveHandleRole, CircularHandleShape);
+    addRegularHandle(SpanAngleHandle, MoveHandleRole, CircularHandleShape);
 }
 
 void GraphicsArcItem::updateHandles()
 {
     blockItemNotification();
-    handleAt(RectHandle)->setPos(m_rect.bottomRight());
-    handleAt(StartAngleHandle)->setPos(pointAt(m_startAngle));
-    handleAt(SpanAngleHandle)->setPos(pointAt(m_startAngle + m_spanAngle));
+    handleAt(XRadiusHandle)->setPos(QPointF(m_xRadius, 0.0));
+    handleAt(YRadiusHandle)->setPos(QPointF(0.0, m_yRadius));
+    handleAt(StartAngleHandle)->setPos(pointAt(-m_startAngle));
+    handleAt(SpanAngleHandle)->setPos(pointAt(-m_startAngle - m_spanAngle));
     unblockItemNotification();
 }
 
-QPointF GraphicsArcItem::pointAt(int angle)
+QPointF GraphicsArcItem::pointAt(int angle) const
 {
-    qreal theta = qDegreesToRadians(-angle / 16.0f);
-    qreal aRadius = m_rect.width() / 2.0;
-    qreal bRadius = m_rect.height() / 2.0;
-    QPointF point(aRadius * qCos(theta), bRadius * qSin(theta));
-    return  point + m_rect.center();
+    qreal theta = qDegreesToRadians(angle / 16.0);
+    return QPointF(m_xRadius * qCos(theta), m_yRadius * qSin(theta));
 }
 
-int GraphicsArcItem::angleAt(const QPointF &pos)
+qreal GraphicsArcItem::angleAt(const QPointF &pos) const
 {
-    QPointF point = pos - m_rect.center();
-    point.rx() /= m_rect.width();
-    point.ry() /= m_rect.height();
-    QLineF vector(QPointF(0, 0), point);
-    return vector.angle() * 16;
+    QLineF vector(QPointF(0, 0), QPointF(pos.x()/xRadius(), pos.y()/m_yRadius));
+    return int(16 * vector.angle());
+}
+
+QRectF GraphicsArcItem::rect() const
+{
+    return QRectF(-m_xRadius, -m_yRadius, m_xRadius*2.0, m_yRadius*2.0);
 }
 
 QRectF GraphicsArcItem::boundingRect() const
@@ -122,7 +145,7 @@ QRectF GraphicsArcItem::boundingRect() const
     if (m_boundingRect.isNull()) {
         qreal pw = pen().style() == Qt::NoPen ? qreal(0) : pen().widthF();
         if (pw == 0.0 && m_spanAngle == 360 * 16)
-            m_boundingRect = m_rect;
+            m_boundingRect = rect();
         else
             m_boundingRect = shape().controlPointRect();
     }
@@ -132,13 +155,10 @@ QRectF GraphicsArcItem::boundingRect() const
 QPainterPath GraphicsArcItem::shape() const
 {
     QPainterPath path;
-    if (m_rect.isNull())
-        return path;
-    if (m_spanAngle != 360 * 16) {
-        path.moveTo(m_rect.center());
-        path.arcTo(m_rect, m_startAngle / 16.0, m_spanAngle / 16.0);
+    if (m_spanAngle != 360.0 * 16) {
+        path.arcTo(rect(), m_startAngle / 16, m_spanAngle / 16);
     } else {
-        path.addEllipse(m_rect);
+        path.addEllipse(rect());
     }
 
     return shapeFromPath(path, pen());
@@ -150,16 +170,15 @@ void GraphicsArcItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     Q_UNUSED(widget);
     painter->setPen(pen());
     painter->setBrush(brush());
-    qDebug() << m_startAngle/16.0 << m_spanAngle/16.0;
     if ((m_spanAngle != 0) && (qAbs(m_spanAngle) % (360 * 16) == 0))
-        painter->drawEllipse(m_rect);
+        painter->drawEllipse(rect());
     else
-        painter->drawPie(m_rect, m_startAngle, m_spanAngle);
+        painter->drawPie(rect(), m_startAngle, m_spanAngle);
 
     if (option->state & QStyle::State_Selected) {
         painter->setBrush(Qt::NoBrush);
         painter->setPen(QPen(QBrush(Qt::red), 0, Qt::DashLine));
-        painter->drawRect(m_rect);
+        painter->drawRect(rect());
     }
 }
 
@@ -175,23 +194,22 @@ QVariant GraphicsArcItem::itemChange(QGraphicsItem::GraphicsItemChange change, c
 void GraphicsArcItem::itemNotification(IGraphicsObservableItem *item)
 {
     AbstractGraphicsHandle *handle = static_cast<AbstractGraphicsHandle *>(item);
-    QRectF rect = m_rect;
     int angle = angleAt(handle->pos());
     switch (handle->handleId()) {
-    case RectHandle:
-        rect.setBottomRight(handle->pos());
-        setRect(rect);
+    case XRadiusHandle:
+        setXRadius(handle->x());
+        break;
+    case YRadiusHandle:
+        setYRadius(handle->y());
         break;
     case StartAngleHandle:
         setStartAngle(angle);
         break;
     case SpanAngleHandle:
-        angle = angle - m_startAngle;
-        if (angle < 0)
-            angle += 360*16;
-        setSpanAngle(angle);
+        setSpanAngle(angle + 360 * 16 - m_startAngle);
         break;
     default:
+        Q_ASSERT(false);
         break;
     }
 }
@@ -199,13 +217,15 @@ void GraphicsArcItem::itemNotification(IGraphicsObservableItem *item)
 SchItem *GraphicsArcItem::clone()
 {
     GraphicsArcItem *item = new GraphicsArcItem();
-    item->setRect(m_rect);
+    item->setXRadius(m_xRadius);
+    item->setYRadius(m_yRadius);
     item->setStartAngle(m_startAngle);
     item->setSpanAngle(m_spanAngle);
     SchItem::cloneTo(item);
     return item;
 }
 
+// TODO: use J_* static const
 bool GraphicsArcItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
 {
     if (!SchItem::fromJson(errorString, jsonObject))
@@ -230,10 +250,11 @@ bool GraphicsArcItem::fromJson(QString *errorString, const QJsonObject &jsonObje
     if (!Json::toInt(errorString, jsonObject.value("startAngle"), start))
         return false;
     int span;
-    if (!Json::toInt(errorString, jsonObject.value("spanAngle"), span))
+    if (!Json::toInt(errorString, jsonObject.value("stopAngle"), span))
         return false;
 
-    setRect(0, 0, xradius, yradius);
+    setXRadius(xradius);
+    setYRadius(yradius);
     setStartAngle(start);
     setSpanAngle(span);
     return true;
@@ -242,8 +263,8 @@ bool GraphicsArcItem::fromJson(QString *errorString, const QJsonObject &jsonObje
 void GraphicsArcItem::toJson(QJsonObject &jsonObject) const
 {
     SchItem::toJson(jsonObject);
-    jsonObject.insert("xRadius", Json::fromReal(m_rect.width()));
-    jsonObject.insert("yRadius", Json::fromReal(m_rect.height()));
+    jsonObject.insert("xRadius", Json::fromReal(m_xRadius));
+    jsonObject.insert("yRadius", Json::fromReal(m_yRadius));
     jsonObject.insert("startAngle", Json::fromReal(m_startAngle));
-    jsonObject.insert("spanAngle", Json::fromReal(m_spanAngle));
+    jsonObject.insert("stopAngle", Json::fromReal(m_spanAngle));
 }

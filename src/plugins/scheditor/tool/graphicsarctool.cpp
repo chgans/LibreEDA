@@ -18,8 +18,6 @@ GraphicsArcTool::GraphicsArcTool(QObject *parent):
     setOptionWidget(nullptr);
 }
 
-
-
 GraphicsArcTool::~GraphicsArcTool()
 {
 
@@ -53,7 +51,9 @@ void GraphicsArcTool::addPoint(int idx, const QPointF &pos)
 
 void GraphicsArcTool::freezePoint(int idx, const QPointF &pos)
 {
-    if (idx != 3)
+    Q_UNUSED(pos);
+
+    if (idx != 4)
         return;
     emit objectInserted(m_item);
     resetTool();
@@ -67,9 +67,12 @@ bool GraphicsArcTool::removePoint(int idx, const QPointF &pos)
     case 1:
         return false; // Remove and delete Arc
     case 2:
-        handleId = GraphicsArcItem::RectHandle;
+        handleId = GraphicsArcItem::XRadiusHandle;
         break;
     case 3:
+        handleId = GraphicsArcItem::YRadiusHandle;
+        break;
+    case 4:
         m_item->setSpanAngle(0);
         handleId = GraphicsArcItem::StartAngleHandle;
         break;
@@ -85,27 +88,29 @@ bool GraphicsArcTool::removePoint(int idx, const QPointF &pos)
 
 void GraphicsArcTool::movePoint(int idx, const QPointF &pos)
 {
-    int handleId;
+    QPointF p = m_item->mapFromScene(pos);
     switch (idx) {
     case 0:
         return;
     case 1:
-        handleId = GraphicsArcItem::RectHandle;
+        m_item->setXRadius(p.x());
+        m_item->setYRadius(p.x());
         break;
     case 2:
-        m_item->setSpanAngle(0);
-        handleId = GraphicsArcItem::StartAngleHandle;
+        m_item->setYRadius(p.y());
         break;
     case 3:
-        handleId = GraphicsArcItem::SpanAngleHandle;
+        m_item->handleAt(GraphicsArcItem::StartAngleHandle)->setPos(p);
+        m_item->handleAt(GraphicsArcItem::SpanAngleHandle)->setPos(p);
+        break;
+    case 4:
+        m_item->handleAt(GraphicsArcItem::SpanAngleHandle)->setPos(p);
         break;
     default:
         // Fail loudly
-        Q_ASSERT(idx < 4);
+        Q_ASSERT(idx < 5);
         return;
     }
-    QPointF p = m_item->mapFromScene(pos);
-    m_item->handleAt(handleId)->setPos(p);
 }
 
 void GraphicsArcTool::endInsert(const QPointF &pos)
