@@ -9,6 +9,7 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QAction>
+#include <QDebug>
 
 GraphicsRectTool::GraphicsRectTool(QObject *parent):
     AbstractGraphicsInsertTool(parent), m_item(nullptr)
@@ -97,16 +98,14 @@ void GraphicsRectTool::cancelInsert()
 
 void GraphicsRectTool::setP1(const QPointF &pos)
 {
-    QRectF rect = m_item->rect();
-    rect.setTopLeft(pos);
-    m_item->setRect(rect);
+    m_rect.setTopLeft(pos);
+    m_item->setRect(m_rect);
 }
 
 void GraphicsRectTool::setP2(const QPointF &pos)
 {
-    QRectF rect = m_item->rect();
-    rect.setBottomLeft(pos);
-    m_item->setRect(rect);
+    m_rect.setBottomRight(pos);
+    m_item->setRect(m_rect);
 }
 
 

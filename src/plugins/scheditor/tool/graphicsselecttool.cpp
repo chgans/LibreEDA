@@ -89,6 +89,8 @@ void GraphicsSelectTool::setOperation(GraphicsSelectTool::Operation operation)
         break;
     case MoveHandle:
         Q_ASSERT(m_handle != nullptr);
+        // TBD: Cursor can change when the handle is dragged around
+        // it would be nice to update the view cursor accordingly
         view()->setCursor(m_handle->handleCursor());
         break;
     case CloneItem:

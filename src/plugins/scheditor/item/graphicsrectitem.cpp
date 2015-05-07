@@ -10,6 +10,7 @@
 #include <QDebug>
 
 // TODO: forbid objects to have write access to handles
+// TODO: Add handle for rounded corners (like inksape)
 
 const QString GraphicsRectItem::J_POINTS = QStringLiteral("points");
 
@@ -54,7 +55,20 @@ void GraphicsRectItem::setRect(const QRectF &rect)
     m_idToHandle[Bottom]->setPos(QPointF(midX, m_rect.bottom()));
     m_idToHandle[BottomLeft]->setPos(m_rect.bottomLeft());
     m_idToHandle[Left]->setPos(QPointF(m_rect.left(), midY));
+    if (m_rect == m_rect.normalized()) {
+        m_idToHandle[TopLeft]->setHandleRole(FDiagSizeHandleRole);
+        m_idToHandle[BottomRight]->setHandleRole(FDiagSizeHandleRole);
+        m_idToHandle[TopRight]->setHandleRole(BDiagSizeHandleRole);
+        m_idToHandle[BottomLeft]->setHandleRole(BDiagSizeHandleRole);
+    }
+    else {
+        m_idToHandle[TopLeft]->setHandleRole(BDiagSizeHandleRole);
+        m_idToHandle[BottomRight]->setHandleRole(BDiagSizeHandleRole);
+        m_idToHandle[TopRight]->setHandleRole(FDiagSizeHandleRole);
+        m_idToHandle[BottomLeft]->setHandleRole(FDiagSizeHandleRole);
+    }
     unblockItemNotification();
+
 }
 
 SchItem *GraphicsRectItem::clone()
