@@ -18,13 +18,11 @@ class GraphicsRectItem : public SchItem
 public:
     enum HandleId {
         TopLeft = 0,
-        Top,
-        TopRight,
-        Right,
         BottomRight,
         Bottom,
-        BottomLeft,
         Left,
+        XRoundness,
+        YRoundness,
         NbHandles
     };
 
@@ -34,10 +32,19 @@ public:
     QRectF rect() const;
     void setRect(const QRectF &rect);
 
+    void setRoundness(qreal xRoundness, qreal yRoundness);
+    qreal xRoundness() const;
+    void setXRoundness(qreal roundness);
+    qreal yRoundness() const;
+    void setYRoundness(qreal roundness);
+
 private:
     static const QString J_POINTS;
     QRectF m_rect;
-    void updateHandlesSilently();
+    qreal m_xRoundness;
+    qreal m_yRoundness;
+    void updateSizeHandles();
+    void updateRoundnessHandles();
 
     // ScheItem interface
 public:
@@ -55,6 +62,10 @@ public:
     // QGraphicsItem interface
 protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+    // QGraphicsItem interface
+public:
+    virtual bool contains(const QPointF &point) const;
 };
 
 #endif // GRAPHICSRECTITEM_H
