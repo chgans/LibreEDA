@@ -26,6 +26,8 @@ LedaPlugin {
         "igraphicsobservableitem.h",
         "item/graphicsarcitem.cpp",
         "item/graphicsarcitem.h",
+        "item/graphicstextframeitem.cpp",
+        "item/graphicstextframeitem.h",
         "palette.cpp",
         "schdocument.cpp",
         "schdocument.h",
