@@ -12,6 +12,8 @@
 
 #include <QDebug>
 
+//#define NO_EVENT
+
 // Tools:
 //  Select (default)
 //  ZoomBox
@@ -50,6 +52,11 @@ SchView::SchView(QWidget *parent):
     // Use NoAnchor and fix it up in scaleView()
     setTransformationAnchor(NoAnchor);
     setResizeAnchor(NoAnchor);
+#ifdef NO_EVENT
+    setDragMode(RubberBandDrag);
+    setTransformationAnchor(AnchorUnderMouse);
+    setResizeAnchor(AnchorUnderMouse);
+#endif
 }
 
 SchView::~SchView()
@@ -192,6 +199,10 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
 // TODO: Zoom here or tool
 void SchView::wheelEvent(QWheelEvent *event)
 {
+#ifdef NO_EVENT
+    QGraphicsView::wheelEvent(event);
+    return;
+#endif
     if (!event->modifiers().testFlag(Qt::ControlModifier)) {
         QGraphicsView::wheelEvent(event);
         return;
@@ -206,6 +217,11 @@ void SchView::wheelEvent(QWheelEvent *event)
 
 void SchView::mousePressEvent(QMouseEvent *event)
 {
+#ifdef NO_EVENT
+    QGraphicsView::mousePressEvent(event);
+    return;
+#endif
+
     updateMousePos();
 
     if (event->button() == Qt::RightButton) {
@@ -223,6 +239,10 @@ void SchView::mousePressEvent(QMouseEvent *event)
 // FIXME: Don't snap cursor for handles
 void SchView::mouseMoveEvent(QMouseEvent *event)
 {
+#ifdef NO_EVENT
+    QGraphicsView::mouseMoveEvent(event);
+    return;
+#endif
     updateMousePos();
 
     if (objectUnderMouse() && !m_objectUnderMouse) {
@@ -250,6 +270,11 @@ void SchView::mouseMoveEvent(QMouseEvent *event)
 
 void SchView::mouseReleaseEvent(QMouseEvent *event)
 {
+#ifdef NO_EVENT
+    QGraphicsView::mouseReleaseEvent(event);
+    return;
+#endif
+
     updateMousePos();
 
     if (m_tool != nullptr) {
@@ -262,6 +287,10 @@ void SchView::mouseReleaseEvent(QMouseEvent *event)
 
 void SchView::mouseDoubleClickEvent(QMouseEvent *event)
 {
+#ifdef NO_EVENT
+    QGraphicsView::mouseDoubleClickEvent(event);
+    return;
+#endif
     if (m_tool != nullptr)
         m_tool->mouseDoubleClickEvent(event);
     else
@@ -270,6 +299,11 @@ void SchView::mouseDoubleClickEvent(QMouseEvent *event)
 
 void SchView::keyPressEvent(QKeyEvent *event)
 {
+#ifdef NO_EVENT
+    QGraphicsView::keyPressEvent(event);
+    return;
+#endif
+
     if (m_tool != nullptr)
         m_tool->keyPressEvent(event);
     else
@@ -278,6 +312,11 @@ void SchView::keyPressEvent(QKeyEvent *event)
 
 void SchView::keyReleaseEvent(QKeyEvent *event)
 {
+#ifdef NO_EVENT
+    QGraphicsView::keyReleaseEvent(event);
+    return;
+#endif
+
     if (m_tool != nullptr)
         m_tool->keyReleaseEvent(event);
     else
