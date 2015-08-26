@@ -190,14 +190,12 @@ QRectF GraphicsTextFrameItem::boundingRect() const
         m_boundingRect = m_sizePolicy == FixedSizePolicy ? m_frameRect : m_textItem->boundingRect();
         if (halfpw > 0.0)
             m_boundingRect.adjust(-halfpw, -halfpw, halfpw, halfpw);
-        qDebug() << __FUNCTION__ << "updated";
     }
     return m_boundingRect;
 }
 
 QPainterPath GraphicsTextFrameItem::shape() const
 {
-    //qDebug() << __FUNCTION__;
     QRectF rect = m_sizePolicy == FixedSizePolicy ? m_frameRect : m_textItem->boundingRect();
     QPainterPath path;
     qreal hpw = pen().widthF()/2.0;
@@ -207,13 +205,11 @@ QPainterPath GraphicsTextFrameItem::shape() const
 
 bool GraphicsTextFrameItem::contains(const QPointF &point) const
 {
-    qDebug() << __FUNCTION__;
     return boundingRect().contains(point);
 }
 
 void GraphicsTextFrameItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    qDebug() << __FUNCTION__ << "1";
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->setPen(pen());
@@ -223,7 +219,6 @@ void GraphicsTextFrameItem::paint(QPainter *painter, const QStyleOptionGraphicsI
 
 void GraphicsTextFrameItem::itemNotification(IGraphicsObservableItem *item)
 {
-    qDebug() << __FUNCTION__;
     AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle*>(item);
     Q_ASSERT(handle && handle->handleId() == 0);
 
@@ -240,7 +235,6 @@ void GraphicsTextFrameItem::itemNotification(IGraphicsObservableItem *item)
 
 SchItem *GraphicsTextFrameItem::clone()
 {
-    qDebug() << __PRETTY_FUNCTION__;
     GraphicsTextFrameItem *item = new GraphicsTextFrameItem();
     SchItem::cloneTo(item);
     item->setSizePolicy(sizePolicy());
@@ -264,7 +258,6 @@ void GraphicsTextFrameItem::toJson(QJsonObject &jsonObject) const
 
 QVariant GraphicsTextFrameItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
-    qDebug() << __FUNCTION__;
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
         foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
             handle->setVisible(isSelected());
