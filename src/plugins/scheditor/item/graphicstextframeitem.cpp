@@ -249,11 +249,14 @@ SchItem *GraphicsTextFrameItem::clone()
 
 bool GraphicsTextFrameItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
 {
+    Q_UNUSED(errorString);
+    Q_UNUSED(jsonObject);
     return true;
 }
 
 void GraphicsTextFrameItem::toJson(QJsonObject &jsonObject) const
 {
+    Q_UNUSED(jsonObject);
 }
 
 QVariant GraphicsTextFrameItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
