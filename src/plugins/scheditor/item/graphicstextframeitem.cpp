@@ -240,8 +240,16 @@ void GraphicsTextFrameItem::itemNotification(IGraphicsObservableItem *item)
 
 SchItem *GraphicsTextFrameItem::clone()
 {
+    qDebug() << __PRETTY_FUNCTION__;
     GraphicsTextFrameItem *item = new GraphicsTextFrameItem();
     SchItem::cloneTo(item);
+    item->setSizePolicy(sizePolicy());
+    item->setHtml(toHtml());
+    item->setFont(font());
+    item->setDefaultTextColor(defaultTextColor());
+    item->setTextInteractionFlags(textInteractionFlags());
+    //item->setTabChangesFocus(tabChangesFocus());
+
     return item;
 }
 
