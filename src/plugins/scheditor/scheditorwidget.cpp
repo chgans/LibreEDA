@@ -215,6 +215,7 @@ void SchEditorWidget::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
             m_taskDockWidget->setTool(tool);
             delete timer;
         });
+        timer->start();
     }
 }
 
