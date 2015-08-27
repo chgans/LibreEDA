@@ -93,6 +93,7 @@ QString GraphicsTextFrameItem::toHtml() const
     return m_textItem->toHtml();
 }
 
+// FIXME: Need same resizing behaviour as setPlainText
 void GraphicsTextFrameItem::setHtml(const QString &html)
 {
     m_textItem->setHtml(html);
@@ -237,9 +238,9 @@ SchItem *GraphicsTextFrameItem::clone()
 {
     GraphicsTextFrameItem *item = new GraphicsTextFrameItem();
     SchItem::cloneTo(item);
-    item->setSizePolicy(sizePolicy());
-    item->setHtml(toHtml());
     item->setFont(font());
+    item->setPlainText(toPlainText());
+    item->setSizePolicy(sizePolicy());
     item->setDefaultTextColor(defaultTextColor());
     item->setTextInteractionFlags(textInteractionFlags());
     //item->setTabChangesFocus(tabChangesFocus());
