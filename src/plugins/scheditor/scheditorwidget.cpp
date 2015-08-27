@@ -142,13 +142,14 @@ void SchEditorWidget::addInteractiveTools()
 
     addInteractiveTool(new GraphicsSelectTool(this));
     addInteractiveTool(new GraphicsLineTool(this));
-    //addInteractiveTool(new GraphicsWireTool(this));
+    addInteractiveTool(new GraphicsWireTool(this));
     addInteractiveTool(new GraphicsRectTool(this));
-    //addInteractiveTool(new GraphicsPolygonTool(this));
-    //addInteractiveTool(new GraphicsCircleTool(this));
+    addInteractiveTool(new GraphicsPolygonTool(this));
+    addInteractiveTool(new GraphicsCircleTool(this));
     addInteractiveTool(new GraphicsArcTool(this));
     addInteractiveTool(new GraphicsEllipseTool(this));
-    //addInteractiveTool(new GraphicsBezierTool(this));
+    addInteractiveTool(new GraphicsBezierTool(this));
+
 
     QAction *action;
     action = new QAction(QIcon(":/icons/graphicsarctool.svg"),
