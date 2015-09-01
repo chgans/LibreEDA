@@ -29,6 +29,8 @@ LedaPlugin {
         "item/graphicstextframeitem.cpp",
         "item/graphicstextframeitem.h",
         "palette.cpp",
+        "positionsnapper.cpp",
+        "positionsnapper.h",
         "schdocument.cpp",
         "schdocument.h",
         "scheditor.cpp",

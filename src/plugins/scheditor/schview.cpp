@@ -4,6 +4,7 @@
 #include "abstractgraphicsinteractivetool.h"
 #include "graphicsgrid.h"
 #include "palette.h"
+#include "positionsnapper.h"
 
 #include <QGLWidget>
 
@@ -57,6 +58,8 @@ SchView::SchView(QWidget *parent):
     setTransformationAnchor(AnchorUnderMouse);
     setResizeAnchor(AnchorUnderMouse);
 #endif
+
+    m_posSnapper = new PositionSnapper(this);
 }
 
 SchView::~SchView()
@@ -325,7 +328,19 @@ void SchView::keyReleaseEvent(QKeyEvent *event)
 
 void SchView::updateMousePos()
 {
-    QPoint viewPos = mapFromGlobal(QCursor::pos());
+    QPoint viewPos = mapFromGlobal(QCursor::pos());    
+    QPoint newPos = m_posSnapper->snap(viewPos);
+
+    if (m_mousePosition != newPos) {
+        m_mousePosition = newPos;
+        m_mousePositionChanged = true;
+        scene()->update(); // Force redraw of foreground
+    }
+    else {
+        m_mousePositionChanged = false;
+    }
+
+#if 0
     QPointF scenePos = mapToScene(viewPos);
     if (m_snapToGridEnabled &&
             scene() && scene()->grid()) {
@@ -344,6 +359,7 @@ void SchView::updateMousePos()
         m_mousePosition = viewPos;
         m_mousePositionChanged = true;
     }
+#endif
 }
 
 QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)

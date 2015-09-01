@@ -44,6 +44,9 @@ public:
     virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
     virtual void toJson(QJsonObject &jsonObject) const;
 
+    QList<QPointF> hotSpots() const;
+    QList<QLineF> axes() const;
+
 public slots:
     void setPen(const QPen &pen);
     void setBrush(const QBrush &brush);
