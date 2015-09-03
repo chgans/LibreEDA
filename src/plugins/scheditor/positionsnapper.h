@@ -1,47 +1,104 @@
 #ifndef POSITIONSNAPPER_H
 #define POSITIONSNAPPER_H
 
-#include <QPointF>
-#include <QLineF>
+#include <QPoint>
 #include <QPainterPath>
+#include <QIcon>
+#include <QKeySequence>
 
 class SchView;
-class QGraphicsLineItem;
-class PositionSnapper
+class SchItem;
+class QAction;
+
+class SnapStrategy
 {
 public:
-    PositionSnapper(SchView *view);
+    SnapStrategy(SchView *view);
 
-    QPointF constrains(QPointF point, QLineF axis) const;
-    QPoint snap(QPoint point);
+    QString label() const;
+    QString name() const;
+    QKeySequence shortcut() const;
+    QString group() const;
+    QAction *action() const;
+    QIcon icon() const;
 
-    void setNearDistance(qreal distance);
-    void setFarDistance(qreal distance);
+    virtual QPainterPath decoration() const;
+    virtual bool snap(QPoint mousePos, qreal maxDistance);
+
+    QList<SchItem *> snappedItems() const;
+    QPoint snappedPosition() const;
+
+protected:
+    SchView *view();
+
+    void setGroup(const QString &name);
+    void setLabel(const QString &label);
+    void setName(const QString &name);
+    void setShortcut(const QKeySequence &shortcut);
+    void setIcon(const QIcon &icon);
+    void updateAction();
+
+    void setSnappedPosition(QPoint pos);
+    void setSnappedItems(const QList<SchItem*> &items);
 
 private:
-    // Hot spots
-    bool m_snapToObjectHotSpots;
-    bool m_snapToNearObjects;
-    qreal m_nearDistance;
-    QPainterPath m_nearRegion;
-    bool m_snapToFarObjects;
-    qreal m_farDistance;
-    QPainterPath m_farRegion;
-
-    // Axis
-    bool m_snapToObjectAxis;
-    mutable QList<QGraphicsLineItem *> m_axisItemList;
-
-    // Grids
-    bool m_snapToGrid;
-
-    // Guides
-    bool m_snapToGuide;
-
-    //
     SchView *m_view;
 
-    QPoint m_oldPos;
+    QAction *m_action;
+    QString m_group;
+    QString m_label;
+    QString m_name;
+    QIcon m_icon;
+    QKeySequence m_shortcut;
+
+    QPoint m_snappedPosition;
+    QList<SchItem*> m_snappedItems;
+};
+
+class SnapToGridStrategy: public SnapStrategy
+{
+public:
+    SnapToGridStrategy(SchView *view);
+
+    bool snap(QPoint mousePos, qreal maxDistance);
+};
+
+class SnapToItemHotSpotsStrategy:  public SnapStrategy
+{
+public:
+    SnapToItemHotSpotsStrategy(SchView *view);
+
+    bool snap(QPoint mousePos, qreal maxDistance);
+};
+
+// End point
+// Mid point
+// Entity point
+// Center
+// Intersection
+
+
+class SnapManager: public QObject
+{
+    Q_OBJECT
+
+public:
+    SnapManager(SchView *view);
+
+    QList<QString> groups() const;
+    QList<QAction *> actions(const QString &group = QString("all")) const;
+
+    QPainterPath decoration() const;
+    bool snap(QPoint mousePos, qreal maxDistance);
+    QList<SchItem *> snappedItems() const;
+    QPoint snappedPosition() const;
+    SnapStrategy * snappingStrategy() const;
+
+private:
+    QList<QString> m_groups;
+    QList<QAction *> m_actions;
+    QList<SnapStrategy *> m_strategies;
+    SnapStrategy *m_winnerStrategy;
 };
 
 #endif // POSITIONSNAPPER_H

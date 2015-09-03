@@ -38,7 +38,8 @@ SchView::SchView(QWidget *parent):
     m_handleUnderMouse(nullptr),
     m_mousePositionChanged(true),
     m_snapToGridEnabled(true),
-    m_palette(new Palette(this))
+    m_palette(new Palette(this)),
+    m_snapManager(new SnapManager(this))
 {    
     setViewport(new QGLWidget);
 
@@ -58,8 +59,6 @@ SchView::SchView(QWidget *parent):
     setTransformationAnchor(AnchorUnderMouse);
     setResizeAnchor(AnchorUnderMouse);
 #endif
-
-    m_posSnapper = new PositionSnapper(this);
 }
 
 SchView::~SchView()
@@ -152,16 +151,6 @@ const Palette *SchView::palette() const
     return m_palette;
 }
 
-void SchView::enableSnapToGrid(bool enabled)
-{
-    m_snapToGridEnabled = enabled;
-}
-
-bool SchView::isSnapToGridEnabled() const
-{
-    return m_snapToGridEnabled;
-}
-
 void SchView::drawBackground(QPainter *painter, const QRectF &rect)
 {
     painter->fillRect(rect, QBrush(m_palette->background2()));
@@ -197,6 +186,11 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
     painter->drawLine(top, bottom);
     painter->drawLine(left, right);
 
+    if (m_snapping) {
+        painter->setPen(QPen(Qt::red, 0, Qt::SolidLine));
+        painter->setBrush(Qt::NoBrush);
+        painter->drawPath(mapToScene(m_snapManager->decoration()));
+    }
 }
 
 // TODO: Zoom here or tool
@@ -247,19 +241,6 @@ void SchView::mouseMoveEvent(QMouseEvent *event)
     return;
 #endif
     updateMousePos();
-
-    if (objectUnderMouse() && !m_objectUnderMouse) {
-        m_objectUnderMouse = objectUnderMouse();
-    }
-    if (!objectUnderMouse() && m_objectUnderMouse) {
-        m_objectUnderMouse = nullptr;
-    }
-    if (handleUnderMouse() && !m_handleUnderMouse) {
-        m_handleUnderMouse = handleUnderMouse();
-    }
-    if (!handleUnderMouse() && m_handleUnderMouse) {
-        m_handleUnderMouse = nullptr;
-    }
 
     if (m_tool != nullptr) {
         if (m_mousePositionChanged) {
@@ -328,26 +309,15 @@ void SchView::keyReleaseEvent(QKeyEvent *event)
 
 void SchView::updateMousePos()
 {
-    QPoint viewPos = mapFromGlobal(QCursor::pos());    
-    QPoint newPos = m_posSnapper->snap(viewPos);
+    QPoint viewPos = mapFromGlobal(QCursor::pos());
+    m_snapping = m_snapManager->snap(viewPos, 50);
 
-    if (m_mousePosition != newPos) {
-        m_mousePosition = newPos;
-        m_mousePositionChanged = true;
-        scene()->update(); // Force redraw of foreground
-    }
-    else {
+    if (!m_snapping) {
         m_mousePositionChanged = false;
     }
-
-#if 0
-    QPointF scenePos = mapToScene(viewPos);
-    if (m_snapToGridEnabled &&
-            scene() && scene()->grid()) {
-        QPointF snapPos = scene()->grid()->snap(pixelSize(), scenePos);
-        QPoint newPos = mapFromScene(snapPos);
-        if (m_mousePosition != newPos) {
-            m_mousePosition = newPos;
+    else {
+        if (m_mousePosition != m_snapManager->snappedPosition()) {
+            m_mousePosition = m_snapManager->snappedPosition();
             m_mousePositionChanged = true;
             scene()->update(); // Force redraw of foreground
         }
@@ -355,11 +325,6 @@ void SchView::updateMousePos()
             m_mousePositionChanged = false;
         }
     }
-    else {
-        m_mousePosition = viewPos;
-        m_mousePositionChanged = true;
-    }
-#endif
 }
 
 QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)
@@ -374,4 +339,9 @@ QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)
 QSizeF SchView::pixelSize() const
 {
     return QSizeF(transform().m11(), transform().m22());
+}
+
+SnapManager *SchView::snapManager()
+{
+    return m_snapManager;
 }

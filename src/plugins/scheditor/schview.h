@@ -8,7 +8,7 @@ class SchScene;
 class AbstractGraphicsInteractiveTool;
 class SchItem;
 class AbstractGraphicsHandle;
-class PositionSnapper;
+class SnapManager;
 
 class SchView : public QGraphicsView
 {
@@ -39,9 +39,7 @@ public:
     const Palette *palette() const;
     QSizeF pixelSize() const;
 
-public slots:
-    void enableSnapToGrid(bool enabled);
-    bool isSnapToGridEnabled() const;
+    SnapManager *snapManager();
 
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
@@ -67,7 +65,9 @@ private:
     QMouseEvent snapMouseEvent(QMouseEvent *event);
     bool m_snapToGridEnabled;
     Palette *m_palette;
-    PositionSnapper *m_posSnapper;
+
+    SnapManager *m_snapManager;
+    bool m_snapping;
 };
 
 #endif // GRAPHICSVIEW_H

@@ -12,6 +12,7 @@ class SchView;
 class SchScene;
 class AbstractGraphicsInteractiveTool;
 class TaskDockWidget;
+class SnapManager;
 
 class SchEditorWidget: public AbstractEditor
 {
@@ -48,6 +49,7 @@ private:
     QList<AbstractGraphicsInteractiveTool *> m_interactiveTools;
     QToolBar *m_interactiveToolsToolBar;
 
+    SnapManager *m_snapManager;
     void addSnapTools();
     QToolBar *m_snapToolBar;
 

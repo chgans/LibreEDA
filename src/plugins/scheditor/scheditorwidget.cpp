@@ -14,6 +14,8 @@
 #include "tool/graphicswiretool.h"
 #include "tool/graphicsarctool.h"
 
+#include "positionsnapper.h"
+
 #include "grid/graphicscartesiangrid.h"
 
 #include "dock/taskdockwidget.h"
@@ -93,6 +95,7 @@ void SchEditorWidget::activate(QMainWindow *win)
 {
     win->addToolBar(m_interactiveToolsToolBar);
     m_interactiveToolsToolBar->show();
+
     QToolBar *bar = win->addToolBar("theme");
     m_paletteModeComboBox = new QComboBox;
     m_paletteModeComboBox->addItem("Dark", QVariant::fromValue<Palette::Mode>(Palette::Dark));
@@ -102,14 +105,16 @@ void SchEditorWidget::activate(QMainWindow *win)
             this, SLOT(onPaletteComboBoxIndexChanged(int)));
     bar->addWidget(m_paletteModeComboBox);
 
-#if 0
     win->addToolBar(m_snapToolBar);
     m_snapToolBar->show();
+
+#if 0
     win->addToolBar(m_pathPointToolBar);
     m_pathPointToolBar->show();
     win->addDockWidget(Qt::LeftDockWidgetArea, m_taskDockWidget);
     m_taskDockWidget->show();
 #endif
+
     m_mainWindow = win;
 }
 
@@ -213,35 +218,14 @@ void SchEditorWidget::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
 
 void SchEditorWidget::addSnapTools()
 {
-    QAction *action;
-
+    m_snapManager = new SnapManager(m_view);
     m_snapToolBar = new QToolBar();
 
-    action = new QAction(QIcon(":/icons/graphicssnaplock.svg"),
-                         "Snap On/Off", nullptr);
-    action->setCheckable(true);
-    action->setChecked(true);
-    m_snapToolBar->addAction(action);
+    foreach (const QString &group, m_snapManager->groups()) {
+        m_snapToolBar->addActions(m_snapManager->actions(group));
+    }
 
-    action = new QAction(QIcon(":/icons/graphicssnapgrid.svg"),
-                         "Snap on grid", nullptr);
-    action->setCheckable(true);
-    action->setChecked(true);
-    m_snapToolBar->addAction(action);
-    connect(action, &QAction::triggered,
-            m_view, &SchView::enableSnapToGrid);
-    m_view->enableSnapToGrid(action->isChecked());
-
-    action = new QAction(QIcon(":/icons/graphicssnapobject.svg"),
-                         "Snap on object hot spots", nullptr);
-    action->setCheckable(true);
-    action->setChecked(true);
-    m_snapToolBar->addAction(action);
-
-    action = new QAction(QIcon::fromTheme("preferences-system"),
-                         "Configure grid and snapping", nullptr);
-    m_snapToolBar->addAction(action);
-
+    return;
 }
 
 void SchEditorWidget::addPathPointTools()
