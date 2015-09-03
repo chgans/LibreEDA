@@ -57,15 +57,6 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
     addPathPointTools();
 
     Q_INIT_RESOURCE(scheditor);
-
-    GraphicsTextFrameItem *textItem = new GraphicsTextFrameItem();
-    textItem->setBrush(Qt::darkYellow);
-    textItem->setPen(QPen(QBrush(Qt::darkMagenta), 1));
-    textItem->setDefaultTextColor(Qt::darkBlue);
-    textItem->setPos(50, 50);
-    textItem->setSizePolicy(GraphicsTextFrameItem::FixedSizePolicy);
-    textItem->setPlainText("multiline\ntext item\nwith lot of blahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh...");
-    m_scene->addItem(textItem);
 }
 
 SchEditorWidget::~SchEditorWidget()
