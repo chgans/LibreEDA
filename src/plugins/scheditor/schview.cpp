@@ -10,7 +10,7 @@
 
 #include <QMouseEvent>
 #include <QMessageBox>
-
+#include <QGuiApplication>
 #include <QDebug>
 
 //#define NO_EVENT
@@ -188,7 +188,7 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
 
     if (m_snapping) {
         painter->setPen(QPen(Qt::red, 0, Qt::SolidLine));
-        painter->setBrush(Qt::NoBrush);
+        painter->setBrush(Qt::red);
         painter->drawPath(mapToScene(m_snapManager->decoration()));
     }
 }
@@ -316,6 +316,7 @@ void SchView::updateMousePos()
         m_mousePositionChanged = false;
     }
     else {
+        // TODO: highlight snapped items
         if (m_mousePosition != m_snapManager->snappedPosition()) {
             m_mousePosition = m_snapManager->snappedPosition();
             m_mousePositionChanged = true;
@@ -325,6 +326,7 @@ void SchView::updateMousePos()
             m_mousePositionChanged = false;
         }
     }
+    qDebug() << "Mouse" << mapToScene(viewPos) << "=>" << mapToScene(m_mousePosition);
 }
 
 QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)

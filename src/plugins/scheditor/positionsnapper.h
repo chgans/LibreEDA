@@ -41,6 +41,9 @@ protected:
     void setSnappedPosition(QPoint pos);
     void setSnappedItems(const QList<SchItem*> &items);
 
+    QList<SchItem *> itemsNearby(QPoint pos, qreal maxDistance);
+    QPair<SchItem *, QPoint> closestItemPoint(QPoint pos, const QMultiMap<SchItem *, QPoint> &candidates);
+
 private:
     SchView *m_view;
 
@@ -71,10 +74,42 @@ public:
     bool snap(QPoint mousePos, qreal maxDistance);
 };
 
-// End point
-// Mid point
+class SnapToItemEndPointStrategy: public SnapStrategy
+{
+public:
+    SnapToItemEndPointStrategy(SchView *view);
+
+    bool snap(QPoint mousePos, qreal maxDistance);
+};
+
+class SnapToItemMidPointStrategy: public SnapStrategy
+{
+public:
+    SnapToItemMidPointStrategy(SchView *view);
+
+    bool snap(QPoint mousePos, qreal maxDistance);
+};
+
 // Entity point
+class SnapToItemShapeStrategy: public SnapStrategy
+{
+public:
+    SnapToItemShapeStrategy(SchView *view);
+
+    bool snap(QPoint mousePos, qreal maxDistance);
+
+};
+
 // Center
+class SnapToItemCenterStrategy: public SnapStrategy
+{
+public:
+    SnapToItemCenterStrategy(SchView *view);
+
+    bool snap(QPoint mousePos, qreal maxDistance);
+
+};
+
 // Intersection
 
 

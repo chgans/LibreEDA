@@ -132,6 +132,27 @@ QList<QPointF> SchItem::hotSpots() const
     return points;
 }
 
+QList<QPointF> SchItem::endPoints() const
+{
+    return QList<QPointF>();
+}
+
+QList<QPointF> SchItem::midPoints() const
+{
+    return QList<QPointF>();
+}
+
+QList<QPointF> SchItem::centerPoints() const
+{
+    return QList<QPointF>();
+}
+
+QList<QPointF> SchItem::nearestPoints(QPointF pos) const
+{
+    Q_UNUSED(pos);
+    return QList<QPointF>();
+}
+
 QList<QLineF> SchItem::axes() const
 {
     QList<QLineF> axes;

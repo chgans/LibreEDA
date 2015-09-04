@@ -68,6 +68,30 @@ void GraphicsLineItem::toJson(QJsonObject &jsonObject) const
     jsonObject.insert(J_POINTS, Json::fromLine(line()));
 }
 
+QList<QPointF> GraphicsLineItem::endPoints() const
+{
+    return QList<QPointF>() << m_line.p1() << m_line.p2();
+}
+
+QList<QPointF> GraphicsLineItem::midPoints() const
+{
+    return QList<QPointF>() << m_line.pointAt(0.5);
+}
+
+QList<QPointF> GraphicsLineItem::centerPoints() const
+{
+    return QList<QPointF>();
+}
+
+QList<QPointF> GraphicsLineItem::nearestPoints(QPointF pos) const
+{
+    QPointF xPoint;
+    QLineF::IntersectType xType = m_line.intersect(m_line.normalVector().translated(pos), &xPoint);
+    if (xType == QLineF::BoundedIntersection)
+        return QList<QPointF>() << xPoint;
+    return QList<QPointF>();
+}
+
 void GraphicsLineItem::itemNotification(IGraphicsObservableItem *item)
 {
     AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle*>(item);

@@ -197,6 +197,49 @@ void GraphicsRectItem::toJson(QJsonObject &jsonObject) const
     jsonObject.insert(J_POINTS, Json::fromRect(rect()));
 }
 
+QList<QPointF> GraphicsRectItem::endPoints() const
+{
+    return QList<QPointF>() << m_rect.topLeft()
+                            << m_rect.topRight()
+                            << m_rect.bottomRight()
+                            << m_rect.bottomLeft();
+}
+
+QList<QPointF> GraphicsRectItem::midPoints() const
+{
+
+    return QList<QPointF>() << QPointF(m_rect.center().x(), m_rect.top())
+                            << QPointF(m_rect.right(), m_rect.center().y())
+                            << QPointF(m_rect.center().x(), m_rect.bottom())
+                            << QPointF(m_rect.left(), m_rect.center().y());
+}
+
+QList<QPointF> GraphicsRectItem::centerPoints() const
+{
+    return midPoints();
+}
+
+QList<QPointF> GraphicsRectItem::nearestPoints(QPointF pos) const
+{
+    QRectF rect = m_rect.normalized();
+    QList<QLineF> lines;
+    lines << QLineF(rect.topLeft(),     rect.topRight())
+          << QLineF(rect.topRight(),    rect.bottomRight())
+          << QLineF(rect.bottomRight(), rect.bottomLeft())
+          << QLineF(rect.bottomLeft(),  rect.topLeft());
+
+    QList<QPointF> xPoints;
+    QPointF xPoint;
+    foreach (const QLineF &line, lines) {
+        QLineF::IntersectType xType = line.intersect(line.normalVector().translated(pos), &xPoint);
+        if (xType == QLineF::BoundedIntersection)
+            xPoints << xPoint;
+        qDebug() << pos << line << xType << xPoint;
+    }
+
+    return xPoints;
+}
+
 QRectF GraphicsRectItem::boundingRect() const
 {
     if (m_boundingRect.isNull()) {

@@ -111,9 +111,9 @@ void SchEditorWidget::activate(QMainWindow *win)
 #if 0
     win->addToolBar(m_pathPointToolBar);
     m_pathPointToolBar->show();
+#endif
     win->addDockWidget(Qt::LeftDockWidgetArea, m_taskDockWidget);
     m_taskDockWidget->show();
-#endif
 
     m_mainWindow = win;
 }
