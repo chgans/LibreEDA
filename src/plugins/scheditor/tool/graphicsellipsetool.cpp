@@ -53,8 +53,12 @@ void GraphicsEllipseTool::addPoint(int idx, const QPointF &pos)
 
     QPointF itemPos = m_item->mapFromScene(pos);
 
-    if (idx == 1)
-        m_item->setXRadius(qAbs(itemPos.x()));
+    if (idx == 1) {
+        QLineF radius(QPointF(0, 0), itemPos);
+        m_item->setXRadius(radius.length());
+        m_item->setYRadius(radius.length()/2.0);
+        m_item->setRotation(-radius.angle());
+    }
     else
         m_item->setYRadius(qAbs(itemPos.y()));
 }
@@ -89,14 +93,18 @@ void GraphicsEllipseTool::movePoint(int idx, const QPointF &pos)
     if ( idx == 0)
         return;
 
-    QPointF itemPos = m_item->mapFromScene(pos);
-
     if (idx == 1) {
-        m_item->setXRadius(qAbs(itemPos.x()));
-        m_item->setYRadius(qAbs(itemPos.x()));
+        m_item->setRotation(0.0);
+        QPointF itemPos = m_item->mapFromScene(pos);
+        QLineF radius(QPointF(0, 0), itemPos);
+        m_item->setXRadius(radius.length());
+        m_item->setYRadius(radius.length()/2.0);
+        m_item->setRotation(-radius.angle());
     }
-    else
+    else {
+        QPointF itemPos = m_item->mapFromScene(pos);
         m_item->setYRadius(qAbs(itemPos.y()));
+    }
 }
 
 void GraphicsEllipseTool::endInsert(const QPointF &pos)
