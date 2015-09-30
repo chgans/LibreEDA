@@ -17,7 +17,8 @@ Product {
 
     Properties {
         condition: qbs.targetOS.contains("linux")
-        cpp.rpaths: base.concat(["$ORIGIN/../" + project.leda_library_path])
+        cpp.rpaths: base.concat(["$ORIGIN/../" + project.leda_library_path,
+                                 "$ORIGIN/../" + project.leda_plugin_path])
     }
 
     Group {

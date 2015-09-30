@@ -121,6 +121,46 @@ void SchItem::toJson(QJsonObject &jsonObject) const
     jsonObject.insert(J_ROTATION, QJsonValue(rotation()));
 }
 
+// Return a list of hot spots in item's coordinate
+QList<QPointF> SchItem::hotSpots() const
+{
+    QList<QPointF> points;
+    foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
+        Q_ASSERT(handle->parentItem() == this);
+        points.append(handle->pos());
+    }
+    return points;
+}
+
+QList<QPointF> SchItem::endPoints() const
+{
+    return QList<QPointF>();
+}
+
+QList<QPointF> SchItem::midPoints() const
+{
+    return QList<QPointF>();
+}
+
+QList<QPointF> SchItem::centerPoints() const
+{
+    return QList<QPointF>();
+}
+
+QList<QPointF> SchItem::nearestPoints(QPointF pos) const
+{
+    Q_UNUSED(pos);
+    return QList<QPointF>();
+}
+
+QList<QLineF> SchItem::axes() const
+{
+    QList<QLineF> axes;
+    for (qreal angle = 0; angle < 360.0; angle+= 45)
+        axes << QLineF::fromPolar(UINT_MAX, angle).translated(pos());
+    return axes;
+}
+
 void SchItem::setPen(const QPen &pen)
 {
     if (m_pen == pen)

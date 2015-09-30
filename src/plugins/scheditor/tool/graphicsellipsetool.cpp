@@ -1,5 +1,8 @@
 #include "graphicsellipsetool.h"
 #include "item/graphicsellipseitem.h"
+#include "schview.h"
+
+#include "palette.h"
 
 #include <QAction>
 
@@ -33,6 +36,10 @@ void GraphicsEllipseTool::desactivate(const QAction *which)
 SchItem *GraphicsEllipseTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsEllipseItem();
+    QPen pen(SchView().palette()->orange(), 1);
+    pen.setJoinStyle(Qt::RoundJoin);
+    m_item->setPen(pen);
+    m_item->setBrush(QBrush(SchView().palette()->yellow()));
     m_item->setPos(pos);
     return m_item;
 }
@@ -46,8 +53,12 @@ void GraphicsEllipseTool::addPoint(int idx, const QPointF &pos)
 
     QPointF itemPos = m_item->mapFromScene(pos);
 
-    if (idx == 1)
-        m_item->setXRadius(qAbs(itemPos.x()));
+    if (idx == 1) {
+        QLineF radius(QPointF(0, 0), itemPos);
+        m_item->setXRadius(radius.length());
+        m_item->setYRadius(radius.length()/2.0);
+        m_item->setRotation(-radius.angle());
+    }
     else
         m_item->setYRadius(qAbs(itemPos.y()));
 }
@@ -82,14 +93,18 @@ void GraphicsEllipseTool::movePoint(int idx, const QPointF &pos)
     if ( idx == 0)
         return;
 
-    QPointF itemPos = m_item->mapFromScene(pos);
-
     if (idx == 1) {
-        m_item->setXRadius(qAbs(itemPos.x()));
-        m_item->setYRadius(qAbs(itemPos.x()));
+        m_item->setRotation(0.0);
+        QPointF itemPos = m_item->mapFromScene(pos);
+        QLineF radius(QPointF(0, 0), itemPos);
+        m_item->setXRadius(radius.length());
+        m_item->setYRadius(radius.length()/2.0);
+        m_item->setRotation(-radius.angle());
     }
-    else
+    else {
+        QPointF itemPos = m_item->mapFromScene(pos);
         m_item->setYRadius(qAbs(itemPos.y()));
+    }
 }
 
 void GraphicsEllipseTool::endInsert(const QPointF &pos)

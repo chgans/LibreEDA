@@ -4,10 +4,12 @@
 #include "abstractgraphicshandle.h"
 #include "schscene.h"
 #include "schview.h"
+#include "palette.h"
 
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QAction>
+#include <QDebug>
 
 GraphicsRectTool::GraphicsRectTool(QObject *parent):
     AbstractGraphicsInsertTool(parent), m_item(nullptr)
@@ -33,6 +35,10 @@ void GraphicsRectTool::cancel()
 SchItem *GraphicsRectTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsRectItem();
+    QPen pen(SchView().palette()->orange(), 1);
+    pen.setJoinStyle(Qt::RoundJoin);
+    m_item->setPen(pen);
+    m_item->setBrush(QBrush(SchView().palette()->yellow()));
     m_item->setPos(pos);
     return m_item;
 }
@@ -92,16 +98,14 @@ void GraphicsRectTool::cancelInsert()
 
 void GraphicsRectTool::setP1(const QPointF &pos)
 {
-    QRectF rect = m_item->rect();
-    rect.setTopLeft(pos);
-    m_item->setRect(rect);
+    m_rect.setTopLeft(pos);
+    m_item->setRect(m_rect);
 }
 
 void GraphicsRectTool::setP2(const QPointF &pos)
 {
-    QRectF rect = m_item->rect();
-    rect.setBottomLeft(pos);
-    m_item->setRect(rect);
+    m_rect.setBottomRight(pos);
+    m_item->setRect(m_rect);
 }
 
 

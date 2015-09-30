@@ -1,5 +1,6 @@
 #include "schitem.h"
 #include "abstractgraphicshandle.h"
+#include "palette.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <QPainterPathStroker>
@@ -15,8 +16,12 @@ AbstractGraphicsHandle::AbstractGraphicsHandle(SchItem *parent):
     m_behaviour(NormalHandleBehaviour),
     m_parent(parent) // hackish: Because BezierHandle act as a proxy
 {
+    // FIXME: From palette
     setPen(QPen(QBrush(Qt::red), 0));
     setBrush(QBrush(Qt::white));
+
+//    setPen(QPen(gpalette::Content2, 0));
+//    setBrush(QBrush(gpalette::Content4));
 
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
@@ -105,13 +110,15 @@ QCursor AbstractGraphicsHandle::roleToCursor(GraphicsHandleRole role)
 
 void AbstractGraphicsHandle::updateShape()
 {
-    static const int radius = 5;
+    int radius = 5;
     QPainterPath path;
     switch (m_handleShape) {
     case CircularHandleShape:
+        radius *= 0.97;
         path.addEllipse(QPointF(0, 0), radius, radius);
         break;
     case SquaredHandleShape:
+        radius *= 0.8;
         path.addRect(-radius, -radius, 2*radius, 2*radius);
         break;
     case DiamondedHandleShape: {

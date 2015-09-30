@@ -4,6 +4,7 @@
 #include "abstractgraphicshandle.h"
 #include "schscene.h"
 #include "schview.h"
+#include "palette.h"
 
 #include <QMouseEvent>
 #include <QAction>
@@ -39,6 +40,9 @@ void GraphicsLineTool::desactivate(const QAction *which)
 SchItem *GraphicsLineTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsLineItem();
+    QPen pen(SchView().palette()->violet(), 1);
+    pen.setJoinStyle(Qt::RoundJoin);
+    m_item->setPen(pen);
     m_item->setPos(pos);
     return m_item;
 }

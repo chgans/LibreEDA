@@ -18,6 +18,20 @@
         <file>tool/graphicspolygontool.svg</file>
         <file>tool/graphicspolylinetool.svg</file>
         <file>tool/graphicsrecttool.svg</file>
+        <file>snap/Snap_Angle.svg</file>
+        <file>snap/Snap_Center.svg</file>
+        <file>snap/Snap_Dimensions.svg</file>
+        <file>snap/Snap_Endpoint.svg</file>
+        <file>snap/Snap_Extension.svg</file>
+        <file>snap/Snap_Grid.svg</file>
+        <file>snap/Snap_Intersection.svg</file>
+        <file>snap/Snap_Lock.svg</file>
+        <file>snap/Snap_Midpoint.svg</file>
+        <file>snap/Snap_Near.svg</file>
+        <file>snap/Snap_Ortho.svg</file>
+        <file>snap/Snap_Parallel.svg</file>
+        <file>snap/Snap_Perpendicular.svg</file>
+        <file>snap/Snap_WorkingPlane.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>icons/task_wipe.svg</file>

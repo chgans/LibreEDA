@@ -2,6 +2,7 @@
 #define GRAPHICSRECTTOOL_H
 
 #include "abstractgraphicsinserttool.h"
+#include <QRectF>
 
 class GraphicsRectItem;
 
@@ -19,6 +20,7 @@ protected:
 
 private:
     GraphicsRectItem *m_item;
+    QRectF m_rect;
 
     // GraphicsTool interface
 public:

@@ -2,6 +2,7 @@
 #include "schview.h"
 #include "schscene.h"
 #include "graphicsgrid.h"
+#include "palette.h"
 
 #include "tool/graphicsbeziertool.h"
 #include "tool/graphicsselecttool.h"
@@ -11,6 +12,9 @@
 #include "tool/graphicsellipsetool.h"
 #include "tool/graphicspolygontool.h"
 #include "tool/graphicswiretool.h"
+#include "tool/graphicsarctool.h"
+
+#include "positionsnapper.h"
 
 #include "grid/graphicscartesiangrid.h"
 
@@ -22,6 +26,13 @@
 #include <QActionGroup>
 #include <QToolBar>
 #include <QTimer>
+#include <QComboBox>
+
+#include <QGraphicsSimpleTextItem>
+#include <QGraphicsTextItem>
+
+#include "item/graphicstextframeitem.h"
+
 
 SchEditorWidget::SchEditorWidget(QWidget *parent):
     AbstractEditor(parent)
@@ -34,10 +45,12 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
     grid->setSize(QSize(m_scene->sceneRect().width(),
                         m_scene->sceneRect().height()));
     m_scene->setGrid(grid);
+    grid->setCoarseMultiplier(5);
     m_view = new SchView();
     m_view->setScene(m_scene);
     m_view->fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
     m_view->ensureVisible(m_scene->sceneRect());
+    m_view->setPaletteMode(Palette::Dark);
     layout()->addWidget(m_view);
 
     m_taskDockWidget = new TaskDockWidget();
@@ -82,13 +95,32 @@ void SchEditorWidget::activate(QMainWindow *win)
 {
     win->addToolBar(m_interactiveToolsToolBar);
     m_interactiveToolsToolBar->show();
+
+    QToolBar *bar = win->addToolBar("theme");
+    m_paletteModeComboBox = new QComboBox;
+    m_paletteModeComboBox->addItem("Dark", QVariant::fromValue<Palette::Mode>(Palette::Dark));
+    m_paletteModeComboBox->addItem("Light", QVariant::fromValue<Palette::Mode>(Palette::Light));
+    m_paletteModeComboBox->setCurrentIndex(0);
+    connect(m_paletteModeComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onPaletteComboBoxIndexChanged(int)));
+    bar->addWidget(m_paletteModeComboBox);
+
     win->addToolBar(m_snapToolBar);
     m_snapToolBar->show();
+
+#if 0
     win->addToolBar(m_pathPointToolBar);
     m_pathPointToolBar->show();
+#endif
     win->addDockWidget(Qt::LeftDockWidgetArea, m_taskDockWidget);
     m_taskDockWidget->show();
+
     m_mainWindow = win;
+}
+
+void SchEditorWidget::onPaletteComboBoxIndexChanged(int index)
+{
+    m_view->setPaletteMode(m_paletteModeComboBox->itemData(index).value<Palette::Mode>());
 }
 
 void SchEditorWidget::desactivate(QMainWindow *win)
@@ -110,19 +142,24 @@ void SchEditorWidget::addInteractiveTools()
     addInteractiveTool(new GraphicsRectTool(this));
     addInteractiveTool(new GraphicsPolygonTool(this));
     addInteractiveTool(new GraphicsCircleTool(this));
+    addInteractiveTool(new GraphicsArcTool(this));
     addInteractiveTool(new GraphicsEllipseTool(this));
     addInteractiveTool(new GraphicsBezierTool(this));
+
 
     QAction *action;
     action = new QAction(QIcon(":/icons/graphicsarctool.svg"),
                          "Add an arc", nullptr);
     m_interactiveToolsToolBar->addAction(action);
+
+#if 0
     action = new QAction(QIcon(":/icons/graphicsbeziercurvetool.svg"),
                          "Add a a bezier curve", nullptr);
     m_interactiveToolsToolBar->addAction(action);
     action = new QAction(QIcon(":/icons/graphicsbeziersplinetool.svg"), // TODO: rename to basisspline
                          "Add a basis spline (B-spline)", nullptr);
     m_interactiveToolsToolBar->addAction(action);
+#endif
 
     // TODO:
     //  - polyline => wire
@@ -175,44 +212,25 @@ void SchEditorWidget::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
             m_taskDockWidget->setTool(tool);
             delete timer;
         });
+        timer->start();
     }
 }
 
 void SchEditorWidget::addSnapTools()
 {
-    QAction *action;
-
+    m_snapManager = m_view->snapManager(); //new SnapManager(m_view);
     m_snapToolBar = new QToolBar();
 
-    action = new QAction(QIcon(":/icons/graphicssnaplock.svg"),
-                         "Snap On/Off", nullptr);
-    action->setCheckable(true);
-    action->setChecked(true);
-    m_snapToolBar->addAction(action);
+    foreach (const QString &group, m_snapManager->groups()) {
+        m_snapToolBar->addActions(m_snapManager->actions(group));
+    }
 
-    action = new QAction(QIcon(":/icons/graphicssnapgrid.svg"),
-                         "Snap on grid", nullptr);
-    action->setCheckable(true);
-    action->setChecked(true);
-    m_snapToolBar->addAction(action);
-    connect(action, &QAction::triggered,
-            m_view, &SchView::enableSnapToGrid);
-    m_view->enableSnapToGrid(action->isChecked());
-
-    action = new QAction(QIcon(":/icons/graphicssnapobject.svg"),
-                         "Snap on object hot spots", nullptr);
-    action->setCheckable(true);
-    action->setChecked(true);
-    m_snapToolBar->addAction(action);
-
-    action = new QAction(QIcon::fromTheme("preferences-system"),
-                         "Configure grid and snapping", nullptr);
-    m_snapToolBar->addAction(action);
-
+    return;
 }
 
 void SchEditorWidget::addPathPointTools()
 {
+#if 0
     QAction *action;
 
     m_pathPointToolBar = new QToolBar();
@@ -240,6 +258,7 @@ void SchEditorWidget::addPathPointTools()
     action = new QAction(QIcon(":/icons/graphicspathpointsmooth.svg"),
                          "Make selected path points auto-smooth", nullptr);
     m_pathPointToolBar->addAction(action);
+#endif
 }
 
 // They all work on one or more items
