@@ -115,15 +115,15 @@ void GraphicsArcItem::updateHandles()
     blockItemNotification();
     handleAt(XRadiusHandle)->setPos(QPointF(m_xRadius, 0.0));
     handleAt(YRadiusHandle)->setPos(QPointF(0.0, m_yRadius));
-    handleAt(StartAngleHandle)->setPos(pointAt(-m_startAngle));
-    handleAt(SpanAngleHandle)->setPos(pointAt(-m_startAngle - m_spanAngle));
+    handleAt(StartAngleHandle)->setPos(pointAt(m_startAngle));
+    handleAt(SpanAngleHandle)->setPos(pointAt(m_startAngle + m_spanAngle));
     unblockItemNotification();
 }
 
 QPointF GraphicsArcItem::pointAt(int angle) const
 {
     qreal theta = qDegreesToRadians(angle / 16.0);
-    return QPointF(m_xRadius * qCos(theta), m_yRadius * qSin(theta));
+    return QPointF(m_xRadius * qCos(theta), -m_yRadius * qSin(theta));
 }
 
 qreal GraphicsArcItem::angleAt(const QPointF &pos) const
