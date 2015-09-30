@@ -5,6 +5,7 @@
 #include "graphicsgrid.h"
 
 #include <QAction>
+#include <QDebug>
 
 /*******************************************************************************
  * Snap Strategy
@@ -102,6 +103,7 @@ void SnapStrategy::updateAction()
     m_action->setToolTip(QString("%1 <b>%2</b>").arg(m_label).arg(m_shortcut.toString()));
     m_action->setIcon(m_icon);
     m_action->setCheckable(true);
+    m_action->setChecked(false);
 }
 
 QAction *SnapStrategy::action() const
@@ -139,9 +141,36 @@ QPoint SnapStrategy::snappedPosition() const
     return m_snappedPosition;
 }
 
+bool SnapStrategy::isEnabled() const
+{
+    return m_action->isChecked();
+}
+
 SchView *SnapStrategy::view()
 {
     return m_view;
+}
+
+/*******************************************************************************
+ * No Snap Strategy (Free)
+ *******************************************************************************/
+
+NoSnapStrategy::NoSnapStrategy(SchView *view):
+    SnapStrategy(view)
+{
+    setLabel("No snap");
+    setName("Free");
+    setGroup("leda.snap.default");
+    setShortcut(QKeySequence("S,F"));
+    setIcon(QIcon(":/icons/snap/Snap_Free.svg"));
+    updateAction();
+}
+
+bool NoSnapStrategy::snap(QPoint mousePos, qreal maxDistance)
+{
+    Q_UNUSED(maxDistance);
+    setSnappedPosition(mousePos);
+    return true;
 }
 
 /*******************************************************************************
@@ -153,6 +182,7 @@ SnapToGridStrategy::SnapToGridStrategy(SchView *view):
 {
     setLabel("Snap to grid");
     setName("Grid");
+    setGroup("leda.snap.default");
     setShortcut(QKeySequence("S,G"));
     setIcon(QIcon(":/icons/snap/Snap_Grid.svg"));
     updateAction();
@@ -180,6 +210,7 @@ SnapToItemHotSpotsStrategy::SnapToItemHotSpotsStrategy(SchView *view):
 {
     setLabel("Snap to reference");
     setName("Reference");
+    setGroup("leda.snap.default");
     setShortcut(QKeySequence("S,R"));
     setIcon(QIcon(":/icons/snap/Snap_Angle.svg"));
     updateAction();
@@ -216,6 +247,7 @@ SnapToItemEndPointStrategy::SnapToItemEndPointStrategy(SchView *view):
 {
     setLabel("Snap to end points");
     setName("End point");
+    setGroup("leda.snap.default");
     setShortcut(QKeySequence("S,E"));
     setIcon(QIcon(":/icons/snap/Snap_Endpoint.svg"));
     updateAction();
@@ -252,6 +284,7 @@ SnapToItemMidPointStrategy::SnapToItemMidPointStrategy(SchView *view):
 {
     setLabel("Snap to mid points");
     setName("Mid point");
+    setGroup("leda.snap.default");
     setShortcut(QKeySequence("S,M"));
     setIcon(QIcon(":/icons/snap/Snap_Midpoint.svg"));
     updateAction();
@@ -288,6 +321,7 @@ SnapToItemShapeStrategy::SnapToItemShapeStrategy(SchView *view):
 {
     setLabel("Snap to shape points");
     setName("Shape point");
+    setGroup("leda.snap.default");
     setShortcut(QKeySequence("S,S"));
     setIcon(QIcon(":/icons/snap/Snap_WorkingPlane.svg"));
     updateAction();
@@ -325,6 +359,7 @@ SnapToItemCenterStrategy::SnapToItemCenterStrategy(SchView *view):
 {
     setLabel("Snap to center points");
     setName("Center point");
+    setGroup("leda.snap.default");
     setShortcut(QKeySequence("S,C"));
     setIcon(QIcon(":/icons/snap/Snap_Center.svg"));
     updateAction();
@@ -337,8 +372,8 @@ bool SnapToItemCenterStrategy::snap(QPoint mousePos, qreal maxDistance)
 
     QList<SchItem*> items = itemsNearby(mousePos, maxDistance);
     foreach (SchItem *item, items) {
-        foreach (QPointF hotSpot, item->hotSpots()) {
-            QPoint pos = view()->mapFromScene(item->mapToScene(hotSpot));
+        foreach (QPointF center, item->centerPoints()) {
+            QPoint pos = view()->mapFromScene(item->mapToScene(center));
             candidates.insert(item, pos);
         }
     }
@@ -359,19 +394,23 @@ bool SnapToItemCenterStrategy::snap(QPoint mousePos, qreal maxDistance)
 SnapManager::SnapManager(SchView *view):
     QObject(view)
 {
-    m_strategies << new SnapToGridStrategy(view)
+    SnapStrategy *defaultStrategy = new NoSnapStrategy(view);
+    m_strategies << defaultStrategy
+                 << new SnapToGridStrategy(view)
                  << new SnapToItemHotSpotsStrategy(view)
                  << new SnapToItemEndPointStrategy(view)
                  << new SnapToItemMidPointStrategy(view)
                  << new SnapToItemCenterStrategy(view)
                  << new SnapToItemShapeStrategy(view);
-    // TODO: connect action to enabled/disabled
+
     foreach (const QString &group, groups()) {
         QActionGroup *actionGroup = new QActionGroup(this);
+        actionGroup->setExclusive(true);
         foreach (QAction *action, actions(group)) {
             action->setActionGroup(actionGroup);
         }
     }
+    defaultStrategy->action()->setChecked(true);
 }
 
 QList<QString> SnapManager::groups() const
@@ -405,8 +444,7 @@ bool SnapManager::snap(QPoint mousePos, qreal maxDistance)
     m_winnerStrategy = nullptr;
     int minDistance = INT_MAX;
     foreach (SnapStrategy *strategy, m_strategies) {
-        // Todo: only if enabled
-        if (strategy->snap(mousePos, maxDistance)) {
+        if (strategy->isEnabled() && strategy->snap(mousePos, maxDistance)) {
             int distance = (strategy->snappedPosition() - mousePos).manhattanLength();
             if (distance < minDistance) {
                 m_winnerStrategy = strategy;

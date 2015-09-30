@@ -218,7 +218,7 @@ void SchEditorWidget::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
 
 void SchEditorWidget::addSnapTools()
 {
-    m_snapManager = new SnapManager(m_view);
+    m_snapManager = m_view->snapManager(); //new SnapManager(m_view);
     m_snapToolBar = new QToolBar();
 
     foreach (const QString &group, m_snapManager->groups()) {

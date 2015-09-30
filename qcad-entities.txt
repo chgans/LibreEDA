@@ -1,0 +1,21 @@
+- points
+ - single
+ - N line
+ - NxM matrix
+- lines
+ - 2 pts
+ - pt + angle (angle, length, ref point {start,end,middle})
+ - pt/Hor (length, ref point)
+ - pt/Vert (")
+ - 2 lines, Angle bisector (length, number of bisect)
+ - // + distance (dist, number)
+ - // + pt (number)
+ - tang (pt+circle)
+ - tang (2 circles)
+ - tang (circ) + ortho (line)
+ - rel angle + entity (angle, length)
+ - ortho + entity
+ - freehand
+
+
+

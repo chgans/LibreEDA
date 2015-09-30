@@ -28,6 +28,8 @@ public:
     QList<SchItem *> snappedItems() const;
     QPoint snappedPosition() const;
 
+    bool isEnabled() const;
+
 protected:
     SchView *view();
 
@@ -56,6 +58,14 @@ private:
 
     QPoint m_snappedPosition;
     QList<SchItem*> m_snappedItems;
+};
+
+class NoSnapStrategy: public SnapStrategy
+{
+public:
+    NoSnapStrategy(SchView *view);
+
+    bool snap(QPoint mousePos, qreal maxDistance);
 };
 
 class SnapToGridStrategy: public SnapStrategy

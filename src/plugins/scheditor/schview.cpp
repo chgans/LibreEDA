@@ -326,7 +326,7 @@ void SchView::updateMousePos()
             m_mousePositionChanged = false;
         }
     }
-    qDebug() << "Mouse" << mapToScene(viewPos) << "=>" << mapToScene(m_mousePosition);
+    //qDebug() << "Mouse" << mapToScene(viewPos) << "=>" << mapToScene(m_mousePosition);
 }
 
 QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)
