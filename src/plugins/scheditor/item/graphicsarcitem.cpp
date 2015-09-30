@@ -3,7 +3,6 @@
 
 #include <qmath.h>
 #include <QStyleOptionGraphicsItem>
-#include <QDebug>
 
 GraphicsArcItem::GraphicsArcItem(SchItem *parent):
     SchItem(parent),
@@ -89,7 +88,6 @@ void GraphicsArcItem::setStartAngle(int a)
     m_startAngle = angle;
     update();
     updateHandles();
-    qDebug() << "start" << m_startAngle/16 << "span" << m_spanAngle/16;
 }
 
 void GraphicsArcItem::setSpanAngle(int a)
@@ -102,7 +100,6 @@ void GraphicsArcItem::setSpanAngle(int a)
     m_spanAngle = angle;
     update();
     updateHandles();
-    qDebug() << "start" << m_startAngle/16 << "span" << m_spanAngle/16;
 }
 
 void GraphicsArcItem::addHandles()
