@@ -80,7 +80,7 @@ QList<QPointF> GraphicsLineItem::midPoints() const
 
 QList<QPointF> GraphicsLineItem::centerPoints() const
 {
-    return QList<QPointF>();
+    return QList<QPointF>() << m_line.pointAt(0.5);
 }
 
 QList<QPointF> GraphicsLineItem::nearestPoints(QPointF pos) const

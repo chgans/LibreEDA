@@ -32,6 +32,8 @@ signals:
     void yRadiusChanged(qreal yRadius);
 
 private:
+    QPointF pointAt(int angle) const;
+    qreal angleAt(const QPointF &pos) const;
     qreal m_xRadius;
     qreal m_yRadius;
 
@@ -46,6 +48,12 @@ public:
     virtual SchItem *clone();
     virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
     virtual void toJson(QJsonObject &jsonObject) const;
+
+    //virtual QList<QPointF> hotSpots() const;
+    virtual QList<QPointF> endPoints() const;
+    virtual QList<QPointF> midPoints() const;
+    virtual QList<QPointF> centerPoints() const;
+    virtual QList<QPointF> nearestPoints(QPointF pos) const;
 
     // QGraphicsItem interface
 protected:

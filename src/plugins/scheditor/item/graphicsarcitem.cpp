@@ -265,3 +265,38 @@ void GraphicsArcItem::toJson(QJsonObject &jsonObject) const
     jsonObject.insert("startAngle", Json::fromReal(m_startAngle));
     jsonObject.insert("stopAngle", Json::fromReal(m_spanAngle));
 }
+
+QList<QPointF> GraphicsArcItem::endPoints() const
+{
+    return QList<QPointF>() << pointAt(m_startAngle) << pointAt(m_startAngle + m_spanAngle);
+}
+
+QList<QPointF> GraphicsArcItem::midPoints() const
+{
+    return QList<QPointF>() << pointAt(m_startAngle + m_spanAngle/2.0);
+}
+
+QList<QPointF> GraphicsArcItem::centerPoints() const
+{
+    return QList<QPointF>() << QPointF(0, 0);
+}
+
+QList<QPointF> GraphicsArcItem::nearestPoints(QPointF pos) const
+{
+    int theta = angleAt(pos);
+    if (theta > 180*16)
+        theta -= 360*16;
+
+    int startAngle = m_startAngle;
+    if (startAngle > 180*16)
+        startAngle -= 360*16;
+
+    int diffStart = (theta - startAngle);
+    if (diffStart < 0)
+        diffStart += 360*16;
+
+    if (diffStart >= 0 && diffStart <= m_spanAngle)
+        return QList<QPointF>() << pointAt(theta);
+    else
+        return QList<QPointF>();
+}

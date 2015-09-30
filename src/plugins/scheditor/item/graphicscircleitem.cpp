@@ -75,6 +75,28 @@ void GraphicsCircleItem::toJson(QJsonObject &jsonObject) const
     jsonObject.insert("radius", Json::fromReal(radius()));
 }
 
+QList<QPointF> GraphicsCircleItem::endPoints() const
+{
+    return QList<QPointF>();
+}
+
+QList<QPointF> GraphicsCircleItem::midPoints() const
+{
+    return QList<QPointF>();
+}
+
+QList<QPointF> GraphicsCircleItem::centerPoints() const
+{
+    return QList<QPointF>() << QPointF(0, 0);
+}
+
+QList<QPointF> GraphicsCircleItem::nearestPoints(QPointF pos) const
+{
+    QLineF line(QPointF(0, 0), pos);
+    line.setLength(m_radius);
+    return QList<QPointF>() << line.p2();
+}
+
 QRectF GraphicsCircleItem::boundingRect() const
 {
     if (m_boundingRect.isNull()) {

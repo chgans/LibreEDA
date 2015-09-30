@@ -2,6 +2,7 @@
 #include "core/json.h"
 
 #include <QStyleOptionGraphicsItem>
+#include <qmath.h>
 
 GraphicsEllipseItem::GraphicsEllipseItem(SchItem *parent):
     SchItem(parent),
@@ -58,6 +59,18 @@ void GraphicsEllipseItem::setYRadius(qreal yRadius)
     unblockItemNotification();
 
     emit yRadiusChanged(yRadius);
+}
+
+QPointF GraphicsEllipseItem::pointAt(int angle) const
+{
+    qreal theta = qDegreesToRadians(angle / 16.0);
+    return QPointF(m_xRadius * qCos(theta), -m_yRadius * qSin(theta));
+}
+
+qreal GraphicsEllipseItem::angleAt(const QPointF &pos) const
+{
+    QLineF vector(QPointF(0, 0), QPointF(pos.x()/xRadius(), pos.y()/m_yRadius));
+    return int(16 * vector.angle());
 }
 
 QRectF GraphicsEllipseItem::boundingRect() const
@@ -124,6 +137,27 @@ void GraphicsEllipseItem::toJson(QJsonObject &jsonObject) const
     SchItem::toJson(jsonObject);
     jsonObject.insert("x-radius", Json::fromReal(xRadius()));
     jsonObject.insert("y-radius", Json::fromReal(yRadius()));
+}
+
+QList<QPointF> GraphicsEllipseItem::endPoints() const
+{
+    return QList<QPointF>() << QPointF(m_xRadius, 0);
+}
+
+QList<QPointF> GraphicsEllipseItem::midPoints() const
+{
+    return QList<QPointF>();
+}
+
+QList<QPointF> GraphicsEllipseItem::centerPoints() const
+{
+    return QList<QPointF>() << QPointF(0, 0);
+}
+
+QList<QPointF> GraphicsEllipseItem::nearestPoints(QPointF pos) const
+{
+    qreal theta = angleAt(pos);
+    return QList<QPointF>() << pointAt(theta);
 }
 
 QVariant GraphicsEllipseItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
