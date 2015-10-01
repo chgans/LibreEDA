@@ -1,5 +1,5 @@
-#include "schitem.h"
-#include "abstractgraphicshandle.h"
+#include "item/schitem.h"
+#include "handle/abstractgraphicshandle.h"
 #include "palette.h"
 
 #include <QStyleOptionGraphicsItem>

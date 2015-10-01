@@ -1,7 +1,7 @@
 #ifndef GRAPHICSRECTITEM_H
 #define GRAPHICSRECTITEM_H
 
-#include "schitem.h"
+#include "item/schitem.h"
 
 #include <QVector>
 #include <QMap>

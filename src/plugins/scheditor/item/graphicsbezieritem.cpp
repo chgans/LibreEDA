@@ -1,5 +1,5 @@
-#include "graphicsbezieritem.h"
-#include "graphicsbezierhandle.h"
+#include "item/graphicsbezieritem.h"
+#include "handle/graphicsbezierhandle.h"
 #include "schscene.h"
 #include "schview.h"
 

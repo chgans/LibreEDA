@@ -1,7 +1,7 @@
 #ifndef GRAPHICSELLIPSEITEM_H
 #define GRAPHICSELLIPSEITEM_H
 
-#include "schitem.h"
+#include "item/schitem.h"
 
 class GraphicsEllipseItem : public SchItem
 {

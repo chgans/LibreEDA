@@ -1,4 +1,4 @@
-#include "graphicsellipsetool.h"
+#include "tool/graphicsellipsetool.h"
 #include "item/graphicsellipseitem.h"
 #include "schview.h"
 

@@ -2,7 +2,7 @@
 #define ABSTRACTGRAPHICSHANDLE_H
 
 #include <QGraphicsPathItem>
-#include "igraphicsobservableitem.h"
+#include "item/igraphicsobservableitem.h"
 
 #include <QPainter>
 #include <QPointer>

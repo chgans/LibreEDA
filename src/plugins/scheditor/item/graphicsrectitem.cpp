@@ -1,5 +1,5 @@
-#include "graphicsrectitem.h"
-#include "abstractgraphicshandle.h"
+#include "item/graphicsrectitem.h"
+#include "handle/abstractgraphicshandle.h"
 #include "core/json.h"
 
 #include <QBrush>

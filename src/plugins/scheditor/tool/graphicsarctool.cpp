@@ -1,4 +1,4 @@
-#include "graphicsarctool.h"
+#include "tool/graphicsarctool.h"
 #include "item/graphicsarcitem.h"
 #include "schview.h"
 #include "palette.h"

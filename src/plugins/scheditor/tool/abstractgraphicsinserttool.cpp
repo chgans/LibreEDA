@@ -1,6 +1,6 @@
-#include "abstractgraphicsinserttool.h"
+#include "tool/abstractgraphicsinserttool.h"
 
-#include "schitem.h"
+#include "item/schitem.h"
 #include "schscene.h"
 #include "schview.h"
 

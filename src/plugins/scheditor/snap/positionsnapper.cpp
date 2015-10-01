@@ -1,8 +1,8 @@
-#include "positionsnapper.h"
+#include "snap/positionsnapper.h"
 #include "schview.h"
 #include "schscene.h"
-#include "schitem.h"
-#include "graphicsgrid.h"
+#include "item/schitem.h"
+#include "grid/graphicsgrid.h"
 
 #include <QAction>
 #include <QDebug>

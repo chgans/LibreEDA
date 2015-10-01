@@ -1,7 +1,7 @@
 #ifndef GRAPHICSELLIPSETOOL_H
 #define GRAPHICSELLIPSETOOL_H
 
-#include "abstractgraphicsinserttool.h"
+#include "tool/abstractgraphicsinserttool.h"
 
 class GraphicsEllipseItem;
 

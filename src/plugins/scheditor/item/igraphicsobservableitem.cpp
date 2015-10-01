@@ -1,5 +1,5 @@
-#include "igraphicsobservableitem.h"
-#include "igraphicsitemobserver.h"
+#include "item/igraphicsobservableitem.h"
+#include "item/igraphicsitemobserver.h"
 
 QList<IGraphicsObservableItem *> IGraphicsItemObserver::observedItems() const
 {

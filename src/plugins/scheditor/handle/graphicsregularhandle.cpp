@@ -1,4 +1,4 @@
-#include "graphicsregularhandle.h"
+#include "handle/graphicsregularhandle.h"
 
 GraphicsRegularHandle::GraphicsRegularHandle(SchItem *parent):
     AbstractGraphicsHandle(parent)

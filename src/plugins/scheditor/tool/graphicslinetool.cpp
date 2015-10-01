@@ -1,7 +1,7 @@
 #include "tool/graphicslinetool.h"
 #include "item/graphicslineitem.h"
 
-#include "abstractgraphicshandle.h"
+#include "handle/abstractgraphicshandle.h"
 #include "schscene.h"
 #include "schview.h"
 #include "palette.h"

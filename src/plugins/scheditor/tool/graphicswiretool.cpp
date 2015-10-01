@@ -4,7 +4,7 @@
 #include "utils/widgets/pensettingswidget.h"
 #include "widget/wireoperationwidget.h"
 
-#include "abstractgraphicshandle.h"
+#include "handle/abstractgraphicshandle.h"
 #include "schscene.h"
 #include "schview.h"
 

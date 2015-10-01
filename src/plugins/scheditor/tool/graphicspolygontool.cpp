@@ -1,4 +1,4 @@
-#include "graphicspolygontool.h"
+#include "tool/graphicspolygontool.h"
 #include "item/graphicspolygonitem.h"
 
 #include <QPolygonF>

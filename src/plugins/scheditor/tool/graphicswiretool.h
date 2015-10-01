@@ -1,7 +1,7 @@
 #ifndef GRAPHICSWIRETOOL_H
 #define GRAPHICSWIRETOOL_H
 
-#include "abstractgraphicsinserttool.h"
+#include "tool/abstractgraphicsinserttool.h"
 
 class PenSettingsWidget;
 class WireOperationWidget;

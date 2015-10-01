@@ -1,7 +1,7 @@
 #ifndef ABSTRACTGRAPHICSINTERACTIVETOOL_H
 #define ABSTRACTGRAPHICSINTERACTIVETOOL_H
 
-#include "schtool.h"
+#include "tool/schtool.h"
 
 class QMouseEvent;
 class QKeyEvent;

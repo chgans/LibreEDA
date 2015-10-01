@@ -1,8 +1,8 @@
-#include "abstractgraphicsinteractivetool.h"
+#include "tool/abstractgraphicsinteractivetool.h"
 
 #include "schscene.h"
 #include "schview.h"
-#include "schitem.h"
+#include "item/schitem.h"
 
 #include <QGraphicsColorizeEffect>
 

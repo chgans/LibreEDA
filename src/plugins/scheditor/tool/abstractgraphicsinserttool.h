@@ -1,7 +1,7 @@
 #ifndef ABSTRACTGRAPHICSINSERTTOOL_H
 #define ABSTRACTGRAPHICSINSERTTOOL_H
 
-#include "abstractgraphicsinteractivetool.h"
+#include "tool/abstractgraphicsinteractivetool.h"
 
 #include <QPointF>
 #include <QString>

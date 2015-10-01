@@ -1,7 +1,7 @@
-#include "schitem.h"
-#include "abstractgraphicshandle.h"
-#include "graphicsregularhandle.h"
-#include "graphicsbezierhandle.h"
+#include "item/schitem.h"
+#include "handle/abstractgraphicshandle.h"
+#include "handle/graphicsregularhandle.h"
+#include "handle/graphicsbezierhandle.h"
 #include "core/json.h"
 
 #include <QDebug>

@@ -2,7 +2,7 @@
 #include "scheditorwidget.h"
 #include "schdocument.h"
 #include "schscene.h"
-#include "schitem.h"
+#include "item/schitem.h"
 
 #include <QFileInfo>
 

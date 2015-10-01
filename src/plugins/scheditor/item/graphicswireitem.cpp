@@ -1,5 +1,5 @@
-#include "graphicswireitem.h"
-#include "abstractgraphicshandle.h"
+#include "item/graphicswireitem.h"
+#include "handle/abstractgraphicshandle.h"
 #include "schscene.h"
 #include "core/json.h"
 

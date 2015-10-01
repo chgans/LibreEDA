@@ -1,7 +1,7 @@
 #ifndef GRAPHICSTEXTFRAMEITEM_H
 #define GRAPHICSTEXTFRAMEITEM_H
 
-#include "schitem.h"
+#include "item/schitem.h"
 
 #include <QRectF>
 

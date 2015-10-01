@@ -1,4 +1,4 @@
-#include "graphicscartesiangrid.h"
+#include "grid/graphicscartesiangrid.h"
 
 #include <QLineF>
 #include <QPainter>

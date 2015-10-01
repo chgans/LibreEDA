@@ -1,7 +1,7 @@
 #ifndef GRAPHICSCARTESIANGRID_H
 #define GRAPHICSCARTESIANGRID_H
 
-#include "graphicsgrid.h"
+#include "grid/graphicsgrid.h"
 #include <QPointF>
 #include <QSizeF>
 

@@ -2,9 +2,9 @@
 #define GRAPHICSBEZIERHANDLE_H
 
 #include <QGraphicsItem>
-#include "abstractgraphicshandle.h"
-#include "igraphicsitemobserver.h"
-#include "igraphicsobservableitem.h"
+#include "handle/abstractgraphicshandle.h"
+#include "item/igraphicsitemobserver.h"
+#include "item/igraphicsobservableitem.h"
 
 
 class GraphicsBezierHandle:

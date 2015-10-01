@@ -1,5 +1,5 @@
-#include "graphicslineitem.h"
-#include "abstractgraphicshandle.h"
+#include "item/graphicslineitem.h"
+#include "handle/abstractgraphicshandle.h"
 #include "core/json.h"
 
 #include <QPainter>

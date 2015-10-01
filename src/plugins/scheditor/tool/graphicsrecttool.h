@@ -1,7 +1,7 @@
 #ifndef GRAPHICSRECTTOOL_H
 #define GRAPHICSRECTTOOL_H
 
-#include "abstractgraphicsinserttool.h"
+#include "tool/abstractgraphicsinserttool.h"
 #include <QRectF>
 
 class GraphicsRectItem;

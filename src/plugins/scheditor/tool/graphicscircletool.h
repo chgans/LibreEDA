@@ -1,7 +1,7 @@
 #ifndef GRAPHICSCIRCLETOOL_H
 #define GRAPHICSCIRCLETOOL_H
 
-#include "abstractgraphicsinserttool.h"
+#include "tool/abstractgraphicsinserttool.h"
 
 class GraphicsCircleItem;
 

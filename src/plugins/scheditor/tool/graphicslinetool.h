@@ -1,7 +1,7 @@
 #ifndef GRAPHICSLINETOOL_H
 #define GRAPHICSLINETOOL_H
 
-#include "abstractgraphicsinserttool.h"
+#include "tool/abstractgraphicsinserttool.h"
 
 class GraphicsLineItem;
 

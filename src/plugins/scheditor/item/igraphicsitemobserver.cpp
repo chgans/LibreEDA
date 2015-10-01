@@ -1,5 +1,5 @@
-#include "igraphicsitemobserver.h"
-#include "igraphicsobservableitem.h"
+#include "item/igraphicsitemobserver.h"
+#include "item/igraphicsobservableitem.h"
 
 #include <QDebug>
 

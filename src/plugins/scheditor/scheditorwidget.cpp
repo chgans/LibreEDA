@@ -1,7 +1,6 @@
 #include "scheditorwidget.h"
 #include "schview.h"
 #include "schscene.h"
-#include "graphicsgrid.h"
 #include "palette.h"
 
 #include "tool/graphicsbeziertool.h"
@@ -14,9 +13,10 @@
 #include "tool/graphicswiretool.h"
 #include "tool/graphicsarctool.h"
 
-#include "positionsnapper.h"
+#include "snap/positionsnapper.h"
 
 #include "grid/graphicscartesiangrid.h"
+#include "grid/graphicsgrid.h"
 
 #include "dock/taskdockwidget.h"
 

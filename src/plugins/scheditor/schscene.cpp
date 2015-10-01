@@ -1,7 +1,7 @@
 #include "schscene.h"
-#include "schitem.h"
-#include "abstractgraphicshandle.h"
-#include "graphicsgrid.h"
+#include "item/schitem.h"
+#include "handle/abstractgraphicshandle.h"
+#include "grid/graphicsgrid.h"
 #include "palette.h"
 
 #include <QPainter>

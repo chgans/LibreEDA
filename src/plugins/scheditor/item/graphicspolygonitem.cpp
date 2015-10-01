@@ -1,4 +1,4 @@
-#include "graphicspolygonitem.h"
+#include "item/graphicspolygonitem.h"
 #include "core/json.h"
 
 const QString GraphicsPolygonItem::J_POINTS = QStringLiteral("points");

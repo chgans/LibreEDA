@@ -7,9 +7,9 @@
 #include <QPainterPath>
 #include <QVector>
 
-#include "abstractgraphicshandle.h"
+#include "handle/abstractgraphicshandle.h"
 
-#include "igraphicsitemobserver.h"
+#include "item/igraphicsitemobserver.h"
 
 class QGraphicsItem;
 class QPainter;

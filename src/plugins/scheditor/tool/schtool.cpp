@@ -1,4 +1,4 @@
-#include "schtool.h"
+#include "tool/schtool.h"
 
 #include "schscene.h"
 #include "schview.h"

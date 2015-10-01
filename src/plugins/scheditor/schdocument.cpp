@@ -1,5 +1,5 @@
 #include "schdocument.h"
-#include "schitem.h"
+#include "item/schitem.h"
 #include "item/graphicsbezieritem.h"
 #include "item/graphicscircleitem.h"
 #include "item/graphicsellipseitem.h"

@@ -1,10 +1,10 @@
 #include "schview.h"
 #include "schscene.h"
-#include "schitem.h"
-#include "abstractgraphicsinteractivetool.h"
-#include "graphicsgrid.h"
+#include "item/schitem.h"
+#include "tool/abstractgraphicsinteractivetool.h"
+#include "grid/graphicsgrid.h"
 #include "palette.h"
-#include "positionsnapper.h"
+#include "snap/positionsnapper.h"
 
 #include <QGLWidget>
 

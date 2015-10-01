@@ -1,7 +1,7 @@
 #ifndef GRAPHICSREGULARHANDLE_H
 #define GRAPHICSREGULARHANDLE_H
 
-#include "abstractgraphicshandle.h"
+#include "handle/abstractgraphicshandle.h"
 #include <QGraphicsPathItem>
 
 class GraphicsRegularHandle : public AbstractGraphicsHandle
