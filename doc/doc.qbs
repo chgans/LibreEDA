@@ -9,6 +9,7 @@ Product {
     files: [
         "leda.qdoc",
         "config/*.qdocconf",
+        "leda.qmodel",
     ]
     Group {
         name: "main qdocconf file"

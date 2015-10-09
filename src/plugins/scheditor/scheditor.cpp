@@ -1,6 +1,6 @@
 #include "scheditor.h"
 #include "scheditorwidget.h"
-#include "schdocument.h"
+#include "scheditordocument.h"
 #include "schscene.h"
 #include "item/schitem.h"
 
@@ -15,7 +15,7 @@ SchEditor::SchEditor(QObject *parent) :
 
 bool SchEditor::open(QString *errorString, const QString &fileName)
 {
-    m_document = new SchDocument();
+    m_document = new SchEditorDocument();
     m_document->setFilePath(fileName);
     QFileInfo fileInfo(fileName);
     m_document->setDisplayName(fileInfo.baseName());

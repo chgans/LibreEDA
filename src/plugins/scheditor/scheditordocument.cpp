@@ -1,4 +1,8 @@
-#include "schdocument.h"
+#include "scheditordocument.h"
+#include "schscene.h"
+
+#include "command/additemcommand.h"
+
 #include "item/schitem.h"
 #include "item/graphicsbezieritem.h"
 #include "item/graphicscircleitem.h"
@@ -13,14 +17,17 @@
 
 #include <QFile>
 #include <QJsonParseError>
+#include <QUndoStack>
 
-SchDocument::SchDocument(QObject *parent) :
-    IDocument(parent)
+SchEditorDocument::SchEditorDocument(QObject *parent) :
+    IDocument(parent),
+    m_scene(new SchScene(this)),
+    m_commandStack(new QUndoStack(this))
 {
     setModified(true);
 }
 
-bool SchDocument::load(QString *errorString, const QString &fileName)
+bool SchEditorDocument::load(QString *errorString, const QString &fileName)
 {
     // Open document
     QFile file(fileName);
@@ -117,13 +124,33 @@ bool SchDocument::load(QString *errorString, const QString &fileName)
     return true;
 }
 
-QList<SchItem *> SchDocument::items() const
+QSizeF SchEditorDocument::pageSize() const
 {
-    return m_items;
+    return m_scene->sceneRect().size();
+}
+
+void SchEditorDocument::setPageSize(const QSizeF &size)
+{
+    m_scene->setSceneRect(QRectF(QPointF(0, 0), size));
+}
+
+QList<SchItem *> SchEditorDocument::items(Qt::SortOrder order) const
+{
+    return m_scene->items(order);
+}
+
+void SchEditorDocument::executeCommand(SchCommand *command)
+{
+    m_commandStack->push(command);
+}
+
+QUndoStack *SchEditorDocument::undoStack()
+{
+    return m_commandStack;
 }
 
 
-bool SchDocument::save(QString *errorString, const QString &fileName)
+bool SchEditorDocument::save(QString *errorString, const QString &fileName)
 {
     Q_UNUSED(errorString);
     Q_UNUSED(fileName);
