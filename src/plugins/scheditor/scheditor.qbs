@@ -3,7 +3,7 @@ import qbs 1.0
 LedaPlugin {
     name: "SchEditor"
     
-    Depends { name: "Qt"; submodules: ["core", "gui", "widgets", "opengl"] }
+    Depends { name: "Qt"; submodules: ["core", "gui", "widgets", "opengl", "xml"] }
     Depends { name: "Utils" }
 
     files: [
@@ -13,6 +13,8 @@ LedaPlugin {
         "document/circledata.h",
         "document/circulararcdata.cpp",
         "document/circulararcdata.h",
+        "document/documentreader.cpp",
+        "document/documentreader.h",
         "document/ellipsedata.cpp",
         "document/ellipsedata.h",
         "document/ellipticarcdata.cpp",

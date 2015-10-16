@@ -19,7 +19,7 @@ class SchDocument: public QObject
 public:
     explicit SchDocument(QObject *parent = 0);
 
-
+    SchDocumentObject *rootObject();
     const SchDocumentObject *documentObject(const QUuid &uid) const;
 
     const SchSceneData *sceneData() const;
@@ -30,7 +30,7 @@ public slots:
 
 private:
     QMap<QUuid, SchDocumentObject*> m_objects;
-
+    SchSceneData *m_sceneData;
 };
 
 #endif // GRAPHICSDOCUMENT_H
