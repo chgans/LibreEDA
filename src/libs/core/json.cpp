@@ -56,7 +56,7 @@ bool toRect(QString *errorString, const QJsonValue &jsonValue, QRectF &value)
     QList<QPointF> points;
     if (!toPointList(errorString, jsonValue, points))
         return false;
-    if (!points.count() == 2) {
+    if (points.count() != 2) {
         *errorString = "JSON value is not a rectangle";
         return false;
     }
@@ -80,7 +80,7 @@ bool toLine(QString *errorString, const QJsonValue &jsonValue, QLineF &value)
     QList<QPointF> points;
     if (!toPointList(errorString, jsonValue, points))
         return false;
-    if (!points.count() == 2) {
+    if (points.count() != 2) {
         *errorString = "JSON value is not a line";
         return false;
     }
