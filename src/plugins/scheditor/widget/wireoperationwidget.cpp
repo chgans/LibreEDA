@@ -83,18 +83,18 @@ void WireOperationWidget::setCurrentLocation(const QPointF &pos)
 
 void WireOperationWidget::focusInEvent(QFocusEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     QWidget::focusInEvent(event);
 }
 
 void WireOperationWidget::focusOutEvent(QFocusEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     QWidget::focusOutEvent(event);
 }
 
 bool WireOperationWidget::focusNextPrevChild(bool next)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     return QWidget::focusNextPrevChild(next);
 }

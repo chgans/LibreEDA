@@ -61,16 +61,16 @@ void TaskEditWidget::setCentralWidget(QWidget *widget)
 
 QWidget *TaskEditWidget::findLastChildToFocus(QObject *parent)
 {
-    qDebug() << __PRETTY_FUNCTION__ << "parent" << parent;
+    qDebug() << __FUNCTION__ << "parent" << parent;
     for (int i = parent->children().count() - 1; i >= 0; i--) {
         QObject *childObject = parent->children().at(i);
-        qDebug() << __PRETTY_FUNCTION__ << "child object" << childObject;
+        qDebug() << __FUNCTION__ << "child object" << childObject;
         QWidget *childWidget = qobject_cast<QWidget*>(childObject);
         if (childWidget == nullptr)
             continue;
-        qDebug() << __PRETTY_FUNCTION__ << "child widget" << childWidget;
+        qDebug() << __FUNCTION__ << "child widget" << childWidget;
         if (childWidget->focusPolicy() != Qt::NoFocus) {
-            qDebug() << __PRETTY_FUNCTION__ << "Found!";
+            qDebug() << __FUNCTION__ << "Found!";
             return childWidget;
         }
         else
@@ -81,18 +81,18 @@ QWidget *TaskEditWidget::findLastChildToFocus(QObject *parent)
 
 bool TaskEditWidget::focusNextPrevChild(bool next)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     return QWidget::focusNextPrevChild(next);
 }
 
 void TaskEditWidget::focusInEvent(QFocusEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     QWidget::focusInEvent(event);
 }
 
 void TaskEditWidget::focusOutEvent(QFocusEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     QWidget::focusOutEvent(event);
 }

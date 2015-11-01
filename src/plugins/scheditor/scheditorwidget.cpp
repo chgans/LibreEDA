@@ -27,6 +27,7 @@
 #include <QToolBar>
 #include <QTimer>
 #include <QComboBox>
+#include <QSettings>
 
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsTextItem>

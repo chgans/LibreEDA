@@ -65,7 +65,7 @@ InsightPickListWidget::InsightPickListWidget(QWidget *parent) :
 InsightPickListWidget::~InsightPickListWidget()
 {
     // FIXME: we never get destroyed!
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
 }
 
 void InsightPickListWidget::setPickList(QGraphicsScene *scene, QList<QGraphicsItem *> list)

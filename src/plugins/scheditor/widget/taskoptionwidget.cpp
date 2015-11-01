@@ -47,18 +47,18 @@ void TaskOptionWidget::setCentralWidget(QWidget *widget)
 
 void TaskOptionWidget::focusInEvent(QFocusEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     QGroupBox::focusInEvent(event);
 }
 
 void TaskOptionWidget::focusOutEvent(QFocusEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     QGroupBox::focusOutEvent(event);
 }
 
 bool TaskOptionWidget::focusNextPrevChild(bool next)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     return QGroupBox::focusNextPrevChild(next);
 }

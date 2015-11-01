@@ -5,6 +5,7 @@
 #include <QTextDocument>
 #include <QTextCursor>
 #include <QDebug>
+#include <QJsonObject>
 
 /* FIXME:
  *  - The clipping doesn't do what we want, we need to clip with some margin

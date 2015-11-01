@@ -112,7 +112,7 @@ bool EditorManager::restoreState()
 void EditorManager::registerEditorFactory(IEditorFactory *factory)
 {
     if (m_factoryMap.contains(factory->fileExtension())) {
-        qWarning() << __PRETTY_FUNCTION__ << "File extension" << factory->fileExtension() << "already registered";
+        qWarning() << "EditorManager::registerEditorFactory" << "File extension" << factory->fileExtension() << "already registered";
         return;
     }
     m_factoryMap.insert(factory->fileExtension(), factory);

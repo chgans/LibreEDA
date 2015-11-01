@@ -43,18 +43,18 @@ void TaskDockWidget::setOptionWidget(QWidget *widget)
 
 void TaskDockWidget::focusInEvent(QFocusEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     QDockWidget::focusInEvent(event);
 }
 
 void TaskDockWidget::focusOutEvent(QFocusEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     QDockWidget::focusOutEvent(event);
 }
 
 bool TaskDockWidget::focusNextPrevChild(bool next)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     return QDockWidget::focusNextPrevChild(next);
 }

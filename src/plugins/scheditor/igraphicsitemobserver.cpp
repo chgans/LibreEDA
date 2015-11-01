@@ -26,12 +26,12 @@ void IGraphicsItemObserver::blockItemNotification(IGraphicsObservableItem *item)
     }
 
     if (!m_items.contains(item)) {
-        qWarning() << __PRETTY_FUNCTION__ << "Trying to block an item which is not in our list of observed item. Ignoring request";
+        qWarning() << __FUNCTION__ << "Trying to block an item which is not in our list of observed item. Ignoring request";
         return;
     }
 
     if (m_blockAllItems) {
-        qWarning() << __PRETTY_FUNCTION__ << "Trying to block an item while all items are currently blocked. Ignoring request";
+        qWarning() << __FUNCTION__ << "Trying to block an item while all items are currently blocked. Ignoring request";
         return;
     }
 
@@ -51,12 +51,12 @@ void IGraphicsItemObserver::unblockItemNotification(IGraphicsObservableItem *ite
     }
 
     if (!m_items.contains(item)) {
-        qWarning() << __PRETTY_FUNCTION__ << "Trying to unblock an item which is not in our list of observed item. Ignoring request";
+        qWarning() << __FUNCTION__ << "Trying to unblock an item which is not in our list of observed item. Ignoring request";
         return;
     }
 
     if (!m_blockedItems.contains(item)) {
-        qWarning() << __PRETTY_FUNCTION__ << "Trying to unblock an item which is not in our list of blocked item. Ignoring request";
+        qWarning() << __FUNCTION__ << "Trying to unblock an item which is not in our list of blocked item. Ignoring request";
         return;
     }
 

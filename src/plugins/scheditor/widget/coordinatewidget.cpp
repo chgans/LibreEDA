@@ -57,14 +57,14 @@ void CoordinateWidget::setCoordinate(const QPointF &point)
 
 void CoordinateWidget::focusInEvent(QFocusEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     QWidget::focusInEvent(event);
     m_xSpinBox->setFocus(event->reason());
 }
 
 void CoordinateWidget::focusOutEvent(QFocusEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __FUNCTION__;
     QWidget::focusOutEvent(event);
 }
 
