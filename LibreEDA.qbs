@@ -37,7 +37,6 @@ Project {
 
     references: [
         "doc/doc.qbs",
-        "src/src.qbs",
-        "tests/tests.qbs"
+        "src/src.qbs"
     ]
 }
