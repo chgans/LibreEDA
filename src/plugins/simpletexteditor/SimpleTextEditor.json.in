@@ -1,0 +1,13 @@
+{
+    "Name" : "Simple Text Editor",
+    "Version" : "$$LEDA_VERSION",
+    "CompatVersion" : "$$LEDA_COMPAT_VERSION",
+    "Experimental" : true,
+    "Vendor" : "Christian Gagneraud",
+    "Copyright" : "(C) 2015 Christian Gagneraud",
+    "License" : "GNU Lesser General Public License Usage",
+    "Description" : "Adds a very simple text editor.",
+    "Url" : "http://www.libre-eda.org",
+    "Category" : "Libre EDA",
+    $$dependencyList
+}

@@ -1,0 +1,7 @@
+#ifndef SIMPLETEXTEDITORCONSTANTS_H
+#define SIMPLETEXTEDITORCONSTANTS_H
+
+const char SIMPLETEXTEDITOR_ID[] = "leda.simpletexteditor";
+const char SIMPLETEXTEDITOR_EXT[] = "txt";
+
+#endif // SIMPLETEXTEDITORCONSTANTS_H
