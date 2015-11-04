@@ -3,6 +3,7 @@
 #include "ieditorfactory.h"
 #include "idocument.h"
 #include "documentmanager.h"
+#include "extension/pluginmanager.h"
 
 #include <QSettings>
 #include <QFileInfo>
@@ -50,6 +51,13 @@ EditorManager *EditorManager::instance()
     if (m_instance == nullptr)
         m_instance = new EditorManager();
     return m_instance;
+}
+
+void EditorManager::initialise()
+{
+    foreach (IEditorFactory *factory, PluginManager::getObjects<IEditorFactory>()) {
+        m_factoryMap[factory->fileExtension()] = factory;
+    }
 }
 
 IEditor *EditorManager::openEditor(const QString &fileName)
@@ -107,15 +115,6 @@ void EditorManager::saveState()
 bool EditorManager::restoreState()
 {
     return false;
-}
-
-void EditorManager::registerEditorFactory(IEditorFactory *factory)
-{
-    if (m_factoryMap.contains(factory->fileExtension())) {
-        qWarning() << "EditorManager::registerEditorFactory" << "File extension" << factory->fileExtension() << "already registered";
-        return;
-    }
-    m_factoryMap.insert(factory->fileExtension(), factory);
 }
 
 IEditorFactory *EditorManager::editorFactory(const QString &fileExtension)

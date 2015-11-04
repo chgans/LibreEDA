@@ -22,13 +22,14 @@ class EditorManager : public QObject
 public:
     static EditorManager *instance();
 
+    static void initialise();
+
     static IEditor *openEditor(const QString &fileName);
     static bool closeEditor(IEditor *editor);
 
     static void saveState();
     static bool restoreState();
 
-    static void registerEditorFactory(IEditorFactory *factory);
     static IEditorFactory *editorFactory(const QString &fileExtension);
     static QStringList supportedFileExtensions();
     static QString supportedFileFilter();
