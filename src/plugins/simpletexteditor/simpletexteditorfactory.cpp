@@ -7,7 +7,7 @@ SimpleTextEditorFactory::SimpleTextEditorFactory(QObject *parent) :
 {
     setId(SIMPLETEXTEDITOR_ID);
     setFileExtension(SIMPLETEXTEDITOR_EXT);
-    setDisplayName("SCH editor");
+    setDisplayName("Simple text editor");
 }
 
 IEditor *SimpleTextEditorFactory::createEditor()
