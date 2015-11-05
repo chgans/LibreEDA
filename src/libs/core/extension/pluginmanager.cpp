@@ -510,7 +510,12 @@ void PluginManager::resolveDependencies()
 */
 void PluginManager::loadPlugins()
 {
-
+    loadQueue();
+    resolveDependencies();
+    foreach (PluginSpec *spec, m_pluginSpecs) {
+        spec->load();
+        spec->initialise();
+    }
 }
 
 /*!
