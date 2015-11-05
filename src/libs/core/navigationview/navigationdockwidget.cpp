@@ -16,6 +16,10 @@ NavigationDockWidget::NavigationDockWidget(QWidget *parent):
 {
     setTitleBarWidget(m_toolBar);
     m_comboBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+    void (QComboBox::*comboSignal)(int) = &QComboBox::currentIndexChanged;
+    connect(m_comboBox, comboSignal,
+            this, &NavigationDockWidget::activateNavigationView);
 }
 
 NavigationDockWidget::~NavigationDockWidget()
@@ -28,6 +32,8 @@ void NavigationDockWidget::setFactories(const QList<INavigationViewFactory *> &f
     Q_ASSERT(m_factories.isEmpty());
     Q_ASSERT(m_comboBox->count() == 0);
     m_factories = factories;
+
+    // loadFactories()
     foreach (INavigationViewFactory *factory, m_factories) {
         m_comboBox->addItem(factory->displayName(),
                             QVariant::fromValue<NavigationView *>(factory->createView()));
@@ -37,9 +43,7 @@ void NavigationDockWidget::setFactories(const QList<INavigationViewFactory *> &f
         m_comboBox->setCurrentIndex(defaultIndex);
         activateNavigationView(defaultIndex);
     }
-    void (QComboBox::*comboSignal)(int) = &QComboBox::currentIndexChanged;
-    connect(m_comboBox, comboSignal,
-            this, &NavigationDockWidget::activateNavigationView);
+
 }
 
 void NavigationDockWidget::saveSettings(QSettings *settings)
