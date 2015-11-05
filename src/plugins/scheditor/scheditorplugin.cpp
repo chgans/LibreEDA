@@ -1,4 +1,5 @@
 #include "scheditorplugin.h"
+#include "scheditorfactory.h"
 
 SchEditorPlugin::SchEditorPlugin(QObject *parent):
     IPlugin(parent)
@@ -16,7 +17,7 @@ bool SchEditorPlugin::initialize(const QStringList &arguments, QString *errorStr
     Q_UNUSED(arguments);
     Q_UNUSED(errorString);
 
-    addObject(new SchEditorPlugin(this));
+    addObject(new SchEditorFactory(this));
     return true;
 }
 
