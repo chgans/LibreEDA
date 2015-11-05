@@ -7,6 +7,8 @@
 #include <QVariant>
 #include <QHBoxLayout>
 
+// TODO: needs a place holder in case there's no view to choose from
+//
 NavigationDockWidget::NavigationDockWidget(QWidget *parent):
     QDockWidget(parent),
     m_comboBox(new QComboBox),
@@ -30,9 +32,11 @@ void NavigationDockWidget::setFactories(const QList<INavigationViewFactory *> &f
         m_comboBox->addItem(factory->displayName(),
                             QVariant::fromValue<NavigationView *>(factory->createView()));
     }
-    int defaultIndex = 0;
-    m_comboBox->setCurrentIndex(defaultIndex);
-    activateNavigationView(defaultIndex);
+    if (m_comboBox->count()) {
+        int defaultIndex = 0;
+        m_comboBox->setCurrentIndex(defaultIndex);
+        activateNavigationView(defaultIndex);
+    }
     void (QComboBox::*comboSignal)(int) = &QComboBox::currentIndexChanged;
     connect(m_comboBox, comboSignal,
             this, &NavigationDockWidget::activateNavigationView);

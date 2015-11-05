@@ -7,6 +7,7 @@
 #include "core/editormanager/documentmanager.h"
 #include "core/navigationview/navigationdockwidget.h"
 #include "core/extension/pluginmanager.h"
+#include "core/navigationview/inavigationviewfactory.h"
 
 #include <QDebug>
 #include <QDockWidget>
