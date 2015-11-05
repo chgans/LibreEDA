@@ -1,5 +1,6 @@
 import qbs 1.0
 
+// TODO: rename to LoggerOutputPane
 LedaPlugin {
     name: "LogViewer"
 
