@@ -10,7 +10,6 @@ LedaApplication {
     Depends { name: "Qt"; submodules: ["core", "widgets", "network"] }
     Depends { name: "Utils" }
     Depends { name: "Core" }
-    Depends { name: "SchEditor" }
 
     files : [
         "main.cpp",
