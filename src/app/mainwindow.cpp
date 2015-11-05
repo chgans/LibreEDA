@@ -22,22 +22,27 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    EditorManager::initialise();
 
+    // initEditorView()
+    EditorManager::initialise();
     m_editorView = new EditorView();
     setCentralWidget(m_editorView);
+    connect(m_editorView, &EditorView::editorCloseRequested,
+            this, &MainWindow::onEditorCloseRequested);
+    connect(EditorManager::instance(), &EditorManager::editorOpened,
+            this, &MainWindow::onEditorOpened);
+    connect(EditorManager::instance(), &EditorManager::editorAboutToClose,
+            m_editorView, &EditorView::removeEditor);
 
-//    connect(m_editorView, &EditorView::editorCloseRequested,
-//            this, &MainWindow::onEditorCloseRequested);
-//    connect(EditorManager::instance(), &EditorManager::editorOpened,
-//            this, &MainWindow::onEditorOpened);
-//    connect(EditorManager::instance(), &EditorManager::editorAboutToClose,
-//            m_editorView, &EditorView::removeEditor);
-
+    // initNavigationView()
     m_navigationDockWidget = new NavigationDockWidget;
     m_navigationDockWidget->setFactories(PluginManager::getObjects<INavigationViewFactory>());
     addDockWidget(Qt::LeftDockWidgetArea, m_navigationDockWidget);
 
+    // initOutputPane()
+    /* TODO */
+
+    // Other, eg initActionManager()
     QAction *action;
     QMenu *fileMenu = menuBar()->addMenu("&file");
     action = fileMenu->addAction("&open");
