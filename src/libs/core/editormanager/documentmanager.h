@@ -1,11 +1,13 @@
 #ifndef DOCUMENTMANAGER_H
 #define DOCUMENTMANAGER_H
 
+#include "core/core_global.h"
+
 #include <QObject>
 
 class IDocument;
 
-class DocumentManager : public QObject
+class CORE_EXPORT DocumentManager : public QObject
 {
     Q_OBJECT
 public:

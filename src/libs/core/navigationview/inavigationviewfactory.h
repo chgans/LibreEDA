@@ -1,12 +1,14 @@
 #ifndef INAVIGATIONVIEWFACTORY_H
 #define INAVIGATIONVIEWFACTORY_H
 
+#include "core/core_global.h"
+
 #include <QObject>
 #include <QKeySequence>
 
 class QToolButton;
 
-struct NavigationView
+struct CORE_EXPORT NavigationView
 {
     NavigationView(QWidget *w = 0) : widget(w) {}
 
@@ -16,7 +18,7 @@ struct NavigationView
 
 Q_DECLARE_METATYPE(NavigationView*)
 
-class INavigationViewFactory : public QObject
+class CORE_EXPORT INavigationViewFactory : public QObject
 {
     Q_OBJECT
 public:

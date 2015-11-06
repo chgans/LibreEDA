@@ -23,12 +23,14 @@
 #ifndef COLORWIDGET_H
 #define COLORWIDGET_H
 
+#include "utils/utils_global.h"
+
 #include <QWidget>
 
 #include "colorpreview.h"
 #include "colorwheel.h"
 
-class ColorWidget : public QWidget
+class UTILS_EXPORT ColorWidget : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged DESIGNABLE true)

@@ -5,6 +5,7 @@ LedaPlugin {
     
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets", "opengl"] }
     Depends { name: "Utils" }
+    Depends { name: "Core" }
 
     files: [
         "abstractgraphicshandle.cpp",

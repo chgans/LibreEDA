@@ -1,12 +1,14 @@
 #ifndef ABSTRACTEDITOR_H
 #define ABSTRACTEDITOR_H
 
+#include "core/core_global.h"
+
 #include <QWidget>
 
 class QMainWindow;
 class QSettings;
 
-class AbstractEditor : public QWidget
+class CORE_EXPORT AbstractEditor : public QWidget
 {
     Q_OBJECT
 public:

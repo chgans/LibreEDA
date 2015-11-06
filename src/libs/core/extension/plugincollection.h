@@ -1,12 +1,14 @@
 #ifndef PLUGINCOLLECTION_H
 #define PLUGINCOLLECTION_H
 
+#include "core/core_global.h"
+
 #include <QString>
 #include <QList>
 
 class PluginSpec;
 
-class PluginCollection
+class CORE_EXPORT PluginCollection
 {
 public:
     explicit PluginCollection(const QString& name);

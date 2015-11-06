@@ -2,12 +2,16 @@ import qbs 1.0
 
 LedaLibrary {
     name: "Utils"
+    cpp.defines: base.concat([
+                                 "UTILS_LIBRARY",
+                             ])
 
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets"] }
 
     files: [
         "utils.cpp",
         "utils.h",
+        "utils_global.h",
         "widgets/colorpreview.cpp",
         "widgets/colorpreview.h",
         "widgets/colorwheel.cpp",
@@ -28,6 +32,6 @@ LedaLibrary {
         "widgets/penstylecombobox.cpp",
         "widgets/penstylecombobox.h",
         "widgets/penwidthcombobox.cpp",
-        "widgets/penwidthcombobox.h"
+        "widgets/penwidthcombobox.h",
     ]
 }

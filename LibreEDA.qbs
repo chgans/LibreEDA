@@ -11,14 +11,42 @@ Project {
     property string leda_compat_version_release: '0'
     property string leda_compat_version: leda_compat_version_major + '.' + leda_compat_version_minor + '.' + leda_compat_version_release
     property path leda_source_tree: path
-    property string leda_app_path: "bin"
-    property string leda_app_target: "libreeda"
-    property string leda_library_path: "lib/leda"
-    property string leda_plugin_path: leda_library_path + "/plugins"
-    property string leda_data_path: "share/leda"
-    property string leda_libexec_path: leda_app_path
-    property string leda_doc_path: "share/doc/leda"
-    property string leda_bin_path: leda_app_path
+    property string leda_app_path: qbs.targetOS.contains("osx") ? "" : "bin"
+    property string leda_app_target: qbs.targetOS.contains("osx") ? "Libre EDA" : "libreeda"
+    property pathList additionalPlugins: []
+    property pathList additionalLibs: []
+    property pathList additionalTools: []
+    property pathList additionalAutotests: []
+    property string libDirName: "lib"
+    property string leda_library_path:  {
+        if (qbs.targetOS.contains("osx"))
+            return leda_app_target + ".app/Contents/Frameworks"
+        else if (qbs.targetOS.contains("windows"))
+            return leda_app_path
+        else
+            return libDirName + "qtcreator"
+    }
+    property string leda_plugin_path:  {
+        if (qbs.targetOS.contains("osx"))
+            return leda_app_target + ".app/Contents/PlugIns"
+        else if (qbs.targetOS.contains("windows"))
+            return libDirName + "/qtcreator/plugins"
+        else
+            return leda_library_path + "/plugins"
+    }
+    property string leda_data_path: qbs.targetOS.contains("osx")
+                                    ? leda_app_target + ".app/Contents/Resources"
+                                    : "share/leda"
+    property string leda_libexec_path:  qbs.targetOS.contains("osx")
+                                        ? leda_data_path : qbs.targetOS.contains("windows")
+                                        ? leda_app_path
+                                        : "libexec/qtcreator"
+    property string leda_doc_path: qbs.targetOS.contains("osx")
+                                   ? leda_data_path + "/doc"
+                                   : "share/doc/qtcreator"
+    property string leda_bin_path: qbs.targetOS.contains("osx")
+                                   ? leda_app_target + ".app/Contents/MacOS"
+                                   : leda_app_path
     property stringList generalDefines: [
         "LIBRE_EDA",
         'BASE_SAMPLE_DIR="' + sourceDirectory + '/data/samples"',
@@ -29,10 +57,6 @@ Project {
         // "QT_NO_CAST_FROM_ASCII"
     ]
     property bool withAutotests: qbs.buildVariant === "debug"
-    property pathList additionalPlugins: []
-    property pathList additionalLibs: []
-    property pathList additionalTools: []
-    property pathList additionalAutotests: []
     qbsSearchPaths: "qbs"
 
     references: [

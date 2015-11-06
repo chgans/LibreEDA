@@ -24,13 +24,15 @@
 #ifndef GRADIENT_SLIDER_HPP
 #define GRADIENT_SLIDER_HPP
 
+#include "utils/utils_global.h"
+
 #include <QSlider>
 #include <QGradient>
 
 /**
  * \brief A slider that mover on top of a gradient
  */
-class GradientSlider : public QSlider
+class UTILS_EXPORT GradientSlider : public QSlider
 {
     Q_OBJECT
     Q_PROPERTY(QBrush background READ background WRITE setBackground)

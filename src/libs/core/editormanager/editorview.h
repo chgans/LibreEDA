@@ -1,6 +1,8 @@
 #ifndef EDITORVIEW_H
 #define EDITORVIEW_H
 
+#include "core/core_global.h"
+
 #include <QWidget>
 #include <QMap>
 
@@ -8,7 +10,7 @@ class IEditor;
 class IDocument;
 class QTabWidget;
 
-class EditorView : public QWidget
+class CORE_EXPORT EditorView : public QWidget
 {
     Q_OBJECT
 

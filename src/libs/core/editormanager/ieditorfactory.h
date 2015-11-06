@@ -1,11 +1,13 @@
 #ifndef IEDITORFACTORY_H
 #define IEDITORFACTORY_H
 
+#include "core/core_global.h"
+
 #include <QObject>
 
 class IEditor;
 
-class IEditorFactory : public QObject
+class CORE_EXPORT IEditorFactory : public QObject
 {
     Q_OBJECT
 

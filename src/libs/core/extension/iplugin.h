@@ -1,12 +1,14 @@
 #ifndef IPLUGIN_H
 #define IPLUGIN_H
 
+#include "core/core_global.h"
+
 #include <QObject>
 #include <QtPlugin>
 
 class PluginSpec;
 
-class IPlugin : public QObject
+class CORE_EXPORT IPlugin : public QObject
 {
     Q_OBJECT
 public:

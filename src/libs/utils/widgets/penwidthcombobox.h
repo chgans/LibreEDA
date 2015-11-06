@@ -1,9 +1,11 @@
 #ifndef PENWIDTHCOMBOBOX_H
 #define PENWIDTHCOMBOBOX_H
 
+#include "utils/utils_global.h"
+
 #include <QComboBox>
 
-class PenWidthComboBox : public QComboBox
+class UTILS_EXPORT PenWidthComboBox : public QComboBox
 {
     Q_OBJECT
 

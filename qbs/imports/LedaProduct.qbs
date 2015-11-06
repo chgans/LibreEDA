@@ -7,19 +7,14 @@ Product {
     Depends { name: "cpp" }
     cpp.defines: project.generalDefines
     cpp.cxxLanguageVersion: "c++11"
+    cpp.linkerFlags: {
+        var flags = [];
+        if (qbs.buildVariant == "release" && (qbs.toolchain.contains("gcc") || qbs.toolchain.contains("mingw")))
+            flags.push("-Wl,-s");
+        return flags;
+    }
 
     Depends { name: "Qt.core" }
-
-    Properties {
-        condition: qbs.targetOS.contains("darwin")
-        cpp.rpaths: base.concat(["@loader_path/../" + project.leda_library_path])
-    }
-
-    Properties {
-        condition: qbs.targetOS.contains("linux")
-        cpp.rpaths: base.concat(["$ORIGIN/../" + project.leda_library_path,
-                                 "$ORIGIN/../" + project.leda_plugin_path])
-    }
 
     Group {
         fileTagsFilter: product.type

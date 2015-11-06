@@ -13,9 +13,9 @@ LedaProduct {
             flags.push("/INCREMENTAL:NO"); // Speed up startup time when debugging with cdb
         return flags;
     }
-    cpp.installNamePrefix: "@rpath/Frameworks/"
+    cpp.installNamePrefix: "@rpath"
     cpp.rpaths: qbs.targetOS.contains("osx")
-            ? ["@loader_path/..", "@executable_path/.."]
+            ? ["@loader_path/../Frameworks"]
             : ["$ORIGIN", "$ORIGIN/.."]
 
     // For #include <libname/header.h>, #include <pluginname/header.h>,

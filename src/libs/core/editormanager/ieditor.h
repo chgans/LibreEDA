@@ -1,6 +1,8 @@
 #ifndef IEDITOR_H
 #define IEDITOR_H
 
+#include "core/core_global.h"
+
 #include <QObject>
 #include <QPointer>
 #include <QIcon>
@@ -9,7 +11,7 @@ class IDocument;
 class QSettings;
 class QWidget;
 
-class IEditor : public QObject
+class CORE_EXPORT IEditor : public QObject
 {
     Q_OBJECT
 public:

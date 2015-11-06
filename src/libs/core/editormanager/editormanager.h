@@ -1,6 +1,8 @@
 #ifndef EDITORMANAGER_H
 #define EDITORMANAGER_H
 
+#include "core/core_global.h"
+
 #include <QObject>
 #include <QMap>
 #include <QStringList>
@@ -15,7 +17,7 @@ class QMainWindow;
 
 class Id;
 
-class EditorManager : public QObject
+class CORE_EXPORT EditorManager : public QObject
 {
     Q_OBJECT
 

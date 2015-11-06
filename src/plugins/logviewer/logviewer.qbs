@@ -5,7 +5,8 @@ LedaPlugin {
     name: "LogViewer"
 
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets"] }
-    Depends { name: "Utils" }
+    //Depends { name: "Utils" }
+    Depends { name: "Core" }
 
     files: [
         "logmessage.cpp",

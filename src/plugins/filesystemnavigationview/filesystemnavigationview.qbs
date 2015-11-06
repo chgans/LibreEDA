@@ -4,7 +4,8 @@ LedaPlugin {
     name: "FilesystemNavigationView"
     
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets"] }
-    Depends { name: "Utils" }
+    //Depends { name: "Utils" }
+    Depends { name: "Core" }
 
     files: [
         "filesystemnavigationplugin.cpp",

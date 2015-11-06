@@ -1,6 +1,8 @@
 #ifndef PENSETTINGSWIDGET_H
 #define PENSETTINGSWIDGET_H
 
+#include "utils/utils_global.h"
+
 #include <QWidget>
 #include <QPen>
 
@@ -9,7 +11,7 @@ class PenStyleComboBox;
 class PenCapStyleComboBox;
 class PenJoinStyleComboBox;
 
-class PenSettingsWidget : public QWidget
+class UTILS_EXPORT PenSettingsWidget : public QWidget
 {
     Q_OBJECT
 

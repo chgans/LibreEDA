@@ -1,10 +1,12 @@
 #ifndef PENJOINSTYLECOMBOBOX_H
 #define PENJOINSTYLECOMBOBOX_H
 
+#include "utils/utils_global.h"
+
 #include <QComboBox>
 #include <QPen>
 
-class PenJoinStyleComboBox : public QComboBox
+class UTILS_EXPORT PenJoinStyleComboBox : public QComboBox
 {
     Q_OBJECT
 

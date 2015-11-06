@@ -8,12 +8,14 @@
 #include <QSet>
 #include <QReadWriteLock>
 
+#include "core/core_global.h"
+
 class QSettings;
 
 class PluginSpec;
 class PluginCollection;
 
-class PluginManager : public QObject
+class CORE_EXPORT PluginManager : public QObject
 {
     Q_OBJECT
 public:

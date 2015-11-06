@@ -2,6 +2,9 @@ import qbs 1.0
 
 LedaLibrary {
     name: "Core"
+    cpp.defines: base.concat([
+                                 "CORE_LIBRARY",
+                             ])
 
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets"] }
 
@@ -11,6 +14,7 @@ LedaLibrary {
         "constants.h",
         "core.cpp",
         "core.h",
+        "core_global.h",
         "extension/extension.h",
         "extension/iplugin.cpp",
         "extension/iplugin.h",

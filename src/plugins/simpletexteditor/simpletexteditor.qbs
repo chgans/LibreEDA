@@ -4,7 +4,8 @@ LedaPlugin {
     name: "SimpleTextEditor"
     
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets", "opengl"] }
-    Depends { name: "Utils" }
+    Depends { name: "Core" }
+    //Depends { name: "Utils" }
 
     files: [
         "simpletexteditor.cpp",

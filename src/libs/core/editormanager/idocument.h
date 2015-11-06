@@ -1,9 +1,11 @@
 #ifndef IDOCUMENT_H
 #define IDOCUMENT_H
 
+#include "core/core_global.h"
+
 #include <QObject>
 
-class IDocument : public QObject
+class CORE_EXPORT IDocument : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool modified READ isModified NOTIFY modifiedChanged)

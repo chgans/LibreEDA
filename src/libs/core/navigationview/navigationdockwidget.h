@@ -1,6 +1,8 @@
 #ifndef NAVIGATIONDOCKWIDGET_H
 #define NAVIGATIONDOCKWIDGET_H
 
+#include "core/core_global.h"
+
 #include <QDockWidget>
 #include <QList>
 #include <QMap>
@@ -11,7 +13,7 @@ class QSettings;
 class QComboBox;
 class QToolBar;
 
-class NavigationDockWidget : public QDockWidget
+class CORE_EXPORT NavigationDockWidget : public QDockWidget
 {
     Q_OBJECT
 

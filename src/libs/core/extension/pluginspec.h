@@ -1,6 +1,8 @@
 #ifndef PLUGINSPEC_H
 #define PLUGINSPEC_H
 
+#include "core/core_global.h"
+
 #include <QString>
 #include <QHash>
 #include <QVector>
@@ -36,7 +38,7 @@ struct PluginArgumentDescription
     QString description;
 };
 
-class PluginSpec
+class CORE_EXPORT PluginSpec
 {
 public:
     enum State { Invalid, Read, Resolved, Loaded, Initialized, Running, Stopped, Deleted};

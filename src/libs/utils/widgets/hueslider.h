@@ -23,12 +23,14 @@
 #ifndef HUE_SLIDER_HPP
 #define HUE_SLIDER_HPP
 
+#include "utils/utils_global.h"
+
 #include "gradientslider.h"
 
 /**
  * \brief A slider for selecting a hue value
  */
-class HueSlider : public GradientSlider
+class UTILS_EXPORT HueSlider : public GradientSlider
 {
     Q_OBJECT
     Q_PROPERTY(qreal colorSaturation READ colorSaturation WRITE setColorSaturation)
