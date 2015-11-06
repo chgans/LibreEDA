@@ -8,9 +8,6 @@ LedaPlugin {
     Depends { name: "Core" }
 
     files: [
-//        "colorprofileeditor.cpp",
-//        "colorprofileeditor.h",
-//        "colorprofileeditor.ui",
         "designlayer.cpp",
         "designlayer.h",
         "designlayermanager.cpp",
@@ -21,6 +18,7 @@ LedaPlugin {
         "layerbar.h",
         "pcbdocument.cpp",
         "pcbdocument.h",
+        "pcbeditor.qrc",
         "pcbeditorconstants.h",
         "pcbeditor.cpp",
         "pcbeditorfactory.cpp",
