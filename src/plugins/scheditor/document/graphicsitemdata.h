@@ -17,10 +17,10 @@ class GraphicsItemData: public SchDocumentObject
     Q_PROPERTY(qreal rotation READ rotation WRITE setRotation)
     Q_PROPERTY(qreal scale READ scale WRITE setScale)
     Q_PROPERTY(qreal zValue READ zValue WRITE setZValue)
-    Q_PROPERTY(bool locked READ isLocked WRITE setLocked)
-    Q_PROPERTY(bool visible READ isVisible WRITE setVisible)
-    Q_PROPERTY(bool hMirrored READ isHMirrored WRITE setHMirrored)
-    Q_PROPERTY(bool vMirrored READ isVMirrored WRITE setVMirrored)
+//    Q_PROPERTY(bool locked READ isLocked WRITE setLocked)
+//    Q_PROPERTY(bool visible READ isVisible WRITE setVisible)
+//    Q_PROPERTY(bool hMirrored READ isHMirrored WRITE setHMirrored)
+//    Q_PROPERTY(bool vMirrored READ isVMirrored WRITE setVMirrored)
 
     // group vs child items
     // flags?

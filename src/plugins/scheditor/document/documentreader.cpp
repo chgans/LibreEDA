@@ -38,7 +38,7 @@ private:
 
 void ContentHandler::setDocumentLocator(QXmlLocator *locator)
 {
-    m_xmlLocator(locator);
+    m_xmlLocator = locator;
 }
 
 bool ContentHandler::startDocument()
