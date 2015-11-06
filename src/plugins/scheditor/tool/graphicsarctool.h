@@ -1,7 +1,7 @@
 #ifndef GRAPHICSARCTOOL_H
 #define GRAPHICSARCTOOL_H
 
-#include "abstractgraphicsinserttool.h"
+#include "tool/abstractgraphicsinserttool.h"
 
 class GraphicsArcItem;
 

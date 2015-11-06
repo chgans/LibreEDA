@@ -3,7 +3,7 @@
 
 #include "core/editormanager/ieditor.h"
 
-class SchDocument;
+class SchEditorDocument;
 class SchEditorWidget;
 
 class SchEditor : public IEditor
@@ -25,7 +25,7 @@ public:
     QString displayName() const;
 
 private:
-    SchDocument *m_document = nullptr;
+    SchEditorDocument *m_document = nullptr;
     SchEditorWidget *schWidget() const;
 };
 

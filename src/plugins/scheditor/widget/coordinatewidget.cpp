@@ -1,4 +1,4 @@
-#include "coordinatewidget.h"
+#include "widget/coordinatewidget.h"
 
 #include <QDebug>
 #include <QDoubleSpinBox>

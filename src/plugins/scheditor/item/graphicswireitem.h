@@ -1,7 +1,7 @@
 #ifndef GRAPHICSWIREITEM_H
 #define GRAPHICSWIREITEM_H
 
-#include "schitem.h"
+#include "item/schitem.h"
 
 #include <QPointF>
 #include <QList>

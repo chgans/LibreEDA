@@ -1,4 +1,4 @@
-#include "graphicsitemaligntool.h"
+#include "tool/graphicsitemaligntool.h"
 
 GraphicsItemAlignTool::GraphicsItemAlignTool()
 {

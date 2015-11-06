@@ -1,7 +1,7 @@
 #ifndef GRAPHICSPOLYGONITEM_H
 #define GRAPHICSPOLYGONITEM_H
 
-#include "schitem.h"
+#include "item/schitem.h"
 
 class GraphicsPolygonItem : public SchItem
 {

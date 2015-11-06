@@ -1,7 +1,7 @@
 #ifndef GRAPHICSPOLYGONTOOL_H
 #define GRAPHICSPOLYGONTOOL_H
 
-#include "abstractgraphicsinserttool.h"
+#include "tool/abstractgraphicsinserttool.h"
 
 class GraphicsPolygonItem;
 class QAction;

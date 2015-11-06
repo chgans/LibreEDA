@@ -2,8 +2,8 @@
 
 #include "schscene.h"
 #include "schview.h"
-#include "schitem.h"
-#include "abstractgraphicshandle.h"
+#include "item/schitem.h"
+#include "handle/abstractgraphicshandle.h"
 
 #include <QGraphicsItem>
 #include <QGraphicsEffect>

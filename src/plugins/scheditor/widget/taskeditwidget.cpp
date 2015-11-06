@@ -1,4 +1,4 @@
-#include "taskeditwidget.h"
+#include "widget/taskeditwidget.h"
 
 #include <QDebug>
 #include <QVBoxLayout>

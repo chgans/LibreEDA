@@ -1,4 +1,4 @@
-#include "graphicstextframeitem.h"
+#include "item/graphicstextframeitem.h"
 
 #include <QGraphicsTextItem>
 #include <QStyleOptionGraphicsItem>

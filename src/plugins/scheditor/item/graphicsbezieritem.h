@@ -1,7 +1,7 @@
 #ifndef GRAPHICSBEZIERITEM_H
 #define GRAPHICSBEZIERITEM_H
 
-#include "schitem.h"
+#include "item/schitem.h"
 
 #include <QPen>
 

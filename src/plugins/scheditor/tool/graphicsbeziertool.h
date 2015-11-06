@@ -1,7 +1,7 @@
 #ifndef GRAPHICSBEZIERTOOL_H
 #define GRAPHICSBEZIERTOOL_H
 
-#include "abstractgraphicsinserttool.h"
+#include "tool/abstractgraphicsinserttool.h"
 
 #include <QPointF>
 

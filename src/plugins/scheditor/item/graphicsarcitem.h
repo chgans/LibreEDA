@@ -1,7 +1,7 @@
 #ifndef GRAPHICSARCITEM_H
 #define GRAPHICSARCITEM_H
 
-#include "schitem.h"
+#include "item/schitem.h"
 
 // TODO: Pie vs chord vs whole shape
 // TODO: keep ratio (ellipse vs circle)

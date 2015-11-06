@@ -1,7 +1,7 @@
 #ifndef GRAPHICSITEMALIGNTOOL_H
 #define GRAPHICSITEMALIGNTOOL_H
 
-#include "schtool.h"
+#include "tool/schtool.h"
 #include <QtGlobal>
 
 class GraphicsItemAlignTool : public SchTool
