@@ -8,6 +8,8 @@ LedaPlugin {
     //Depends { name: "Utils" }
 
     files: [
+        "simpletextdocument.cpp",
+        "simpletextdocument.h",
         "simpletexteditor.cpp",
         "simpletexteditor.h",
         "simpletexteditorconstants.h",

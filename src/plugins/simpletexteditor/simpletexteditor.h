@@ -5,6 +5,7 @@
 
 class QTextEdit;
 class QTextDocument;
+class SimpleTextDocument;
 
 class SimpleTextEditor : public IEditor
 {
@@ -25,8 +26,8 @@ public:
     QString displayName() const;
 
 private:
-    QTextEdit *m_widget;
-    QTextDocument *m_document;
+    QTextEdit *m_textEdit;
+    SimpleTextDocument *m_document;
 };
 
 #endif // SIMPLETEXTEDITOR_H
