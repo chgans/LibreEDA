@@ -33,7 +33,7 @@ IDocument *SimpleTextEditor::document() const
 
 QIcon SimpleTextEditor::icon() const
 {
-    return QIcon(":/icons/sch.png");
+    return QIcon(":/icons/text-document-icon.png");
 }
 
 QString SimpleTextEditor::displayName() const

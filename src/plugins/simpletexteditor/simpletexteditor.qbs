@@ -12,6 +12,7 @@ LedaPlugin {
         "simpletextdocument.h",
         "simpletexteditor.cpp",
         "simpletexteditor.h",
+        "simpletexteditor.qrc",
         "simpletexteditorconstants.h",
         "simpletexteditorfactory.cpp",
         "simpletexteditorfactory.h",
