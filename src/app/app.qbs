@@ -11,6 +11,9 @@ LedaApplication {
     Depends { name: "Utils" }
     Depends { name: "Core" }
 
+    cpp.rpaths: qbs.targetOS.contains("osx") ? ["@executable_path/../Frameworks"]
+                                             : ["$ORIGIN/../" + project.libDirName + "/leda"]
+
     files : [
         "main.cpp",
         "mainwindow.cpp",

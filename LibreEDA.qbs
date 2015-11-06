@@ -17,20 +17,20 @@ Project {
     property pathList additionalLibs: []
     property pathList additionalTools: []
     property pathList additionalAutotests: []
-    property string libDirName: "lib"
+    property string libDirName: "lib/"
     property string leda_library_path:  {
         if (qbs.targetOS.contains("osx"))
             return leda_app_target + ".app/Contents/Frameworks"
         else if (qbs.targetOS.contains("windows"))
             return leda_app_path
         else
-            return libDirName + "qtcreator"
+            return libDirName + "/leda"
     }
     property string leda_plugin_path:  {
         if (qbs.targetOS.contains("osx"))
             return leda_app_target + ".app/Contents/PlugIns"
         else if (qbs.targetOS.contains("windows"))
-            return libDirName + "/qtcreator/plugins"
+            return libDirName + "/leda/plugins"
         else
             return leda_library_path + "/plugins"
     }
@@ -40,10 +40,10 @@ Project {
     property string leda_libexec_path:  qbs.targetOS.contains("osx")
                                         ? leda_data_path : qbs.targetOS.contains("windows")
                                         ? leda_app_path
-                                        : "libexec/qtcreator"
+                                        : "libexec/leda"
     property string leda_doc_path: qbs.targetOS.contains("osx")
                                    ? leda_data_path + "/doc"
-                                   : "share/doc/qtcreator"
+                                   : "share/doc/leda"
     property string leda_bin_path: qbs.targetOS.contains("osx")
                                    ? leda_app_target + ".app/Contents/MacOS"
                                    : leda_app_path
