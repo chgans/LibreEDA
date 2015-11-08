@@ -89,12 +89,12 @@ bool ContentHandler::startElement(const QString &namespaceURI, const QString &lo
 
 bool ContentHandler::endElement(const QString &namespaceURI, const QString &localName, const QString &qName)
 {
-
+    return false;
 }
 
 bool ContentHandler::characters(const QString &ch)
 {
-
+    return false;
 }
 
 bool ContentHandler::ignorableWhitespace(const QString &ch)
@@ -141,5 +141,5 @@ DocumentReader::DocumentReader(const QByteArray &data):
 
 SchDocument *DocumentReader::read()
 {
-
+    return nullptr;
 }

@@ -19,5 +19,5 @@ SchDocument::SchDocument(QObject *parent):
 
 const SchDocumentObject *SchDocument::documentObject(const QUuid &uid) const
 {
-    
+    return nullptr;
 }
