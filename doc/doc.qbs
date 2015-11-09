@@ -25,8 +25,8 @@ Product {
         "LEDA_VERSION_TAG=" + project.leda_version.replace(/\.|-/g, "")
     ]
     Group {
-        fileTagsFilter: "qdoc-html"
+        fileTagsFilter: "qdoc-output"
         qbs.install: true
-        qbs.installDir: project.leda_doc_path
+        qbs.installDir: project.leda_doc_path + "/html"
     }
 }
