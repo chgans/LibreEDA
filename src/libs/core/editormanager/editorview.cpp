@@ -39,9 +39,9 @@ int EditorView::editorCount() const
 void EditorView::addEditor(IEditor *editor)
 {
     QWidget *widget = editor->widget();
+    m_widgetEditorMap.insert(editor->widget(), editor);
     int index = m_tabWidget->addTab(widget, editor->icon(), editor->displayName());
     m_editorTabIndexMap.insert(editor, index);
-    m_widgetEditorMap.insert(editor->widget(), editor);
 }
 
 void EditorView::removeEditor(IEditor *editor)

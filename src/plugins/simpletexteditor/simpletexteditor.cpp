@@ -3,6 +3,7 @@
 
 #include <QTextEdit>
 #include <QFileInfo>
+#include <QDebug>
 
 SimpleTextEditor::SimpleTextEditor(QObject *parent) :
     IEditor(parent),
@@ -39,4 +40,17 @@ QIcon SimpleTextEditor::icon() const
 QString SimpleTextEditor::displayName() const
 {
     return m_document->displayName();
+}
+
+
+void SimpleTextEditor::activate(QMainWindow *mainWindow)
+{
+    Q_UNUSED(mainWindow);
+    qDebug() << "Activating text editor for" << document()->filePath();
+}
+
+void SimpleTextEditor::desactivate(QMainWindow *mainWindow)
+{
+    Q_UNUSED(mainWindow);
+    qDebug() << "Desactivating text editor for" << document()->filePath();
 }

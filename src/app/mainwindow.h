@@ -25,15 +25,34 @@ public:
 private:
 
 private slots:
-    void openFileRequested(bool);
-    void populateRecentFilesMenu();
+    void onNewFileRequested();
+    void onOpenFileRequested();
+    void onRecentFilesRequested();
+    void onSaveCurrentFileRequested();
+    void onSaveCurrentFileAsRequested();
+    void onSaveAllFilesRequested();
+    void onRevertCurrentFileRequested();
+    void onReloadCurrentFileRequested();
+    void onCloseCurrentFileRequested();
+    void onCloseAllExceptCurrentFileRequested();
+    void onCloseAllFilesRequested();
+    void onPrintCurrentFileRequested();
+    void onApplicationExitRequested();
+
     void onEditorOpened(IEditor *editor);
+    void onCurrentEditorChanged(IEditor *editor);
     void onEditorCloseRequested(IEditor *editor);
 
 private:
     EditorView *m_editorView;
+    IEditor *m_currentEditor = nullptr;
     NavigationDockWidget *m_navigationDockWidget;
+
+    QMenu *m_fileMenu;
     QMenu *m_recentFilesMenu;
+    QMenu *m_editMenu;
+    QMenu *m_windowMenu;
+    QMenu *m_helpMenu;
 
     // QWidget interface
 protected:

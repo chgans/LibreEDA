@@ -21,6 +21,8 @@ public:
     bool restoreState(QSettings *settings);
     QIcon icon() const;
     QString displayName() const;
+    void activate(QMainWindow *mainWindow);
+    void desactivate(QMainWindow *mainWindow);
 
 private:
     PcbDocument *m_document = nullptr;

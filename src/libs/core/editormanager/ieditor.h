@@ -10,6 +10,7 @@
 class IDocument;
 class QSettings;
 class QWidget;
+class QMainWindow;
 
 class CORE_EXPORT IEditor : public QObject
 {
@@ -31,6 +32,9 @@ public:
     virtual void setIcon(const QIcon &icon);
     virtual QString displayName() const;
     virtual void setDisplayName(const QString &displayName);
+
+    virtual void activate(QMainWindow *mainWindow) = 0;
+    virtual void desactivate(QMainWindow *mainWindow) = 0;
 
 private:
     QPointer<QWidget> m_widget;

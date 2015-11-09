@@ -23,10 +23,13 @@ public:
     IDocument *document() const;
     QIcon icon() const;
     QString displayName() const;
+    void activate(QMainWindow *mainWindow);
+    void desactivate(QMainWindow *mainWindow);
 
 private:
     SchEditorDocument *m_document = nullptr;
     SchEditorWidget *schWidget() const;
+
 };
 
 #endif // GRAPHICSEDITOR_H
