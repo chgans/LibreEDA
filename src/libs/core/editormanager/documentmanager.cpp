@@ -131,7 +131,10 @@ QString DocumentManager::getSaveAsFileName(const IDocument *document, const QStr
 bool DocumentManager::saveModifiedDocumentSilently(IDocument *document, bool *canceled,
                                                    QList<IDocument *> *failedToClose)
 {
-
+    Q_UNUSED(document);
+    Q_UNUSED(canceled);
+    Q_UNUSED(failedToClose);
+    return false;
 }
 
 /*!

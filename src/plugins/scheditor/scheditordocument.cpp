@@ -136,11 +136,13 @@ void SchEditorDocument::setPageSize(const QSizeF &size)
 
 QList<SchItem *> SchEditorDocument::items(Qt::SortOrder order) const
 {
+    Q_UNUSED(order);
     return QList<SchItem *>(); // m_scene->items(order);
 }
 
 void SchEditorDocument::executeCommand(SchCommand *command)
 {
+    Q_UNUSED(command);
     //m_commandStack->push(command);
 }
 

@@ -69,6 +69,8 @@ bool ContentHandler::endPrefixMapping(const QString &prefix)
 bool ContentHandler::startElement(const QString &namespaceURI, const QString &localName,
                                   const QString &qName, const QXmlAttributes &atts)
 {
+    Q_UNUSED(namespaceURI);
+    Q_UNUSED(qName);
     switch(m_state) {
     case ContentHandler::NotStarted:
         if (localName != "document") {
@@ -85,15 +87,20 @@ bool ContentHandler::startElement(const QString &namespaceURI, const QString &lo
     case ContentHandler::InProperty:
         break;
     }
+    return false;
 }
 
 bool ContentHandler::endElement(const QString &namespaceURI, const QString &localName, const QString &qName)
 {
+    Q_UNUSED(namespaceURI);
+    Q_UNUSED(localName);
+    Q_UNUSED(qName);
     return false;
 }
 
 bool ContentHandler::characters(const QString &ch)
 {
+    Q_UNUSED(ch);
     return false;
 }
 

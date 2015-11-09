@@ -39,6 +39,7 @@ void SchScene::setGrid(GraphicsGrid *grid)
 
 void SchScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
+    Q_UNUSED(rect);
     // FIXME: Get access to the view's palette
     //painter->setPen(QPen(gpalette::Content1, 0));
     painter->setPen(Qt::NoPen);

@@ -47,7 +47,7 @@ QString INavigationViewFactory::id() const
     return m_id;
 }
 
-void INavigationViewFactory::saveSettings(int /*position*/, QWidget */*widget*/)
+void INavigationViewFactory::saveSettings(int /* position */, QWidget */* widget */)
 {
 
 }

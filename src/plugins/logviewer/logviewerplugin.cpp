@@ -12,6 +12,8 @@ LogViewerPlugin::~LogViewerPlugin()
 
 bool LogViewerPlugin::initialize(const QStringList &arguments, QString *errorString)
 {
+    Q_UNUSED(arguments);
+    Q_UNUSED(errorString);
     return true;
 }
 

@@ -14,6 +14,8 @@ FileSystemNavigationPlugin::~FileSystemNavigationPlugin()
 
 bool FileSystemNavigationPlugin::initialize(const QStringList &arguments, QString *errorString)
 {
+    Q_UNUSED(arguments);
+    Q_UNUSED(errorString);
     addObject(new FileSystemNavigationViewFactory(this));
     return true;
 }

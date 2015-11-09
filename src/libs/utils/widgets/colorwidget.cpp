@@ -149,7 +149,7 @@ public:
         spinbox->setMaximum(255);
         connect(slider, &QAbstractSlider::valueChanged,
                 spinbox, &QSpinBox::setValue);
-        void (QSpinBox::*SpinBoxvalueChanged)(int);
+        void (QSpinBox::*SpinBoxvalueChanged)(int) = &QSpinBox::valueChanged; // init for MSVC
         connect(spinbox, SpinBoxvalueChanged,
                 slider, &QAbstractSlider::setValue);
         layout->addWidget(label, row, 0);

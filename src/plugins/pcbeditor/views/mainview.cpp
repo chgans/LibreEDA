@@ -427,7 +427,7 @@ void MainView::mousePressEvent(QMouseEvent *event)
             if (item->isEnabled())
                 enabledItems << item;
         }
-        if (enabledItems.isEmpty() > 1) {
+        if (enabledItems.count() > 1) {
             m_pickList->setPickList(layoutScene(), enabledItems);
             m_pickList->move(mapFromGlobal(QCursor::pos()));
             // FIXME: we want it to grab the focus
