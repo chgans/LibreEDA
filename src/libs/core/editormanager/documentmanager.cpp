@@ -31,6 +31,7 @@ static const char S_FILE_DIALOG_LAST_DIR[] = "fileDialogLastVisitedDirectory";
 static const char S_DEF_LOC_NEW_FILES[] = "defaultLocationForNewFiles";
 
 DocumentManager *DocumentManager::m_instance = nullptr;
+QList<IDocument *> DocumentManager::m_documents;
 QList<QString> DocumentManager::m_recentFiles;
 QString DocumentManager::m_fileDialogLastVisitedDirectory;
 QString DocumentManager::m_defaultLocationForNewFiles;
@@ -43,6 +44,56 @@ DocumentManager *DocumentManager::instance()
     if (m_instance == nullptr)
         m_instance = new DocumentManager();
     return m_instance;
+}
+
+// TBD:
+//  - File monitoring (change on disk)
+//  - List model (typ. for OpenDocumentNavigationView)
+
+void DocumentManager::addDocuments(QList<IDocument *> documents)
+{
+    foreach (IDocument *document, documents)
+        addDocument(document);
+}
+
+void DocumentManager::addDocument(IDocument *document)
+{
+    if (m_documents.contains(document))
+        return;
+    m_documents.append(document);
+}
+
+void DocumentManager::removeDocument(IDocument *document)
+{
+    if (m_documents.contains(document))
+        return;
+    m_documents.removeAll(document);
+}
+
+QList<IDocument *> DocumentManager::documents()
+{
+    return m_documents;
+}
+
+QList<IDocument *> DocumentManager::modifiedDocuments()
+{
+    QList<IDocument *> result;
+    foreach (IDocument *document, m_documents) {
+        if (document->isModified())
+            result.append(document);
+    }
+    return result;
+}
+
+bool DocumentManager::saveDocument(IDocument *document, const QString &fileName)
+{
+    QString errorString;
+    bool success = document->save(&errorString, fileName);
+    if (!success) {
+        QMessageBox::critical(QApplication::activeWindow(), tr("File Error"),
+                              tr("Error while saving file: %1").arg(errorString));
+    }
+    return success;
 }
 
 /*!
@@ -60,12 +111,27 @@ QStringList DocumentManager::getOpenFileNames(const QString &filters, const QStr
             dir = "~";
     }
     const QStringList files = QFileDialog::getOpenFileNames(QApplication::activeWindow(),
-                                                            tr("Open File"),
+                                                            tr("Open File(s)"),
                                                             path, filters,
                                                             selectedFilter);
     if (!files.isEmpty())
         setFileDialogLastVisitedDirectory(QFileInfo(files.front()).absolutePath());
     return files;
+}
+
+QString DocumentManager::getSaveAsFileName(const IDocument *document, const QString &filter,
+                                           QString *selectedFilter)
+{
+    return QFileDialog::getSaveFileName(QApplication::activeWindow(),
+                                        tr("Save file as"),
+                                        document->filePath(),
+                                        filter, selectedFilter);
+}
+
+bool DocumentManager::saveModifiedDocumentSilently(IDocument *document, bool *canceled,
+                                                   QList<IDocument *> *failedToClose)
+{
+
 }
 
 /*!

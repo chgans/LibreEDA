@@ -47,3 +47,14 @@ QString SchEditor::displayName() const
 {
     return m_document->displayName();
 }
+
+
+void SchEditor::activate(QMainWindow *mainWindow)
+{
+    schWidget()->activate(mainWindow);
+}
+
+void SchEditor::desactivate(QMainWindow *mainWindow)
+{
+    schWidget()->desactivate(mainWindow);
+}

@@ -411,6 +411,7 @@ SnapManager::SnapManager(SchView *view):
         }
     }
     defaultStrategy->action()->setChecked(true);
+    m_winnerStrategy = defaultStrategy;
 }
 
 QList<QString> SnapManager::groups() const

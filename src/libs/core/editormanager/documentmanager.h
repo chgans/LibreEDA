@@ -14,9 +14,45 @@ public:
     static DocumentManager *instance();
 
 
+    void addDocuments(QList<IDocument *> documents);
+    void addDocument(IDocument *document);
+    void removeDocument(IDocument *document);
+    QList<IDocument *> documents();
+    QList<IDocument *> modifiedDocuments();
+
+    static bool saveDocument(IDocument *document, const QString &fileName = QString());
+
     static QStringList getOpenFileNames(const QString &filters,
                                         const QString &path = QString(),
                                         QString *selectedFilter = 0);
+    static QString getSaveFileName(const QString &title, const QString &pathIn,
+                                   const QString &filter = QString(), QString *selectedFilter = 0);
+    static QString getSaveFileNameWithExtension(const QString &title, const QString &pathIn,
+                                                const QString &filter);
+    static QString getSaveAsFileName(const IDocument *document, const QString &filter = QString(),
+                                     QString *selectedFilter = 0);
+
+    static bool saveAllModifiedDocumentsSilently(bool *canceled = 0,
+                                                 QList<IDocument *> *failedToClose = 0);
+    static bool saveModifiedDocumentsSilently(const QList<IDocument *> &documents, bool *canceled = 0,
+                                              QList<IDocument *> *failedToClose = 0);
+    static bool saveModifiedDocumentSilently(IDocument *document, bool *canceled = 0,
+                                             QList<IDocument *> *failedToClose = 0);
+
+    static bool saveAllModifiedDocuments(const QString &message = QString(), bool *canceled = 0,
+                                         const QString &alwaysSaveMessage = QString(),
+                                         bool *alwaysSave = 0,
+                                         QList<IDocument *> *failedToClose = 0);
+    static bool saveModifiedDocuments(const QList<IDocument *> &documents,
+                                      const QString &message = QString(), bool *canceled = 0,
+                                      const QString &alwaysSaveMessage = QString(),
+                                      bool *alwaysSave = 0,
+                                      QList<IDocument *> *failedToClose = 0);
+    static bool saveModifiedDocument(IDocument *document,
+                                     const QString &message = QString(), bool *canceled = 0,
+                                     const QString &alwaysSaveMessage = QString(),
+                                     bool *alwaysSave = 0,
+                                     QList<IDocument *> *failedToClose = 0);
 
     static bool closeDocument(IDocument *document);
 
@@ -40,6 +76,7 @@ public slots:
 private:
     explicit DocumentManager(QObject *parent = 0);
     static DocumentManager *m_instance;
+    static QList<IDocument *> m_documents;
     static QList<QString> m_recentFiles;
     static QString m_fileDialogLastVisitedDirectory;
     static QString m_defaultLocationForNewFiles;
