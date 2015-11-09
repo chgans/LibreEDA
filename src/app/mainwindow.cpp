@@ -72,17 +72,17 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_recentFilesMenu, &QMenu::aboutToShow,
             this, &MainWindow::onRecentFilesRequested);
     icon = QIcon::fromTheme("document-save");
-    action = m_fileMenu->addAction(icon, "&Save");
-    action->setShortcut(QKeySequence::Save);
-    connect(action, &QAction::triggered,
+    m_saveAction = m_fileMenu->addAction(icon, "&Save");
+    m_saveAction->setShortcut(QKeySequence::Save);
+    connect(m_saveAction, &QAction::triggered,
             this, &MainWindow::onSaveCurrentFileRequested);
     icon = QIcon::fromTheme("document-save-as");
-    action = m_fileMenu->addAction(icon, "&Save as...");
-    action->setShortcut(QKeySequence("Ctrl+Shift+S"));
-    connect(action, &QAction::triggered,
+    m_saveAsAction = m_fileMenu->addAction(icon, "&Save as...");
+    m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
+    connect(m_saveAsAction, &QAction::triggered,
             this, &MainWindow::onSaveCurrentFileAsRequested);
-    action = m_fileMenu->addAction("Save &all");
-    connect(action, &QAction::triggered,
+    m_saveAllAction = m_fileMenu->addAction("Save &all");
+    connect(m_saveAllAction, &QAction::triggered,
             this, &MainWindow::onSaveAllFilesRequested);
     action = m_fileMenu->addAction("Revert to saved"); // TODO: if document modified
     connect(action, &QAction::triggered,
@@ -92,17 +92,19 @@ MainWindow::MainWindow(QWidget *parent) :
             this, &MainWindow::onReloadCurrentFileRequested);
     m_fileMenu->addSeparator();
 
-    action = m_fileMenu->addAction("Close");
-    action->setShortcut(QKeySequence::Close);
-    connect(action, &QAction::triggered,
+    m_closeAction = m_fileMenu->addAction("Close");
+    m_closeAction->setShortcut(QKeySequence::Close);
+    connect(m_closeAction, &QAction::triggered,
             this, &MainWindow::onCloseCurrentFileRequested);
-    action = m_fileMenu->addAction("Close all except current");
-    connect(action, &QAction::triggered,
+    m_closeAllExceptAction = m_fileMenu->addAction("Close all except current");
+    connect(m_closeAllExceptAction, &QAction::triggered,
             this, &MainWindow::onCloseAllExceptCurrentFileRequested);
-    action = m_fileMenu->addAction("Close all");
-    connect(action, &QAction::triggered,
+    m_closeAllAction = m_fileMenu->addAction("Close all");
+    connect(m_closeAllAction, &QAction::triggered,
             this, &MainWindow::onCloseAllFilesRequested);
     m_fileMenu->addSeparator();
+
+    updateEditorActions();
 
     icon = QIcon::fromTheme("document-print");
     action = m_fileMenu->addAction(icon, "&Print...");
@@ -248,11 +250,38 @@ void MainWindow::onCurrentEditorChanged(IEditor *editor)
         m_currentEditor->desactivate(this);
     m_currentEditor = editor;
     m_currentEditor->activate(this);
+    updateEditorActions();
 }
 
 void MainWindow::onEditorCloseRequested(IEditor *editor)
 {
     EditorManager::closeEditor(editor);
+}
+
+void MainWindow::updateEditorActions()
+{
+    if (m_currentEditor && m_currentEditor->document()) {
+        QFileInfo fileInfo(m_currentEditor->document()->filePath());
+        QString fileName = fileInfo.fileName();
+        m_saveAction->setText(QString("&Save \"%1\"").arg(fileName));
+        m_saveAction->setEnabled(true);
+        m_saveAsAction->setText(QString("Save \"%1\" &as...").arg(fileName));
+        m_saveAsAction->setEnabled(true);
+        m_saveAllAction->setEnabled(true);
+        m_closeAction->setText(QString("Close \"%1\"").arg(fileName));
+        m_closeAction->setEnabled(true);
+        m_closeAllExceptAction->setText(QString("Close all except \"%1\"").arg(fileName));
+        m_closeAllExceptAction->setEnabled(true);
+        m_closeAllAction->setEnabled(true);
+    }
+    else {
+        m_saveAction->setEnabled(false);
+        m_saveAsAction->setEnabled(false);
+        m_saveAllAction->setEnabled(false);
+        m_closeAction->setEnabled(false);
+        m_closeAllAction->setEnabled(false);
+        m_closeAllExceptAction->setEnabled(false);
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

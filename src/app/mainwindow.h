@@ -49,10 +49,19 @@ private:
     NavigationDockWidget *m_navigationDockWidget;
 
     QMenu *m_fileMenu;
+    QAction *m_saveAction;
+    QAction *m_saveAsAction;
+    QAction *m_saveAllAction;
+    QAction *m_closeAction;
+    QAction *m_closeAllAction;
+    QAction *m_closeAllExceptAction;
+
     QMenu *m_recentFilesMenu;
     QMenu *m_editMenu;
     QMenu *m_windowMenu;
     QMenu *m_helpMenu;
+
+    void updateEditorActions();
 
     // QWidget interface
 protected:
