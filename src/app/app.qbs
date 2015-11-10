@@ -1,22 +1,22 @@
 import qbs
 
-LedaApplication {
+LedaProduct {
     type: "application"
-    name: "Application"
+    name: project.leda_app_target
     targetName: project.leda_app_target
+    version: project.leda_version
     consoleApplication: qbs.debugInformation
+    installDir: project.leda_app_path
 
-    //Depends { name: "app_version_header" }
     Depends { name: "Qt"; submodules: ["core", "widgets", "network"] }
     Depends { name: "Utils" }
     Depends { name: "Core" }
 
-    cpp.rpaths: qbs.targetOS.contains("osx") ? ["@executable_path/../Frameworks"]
-                                             : ["$ORIGIN/../" + project.libDirName + "/leda"]
+    cpp.rpaths: ["$ORIGIN/../lib/leda"]
 
     files : [
         "main.cpp",
         "mainwindow.cpp",
         "mainwindow.h"
     ]
-}		
+}
