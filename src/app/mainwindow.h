@@ -42,6 +42,7 @@ private slots:
     void onEditorOpened(IEditor *editor);
     void onCurrentEditorChanged(IEditor *editor);
     void onEditorCloseRequested(IEditor *editor);
+    void onEditorAboutToClose(IEditor *editor);
 
 private:
     EditorView *m_editorView;

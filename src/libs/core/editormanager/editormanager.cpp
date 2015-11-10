@@ -74,8 +74,11 @@ IEditor *EditorManager::openEditor(const QString &fileName)
         return nullptr;
     }
 
-    if (m_filePathEditorMap.contains(filePath))
-        return m_filePathEditorMap.value(filePath);
+    if (m_filePathEditorMap.contains(filePath)) {
+        IEditor *editor = m_filePathEditorMap.value(filePath);
+        emit EditorManager::instance()->editorOpened(editor);
+        return editor;
+    }
 
     IEditorFactory *factory = m_factoryMap.value(fileExtension);
     IEditor *editor = factory->createEditor();

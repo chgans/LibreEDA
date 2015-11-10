@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(EditorManager::instance(), &EditorManager::editorOpened,
             this, &MainWindow::onEditorOpened);
     connect(EditorManager::instance(), &EditorManager::editorAboutToClose,
-            this, &MainWindow::onEditorCloseRequested);
+            this, &MainWindow::onEditorAboutToClose);
 
     // initNavigationView()
     m_navigationDockWidget = new NavigationDockWidget;
@@ -154,9 +154,14 @@ void MainWindow::onOpenFileRequested()
     QStringList fileNames = DocumentManager::getOpenFileNames(filter, BASE_SAMPLE_DIR);
     if (fileNames.isEmpty())
         return;
-    foreach (const QString &fileName, fileNames)
-        EditorManager::openEditor(fileName);
-
+    IEditor *editortoActivate = nullptr;
+    foreach (const QString &fileName, fileNames) {
+        IEditor *editor = EditorManager::openEditor(fileName);
+        if (editor != nullptr)
+            editortoActivate = editor;
+    }
+    if (editortoActivate)
+        m_editorView->setCurrentEditor(editortoActivate);
 }
 
 void MainWindow::onRecentFilesRequested()
@@ -169,6 +174,7 @@ void MainWindow::onRecentFilesRequested()
         action = m_recentFilesMenu->addAction(file);
         connect(action, &QAction::triggered,
                 this, [this, file](bool) {
+            // TODO: don't bypass MainWindow logic: (see FSNavigator as well)
            EditorManager::openEditor(file);
         });
     }
@@ -249,7 +255,8 @@ void MainWindow::onCurrentEditorChanged(IEditor *editor)
     if (m_currentEditor)
         m_currentEditor->desactivate(this);
     m_currentEditor = editor;
-    m_currentEditor->activate(this);
+    if (m_currentEditor)
+        m_currentEditor->activate(this);
     updateEditorActions();
 }
 
@@ -258,13 +265,23 @@ void MainWindow::onEditorCloseRequested(IEditor *editor)
     EditorManager::closeEditor(editor);
 }
 
+void MainWindow::onEditorAboutToClose(IEditor *editor)
+{
+    if (editor == m_currentEditor) {
+        m_currentEditor->desactivate(this);
+        m_currentEditor = nullptr;
+    }
+    m_editorView->removeEditor(editor);
+}
+
 void MainWindow::updateEditorActions()
 {
     if (m_currentEditor && m_currentEditor->document()) {
-        QFileInfo fileInfo(m_currentEditor->document()->filePath());
+        IDocument *document = m_currentEditor->document();
+        QFileInfo fileInfo(document->filePath());
         QString fileName = fileInfo.fileName();
         m_saveAction->setText(QString("&Save \"%1\"").arg(fileName));
-        m_saveAction->setEnabled(true);
+        m_saveAction->setEnabled(document->isModified());
         m_saveAsAction->setText(QString("Save \"%1\" &as...").arg(fileName));
         m_saveAsAction->setEnabled(true);
         m_saveAllAction->setEnabled(true);

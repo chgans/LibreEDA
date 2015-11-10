@@ -38,6 +38,8 @@ int EditorView::editorCount() const
 
 void EditorView::addEditor(IEditor *editor)
 {
+    if (m_editorTabIndexMap.contains(editor))
+        return;
     QWidget *widget = editor->widget();
     m_widgetEditorMap.insert(editor->widget(), editor);
     int index = m_tabWidget->addTab(widget, editor->icon(), editor->displayName());

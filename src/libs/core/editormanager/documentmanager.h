@@ -7,6 +7,9 @@
 
 class IDocument;
 
+// TODO:
+//  - split between GUI and non-GUI
+//  -
 class CORE_EXPORT DocumentManager : public QObject
 {
     Q_OBJECT
@@ -21,7 +24,19 @@ public:
     QList<IDocument *> modifiedDocuments();
 
     static bool saveDocument(IDocument *document, const QString &fileName = QString());
+    static bool closeDocument(IDocument *document);
 
+    static void addToRecentFiles(const QString &fileName/*, const QString &editorId = Id()*/);
+    static void clearRecentFiles();
+    static QList<QString> recentFiles();
+
+    static QString defaultLocationForNewFiles();
+    static void setDefaultLocationForNewFiles(const QString &location);
+
+    static void saveSettings();
+    static void loadSettings();
+
+    // GUI related stuff
     static QStringList getOpenFileNames(const QString &filters,
                                         const QString &path = QString(),
                                         QString *selectedFilter = 0);
@@ -54,20 +69,9 @@ public:
                                      bool *alwaysSave = 0,
                                      QList<IDocument *> *failedToClose = 0);
 
-    static bool closeDocument(IDocument *document);
-
-    static void addToRecentFiles(const QString &fileName/*, const QString &editorId = Id()*/);
-    static void clearRecentFiles();
-    static QList<QString> recentFiles();
-
     static QString fileDialogLastVisitedDirectory();
     static void setFileDialogLastVisitedDirectory(const QString &dir);
-
-    static QString defaultLocationForNewFiles();
-    static void setDefaultLocationForNewFiles(const QString &location);
-
-    static void saveSettings();
-    static void loadSettings();
+    // End of GUI related stuff
 
 signals:
 

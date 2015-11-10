@@ -99,6 +99,10 @@ void FileSystemNavigationWidget::openItem(const QModelIndex &index)
         return;
     }
 
+    // TODO: we bypass the main  window logic by opening the document "directly"
+    // we need the action manager - or the main window has to react to the editor
+    // manager's signals
+    // QtC does Core::ICore::instance()->openFiles(...);
     EditorManager *manager = EditorManager::instance();
     manager->openEditor(path);
 }
