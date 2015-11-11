@@ -58,6 +58,9 @@ private:
 
     void addArrangeTools();
     QToolBar *m_arrangeToolBar = nullptr;
+
+    void addMiscTools();
+    QToolBar *m_miscToolBar = nullptr;
 };
 
 #endif // GRAPHICSEDITORWIDGET_H

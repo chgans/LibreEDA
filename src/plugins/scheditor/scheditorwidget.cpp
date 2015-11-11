@@ -58,6 +58,7 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
     addInteractiveTools();
     addSnapTools();
     addPathPointTools();
+    addMiscTools();
 
     Q_INIT_RESOURCE(scheditor);
 }
@@ -96,16 +97,8 @@ void SchEditorWidget::activate(QMainWindow *win)
 {
     win->addToolBar(m_interactiveToolsToolBar);
     m_interactiveToolsToolBar->show();
-
-    QToolBar *bar = win->addToolBar("theme");
-    m_paletteModeComboBox = new QComboBox;
-    m_paletteModeComboBox->addItem("Dark", QVariant::fromValue<Palette::Mode>(Palette::Dark));
-    m_paletteModeComboBox->addItem("Light", QVariant::fromValue<Palette::Mode>(Palette::Light));
-    m_paletteModeComboBox->setCurrentIndex(0);
-    connect(m_paletteModeComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onPaletteComboBoxIndexChanged(int)));
-    bar->addWidget(m_paletteModeComboBox);
-
+    win->addToolBar(m_miscToolBar);
+    m_miscToolBar->show();
     win->addToolBar(m_snapToolBar);
     m_snapToolBar->show();
 
@@ -119,17 +112,13 @@ void SchEditorWidget::activate(QMainWindow *win)
     m_mainWindow = win;
 }
 
-void SchEditorWidget::onPaletteComboBoxIndexChanged(int index)
-{
-    m_view->setPaletteMode(m_paletteModeComboBox->itemData(index).value<Palette::Mode>());
-}
-
 void SchEditorWidget::desactivate(QMainWindow *win)
 {
     win->removeDockWidget(m_taskDockWidget);
     win->removeToolBar(m_pathPointToolBar);
     win->removeToolBar(m_snapToolBar);
     win->removeToolBar(m_interactiveToolsToolBar);
+    win->removeToolBar(m_miscToolBar);
 }
 
 void SchEditorWidget::addInteractiveTools()
@@ -273,4 +262,21 @@ void SchEditorWidget::addArrangeTools()
                          "Make selected path points auto-smooth", nullptr);
     m_pathPointToolBar->addAction(action);
 
+}
+
+void SchEditorWidget::addMiscTools()
+{
+    m_miscToolBar = new QToolBar();
+    m_paletteModeComboBox = new QComboBox;
+    m_paletteModeComboBox->addItem("Dark", QVariant::fromValue<Palette::Mode>(Palette::Dark));
+    m_paletteModeComboBox->addItem("Light", QVariant::fromValue<Palette::Mode>(Palette::Light));
+    m_paletteModeComboBox->setCurrentIndex(0);
+    connect(m_paletteModeComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onPaletteComboBoxIndexChanged(int)));
+    m_miscToolBar->addWidget(m_paletteModeComboBox);
+}
+
+void SchEditorWidget::onPaletteComboBoxIndexChanged(int index)
+{
+    m_view->setPaletteMode(m_paletteModeComboBox->itemData(index).value<Palette::Mode>());
 }
