@@ -26,98 +26,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowTitle(tr("Libre EDA"));
 
-    // initEditorView()
-    EditorManager::initialise();
-    m_editorView = new EditorView();
-    setCentralWidget(m_editorView);
-    connect(m_editorView, &EditorView::editorCloseRequested,
-            this, &MainWindow::onEditorCloseRequested);
-    connect(m_editorView, &EditorView::currentEditorChanged,
-            this, &MainWindow::onCurrentEditorChanged);
-    connect(EditorManager::instance(), &EditorManager::editorOpened,
-            this, &MainWindow::onEditorOpened);
-    connect(EditorManager::instance(), &EditorManager::editorAboutToClose,
-            this, &MainWindow::onEditorAboutToClose);
-
-    // initNavigationView()
-    m_navigationDockWidget = new NavigationDockWidget;
-    m_navigationDockWidget->setFactories(PluginManager::getObjects<INavigationViewFactory>());
-    addDockWidget(Qt::LeftDockWidgetArea, m_navigationDockWidget);
-
+    initEditorView();
+    initNavigationView();
     // initOutputPane()
-    /* TODO */
-
-    // initMenus()
-    m_fileMenu = menuBar()->addMenu("&File");
-    m_editMenu = menuBar()->addMenu("&Edit");
-    m_windowMenu = menuBar()->addMenu("&Window");
-    m_helpMenu = menuBar()->addMenu("&Help");
-
-    // Other, eg initActionManager()
-    QAction *action;
-    QIcon icon;
-    icon = QIcon::fromTheme("document-new");
-    action = m_fileMenu->addAction(icon, "&New...");
-    action->setShortcut(QKeySequence::New);
-    connect(action, &QAction::triggered,
-            this, &MainWindow::onNewFileRequested);
-    icon = QIcon::fromTheme("document-open");
-    action = m_fileMenu->addAction(icon, "&Open...");
-    action->setShortcut(QKeySequence::Open);
-    connect(action, &QAction::triggered,
-            this, &MainWindow::onOpenFileRequested);
-    m_recentFilesMenu = m_fileMenu->addMenu("Recent &Files");
-    m_fileMenu->addSeparator();
-
-    connect(m_recentFilesMenu, &QMenu::aboutToShow,
-            this, &MainWindow::onRecentFilesRequested);
-    icon = QIcon::fromTheme("document-save");
-    m_saveAction = m_fileMenu->addAction(icon, "&Save");
-    m_saveAction->setShortcut(QKeySequence::Save);
-    connect(m_saveAction, &QAction::triggered,
-            this, &MainWindow::onSaveCurrentFileRequested);
-    icon = QIcon::fromTheme("document-save-as");
-    m_saveAsAction = m_fileMenu->addAction(icon, "&Save as...");
-    m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
-    connect(m_saveAsAction, &QAction::triggered,
-            this, &MainWindow::onSaveCurrentFileAsRequested);
-    m_saveAllAction = m_fileMenu->addAction("Save &all");
-    connect(m_saveAllAction, &QAction::triggered,
-            this, &MainWindow::onSaveAllFilesRequested);
-    action = m_fileMenu->addAction("Revert to saved"); // TODO: if document modified
-    connect(action, &QAction::triggered,
-            this, &MainWindow::onRevertCurrentFileRequested);
-    action = m_fileMenu->addAction("Reload"); // TODO: if document not modified
-    connect(action, &QAction::triggered,
-            this, &MainWindow::onReloadCurrentFileRequested);
-    m_fileMenu->addSeparator();
-
-    m_closeAction = m_fileMenu->addAction("Close");
-    m_closeAction->setShortcut(QKeySequence::Close);
-    connect(m_closeAction, &QAction::triggered,
-            this, &MainWindow::onCloseCurrentFileRequested);
-    m_closeAllExceptAction = m_fileMenu->addAction("Close all except current");
-    connect(m_closeAllExceptAction, &QAction::triggered,
-            this, &MainWindow::onCloseAllExceptCurrentFileRequested);
-    m_closeAllAction = m_fileMenu->addAction("Close all");
-    connect(m_closeAllAction, &QAction::triggered,
-            this, &MainWindow::onCloseAllFilesRequested);
-    m_fileMenu->addSeparator();
-
-    updateEditorActions();
-
-    icon = QIcon::fromTheme("document-print");
-    action = m_fileMenu->addAction(icon, "&Print...");
-    action->setShortcut(QKeySequence::Print);
-    connect(action, &QAction::triggered,
-            this, &MainWindow::onPrintCurrentFileRequested);
-    m_fileMenu->addSeparator();
-
-    icon = QIcon::fromTheme("application-exit");
-    action = m_fileMenu->addAction(icon, "E&xit");
-    action->setShortcut(QKeySequence::Quit);
-    connect(action, &QAction::triggered,
-            this, &MainWindow::onApplicationExitRequested);
+    initMenus();
+    initActions();
 }
 
 MainWindow::~MainWindow()
@@ -308,4 +221,102 @@ void MainWindow::closeEvent(QCloseEvent *event)
     EditorManager::saveState();
     DocumentManager::saveSettings();
     event->accept();
+}
+
+void MainWindow::initMenus()
+{
+    m_fileMenu = menuBar()->addMenu("&File");
+    m_editMenu = menuBar()->addMenu("&Edit");
+    m_windowMenu = menuBar()->addMenu("&Window");
+    m_helpMenu = menuBar()->addMenu("&Help");
+}
+
+void MainWindow::initActions()
+{
+    QAction *action;
+    QIcon icon;
+    icon = QIcon::fromTheme("document-new");
+    action = m_fileMenu->addAction(icon, "&New...");
+    action->setShortcut(QKeySequence::New);
+    connect(action, &QAction::triggered,
+            this, &MainWindow::onNewFileRequested);
+    icon = QIcon::fromTheme("document-open");
+    action = m_fileMenu->addAction(icon, "&Open...");
+    action->setShortcut(QKeySequence::Open);
+    connect(action, &QAction::triggered,
+            this, &MainWindow::onOpenFileRequested);
+    m_recentFilesMenu = m_fileMenu->addMenu("Recent &Files");
+    m_fileMenu->addSeparator();
+
+    connect(m_recentFilesMenu, &QMenu::aboutToShow,
+            this, &MainWindow::onRecentFilesRequested);
+    icon = QIcon::fromTheme("document-save");
+    m_saveAction = m_fileMenu->addAction(icon, "&Save");
+    m_saveAction->setShortcut(QKeySequence::Save);
+    connect(m_saveAction, &QAction::triggered,
+            this, &MainWindow::onSaveCurrentFileRequested);
+    icon = QIcon::fromTheme("document-save-as");
+    m_saveAsAction = m_fileMenu->addAction(icon, "&Save as...");
+    m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
+    connect(m_saveAsAction, &QAction::triggered,
+            this, &MainWindow::onSaveCurrentFileAsRequested);
+    m_saveAllAction = m_fileMenu->addAction("Save &all");
+    connect(m_saveAllAction, &QAction::triggered,
+            this, &MainWindow::onSaveAllFilesRequested);
+    action = m_fileMenu->addAction("Revert to saved"); // TODO: if document modified
+    connect(action, &QAction::triggered,
+            this, &MainWindow::onRevertCurrentFileRequested);
+    action = m_fileMenu->addAction("Reload"); // TODO: if document not modified
+    connect(action, &QAction::triggered,
+            this, &MainWindow::onReloadCurrentFileRequested);
+    m_fileMenu->addSeparator();
+
+    m_closeAction = m_fileMenu->addAction("Close");
+    m_closeAction->setShortcut(QKeySequence::Close);
+    connect(m_closeAction, &QAction::triggered,
+            this, &MainWindow::onCloseCurrentFileRequested);
+    m_closeAllExceptAction = m_fileMenu->addAction("Close all except current");
+    connect(m_closeAllExceptAction, &QAction::triggered,
+            this, &MainWindow::onCloseAllExceptCurrentFileRequested);
+    m_closeAllAction = m_fileMenu->addAction("Close all");
+    connect(m_closeAllAction, &QAction::triggered,
+            this, &MainWindow::onCloseAllFilesRequested);
+    m_fileMenu->addSeparator();
+
+    updateEditorActions();
+
+    icon = QIcon::fromTheme("document-print");
+    action = m_fileMenu->addAction(icon, "&Print...");
+    action->setShortcut(QKeySequence::Print);
+    connect(action, &QAction::triggered,
+            this, &MainWindow::onPrintCurrentFileRequested);
+    m_fileMenu->addSeparator();
+
+    icon = QIcon::fromTheme("application-exit");
+    action = m_fileMenu->addAction(icon, "E&xit");
+    action->setShortcut(QKeySequence::Quit);
+    connect(action, &QAction::triggered,
+            this, &MainWindow::onApplicationExitRequested);
+}
+
+void MainWindow::initEditorView()
+{
+    EditorManager::initialise();
+    m_editorView = new EditorView();
+    setCentralWidget(m_editorView);
+    connect(m_editorView, &EditorView::editorCloseRequested,
+            this, &MainWindow::onEditorCloseRequested);
+    connect(m_editorView, &EditorView::currentEditorChanged,
+            this, &MainWindow::onCurrentEditorChanged);
+    connect(EditorManager::instance(), &EditorManager::editorOpened,
+            this, &MainWindow::onEditorOpened);
+    connect(EditorManager::instance(), &EditorManager::editorAboutToClose,
+            this, &MainWindow::onEditorAboutToClose);
+}
+
+void MainWindow::initNavigationView()
+{
+    m_navigationDockWidget = new NavigationDockWidget;
+    m_navigationDockWidget->setFactories(PluginManager::getObjects<INavigationViewFactory>());
+    addDockWidget(Qt::LeftDockWidgetArea, m_navigationDockWidget);
 }

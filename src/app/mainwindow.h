@@ -22,6 +22,10 @@ public:
     void readSettings();
     void writeSettings();
 
+    void initMenus();
+    void initActions();
+    void initEditorView();
+    void initNavigationView();
 private:
 
 private slots:
