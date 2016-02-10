@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <QVariant>
 #include <QHBoxLayout>
+#include <QAction>
 
 // TODO: needs a place holder in case there's no view to choose from
 //
@@ -14,6 +15,7 @@ NavigationDockWidget::NavigationDockWidget(QWidget *parent):
     m_comboBox(new QComboBox),
     m_toolBar(new QToolBar)
 {
+    setWindowTitle("Navigation");
     setTitleBarWidget(m_toolBar);
     m_comboBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
@@ -60,11 +62,11 @@ void NavigationDockWidget::activateNavigationView(int index)
 {
     NavigationView *view = m_comboBox->itemData(index).value<NavigationView *>();
     m_toolBar->clear();
-    m_toolBar->addWidget(m_comboBox);
+    QAction *action = m_toolBar->addWidget(m_comboBox);
+    action->setVisible(true);
     foreach (QWidget *widget, view->toolBarWidgets) {
         m_toolBar->addWidget(widget);
     }
     setWidget(view->widget);
-    view->widget->show();
 }
 
