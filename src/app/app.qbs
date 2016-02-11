@@ -15,8 +15,9 @@ LedaProduct {
     cpp.rpaths: ["$ORIGIN/../lib/leda"]
 
     files : [
+        "libreeda.qrc",
         "main.cpp",
         "mainwindow.cpp",
-        "mainwindow.h"
+        "mainwindow.h",
     ]
 }

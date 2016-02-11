@@ -6,7 +6,7 @@
     "Vendor" : "Christian Gagneraud",
     "Copyright" : "(C) 2015 Christian Gagneraud",
     "License" : "GNU Lesser General Public License Usage",
-    "Description" : "Adds an output pane that show logging messages, has filtering capability.",
+    "Description" : "Adds an output pane that show logging messages with filtering capability.",
     "Url" : "http://www.libre-eda.org",
     "Category" : "Libre EDA",
     $$dependencyList

@@ -60,8 +60,7 @@
        </property>
        <property name="icon">
         <iconset theme="edit-clear">
-         <normaloff/>
-        </iconset>
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -75,8 +74,7 @@
        </property>
        <property name="icon">
         <iconset theme="document-save-as">
-         <normaloff/>
-        </iconset>
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -93,8 +91,7 @@
        </property>
        <property name="icon">
         <iconset theme="go-previous">
-         <normaloff/>
-        </iconset>
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -111,8 +108,7 @@
        </property>
        <property name="icon">
         <iconset theme="go-next">
-         <normaloff/>
-        </iconset>
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -138,9 +134,7 @@
         <string>...</string>
        </property>
        <property name="icon">
-        <iconset theme="dialog-information">
-         <normaloff/>
-        </iconset>
+        <iconset theme="flag-blue"/>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -159,9 +153,7 @@
         <string>...</string>
        </property>
        <property name="icon">
-        <iconset theme="dialog-warning">
-         <normaloff/>
-        </iconset>
+        <iconset theme="flag-yellow"/>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -180,9 +172,7 @@
         <string>...</string>
        </property>
        <property name="icon">
-        <iconset theme="dialog-error">
-         <normaloff/>
-        </iconset>
+        <iconset theme="flag-red"/>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -221,8 +211,7 @@
        </property>
        <property name="icon">
         <iconset theme="preferences-system">
-         <normaloff/>
-        </iconset>
+         <normaloff>.</normaloff>.</iconset>
        </property>
        <property name="popupMode">
         <enum>QToolButton::InstantPopup</enum>

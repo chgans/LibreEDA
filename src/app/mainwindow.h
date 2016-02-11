@@ -7,6 +7,7 @@ class EditorManager;
 class EditorView;
 class IEditor;
 class NavigationDockWidget;
+class OutputDockWidget;
 
 class QSettings;
 class QAction;
@@ -26,6 +27,8 @@ public:
     void initActions();
     void initEditorView();
     void initNavigationView();
+    void initOutputPane();
+
 private:
 
 private slots:
@@ -52,6 +55,7 @@ private:
     EditorView *m_editorView;
     IEditor *m_currentEditor = nullptr;
     NavigationDockWidget *m_navigationDockWidget;
+    OutputDockWidget *m_outputPaneDockWidget;
 
     QMenu *m_fileMenu;
     QAction *m_saveAction;

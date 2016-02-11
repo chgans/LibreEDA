@@ -6,14 +6,15 @@ LogModel::LogModel(QObject *parent):
     QAbstractTableModel(parent)
 {
     m_messageTypeNames.append(QString("Debug"));
+    m_messageTypeIconNames.append(QString("flag"));
     m_messageTypeNames.append(QString("Warning"));
+    m_messageTypeIconNames.append(QString("flag-yellow"));
     m_messageTypeNames.append(QString("Critical"));
+    m_messageTypeIconNames.append(QString("flag-red"));
     m_messageTypeNames.append(QString("Fatal"));
-
-    m_messageTypeIconNames.append(QString("dialog-information"));
-    m_messageTypeIconNames.append(QString("dialog-warning"));
-    m_messageTypeIconNames.append(QString("dialog-error"));
-    m_messageTypeIconNames.append(QString("dialog-error"));
+    m_messageTypeIconNames.append(QString("flag-red"));
+    m_messageTypeNames.append(QString("Info"));
+    m_messageTypeIconNames.append(QString("flag-blue"));
 }
 
 LogModel::~LogModel()

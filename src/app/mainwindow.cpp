@@ -8,6 +8,8 @@
 #include "core/editormanager/documentmanager.h"
 #include "core/navigationview/navigationdockwidget.h"
 #include "core/navigationview/inavigationviewfactory.h"
+#include "core/outputpane/outputdockwidget.h"
+#include "core/outputpane/ioutputpanefactory.h"
 
 #include <QDebug>
 #include <QDockWidget>
@@ -20,6 +22,12 @@
 #include <QAction>
 #include <QIcon>
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(LedaMain)
+
+Q_LOGGING_CATEGORY(LedaMain, "leda.main")
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -28,9 +36,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     initEditorView();
     initNavigationView();
-    // initOutputPane()
+    initOutputPane();
     initMenus();
     initActions();
+    qCWarning(LedaMain) << "This is a warning message";
 }
 
 MainWindow::~MainWindow()
@@ -319,4 +328,11 @@ void MainWindow::initNavigationView()
     m_navigationDockWidget = new NavigationDockWidget;
     m_navigationDockWidget->setFactories(PluginManager::getObjects<INavigationViewFactory>());
     addDockWidget(Qt::LeftDockWidgetArea, m_navigationDockWidget);
+}
+
+void MainWindow::initOutputPane()
+{
+    m_outputPaneDockWidget = new OutputDockWidget;
+    m_outputPaneDockWidget->setFactories(PluginManager::getObjects<IOutputPaneFactory>());
+    addDockWidget(Qt::BottomDockWidgetArea, m_outputPaneDockWidget);
 }

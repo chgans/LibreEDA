@@ -9,15 +9,15 @@ LedaPlugin {
     Depends { name: "Core" }
 
     files: [
+        "loggingoutputpanefactory.cpp",
+        "loggingoutputpanefactory.h",
         "logmessage.cpp",
         "logmessage.h",
         "logmodel.cpp",
         "logmodel.h",
         "logsortfilterproxymodel.cpp",
         "logsortfilterproxymodel.h",
-        "logviewer.cpp",
         "logviewer_global.h",
-        "logviewer.h",
         "logviewerplugin.cpp",
         "logviewerplugin.h",
         "logwidget.cpp",

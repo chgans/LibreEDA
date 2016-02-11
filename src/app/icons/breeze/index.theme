@@ -1,0 +1,8 @@
+[Icon Theme]
+Name=Breeze
+Comment=Breeze Icon Theme
+Inherits=default
+Directories=actions
+
+[actions]
+Size=32

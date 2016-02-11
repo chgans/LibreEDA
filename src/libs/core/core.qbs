@@ -44,5 +44,9 @@ LedaLibrary {
         "navigationview/inavigationviewfactory.h",
         "navigationview/navigationdockwidget.cpp",
         "navigationview/navigationdockwidget.h",
+        "outputpane/ioutputpanefactory.cpp",
+        "outputpane/ioutputpanefactory.h",
+        "outputpane/outputdockwidget.cpp",
+        "outputpane/outputdockwidget.h",
     ]
 }

@@ -1,6 +1,12 @@
 #include "logsortfilterproxymodel.h"
 #include "logmodel.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
+ #define ASSERT_TYPE(value) Q_ASSERT(value >= 0 && value < 5);
+#else
+ #define ASSERT_TYPE(value) Q_ASSERT(type >= 0 && type < 4);
+#endif
+
 LogSortFilterProxyModel::LogSortFilterProxyModel(QObject *parent):
     QSortFilterProxyModel(parent)
 {
@@ -8,6 +14,9 @@ LogSortFilterProxyModel::LogSortFilterProxyModel(QObject *parent):
     m_messageType[QtWarningMsg] = true;
     m_messageType[QtCriticalMsg] = true;
     m_messageType[QtFatalMsg] = true;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
+    m_messageType[QtInfoMsg] = true;
+#endif
 }
 
 LogSortFilterProxyModel::~LogSortFilterProxyModel()
@@ -21,7 +30,7 @@ bool LogSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex
     QModelIndex index = model->index(source_row, 0, source_parent);
     LogMessage *msg = model->message(index);
     QtMsgType type = msg->messageType;
-    Q_ASSERT(type >= 0 && type < 4);
+    ASSERT_TYPE(type);
     const char *category = msg->categoryName;
     return filterIncludesMessageType(type) &&
             filterIncludesCategoryName(category) &&
@@ -42,7 +51,7 @@ bool LogSortFilterProxyModel::filterIncludesMessageType(QtMsgType messageType) c
 
 void LogSortFilterProxyModel::setFilterIncludesMessageType(QtMsgType messageType, bool includes)
 {
-    Q_ASSERT(messageType >= 0 && messageType < 4);
+    ASSERT_TYPE(messageType);
     m_messageType[messageType] = includes;
     invalidateFilter();
 }
