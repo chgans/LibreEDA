@@ -3,6 +3,7 @@
 #include "penstylecombobox.h"
 #include "pencapstylecombobox.h"
 #include "penjoinstylecombobox.h"
+#include "pencolorcombobox.h"
 
 #include <QFormLayout>
 #include <QLabel>
@@ -12,6 +13,29 @@ PenSettingsWidget::PenSettingsWidget(QWidget *parent) :
 {
     QFormLayout *layout = new QFormLayout();
     setLayout(layout);
+
+    m_colorComboBox = new PenColorComboBox;
+    m_colorComboBox->addItem("Primary", QColor("#839496"));
+    m_colorComboBox->addItem("Secondary", QColor("#586e75"));
+    m_colorComboBox->addItem("Emphasis", QColor("#93a1a1"));
+    m_colorComboBox->addItem("Background", QColor("#002b36"));
+    m_colorComboBox->addItem("Highlight", QColor("#073642"));
+    m_colorComboBox->addItem("Yellow", QColor("#b58900"));
+    m_colorComboBox->addItem("Orange", QColor("#cb4b16"));
+    m_colorComboBox->addItem("Red", QColor("#dc322f"));
+    m_colorComboBox->addItem("Magenta", QColor("#d33682"));
+    m_colorComboBox->addItem("Violet", QColor("#6c71c4"));
+    m_colorComboBox->addItem("Blue", QColor("#268bd2"));
+    m_colorComboBox->addItem("Cyan", QColor("#2aa198"));
+    m_colorComboBox->addItem("Green", QColor("#859900"));
+    layout->addRow(new QLabel("Color"), m_colorComboBox);
+    connect(m_colorComboBox, &PenColorComboBox::currentIndexChanged,
+            this, [this](QColor color) {
+        if (m_pen.color() == color)
+            return;
+        m_pen.setColor(color);
+        emit penChanged(m_pen);
+    });
 
     m_widthComboBox = new PenWidthComboBox;
     m_widthComboBox->addItem("Cosmetic", 0);
@@ -79,6 +103,7 @@ void PenSettingsWidget::setPen(const QPen &pen)
 {
     if (m_pen != pen) {
         m_pen = pen;
+        m_colorComboBox->setCurrentIndex(m_pen.color());
         m_widthComboBox->setCurrentIndex(m_pen.width());
         m_styleComboBox->setCurrentIndex(m_pen.style());
         m_capStyleComboBox->setCurrentIndex(m_pen.capStyle());

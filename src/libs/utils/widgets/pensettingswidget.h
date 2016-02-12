@@ -10,6 +10,7 @@ class PenWidthComboBox;
 class PenStyleComboBox;
 class PenCapStyleComboBox;
 class PenJoinStyleComboBox;
+class PenColorComboBox;
 
 class UTILS_EXPORT PenSettingsWidget : public QWidget
 {
@@ -30,6 +31,7 @@ public slots:
 
 private:
     QPen m_pen;
+    PenColorComboBox *m_colorComboBox;
     PenWidthComboBox *m_widthComboBox;
     PenStyleComboBox *m_styleComboBox;
     PenCapStyleComboBox *m_capStyleComboBox;

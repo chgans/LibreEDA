@@ -25,6 +25,8 @@ LedaLibrary {
         "widgets/paintborder.h",
         "widgets/pencapstylecombobox.cpp",
         "widgets/pencapstylecombobox.h",
+        "widgets/pencolorcombobox.cpp",
+        "widgets/pencolorcombobox.h",
         "widgets/penjoinstylecombobox.cpp",
         "widgets/penjoinstylecombobox.h",
         "widgets/pensettingswidget.cpp",
