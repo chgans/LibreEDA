@@ -19,6 +19,7 @@ public:
 
 private:
     GraphicsWireItem *m_item;
+    PenSettingsWidget *m_penSettingsWidget;
 
     // GraphicsTool interface
 public:

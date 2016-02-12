@@ -21,8 +21,8 @@ GraphicsWireTool::GraphicsWireTool(QObject *parent):
                                "Place a wire", nullptr);;
     action->setShortcut(QKeySequence("i,w"));
 
-    PenSettingsWidget *optionWidget = new PenSettingsWidget();
-    connect(optionWidget, &PenSettingsWidget::penChanged,
+    m_penSettingsWidget = new PenSettingsWidget();
+    connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
             [this](const QPen &pen) {
         if (!m_item)
             return;
@@ -37,7 +37,7 @@ GraphicsWireTool::GraphicsWireTool(QObject *parent):
     setAction(action);
     setToolGroup("interactive-tools");
     setOperationWidget(operationWidget);
-    setOptionWidget(optionWidget);
+    setOptionWidget(m_penSettingsWidget);
 }
 
 GraphicsWireTool::~GraphicsWireTool()
@@ -58,6 +58,7 @@ SchItem *GraphicsWireTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsWireItem();
     m_item->setPos(pos);
+    m_item->setPen(m_penSettingsWidget->pen());
     return m_item;
 }
 

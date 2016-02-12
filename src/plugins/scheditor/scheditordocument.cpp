@@ -19,12 +19,19 @@
 #include <QJsonParseError>
 #include <QUndoStack>
 
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(Log)
+
+Q_LOGGING_CATEGORY(Log, "leda.sch.document")
+
 SchEditorDocument::SchEditorDocument(QObject *parent) :
     IDocument(parent),
     m_scene(new SchScene(this)),
     m_commandStack(new QUndoStack(this))
 {
     setModified(true);
+    qCInfo(Log) << "This is an info message";
 }
 
 bool SchEditorDocument::load(QString *errorString, const QString &fileName)
