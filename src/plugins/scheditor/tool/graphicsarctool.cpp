@@ -1,10 +1,9 @@
 #include "tool/graphicsarctool.h"
 #include "item/graphicsarcitem.h"
-#include "schview.h"
-#include "palette.h"
+#include "utils/widgets/pensettingswidget.h"
+#include "utils/widgets/brushsettingswidget.h"
 
 #include <QAction>
-#include <QDebug>
 
 GraphicsArcTool::GraphicsArcTool(QObject *parent):
     AbstractGraphicsInsertTool(parent)
@@ -14,8 +13,25 @@ GraphicsArcTool::GraphicsArcTool(QObject *parent):
     action->setShortcut(QKeySequence("i,a"));
     setAction(action);
     setToolGroup("interactive-tools");
-    setOperationWidget(nullptr);
-    setOptionWidget(nullptr);
+
+    m_penSettingsWidget = new PenSettingsWidget();
+    connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
+            [this](const QPen &pen) {
+        if (!m_item)
+            return;
+        m_item->setPen(pen);
+    });
+    m_brushSettingsWidget = new BrushSettingsWidget();
+    connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
+            [this](const QBrush &brush) {
+        if (!m_item)
+            return;
+        m_item->setBrush(brush);
+    });
+
+    QList<QWidget *> widgets;
+    widgets << m_penSettingsWidget << m_brushSettingsWidget;
+    setOptionWidgets(widgets);
 }
 
 GraphicsArcTool::~GraphicsArcTool()
@@ -36,11 +52,9 @@ void GraphicsArcTool::desactivate(const QAction *which)
 SchItem *GraphicsArcTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsArcItem();
-    QPen pen(SchView().palette()->orange(), 1);
-    pen.setJoinStyle(Qt::RoundJoin);
-    m_item->setPen(pen);
-    m_item->setBrush(QBrush(SchView().palette()->yellow()));
     m_item->setPos(pos);
+    m_item->setPen(m_penSettingsWidget->pen());
+    m_item->setBrush(m_brushSettingsWidget->brush());
     return m_item;
 }
 

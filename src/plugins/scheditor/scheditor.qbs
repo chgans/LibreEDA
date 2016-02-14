@@ -108,7 +108,7 @@ LedaPlugin {
         "widget/taskoptionwidget.h",
         "widget/wireoperationwidget.cpp",
         "widget/wireoperationwidget.h",
-        "graphicsobject_p.h",
+        "palette.h",
         "palette.cpp",
         "scheditor.cpp",
         "scheditor.h",

@@ -40,6 +40,16 @@ void AbstractGraphicsInteractiveTool::setOperationWidget(QWidget *widget)
     m_taskWidget = widget;
 }
 
+QList<QWidget *> AbstractGraphicsInteractiveTool::optionWidgets()
+{
+    return m_optionWidgets;
+}
+
+void AbstractGraphicsInteractiveTool::setOptionWidgets(QList<QWidget *> widgets)
+{
+    m_optionWidgets = widgets;
+}
+
 void AbstractGraphicsInteractiveTool::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);

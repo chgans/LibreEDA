@@ -25,4 +25,6 @@ signals:
     void highlighted(Qt::BrushStyle style);
 };
 
+Q_DECLARE_METATYPE(Qt::BrushStyle)
+
 #endif // BRUSHSTYLECOMBOBOX_H

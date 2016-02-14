@@ -4,6 +4,7 @@
 #include "tool/abstractgraphicsinserttool.h"
 
 class GraphicsLineItem;
+class PenSettingsWidget;
 
 class GraphicsLineTool : public AbstractGraphicsInsertTool
 {
@@ -12,6 +13,7 @@ public:
 
 private:
     GraphicsLineItem *m_item;
+    PenSettingsWidget *m_penSettingsWidget;
 
 private:
     void setP1(const QPointF &pos);

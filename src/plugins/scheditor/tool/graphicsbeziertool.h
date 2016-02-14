@@ -6,6 +6,8 @@
 #include <QPointF>
 
 class GraphicsBezierItem;
+class PenSettingsWidget;
+class BrushSettingsWidget;
 
 class GraphicsBezierTool : public AbstractGraphicsInsertTool
 {
@@ -15,6 +17,8 @@ public:
 
 private:
     GraphicsBezierItem *m_item;
+    PenSettingsWidget *m_penSettingsWidget;
+    BrushSettingsWidget *m_brushSettingsWidget;
 
     // GraphicsTool interface
 public:

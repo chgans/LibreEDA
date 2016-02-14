@@ -1,15 +1,9 @@
 #include "tool/graphicslinetool.h"
 #include "item/graphicslineitem.h"
-
+#include "utils/widgets/pensettingswidget.h"
 #include "handle/abstractgraphicshandle.h"
-#include "schscene.h"
-#include "schview.h"
-#include "palette.h"
 
-#include <QMouseEvent>
 #include <QAction>
-
-#include <QDebug>
 
 GraphicsLineTool::GraphicsLineTool(QObject *parent):
     AbstractGraphicsInsertTool(parent), m_item(nullptr)
@@ -19,8 +13,18 @@ GraphicsLineTool::GraphicsLineTool(QObject *parent):
     action->setShortcut(QKeySequence("i,l"));
     setAction(action);
     setToolGroup("interactive-tools");
-    setOperationWidget(nullptr);
-    setOptionWidget(nullptr);
+
+    m_penSettingsWidget = new PenSettingsWidget();
+    connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
+            [this](const QPen &pen) {
+        if (!m_item)
+            return;
+        m_item->setPen(pen);
+    });
+
+    QList<QWidget *> widgets;
+    widgets << m_penSettingsWidget;
+    setOptionWidgets(widgets);
 }
 
 void GraphicsLineTool::cancel()
@@ -40,10 +44,8 @@ void GraphicsLineTool::desactivate(const QAction *which)
 SchItem *GraphicsLineTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsLineItem();
-    QPen pen(SchView().palette()->violet(), 1);
-    pen.setJoinStyle(Qt::RoundJoin);
-    m_item->setPen(pen);
     m_item->setPos(pos);
+    m_item->setPen(m_penSettingsWidget->pen());
     return m_item;
 }
 

@@ -3,6 +3,8 @@
 
 #include "tool/schtool.h"
 
+#include <QList>
+
 class QMouseEvent;
 class QKeyEvent;
 class QWheelEvent;
@@ -22,6 +24,8 @@ public:
     void setOptionWidget(QWidget *widget);
     QWidget *taskWidget();
     void setOperationWidget(QWidget *widget);
+    QList<QWidget *> optionWidgets();
+    void setOptionWidgets(QList<QWidget *> widgets);
 
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
@@ -36,6 +40,7 @@ public:
 protected:
     QWidget *m_taskWidget;
     QWidget *m_optionWidget;
+    QList<QWidget *> m_optionWidgets;
 
     SchItem *createPhantomItem(SchItem *item);
     QList<SchItem *> createPhantomItems(const QList<SchItem *> &items);

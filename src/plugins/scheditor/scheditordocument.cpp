@@ -31,7 +31,6 @@ SchEditorDocument::SchEditorDocument(QObject *parent) :
     m_commandStack(new QUndoStack(this))
 {
     setModified(true);
-    qCInfo(Log) << "This is an info message";
 }
 
 bool SchEditorDocument::load(QString *errorString, const QString &fileName)

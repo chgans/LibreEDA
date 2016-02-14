@@ -20,20 +20,8 @@ signals:
 public slots:
     void setTool(AbstractGraphicsInteractiveTool *tool);
 
-protected:
-    void setOperationWidget(QWidget *widget);
-    void setOptionWidget(QWidget *widget);
-
 private:
-    QSplitter *m_splitter;
-    TaskEditWidget *m_taskEditWidget;
-    TaskOptionWidget *m_taskOptionWidget;
-
-    // QWidget interface
-protected:
-    void focusInEvent(QFocusEvent *event);
-    void focusOutEvent(QFocusEvent *event);
-    bool focusNextPrevChild(bool next);
+    QList<QWidget *> m_widgets;
 };
 
 #endif // TASKDOCKWIDGET_H

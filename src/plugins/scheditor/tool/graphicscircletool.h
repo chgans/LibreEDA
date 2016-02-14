@@ -4,6 +4,8 @@
 #include "tool/abstractgraphicsinserttool.h"
 
 class GraphicsCircleItem;
+class PenSettingsWidget;
+class BrushSettingsWidget;
 
 class GraphicsCircleTool : public AbstractGraphicsInsertTool
 {
@@ -13,6 +15,8 @@ public:
 
 private:
     GraphicsCircleItem *m_item;
+    PenSettingsWidget *m_penSettingsWidget;
+    BrushSettingsWidget *m_brushSettingsWidget;
 
     // GraphicsTool interface
 public:

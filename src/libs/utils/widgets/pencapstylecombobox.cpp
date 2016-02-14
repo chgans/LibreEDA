@@ -13,7 +13,7 @@ static QIcon icon(Qt::PenCapStyle style)
     switch (style) {
     case Qt::FlatCap:   return QIcon::fromTheme("stroke-cap-butt");
     case Qt::SquareCap: return QIcon::fromTheme("stroke-cap-square");
-    case Qt::RoundCap:  return QIcon::fromTheme("stroke-cap-square");
+    case Qt::RoundCap:  return QIcon::fromTheme("stroke-cap-round");
     default:            return QIcon();
     }
 }
@@ -43,6 +43,7 @@ void PenCapStyleComboBox::addItem(Qt::PenCapStyle style)
     QComboBox::addItem(icon(style),
                        styleToText[style],
                        QVariant::fromValue<Qt::PenCapStyle>(style));
+
 }
 
 void PenCapStyleComboBox::setCurrentIndex(Qt::PenCapStyle style)

@@ -4,6 +4,9 @@
 #include "tool/abstractgraphicsinserttool.h"
 
 class GraphicsPolygonItem;
+class PenSettingsWidget;
+class BrushSettingsWidget;
+
 class QAction;
 
 class GraphicsPolygonTool : public AbstractGraphicsInsertTool
@@ -16,6 +19,8 @@ public:
 
 private:
     GraphicsPolygonItem *m_item;
+    PenSettingsWidget *m_penSettingsWidget;
+    BrushSettingsWidget *m_brushSettingsWidget;
 
     // GraphicsTool interface
 public:

@@ -1,23 +1,9 @@
 #include "tool/graphicsbeziertool.h"
 #include "item/graphicsbezieritem.h"
-
+#include "utils/widgets/pensettingswidget.h"
 #include "handle/abstractgraphicshandle.h"
-#include "schview.h"
-#include "schscene.h"
-
-#include <QMouseEvent>
 
 #include <QAction>
-#include <QIcon>
-
-#include <QLoggingCategory>
-Q_DECLARE_LOGGING_CATEGORY(GraphicsBezierToolLog)
-Q_LOGGING_CATEGORY(GraphicsBezierToolLog, "graphics.bezier.tool")
-#define DEBUG() qCDebug(GraphicsBezierToolLog)
-#define WARNING() qCDebug(GraphicsBezierToolLog)
-
-#define WARN_STATE WARNING() << "Inconsistent state!"
-
 
 GraphicsBezierTool::GraphicsBezierTool(QObject *parent):
     AbstractGraphicsInsertTool(parent),
@@ -28,9 +14,18 @@ GraphicsBezierTool::GraphicsBezierTool(QObject *parent):
     action->setShortcut(QKeySequence("i,b"));
     setAction(action);
     setToolGroup("interactive-tools");
-    setOperationWidget(nullptr);
-    setOptionWidget(nullptr);
 
+    m_penSettingsWidget = new PenSettingsWidget();
+    connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
+            [this](const QPen &pen) {
+        if (!m_item)
+            return;
+        m_item->setPen(pen);
+    });
+
+    QList<QWidget *> widgets;
+    widgets << m_penSettingsWidget;
+    setOptionWidgets(widgets);
 }
 
 GraphicsBezierTool::~GraphicsBezierTool()
@@ -52,6 +47,7 @@ SchItem *GraphicsBezierTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsBezierItem();
     m_item->setPos(pos);
+    m_item->setPen(m_penSettingsWidget->pen());
     return m_item;
 }
 

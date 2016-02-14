@@ -1,8 +1,7 @@
 #include "tool/graphicsellipsetool.h"
 #include "item/graphicsellipseitem.h"
-#include "schview.h"
-
-#include "palette.h"
+#include "utils/widgets/pensettingswidget.h"
+#include "utils/widgets/brushsettingswidget.h"
 
 #include <QAction>
 
@@ -14,8 +13,25 @@ GraphicsEllipseTool::GraphicsEllipseTool(QObject *parent):
     action->setShortcut(QKeySequence("i,e"));
     setAction(action);
     setToolGroup("interactive-tools");
-    setOperationWidget(nullptr);
-    setOptionWidget(nullptr);
+
+    m_penSettingsWidget = new PenSettingsWidget();
+    connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
+            [this](const QPen &pen) {
+        if (!m_item)
+            return;
+        m_item->setPen(pen);
+    });
+    m_brushSettingsWidget = new BrushSettingsWidget();
+    connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
+            [this](const QBrush &brush) {
+        if (!m_item)
+            return;
+        m_item->setBrush(brush);
+    });
+
+    QList<QWidget *> widgets;
+    widgets << m_penSettingsWidget << m_brushSettingsWidget;
+    setOptionWidgets(widgets);
 }
 
 GraphicsEllipseTool::~GraphicsEllipseTool()
@@ -36,11 +52,9 @@ void GraphicsEllipseTool::desactivate(const QAction *which)
 SchItem *GraphicsEllipseTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsEllipseItem();
-    QPen pen(SchView().palette()->orange(), 1);
-    pen.setJoinStyle(Qt::RoundJoin);
-    m_item->setPen(pen);
-    m_item->setBrush(QBrush(SchView().palette()->yellow()));
     m_item->setPos(pos);
+    m_item->setPen(m_penSettingsWidget->pen());
+    m_item->setBrush(m_brushSettingsWidget->brush());
     return m_item;
 }
 

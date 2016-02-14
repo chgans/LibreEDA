@@ -11,7 +11,7 @@ static QIcon icon(qreal width)
 
     QPen pen;
     pen.setColor(Qt::black);
-    pen.setWidth(width);
+    pen.setWidth(10*width);
     pen.setCapStyle(Qt::FlatCap);
     pen.setStyle(Qt::SolidLine);
 
@@ -50,7 +50,7 @@ void PenWidthComboBox::addItem(const QString &label, qreal width)
 void PenWidthComboBox::setCurrentIndex(qreal width)
 {
     for (int index = 0; index < count(); index++) {
-        if (itemData(index).value<qreal>() == width) {
+        if (qFuzzyCompare(itemData(index).value<qreal>(), width)) {
             QComboBox::setCurrentIndex(index);
             return;
         }

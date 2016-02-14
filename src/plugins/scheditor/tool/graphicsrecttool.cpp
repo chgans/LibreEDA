@@ -1,15 +1,10 @@
 #include "tool/graphicsrecttool.h"
 #include "item/graphicsrectitem.h"
-
+#include "utils/widgets/pensettingswidget.h"
+#include "utils/widgets/brushsettingswidget.h"
 #include "handle/abstractgraphicshandle.h"
-#include "schscene.h"
-#include "schview.h"
-#include "palette.h"
 
-#include <QMouseEvent>
-#include <QKeyEvent>
 #include <QAction>
-#include <QDebug>
 
 GraphicsRectTool::GraphicsRectTool(QObject *parent):
     AbstractGraphicsInsertTool(parent), m_item(nullptr)
@@ -19,8 +14,25 @@ GraphicsRectTool::GraphicsRectTool(QObject *parent):
     action->setShortcut(QKeySequence("i,r"));
     setAction(action);
     setToolGroup("interactive-tools");
-    setOperationWidget(nullptr);
-    setOptionWidget(nullptr);
+
+    m_penSettingsWidget = new PenSettingsWidget();
+    connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
+            [this](const QPen &pen) {
+        if (!m_item)
+            return;
+        m_item->setPen(pen);
+    });
+    m_brushSettingsWidget = new BrushSettingsWidget();
+    connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
+            [this](const QBrush &brush) {
+        if (!m_item)
+            return;
+        m_item->setBrush(brush);
+    });
+
+    QList<QWidget *> widgets;
+    widgets << m_penSettingsWidget << m_brushSettingsWidget;
+    setOptionWidgets(widgets);
 }
 
 GraphicsRectTool::~GraphicsRectTool()
@@ -35,11 +47,9 @@ void GraphicsRectTool::cancel()
 SchItem *GraphicsRectTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsRectItem();
-    QPen pen(SchView().palette()->orange(), 1);
-    pen.setJoinStyle(Qt::RoundJoin);
-    m_item->setPen(pen);
-    m_item->setBrush(QBrush(SchView().palette()->yellow()));
     m_item->setPos(pos);
+    m_item->setPen(m_penSettingsWidget->pen());
+    m_item->setBrush(m_brushSettingsWidget->brush());
     return m_item;
 }
 

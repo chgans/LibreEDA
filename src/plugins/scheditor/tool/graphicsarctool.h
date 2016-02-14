@@ -4,6 +4,8 @@
 #include "tool/abstractgraphicsinserttool.h"
 
 class GraphicsArcItem;
+class PenSettingsWidget;
+class BrushSettingsWidget;
 
 class QAction;
 
@@ -17,6 +19,8 @@ public:
 
 private:
     GraphicsArcItem *m_item;
+    PenSettingsWidget *m_penSettingsWidget;
+    BrushSettingsWidget *m_brushSettingsWidget;
 
     // GraphicsTool interface
 public:

@@ -33,4 +33,5 @@ private:
 
 };
 
+
 #endif // BRUSHSETTINGSWIDGET_H

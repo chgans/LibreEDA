@@ -5,6 +5,8 @@
 #include <QRectF>
 
 class GraphicsRectItem;
+class PenSettingsWidget;
+class BrushSettingsWidget;
 
 class GraphicsRectTool : public AbstractGraphicsInsertTool
 {
@@ -20,6 +22,8 @@ protected:
 
 private:
     GraphicsRectItem *m_item;
+    PenSettingsWidget *m_penSettingsWidget;
+    BrushSettingsWidget *m_brushSettingsWidget;
     QRectF m_rect;
 
     // GraphicsTool interface
