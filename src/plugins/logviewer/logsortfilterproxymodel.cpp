@@ -4,7 +4,7 @@
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
  #define ASSERT_TYPE(value) Q_ASSERT(value >= 0 && value < 5);
 #else
- #define ASSERT_TYPE(value) Q_ASSERT(type >= 0 && type < 4);
+ #define ASSERT_TYPE(value) Q_ASSERT(value >= 0 && value < 4);
 #endif
 
 LogSortFilterProxyModel::LogSortFilterProxyModel(QObject *parent):
