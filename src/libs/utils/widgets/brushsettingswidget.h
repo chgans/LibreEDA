@@ -9,7 +9,7 @@
 class BrushStyleComboBox;
 class PenColorComboBox;
 
-class BrushSettingsWidget : public QWidget
+class UTILS_EXPORT BrushSettingsWidget : public QWidget
 {
     Q_OBJECT
 
