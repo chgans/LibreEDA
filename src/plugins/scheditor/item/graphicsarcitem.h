@@ -8,6 +8,12 @@
 
 class GraphicsArcItem : public SchItem
 {
+    Q_OBJECT
+
+    Q_PROPERTY(qreal xRadius READ xRadius WRITE setXRadius)
+    Q_PROPERTY(qreal yRadius READ yRadius WRITE setYRadius)
+    Q_PROPERTY(qreal startAngle READ startAngle WRITE setStartAngle)
+    Q_PROPERTY(qreal spanAngle READ spanAngle WRITE setSpanAngle)
 
 public:
     enum HandleId {

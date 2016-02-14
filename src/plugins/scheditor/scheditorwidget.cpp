@@ -19,6 +19,7 @@
 #include "grid/graphicsgrid.h"
 
 #include "dock/taskdockwidget.h"
+#include "dock/propertyeditordockwidget.h"
 
 #include <QMainWindow>
 #include <QVBoxLayout>
@@ -55,6 +56,15 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
     layout()->addWidget(m_view);
 
     m_taskDockWidget = new TaskDockWidget();
+    m_propertyEditorDockWidget = new PropertyEditorDockWidget();
+    connect(m_scene, &SchScene::selectionChanged,
+            this, [this]() {
+        if (m_scene->selectedObjects().count())
+            m_propertyEditorDockWidget->setObject(m_scene->selectedObjects().first());
+        else
+            m_propertyEditorDockWidget->setObject(nullptr);
+    });
+
     addInteractiveTools();
     addSnapTools();
     addPathPointTools();
@@ -108,12 +118,15 @@ void SchEditorWidget::activate(QMainWindow *win)
 #endif
     win->addDockWidget(Qt::LeftDockWidgetArea, m_taskDockWidget);
     m_taskDockWidget->show();
+    win->addDockWidget(Qt::RightDockWidgetArea, m_propertyEditorDockWidget);
+    m_propertyEditorDockWidget->show();
 
     m_mainWindow = win;
 }
 
 void SchEditorWidget::desactivate(QMainWindow *win)
 {
+    win->removeDockWidget(m_propertyEditorDockWidget);
     win->removeDockWidget(m_taskDockWidget);
     win->removeToolBar(m_pathPointToolBar);
     win->removeToolBar(m_snapToolBar);

@@ -9,6 +9,8 @@ class GraphicsBezierHandle;
 
 class GraphicsBezierItem : public SchItem
 {
+    Q_OBJECT
+
 public:
     GraphicsBezierItem(SchItem *parent = 0);
 

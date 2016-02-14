@@ -12,6 +12,7 @@ class SchView;
 class SchScene;
 class AbstractGraphicsInteractiveTool;
 class TaskDockWidget;
+class PropertyEditorDockWidget;
 class SnapManager;
 
 class SchEditorWidget: public AbstractEditor
@@ -41,6 +42,7 @@ private:
     SchView *m_view = nullptr;
     SchScene *m_scene = nullptr;
     TaskDockWidget *m_taskDockWidget = nullptr;
+    PropertyEditorDockWidget *m_propertyEditorDockWidget = nullptr;
     QComboBox *m_paletteModeComboBox = nullptr;
 
     void addInteractiveTools();

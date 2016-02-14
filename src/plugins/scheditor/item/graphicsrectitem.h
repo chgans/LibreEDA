@@ -15,6 +15,10 @@ class GraphicsRectItem : public SchItem
 {
     Q_OBJECT
 
+    Q_PROPERTY(qreal xRoundness READ xRoundness WRITE setXRoundness)
+    Q_PROPERTY(qreal yRoundness READ yRoundness WRITE setYRoundness)
+    Q_PROPERTY(QRectF rect READ rect WRITE setRect)
+
 public:
     enum HandleId {
         TopLeft = 0,

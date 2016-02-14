@@ -6,10 +6,13 @@ LedaPlugin {
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets", "opengl", "xml"] }
     Depends { name: "Utils" }
     Depends { name: "Core" }
+    Depends { name: "QtPropertyBrowser" }
 
     files: [
         "dock/taskdockwidget.cpp",
         "dock/taskdockwidget.h",
+        "dock/propertyeditordockwidget.cpp",
+        "dock/propertyeditordockwidget.h",
         "document/circledata.cpp",
         "document/circledata.h",
         "document/circulararcdata.cpp",
