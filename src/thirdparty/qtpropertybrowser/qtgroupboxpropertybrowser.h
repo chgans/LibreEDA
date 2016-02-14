@@ -42,13 +42,14 @@
 #ifndef QTGROUPBOXPROPERTYBROWSER_H
 #define QTGROUPBOXPROPERTYBROWSER_H
 
+#include "qtpropertybrowser_global.h"
 #include "qtpropertybrowser.h"
 
 QT_BEGIN_NAMESPACE
 
 class QtGroupBoxPropertyBrowserPrivate;
 
-class QtGroupBoxPropertyBrowser : public QtAbstractPropertyBrowser
+class QTPROPERTYBROWSER_EXPORT QtGroupBoxPropertyBrowser : public QtAbstractPropertyBrowser
 {
     Q_OBJECT
 public:

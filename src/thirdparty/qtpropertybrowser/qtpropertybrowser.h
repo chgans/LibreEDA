@@ -42,6 +42,8 @@
 #ifndef QTPROPERTYBROWSER_H
 #define QTPROPERTYBROWSER_H
 
+#include "qtpropertybrowser_global.h"
+
 #include <QtWidgets/QWidget>
 #include <QtCore/QSet>
 
@@ -50,7 +52,7 @@ QT_BEGIN_NAMESPACE
 class QtAbstractPropertyManager;
 class QtPropertyPrivate;
 
-class QtProperty
+class QTPROPERTYBROWSER_EXPORT QtProperty
 {
 public:
     virtual ~QtProperty();
@@ -90,7 +92,7 @@ private:
 
 class QtAbstractPropertyManagerPrivate;
 
-class QtAbstractPropertyManager : public QObject
+class QTPROPERTYBROWSER_EXPORT QtAbstractPropertyManager : public QObject
 {
     Q_OBJECT
 public:
@@ -123,7 +125,7 @@ private:
     Q_DISABLE_COPY(QtAbstractPropertyManager)
 };
 
-class QtAbstractEditorFactoryBase : public QObject
+class QTPROPERTYBROWSER_EXPORT QtAbstractEditorFactoryBase : public QObject
 {
     Q_OBJECT
 public:
@@ -140,7 +142,7 @@ protected Q_SLOTS:
 };
 
 template <class PropertyManager>
-class QtAbstractEditorFactory : public QtAbstractEditorFactoryBase
+class QTPROPERTYBROWSER_EXPORT QtAbstractEditorFactory : public QtAbstractEditorFactoryBase
 {
 public:
     explicit QtAbstractEditorFactory(QObject *parent) : QtAbstractEditorFactoryBase(parent) {}
@@ -225,7 +227,7 @@ private:
 class QtAbstractPropertyBrowser;
 class QtBrowserItemPrivate;
 
-class QtBrowserItem
+class QTPROPERTYBROWSER_EXPORT QtBrowserItem
 {
 public:
     QtProperty *property() const;
@@ -241,7 +243,7 @@ private:
 
 class QtAbstractPropertyBrowserPrivate;
 
-class QtAbstractPropertyBrowser : public QWidget
+class QTPROPERTYBROWSER_EXPORT QtAbstractPropertyBrowser : public QWidget
 {
     Q_OBJECT
 public:

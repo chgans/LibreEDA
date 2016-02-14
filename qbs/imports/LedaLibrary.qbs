@@ -24,6 +24,6 @@ LedaProduct {
 
     Export {
         Depends { name: "cpp" }
-        cpp.includePaths: ["../../libs", "../../plugins"]
+        cpp.includePaths: ["../../libs", "../../plugins", "../../thirdparty"]
     }
 }

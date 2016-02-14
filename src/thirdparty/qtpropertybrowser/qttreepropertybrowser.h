@@ -42,6 +42,7 @@
 #ifndef QTTREEPROPERTYBROWSER_H
 #define QTTREEPROPERTYBROWSER_H
 
+#include "qtpropertybrowser_global.h"
 #include "qtpropertybrowser.h"
 
 QT_BEGIN_NAMESPACE
@@ -49,7 +50,7 @@ QT_BEGIN_NAMESPACE
 class QTreeWidgetItem;
 class QtTreePropertyBrowserPrivate;
 
-class QtTreePropertyBrowser : public QtAbstractPropertyBrowser
+class QTPROPERTYBROWSER_EXPORT QtTreePropertyBrowser : public QtAbstractPropertyBrowser
 {
     Q_OBJECT
     Q_ENUMS(ResizeMode)

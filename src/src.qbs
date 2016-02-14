@@ -6,5 +6,6 @@ Project {
         "libs",
         "plugins",
         "app",
+        "thirdparty",
     ]
 }
