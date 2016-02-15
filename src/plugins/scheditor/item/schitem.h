@@ -29,6 +29,8 @@ class SchItem: public QGraphicsObject, public IGraphicsItemObserver
 
     Q_PROPERTY(QPen pen READ pen WRITE setPen NOTIFY penChanged)
     Q_PROPERTY(QBrush brush READ brush WRITE setBrush NOTIFY brushChanged)
+    Q_PROPERTY(bool xMirrored READ isXMirrored WRITE setXMirrored NOTIFY xMirroredChanged)
+    Q_PROPERTY(bool yMirrored READ isYMirrored WRITE setYMirrored NOTIFY yMirroredChanged)
 
 public:
     SchItem(SchItem *parent = 0);
@@ -40,6 +42,8 @@ public:
 
     QPen pen() const;
     QBrush brush() const;
+    bool isXMirrored() const;
+    bool isYMirrored() const;
 
     virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
     virtual void toJson(QJsonObject &jsonObject) const;
@@ -55,10 +59,14 @@ public:
 public slots:
     void setPen(const QPen &pen);
     void setBrush(const QBrush &brush);
+    void setXMirrored(bool mirrored);
+    void setYMirrored(bool mirrored);
 
 signals:
     void penChanged(QPen pen);
     void brushChanged(QBrush brush);
+    bool xMirroredChanged();
+    bool yMirroredChanged();
 
 protected:
     QPen m_pen;
@@ -77,6 +85,10 @@ protected:
 
     void cloneTo(SchItem *dst);
     static QPainterPath shapeFromPath(const QPainterPath &path, const QPen &pen);
+
+    bool m_isXMirrored;
+    bool m_isYMirrored;
+    void updateMirroringTransform();
 
 private:
     static const QString J_POSITION;

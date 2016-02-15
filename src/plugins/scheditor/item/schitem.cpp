@@ -5,6 +5,7 @@
 #include "core/json.h"
 
 #include <QDebug>
+#include <QGraphicsTransform>
 
 const QString SchItem::J_POSITION = QStringLiteral("position");
 const QString SchItem::J_ROTATION = QStringLiteral("rotation");
@@ -69,6 +70,15 @@ QPainterPath SchItem::shapeFromPath(const QPainterPath &path, const QPen &pen)
     return p;
 }
 
+void SchItem::updateMirroringTransform()
+{
+    qreal m11 = m_isXMirrored ? -1 : 1;
+    qreal m22 = m_isYMirrored ? -1 : 1;
+    setTransform(QTransform(m11, 0,   0,
+                            0,   m22, 0,
+                            0,   0,   1));
+}
+
 void SchItem::addAbstractHandle(AbstractGraphicsHandle *handle)
 {
     // could be done by abstracthandle
@@ -92,6 +102,16 @@ QPen SchItem::pen() const
 QBrush SchItem::brush() const
 {
     return m_brush;
+}
+
+bool SchItem::isXMirrored() const
+{
+    return m_isXMirrored;
+}
+
+bool SchItem::isYMirrored() const
+{
+    return m_isYMirrored;
 }
 
 bool SchItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
@@ -183,6 +203,24 @@ void SchItem::setBrush(const QBrush &brush)
     update();
 
     emit brushChanged(brush);
+}
+
+void SchItem::setXMirrored(bool mirrored)
+{
+    if (m_isXMirrored == mirrored)
+        return;
+    m_isXMirrored = mirrored;
+    updateMirroringTransform();
+    emit xMirroredChanged();
+}
+
+void SchItem::setYMirrored(bool mirrored)
+{
+    if (m_isYMirrored == mirrored)
+        return;
+    m_isYMirrored = mirrored;
+    updateMirroringTransform();
+    emit yMirroredChanged();
 }
 
 GraphicsRegularHandle *SchItem::addRegularHandle(int id, GraphicsHandleRole role, GraphicsHandleShape shape, const QPointF &pos)
