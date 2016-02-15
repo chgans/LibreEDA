@@ -57,6 +57,7 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
 
     m_taskDockWidget = new TaskDockWidget();
     m_propertyEditorDockWidget = new PropertyEditorDockWidget();
+#if 1
     connect(m_scene, &SchScene::selectionChanged,
             this, [this]() {
         if (m_scene->selectedObjects().count())
@@ -64,7 +65,15 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
         else
             m_propertyEditorDockWidget->setObject(nullptr);
     });
-
+#else
+    connect(m_scene, &SchScene::selectionChanged,
+            this, [this]() {
+        if (m_scene->selectedObjects().count())
+            m_propertyEditorDockWidget->setItem(m_scene->selectedObjects().first());
+        else
+            m_propertyEditorDockWidget->setItem(nullptr);
+    });
+#endif
     addInteractiveTools();
     addSnapTools();
     addPathPointTools();
