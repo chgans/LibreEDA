@@ -186,7 +186,12 @@ void GraphicsSelectTool::mouseMoveEvent(QMouseEvent *event)
             scene()->setSelectionArea(path);
             break;
         }
-        case MoveItem:
+        case MoveItem: {
+            for (int i = 0; i < m_items.count(); i++) {
+                m_items[i]->setPos(view()->mapToScene(event->pos()));
+            }
+            break;
+        }
         case CloneItem: {
             if (m_phantomItems.count() == 0) {
                 m_phantomItems = createPhantomItems(m_items);
@@ -195,7 +200,6 @@ void GraphicsSelectTool::mouseMoveEvent(QMouseEvent *event)
             QRectF sceneShift = QRectF(view()->mapToScene(m_mousePressPosition),
                                        view()->mapToScene(event->pos()));
             sceneShift.moveTopLeft(QPointF(0, 0));
-            //qDebug() << event->pos() << m_mousePressPosition << viewVector << sceneVector;
             for (int i = 0; i < m_items.count(); i++) {
                 QPointF itemPos = m_items[i]->pos() + sceneShift.bottomRight();
                 m_phantomItems[i]->setPos(itemPos);
@@ -226,15 +230,6 @@ void GraphicsSelectTool::mouseReleaseEvent(QMouseEvent *event)
         m_rubberBand->hide();
         break;
     case MoveItem:
-        if (m_phantomItems.count() > 0) {
-            for (int i = 0; i < m_items.count(); i++) {
-                m_items[i]->setGraphicsEffect(nullptr);
-                m_items[i]->setPos(m_phantomItems[i]->pos());
-                scene()->removeItem(m_phantomItems[i]);
-                delete m_phantomItems[i];
-            }
-            m_phantomItems.clear();
-        }
         m_items.clear();
         m_item = nullptr;
         break;
