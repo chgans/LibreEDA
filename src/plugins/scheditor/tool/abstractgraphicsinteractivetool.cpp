@@ -94,7 +94,7 @@ SchItem *AbstractGraphicsInteractiveTool::createPhantomItem(SchItem *item)
     phantomEffect->setColor(Qt::darkGray);
     phantomEffect->setStrength(.5);
     phantomEffect->setEnabled(true);
-    phantomItem->setOpacity(phantomItem->opacity()*0.9);
+    //phantomItem->setOpacity(phantomItem->opacity()*0.9);
     phantomItem->setGraphicsEffect(phantomEffect);
     scene()->addItem(phantomItem);
     phantomItem->setSelected(false); // force deselected
