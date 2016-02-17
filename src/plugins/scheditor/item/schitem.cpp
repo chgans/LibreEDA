@@ -45,6 +45,7 @@ void SchItem::cloneTo(SchItem *dst)
     dst->setScale(scale());
     dst->setVisible(isVisible());
     dst->setZValue(zValue());
+    dst->setTransform(transform());
     // Handles don't have to be copied as their creation is controlled by the item itself
 }
 
