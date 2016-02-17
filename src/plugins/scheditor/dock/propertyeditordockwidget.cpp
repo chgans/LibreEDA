@@ -1,4 +1,7 @@
 #include "propertyeditordockwidget.h"
+#include "propertyeditor/penpropertymanager.h"
+#include "propertyeditor/peneditorfactory.h"
+
 #include "qtpropertybrowser/qttreepropertybrowser.h"
 #include "qtpropertybrowser/qtvariantproperty.h"
 #include "item/schitem.h"
@@ -23,11 +26,17 @@ PropertyEditorDockWidget::PropertyEditorDockWidget():
     m_browser->setFactoryForManager(m_manager, m_factory);
     connect(m_manager, &QtVariantPropertyManager::valueChanged,
             this, &PropertyEditorDockWidget::setObjectPropertyValue);
+    m_penManager = new PenPropertyManager(this);
+    m_penFactory = new PenEditorFactory(this);
+    m_browser->setFactoryForManager(m_penManager, m_penFactory);
+    connect(m_penManager, &PenPropertyManager::valueChanged,
+            this, &PropertyEditorDockWidget::setObjectPropertyValue);
     setWidget(m_browser);
 }
 
 void PropertyEditorDockWidget::setObject(QObject *object)
 {
+    m_penManager->clear();
     m_manager->clear();
     m_browser->clear();
 
@@ -43,8 +52,12 @@ void PropertyEditorDockWidget::setObject(QObject *object)
 
 void PropertyEditorDockWidget::setItem(SchItem *item)
 {
+
     m_manager->clear();
     m_browser->clear();
+
+    if (m_item != nullptr)
+        m_item->disconnect(this);
 
     m_item = item;
     m_object = nullptr;
@@ -63,22 +76,51 @@ void PropertyEditorDockWidget::populateBrowser(QObject *object, const QMetaObjec
 
     populateBrowser(object, metaObject->superClass());
     QtProperty *parentProperty = m_manager->addProperty(QtVariantPropertyManager::groupTypeId(),
-                                                    metaObject->className());
+                                                        metaObject->className());
     for (int i=0; i<metaObject->propertyCount(); ++i) {
         QMetaProperty metaProperty = metaObject->property(i);
         if (metaProperty.enclosingMetaObject() != metaObject) {
+            continue; // ?!?
+        }
+        if (!metaProperty.isReadable()) {
             continue;
         }
-        QtProperty *property = m_manager->addProperty(metaProperty.type(),
-                                                      metaProperty.name());
-        if (!property) {
-            qCWarning(LogPropEditor) << QString("Cannot add property %1::%2 of type %3")
-                                          .arg(metaObject->className())
-                                          .arg(metaProperty.name())
-                                          .arg(metaProperty.typeName());
-            continue;
+        QtProperty *property;
+        if (metaProperty.isEnumType()) {
+            if (metaProperty.isFlagType()) {
+                property = m_manager->addProperty(QtVariantPropertyManager::flagTypeId());
+            }
+            else {
+                property = m_manager->addProperty(QtVariantPropertyManager::enumTypeId());
+                QMetaEnum metaEnum = metaProperty.enumerator();
+                QStringList enumNames;
+                int enumValue = metaProperty.read(object).toInt();
+                int enumIndex;
+                for (int i = 0; i < metaEnum.keyCount(); i++) {
+                    if (enumValue == metaEnum.value(i))
+                        enumIndex = i;
+                    enumNames.append(QLatin1String(metaEnum.key(i)));
+                }
+                m_manager->setAttribute(property, QLatin1String("enumNames"), enumNames);
+                m_manager->setValue(property, enumIndex);
+            }
         }
-        m_manager->setValue(property, object->property(metaProperty.name()));
+        else if (metaProperty.type() == QVariant::Pen) {
+            property = m_penManager->addProperty("Outline");
+            m_penManager->setValue(property, metaProperty.read(object).value<QPen>());
+        }
+        else {
+            property = m_manager->addProperty(metaProperty.type(),
+                                              metaProperty.name());
+            if (!property) {
+                qCWarning(LogPropEditor) << QString("Cannot add property %1::%2 of type %3")
+                                            .arg(metaObject->className())
+                                            .arg(metaProperty.name())
+                                            .arg(metaProperty.typeName());
+                continue;
+            }
+            m_manager->setValue(property, object->property(metaProperty.name()));
+        }
         property->setEnabled(metaObject->property(i).isWritable());
         parentProperty->addSubProperty(property);
     }
@@ -95,89 +137,112 @@ void PropertyEditorDockWidget::populateBrowser(QObject *object, const QMetaObjec
 // TODO: For colors, use combo box with palette's color, plus "..." for custom colors (instead of RGBA sub-properties)
 void PropertyEditorDockWidget::populateBrowser(SchItem *item)
 {
-    QtVariantProperty *parentProperty;
+    QtVariantProperty *groupProperty;
     QtVariantProperty *property;
 
-    parentProperty = m_manager->addProperty(QtVariantPropertyManager::groupTypeId(), "Attributes");
+    qCInfo(LogPropEditor()) << item << m_item;
+
+    groupProperty = m_manager->addProperty(QtVariantPropertyManager::groupTypeId(), "Attributes");
     property = m_manager->addProperty(QVariant::Bool, "Locked");
-    m_manager->setValue(property, item->isEnabled());
-    parentProperty->addSubProperty(property);
-    m_browser->addProperty(parentProperty);
+    m_manager->setValue(property, !m_item->isEnabled());
+    groupProperty->addSubProperty(property);
+    m_browser->addProperty(groupProperty);
     // TBD: visible (dangerous)
 
-    parentProperty = m_manager->addProperty(QtVariantPropertyManager::groupTypeId(), "Geometry");
-    property = m_manager->addProperty(QVariant::Double, "X");
-    property->setAttribute("decimals", 2);
-    property->setAttribute("singleStep", 1);
-    m_manager->setValue(property, item->pos().x());
-    parentProperty->addSubProperty(property);
-    property = m_manager->addProperty(QVariant::Double, "Y");
-    property->setAttribute("decimals", 2);
-    property->setAttribute("singleStep", 1);
-    m_manager->setValue(property, item->pos().y());
-    parentProperty->addSubProperty(property);
+    groupProperty = m_manager->addProperty(QtVariantPropertyManager::groupTypeId(), "Geometry");
+
+    QtVariantProperty *xProperty = m_manager->addProperty(QVariant::Double, "X");
+    xProperty->setAttribute("decimals", 2);
+    xProperty->setAttribute("singleStep", 1);
+    xProperty->setModified(true);
+    m_manager->setValue(xProperty, m_item->x());
+    groupProperty->addSubProperty(xProperty);
+    connect(m_item, &SchItem::xChanged,
+            this, [this, xProperty](){
+        m_manager->setValue(xProperty, m_item->x());
+    });
+
+    QtVariantProperty *yProperty = m_manager->addProperty(QVariant::Double, "Y");
+    yProperty->setAttribute("decimals", 2);
+    yProperty->setAttribute("singleStep", 1);
+    m_manager->setValue(yProperty, m_item->y());
+    groupProperty->addSubProperty(yProperty);
+    connect(m_item, &SchItem::yChanged,
+            this, [this, yProperty](){
+        m_manager->setValue(yProperty, m_item->y());
+    });
+
     property = m_manager->addProperty(QVariant::Double, "Z Value");
     property->setAttribute("decimals", 2);
     property->setAttribute("singleStep", 1);
-    m_manager->setValue(property, item->zValue());
-    parentProperty->addSubProperty(property);
+    m_manager->setValue(property, m_item->zValue());
+    groupProperty->addSubProperty(property);
+
     property = m_manager->addProperty(QVariant::Double, "Opacity");
     property->setAttribute("minimum", 0.0);
     property->setAttribute("maximum", 1.0);
     property->setAttribute("decimals", 2);
     property->setAttribute("singleStep", 0.1);
-    m_manager->setValue(property, item->opacity());
-    parentProperty->addSubProperty(property);
+    m_manager->setValue(property, m_item->opacity());
+    groupProperty->addSubProperty(property);
+
     property = m_manager->addProperty(QVariant::Double, "Rotation");
     property->setAttribute("minimum", 0.0);
     property->setAttribute("maximum", 359.99);
     property->setAttribute("singleStep", 10);
     property->setAttribute("decimals", 2);
-    m_manager->setValue(property, item->rotation());
-    parentProperty->addSubProperty(property);
+    m_manager->setValue(property, m_item->rotation());
+    groupProperty->addSubProperty(property);
+
     property = m_manager->addProperty(QVariant::Bool, "X Mirrored");
     property->setValue(m_item->isXMirrored());
-    parentProperty->addSubProperty(property);
+    groupProperty->addSubProperty(property);
+
     property = m_manager->addProperty(QVariant::Bool, "Y Mirrored");
     property->setValue(m_item->isYMirrored());
-    parentProperty->addSubProperty(property);
-    m_browser->addProperty(parentProperty);
+    groupProperty->addSubProperty(property);
+    m_browser->addProperty(groupProperty);
     // TODO: item specifics
 
     // TODO: outline for shape vs line (for segment, polyline, bezier)
     // TODO: "simple" line can have start/end arrows
-    parentProperty = m_manager->addProperty(QtVariantPropertyManager::groupTypeId(), "Line");
+    groupProperty = m_manager->addProperty(QtVariantPropertyManager::groupTypeId(), "Line");
+
     property = m_manager->addProperty(QVariant::Double, "Width");
     property->setAttribute("minimum", 0.0);
     property->setAttribute("decimals", 2);
     property->setAttribute("singleStep", 0.1);
-    m_manager->setValue(property, item->pen().widthF());
-    parentProperty->addSubProperty(property);
+    m_manager->setValue(property, m_item->pen().widthF());
+    groupProperty->addSubProperty(property);
+
     property = m_manager->addProperty(QVariant::Color, "Color");
-    m_manager->setValue(property, item->pen().color());
-    parentProperty->addSubProperty(property);
+    m_manager->setValue(property, m_item->pen().color());
+    groupProperty->addSubProperty(property);
     property = m_manager->addProperty(QtVariantPropertyManager::enumTypeId(), "Style");
     property->setAttribute("enumNames", QStringList() << "None" << "Solid" << "Dash" << "Dash Dot" << "Dash Dot Dot");
     //property->setAttribute("enumIcons", );
     m_manager->setValue(property, int(m_item->pen().style())); // FIXME: value is enum index
-    parentProperty->addSubProperty(property);
+    groupProperty->addSubProperty(property);
+
     property = m_manager->addProperty(QtVariantPropertyManager::enumTypeId(), "Cap style");
     property->setAttribute("enumNames", QStringList() << "Flat" << "Square" << "Round");
     //property->setAttribute("enumIcons", );
     m_manager->setValue(property, int(m_item->pen().capStyle())); // FIXME: value is enum index
-    parentProperty->addSubProperty(property);
+    groupProperty->addSubProperty(property);
+
     property = m_manager->addProperty(QtVariantPropertyManager::enumTypeId(), "Join style");
     property->setAttribute("enumNames", QStringList() << "Miter" << "Bevel" << "Round");
     //property->setAttribute("enumIcons", );
     m_manager->setValue(property, int(m_item->pen().joinStyle())); // FIXME: value is enum index
-    parentProperty->addSubProperty(property);
-    m_browser->addProperty(parentProperty);
+    groupProperty->addSubProperty(property);
+    m_browser->addProperty(groupProperty);
 
-    parentProperty = m_manager->addProperty(QtVariantPropertyManager::groupTypeId(), "Fill");
+    groupProperty = m_manager->addProperty(QtVariantPropertyManager::groupTypeId(), "Fill");
+
     property = m_manager->addProperty(QVariant::Color, "Color "); // FIXME: " " for pen/brush
-    m_manager->setValue(property, item->brush().color());
-    parentProperty->addSubProperty(property);
-    m_browser->addProperty(parentProperty);
+    m_manager->setValue(property, m_item->brush().color());
+    groupProperty->addSubProperty(property);
+    m_browser->addProperty(groupProperty);
 }
 
 void PropertyEditorDockWidget::setObjectPropertyValue(QtProperty *property, const QVariant &value)

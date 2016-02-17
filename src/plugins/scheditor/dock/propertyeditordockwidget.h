@@ -6,6 +6,8 @@
 class QtTreePropertyBrowser;
 class QtVariantPropertyManager;
 class QtVariantEditorFactory;
+class PenPropertyManager;
+class PenEditorFactory;
 class QtProperty;
 class SchItem;
 
@@ -24,12 +26,16 @@ private:
     QtTreePropertyBrowser *m_browser;
     QtVariantPropertyManager *m_manager;
     QtVariantEditorFactory *m_factory;
+    PenPropertyManager *m_penManager;
+    PenEditorFactory *m_penFactory;
     QObject *m_object;
     SchItem *m_item;
     bool m_populatingBrowser;
 
     void populateBrowser(QObject *object, const QMetaObject *metaObject);
     void populateBrowser(SchItem *item);
+
+    //QMap<int, int> m_enumIndexToIntValue;
 
 private slots:
     void setObjectPropertyValue(QtProperty *property, const QVariant &value);
