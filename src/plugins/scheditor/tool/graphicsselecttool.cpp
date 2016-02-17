@@ -126,7 +126,7 @@ void GraphicsSelectTool::setView(SchView *other)
     SchTool::setView(other);
     if (other) {
         //buildStateMachine();
-        m_rubberBand->setParent(view());
+        m_rubberBand->setParent(view()->viewport());
     }
 }
 
