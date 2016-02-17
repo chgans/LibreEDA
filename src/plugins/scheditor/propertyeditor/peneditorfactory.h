@@ -11,6 +11,9 @@ public:
     PenEditorFactory(QObject *parent = 0);
     ~PenEditorFactory();
 
+    QtEnumEditorFactory *subEnumEditorFactory();
+    QtColorEditorFactory *subColorEditorFactory();
+
 protected:
     void connectPropertyManager(PenPropertyManager *manager);
     QWidget *createEditor(PenPropertyManager *manager, QtProperty *property,
@@ -19,7 +22,7 @@ protected:
 
 private:
     QtEnumEditorFactory *m_comboBoxFactory;
-    QtDoubleSpinBoxFactory *m_spinBoxFactory;
+    QtColorEditorFactory *m_colorFactory;
 };
 
 #endif // PENEDITORFACTORY_H

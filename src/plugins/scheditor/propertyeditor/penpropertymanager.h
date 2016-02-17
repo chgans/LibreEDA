@@ -14,7 +14,7 @@ public:
     ~PenPropertyManager();
 
     QtEnumPropertyManager *subEnumManager() const;
-    QtDoublePropertyManager *subDoubleManager() const;
+    QtColorPropertyManager *subColorManager() const;
 
     QPen value(const QtProperty *property) const;
 
@@ -31,13 +31,19 @@ protected:
 
 private:
     QtEnumPropertyManager *m_enumManager;
-    QtDoublePropertyManager *m_doubleManager;
+    QtColorPropertyManager *m_colorManager;
+
     QMap<const QtProperty *, QtProperty *> m_styleToPenProperty;
     QMap<const QtProperty *, QtProperty *> m_penToStyleProperty;
     QMap<const QtProperty *, QtProperty *> m_widthToPenProperty;
     QMap<const QtProperty *, QtProperty *> m_penToWidthProperty;
+    QMap<const QtProperty *, QtProperty *> m_colorToPenProperty;
+    QMap<const QtProperty *, QtProperty *> m_penToColorProperty;
 
+private slots:
     void slotEnumChanged(QtProperty *property, int val);
+    void slotColorChanged(QtProperty *property, const QColor &val);
+
     void slotPropertyDestroyed(QtProperty *property);
 };
 

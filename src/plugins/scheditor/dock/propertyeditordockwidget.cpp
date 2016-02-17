@@ -29,8 +29,11 @@ PropertyEditorDockWidget::PropertyEditorDockWidget():
     m_penManager = new PenPropertyManager(this);
     m_penFactory = new PenEditorFactory(this);
     m_browser->setFactoryForManager(m_penManager, m_penFactory);
+    m_browser->setFactoryForManager(m_penManager->subEnumManager(), m_penFactory->subEnumEditorFactory());
+    m_browser->setFactoryForManager(m_penManager->subColorManager(), m_penFactory->subColorEditorFactory());
     connect(m_penManager, &PenPropertyManager::valueChanged,
             this, &PropertyEditorDockWidget::setObjectPropertyValue);
+
     setWidget(m_browser);
 }
 
@@ -122,6 +125,7 @@ void PropertyEditorDockWidget::populateBrowser(QObject *object, const QMetaObjec
             m_manager->setValue(property, object->property(metaProperty.name()));
         }
         property->setEnabled(metaObject->property(i).isWritable());
+        m_propertyToMetaPropertyIndex[property] = metaProperty.propertyIndex();
         parentProperty->addSubProperty(property);
     }
     QtBrowserItem *item = m_browser->addProperty(parentProperty);
@@ -251,8 +255,13 @@ void PropertyEditorDockWidget::setObjectPropertyValue(QtProperty *property, cons
         return;
 
     if (m_object != nullptr) {
-        QByteArray name = property->propertyName().toLatin1();
-        bool ok = m_object->setProperty(name.constData(), value);
+        if (!m_propertyToMetaPropertyIndex.contains(property)) {
+            qCWarning(LogPropEditor) << "Unknown property";
+            return;
+        }
+        int metaPropertyIndex = m_propertyToMetaPropertyIndex[property];
+        QMetaProperty metaProperty = m_object->metaObject()->property(metaPropertyIndex);
+        bool ok = metaProperty.write(m_object, value);
         if (!ok) {
             qCWarning(LogPropEditor) << QString("Failed to set property %1::%2 (%3)")
                                         .arg(m_object->metaObject()->className())
@@ -261,7 +270,6 @@ void PropertyEditorDockWidget::setObjectPropertyValue(QtProperty *property, cons
         }
     }
     if (m_item != nullptr) {
-        qCInfo(LogPropEditor()) << property->propertyName() << value;
         if (property->propertyName() == "Rotation") {
             m_item->setRotation(value.toReal());
         }

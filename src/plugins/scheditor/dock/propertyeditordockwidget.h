@@ -30,6 +30,8 @@ private:
     PenEditorFactory *m_penFactory;
     QObject *m_object;
     SchItem *m_item;
+    QMap<QtProperty *, int> m_propertyToMetaPropertyIndex;
+
     bool m_populatingBrowser;
 
     void populateBrowser(QObject *object, const QMetaObject *metaObject);
