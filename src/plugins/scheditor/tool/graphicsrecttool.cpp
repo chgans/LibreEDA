@@ -115,7 +115,7 @@ void GraphicsRectTool::setP1(const QPointF &pos)
 void GraphicsRectTool::setP2(const QPointF &pos)
 {
     m_rect.setBottomRight(pos);
-    m_item->setRect(m_rect);
+    m_item->setRect(m_rect.normalized());
 }
 
 
