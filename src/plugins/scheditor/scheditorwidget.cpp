@@ -30,12 +30,7 @@
 #include <QTimer>
 #include <QComboBox>
 #include <QSettings>
-
-#include <QGraphicsSimpleTextItem>
-#include <QGraphicsTextItem>
-
-#include "item/graphicstextframeitem.h"
-
+#include <QKeyEvent>
 
 SchEditorWidget::SchEditorWidget(QWidget *parent):
     AbstractEditor(parent)
@@ -298,4 +293,14 @@ void SchEditorWidget::addMiscTools()
 void SchEditorWidget::onPaletteComboBoxIndexChanged(int index)
 {
     m_view->setPaletteMode(m_paletteModeComboBox->itemData(index).value<Palette::Mode>());
+}
+
+
+void SchEditorWidget::keyPressEvent(QKeyEvent *event)
+{
+    Q_UNUSED(event);
+}
+
+void SchEditorWidget::keyReleaseEvent(QKeyEvent *event)
+{
 }

@@ -63,6 +63,11 @@ private:
 
     void addMiscTools();
     QToolBar *m_miscToolBar = nullptr;
+
+    // QWidget interface
+protected:
+    void keyPressEvent(QKeyEvent *);
+    void keyReleaseEvent(QKeyEvent *);
 };
 
 #endif // GRAPHICSEDITORWIDGET_H

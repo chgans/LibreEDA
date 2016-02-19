@@ -70,6 +70,11 @@ public:
     void activate(const QAction *which, SchView *view);
     void desactivate(const QAction *which, SchView *view);
 
+
+    // AbstractGraphicsInteractiveTool interface
+public:
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 };
 
 #endif // ABSTRACTGRAPHICSINSERTTOOL_H

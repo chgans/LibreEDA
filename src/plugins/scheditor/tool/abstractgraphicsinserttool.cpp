@@ -158,3 +158,17 @@ void AbstractGraphicsInsertTool::desactivate(const QAction *which, SchView *view
     Q_UNUSED(which);
     Q_UNUSED(view);
 }
+
+
+void AbstractGraphicsInsertTool::keyPressEvent(QKeyEvent *event)
+{
+    Q_UNUSED(event);
+}
+
+void AbstractGraphicsInsertTool::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Escape) {
+        goBack();
+        event->accept();
+    }
+}
