@@ -36,6 +36,7 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
     AbstractEditor(parent)
 {
     setLayout(new QVBoxLayout);
+    layout()->setMargin(0);
     m_scene = new SchScene(this);
     m_scene->setSceneRect(0, 0, 297, 210);
     GraphicsCartesianGrid *grid = new GraphicsCartesianGrid();

@@ -17,6 +17,7 @@ EditorView::EditorView(QWidget *parent) : QWidget(parent)
     setLayout(new QVBoxLayout);
     m_tabWidget = new QTabWidget();
     layout()->addWidget(m_tabWidget);
+    layout()->setMargin(1);
     m_tabWidget->setMovable(true);
     m_tabWidget->setDocumentMode(true);
     m_tabWidget->setTabsClosable(true);
