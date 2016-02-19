@@ -256,17 +256,12 @@ void GraphicsSelectTool::keyPressEvent(QKeyEvent *event)
         if (m_operation == MoveItem && m_state == HintState)
             setOperation(CloneItem);
     }
-    /*
     else if (event->key() == Qt::Key_Delete) {
-        QPoint pos = view()->mapFromGlobal(QCursor::pos());
-        GraphicsObject *object = view()->objectAt(pos);
-        const GraphicsHandle *handle = view()->handleAt(pos);
-        if (handle != nullptr) {
-            object->removeHandle(object->handles().indexOf(handle));
+        foreach (QGraphicsItem *item, scene()->selectedItems()) {
+            scene()->removeItem(item);
+            delete item;
         }
-
     }
-    */
     event->accept();
 }
 
