@@ -5,8 +5,6 @@
 
 #include <QGraphicsPathItem>
 
-#include <QDebug>
-
 const QString GraphicsWireItem::J_POINTS = QStringLiteral("points");
 
 GraphicsWireItem::GraphicsWireItem(SchItem *parent):

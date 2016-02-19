@@ -5,7 +5,6 @@
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
-#include <QDebug>
 #include <QJsonObject>
 
 #include <QLoggingCategory>
@@ -152,7 +151,6 @@ QPainterPath GraphicsBezierItem::copyPath(const QPainterPath &src, int first, in
             i+= 3;
         }
     }
-    //qDebug() << dst;
     return dst;
 }
 

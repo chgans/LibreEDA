@@ -5,8 +5,6 @@
 #include <QPainterPath>
 #include <cmath>
 
-#include <QDebug>
-
 //
 static const qreal MIN_SIZE_IN_PIXEL = 5;
 

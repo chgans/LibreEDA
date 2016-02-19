@@ -11,7 +11,6 @@
 #include <QMouseEvent>
 #include <QMessageBox>
 #include <QGuiApplication>
-#include <QDebug>
 
 //#define NO_EVENT
 
@@ -325,7 +324,6 @@ void SchView::updateMousePos()
             m_mousePositionChanged = false;
         }
     }
-    //qDebug() << "Mouse" << mapToScene(viewPos) << "=>" << mapToScene(m_mousePosition);
 }
 
 QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)

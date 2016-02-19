@@ -1,8 +1,6 @@
 #include "item/igraphicsitemobserver.h"
 #include "item/igraphicsobservableitem.h"
 
-#include <QDebug>
-
 IGraphicsItemObserver::IGraphicsItemObserver():
     m_operationInProgress(false),
     m_blockAllItems(false)
@@ -25,13 +23,9 @@ void IGraphicsItemObserver::blockItemNotification(IGraphicsObservableItem *item)
         return;
     }
 
-    if (!m_items.contains(item)) {
-        qWarning() << __FUNCTION__ << "Trying to block an item which is not in our list of observed item. Ignoring request";
-        return;
-    }
+    Q_ASSERT(!m_items.contains(item));
 
     if (m_blockAllItems) {
-        qWarning() << __FUNCTION__ << "Trying to block an item while all items are currently blocked. Ignoring request";
         return;
     }
 
@@ -50,15 +44,8 @@ void IGraphicsItemObserver::unblockItemNotification(IGraphicsObservableItem *ite
         return;
     }
 
-    if (!m_items.contains(item)) {
-        qWarning() << __FUNCTION__ << "Trying to unblock an item which is not in our list of observed item. Ignoring request";
-        return;
-    }
-
-    if (!m_blockedItems.contains(item)) {
-        qWarning() << __FUNCTION__ << "Trying to unblock an item which is not in our list of blocked item. Ignoring request";
-        return;
-    }
+    Q_ASSERT(!m_items.contains(item));
+    Q_ASSERT(!m_blockedItems.contains(item));
 
     if (m_blockAllItems) {
         m_blockAllItems = false;

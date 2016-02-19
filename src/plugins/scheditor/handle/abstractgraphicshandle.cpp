@@ -6,8 +6,6 @@
 #include <QPainterPathStroker>
 #include <QPainter>
 
-#include <QDebug>
-
 AbstractGraphicsHandle::AbstractGraphicsHandle(SchItem *parent):
     QGraphicsPathItem(parent),
     IGraphicsObservableItem(),

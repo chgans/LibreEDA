@@ -5,7 +5,6 @@
 #include "grid/graphicsgrid.h"
 
 #include <QAction>
-#include <QDebug>
 
 /*******************************************************************************
  * Snap Strategy

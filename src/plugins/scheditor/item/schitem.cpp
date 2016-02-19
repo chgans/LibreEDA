@@ -4,7 +4,6 @@
 #include "handle/graphicsbezierhandle.h"
 #include "core/json.h"
 
-#include <QDebug>
 #include <QGraphicsTransform>
 
 const QString SchItem::J_POSITION = QStringLiteral("position");

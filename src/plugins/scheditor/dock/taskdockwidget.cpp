@@ -3,7 +3,6 @@
 #include "widget/taskeditwidget.h"
 #include "widget/taskoptionwidget.h"
 
-#include <QDebug>
 #include <QSplitter>
 #include <QVBoxLayout>
 

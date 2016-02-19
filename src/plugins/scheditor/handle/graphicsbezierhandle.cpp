@@ -2,8 +2,6 @@
 #include "handle/graphicsregularhandle.h"
 #include "item/schitem.h"
 
-#include <QDebug>
-
 #include <QLoggingCategory>
 Q_DECLARE_LOGGING_CATEGORY(GraphicsBezierHandleLog)
 Q_LOGGING_CATEGORY(GraphicsBezierHandleLog, "graphics.bezier.handle")

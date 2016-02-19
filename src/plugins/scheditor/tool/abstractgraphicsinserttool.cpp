@@ -12,8 +12,6 @@
 
 #include <QDialog>
 
-#include <QDebug>
-
 AbstractGraphicsInsertTool::AbstractGraphicsInsertTool(QObject *parent):
     AbstractGraphicsInteractiveTool(parent)
 {

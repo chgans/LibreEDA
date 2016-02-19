@@ -5,8 +5,6 @@
 #include <QPainter>
 #include <QPen>
 
-#include <QDebug>
-
 const QString GraphicsLineItem::J_POINTS = QStringLiteral("points");
 
 GraphicsLineItem::GraphicsLineItem(SchItem *parent):

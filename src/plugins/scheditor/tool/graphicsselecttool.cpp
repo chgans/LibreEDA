@@ -19,8 +19,6 @@
 #include <QFinalState>
 #include <QSignalTransition>
 
-#include <QDebug>
-
 // Select tool:
 //  Click based:
 //  - clear selection: left press on background, release
@@ -214,7 +212,7 @@ void GraphicsSelectTool::mouseMoveEvent(QMouseEvent *event)
             break;
         }
         default:
-            qDebug() << "Unknown state";
+            Q_ASSERT_X(false, "GraphicsSelectTool", "Invalid operation value");
         }
     }
     event->accept();

@@ -4,7 +4,6 @@
 #include <QStyleOptionGraphicsItem>
 #include <QTextDocument>
 #include <QTextCursor>
-#include <QDebug>
 #include <QJsonObject>
 
 /* FIXME:

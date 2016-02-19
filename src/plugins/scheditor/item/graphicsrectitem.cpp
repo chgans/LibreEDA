@@ -7,8 +7,6 @@
 #include <QRectF>
 #include <QPainter>
 
-#include <QDebug>
-
 // TODO: forbid objects to have write access to handles
 // TODO: Like Inkscape, if one round handle is in the corner, but not the other,
 //       then use same roundness for both
@@ -63,15 +61,12 @@ qreal GraphicsRectItem::xRoundness() const
 
 void GraphicsRectItem::setXRoundness(qreal roundness)
 {
-    qDebug() << "X" << roundness;
-
     qreal xRoundness = qMin(qMax(roundness, 0.0), 100.0);
     if (qFuzzyCompare(xRoundness, m_xRoundness)) {
         updateRoundnessHandles();
         return;
     }
 
-    qDebug() << "X" << xRoundness;
     prepareGeometryChange();
     m_xRoundness = xRoundness;
     update();
@@ -85,15 +80,12 @@ qreal GraphicsRectItem::yRoundness() const
 
 void GraphicsRectItem::setYRoundness(qreal roundness)
 {
-    qDebug() << "Y" << roundness;
-
     qreal yRoundness = qMin(qMax(roundness, 0.0), 100.0);
     if (qFuzzyCompare(yRoundness, m_yRoundness)) {
         updateRoundnessHandles();
         return;
     }
 
-    qDebug() << "Y" << yRoundness;
     prepareGeometryChange();
     m_yRoundness = yRoundness;
     update();
@@ -234,7 +226,6 @@ QList<QPointF> GraphicsRectItem::nearestPoints(QPointF pos) const
         QLineF::IntersectType xType = line.intersect(line.normalVector().translated(pos), &xPoint);
         if (xType == QLineF::BoundedIntersection)
             xPoints << xPoint;
-        qDebug() << pos << line << xType << xPoint;
     }
 
     return xPoints;
