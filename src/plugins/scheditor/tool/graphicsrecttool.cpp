@@ -48,6 +48,7 @@ SchItem *GraphicsRectTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsRectItem();
     m_item->setPos(pos);
+    m_item->setRect(QRect());
     m_item->setPen(m_penSettingsWidget->pen());
     m_item->setBrush(m_brushSettingsWidget->brush());
     return m_item;
@@ -109,6 +110,7 @@ void GraphicsRectTool::cancelInsert()
 void GraphicsRectTool::setP1(const QPointF &pos)
 {
     m_rect.setTopLeft(pos);
+    m_rect.setBottomRight(pos);
     m_item->setRect(m_rect);
 }
 
