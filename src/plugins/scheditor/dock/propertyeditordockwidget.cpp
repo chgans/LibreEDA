@@ -31,6 +31,7 @@ PropertyEditorDockWidget::PropertyEditorDockWidget():
     m_browser->setFactoryForManager(m_penManager, m_penFactory);
     m_browser->setFactoryForManager(m_penManager->subEnumManager(), m_penFactory->subEnumEditorFactory());
     m_browser->setFactoryForManager(m_penManager->subColorManager(), m_penFactory->subColorEditorFactory());
+    m_browser->setFactoryForManager(m_penManager->subColorManager()->subIntPropertyManager(), new QtSpinBoxFactory(this));
     connect(m_penManager, &PenPropertyManager::valueChanged,
             this, &PropertyEditorDockWidget::setObjectPropertyValue);
 
