@@ -2,6 +2,7 @@
 #include "schview.h"
 #include "schscene.h"
 #include "palette.h"
+#include "item/schitem.h"
 
 #include "tool/graphicsbeziertool.h"
 #include "tool/graphicsselecttool.h"
@@ -74,6 +75,7 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
             m_propertyEditorDockWidget->setItem(nullptr);
     });
 #endif
+    addArrangeTools();
     addInteractiveTools();
     addSnapTools();
     addPathPointTools();
@@ -84,7 +86,11 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
 
 SchEditorWidget::~SchEditorWidget()
 {
-
+    qDeleteAll(m_arrangeToolBar->actions());
+    qDeleteAll(m_interactiveToolsToolBar->actions());
+    qDeleteAll(m_snapToolBar->actions());
+    qDeleteAll(m_pathPointToolBar->actions());
+    qDeleteAll(m_miscToolBar->actions());
 }
 
 void SchEditorWidget::readSettings(QSettings &settings)
@@ -120,11 +126,10 @@ void SchEditorWidget::activate(QMainWindow *win)
     m_miscToolBar->show();
     win->addToolBar(m_snapToolBar);
     m_snapToolBar->show();
-
-#if 0
+    win->addToolBar(m_arrangeToolBar);
+    m_arrangeToolBar->show();
     win->addToolBar(m_pathPointToolBar);
     m_pathPointToolBar->show();
-#endif
     win->addDockWidget(Qt::LeftDockWidgetArea, m_taskDockWidget);
     m_taskDockWidget->show();
     win->addDockWidget(Qt::RightDockWidgetArea, m_propertyEditorDockWidget);
@@ -137,6 +142,7 @@ void SchEditorWidget::desactivate(QMainWindow *win)
 {
     win->removeDockWidget(m_propertyEditorDockWidget);
     win->removeDockWidget(m_taskDockWidget);
+    win->removeToolBar(m_arrangeToolBar);
     win->removeToolBar(m_pathPointToolBar);
     win->removeToolBar(m_snapToolBar);
     win->removeToolBar(m_interactiveToolsToolBar);
@@ -159,6 +165,7 @@ void SchEditorWidget::addInteractiveTools()
     addInteractiveTool(new GraphicsBezierTool(this));
 
 #if 0
+    QAction *action;
     action = new QAction(QIcon(":/icons/graphicsbeziercurvetool.svg"),
                          "Add a a bezier curve", nullptr);
     m_interactiveToolsToolBar->addAction(action);
@@ -197,7 +204,6 @@ void SchEditorWidget::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
             m_view->setTool(tool);
             m_taskDockWidget->setTool(tool);
         });
-        firstAction = false;
     }
     else {
         connect(tool, &SchTool::finished,
@@ -236,10 +242,10 @@ void SchEditorWidget::addSnapTools()
 
 void SchEditorWidget::addPathPointTools()
 {
+    m_pathPointToolBar = new QToolBar();
 #if 0
     QAction *action;
 
-    m_pathPointToolBar = new QToolBar();
 
     action = new QAction(QIcon(":/icons/graphicspathpointadd.svg"),
                          "Add a point to an existing path", nullptr);
@@ -274,10 +280,7 @@ void SchEditorWidget::addArrangeTools()
     // send to back. front, raise, lower
     // align and distribute
     //
-    QAction *action = new QAction(QIcon::fromTheme(""),
-                         "Make selected path points auto-smooth", nullptr);
-    m_pathPointToolBar->addAction(action);
-
+    m_arrangeToolBar = new QToolBar();
 }
 
 void SchEditorWidget::addMiscTools()

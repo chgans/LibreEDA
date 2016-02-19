@@ -39,7 +39,8 @@ SchView::SchView(QWidget *parent):
     m_mousePositionChanged(true),
     m_snapToGridEnabled(true),
     m_palette(new Palette(this)),
-    m_snapManager(new SnapManager(this))
+    m_snapManager(new SnapManager(this)),
+    m_snapping(false)
 {    
     setViewport(new QGLWidget);
 
@@ -74,6 +75,7 @@ SchScene *SchView::scene()
 void SchView::setScene(SchScene *scene)
 {
     QGraphicsView::setScene(scene);
+    applyPalette();
 }
 
 AbstractGraphicsInteractiveTool *SchView::tool()
@@ -135,10 +137,7 @@ void SchView::setPaletteMode(Palette::Mode mode)
     if (mode == m_palette->mode())
         return;
     m_palette->setMode(mode);
-    scene()->setBackgroundBrush(QBrush(m_palette->background1()));
-    scene()->grid()->setCoarseLineColor(m_palette->content6());
-    scene()->grid()->setFineLineColor(m_palette->content3());
-    update();
+    applyPalette();
 }
 
 Palette::Mode SchView::paletteMode() const
@@ -336,6 +335,14 @@ QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)
                        event->button(),
                        event->buttons(),
                        event->modifiers());
+}
+
+void SchView::applyPalette()
+{
+    scene()->setBackgroundBrush(QBrush(m_palette->background1()));
+    scene()->grid()->setCoarseLineColor(m_palette->content6());
+    scene()->grid()->setFineLineColor(m_palette->content3());
+    update();
 }
 
 QSizeF SchView::pixelSize() const

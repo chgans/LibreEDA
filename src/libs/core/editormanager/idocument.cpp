@@ -9,9 +9,11 @@
   \brief The IDocument class ...
 */
 
-IDocument::IDocument(QObject *parent) : QObject(parent)
+IDocument::IDocument(QObject *parent):
+    QObject(parent),
+    m_modified(false)
 {
-    setModified(false);
+
 }
 
 IDocument::~IDocument()

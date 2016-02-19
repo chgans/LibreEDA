@@ -4,7 +4,8 @@
 #include <QStyleOptionGraphicsItem>
 
 GraphicsCircleItem::GraphicsCircleItem(SchItem *parent):
-    SchItem(parent)
+    SchItem(parent),
+    m_radius(0.0)
 {
     addRegularHandle(RadiusHandle, MoveHandleRole, DiamondedHandleShape);
 }

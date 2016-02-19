@@ -12,6 +12,11 @@ SchEditor::SchEditor(QObject *parent) :
     setWidget(new SchEditorWidget());
 }
 
+SchEditor::~SchEditor()
+{
+    delete m_document;
+}
+
 
 bool SchEditor::open(QString *errorString, const QString &fileName)
 {

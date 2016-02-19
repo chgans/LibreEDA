@@ -32,7 +32,7 @@ bool LogViewerPlugin::initialize(const QStringList &arguments, QString *errorStr
 {
     Q_UNUSED(arguments);
     Q_UNUSED(errorString);
-    LoggingOutputPaneFactory *factory = new LoggingOutputPaneFactory;
+    LoggingOutputPaneFactory *factory = new LoggingOutputPaneFactory(this);
     factory->setLogModel(logModel);
     addObject(factory);
     return true;

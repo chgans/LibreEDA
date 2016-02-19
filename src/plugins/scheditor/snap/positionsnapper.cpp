@@ -18,6 +18,10 @@ SnapStrategy::SnapStrategy(SchView *view):
 
 }
 
+SnapStrategy::~SnapStrategy()
+{
+}
+
 QString SnapStrategy::name() const
 {
     return m_name;
@@ -412,6 +416,11 @@ SnapManager::SnapManager(SchView *view):
     }
     defaultStrategy->action()->setChecked(true);
     m_winnerStrategy = defaultStrategy;
+}
+
+SnapManager::~SnapManager()
+{
+    qDeleteAll(m_strategies);
 }
 
 QList<QString> SnapManager::groups() const

@@ -110,6 +110,11 @@ PenSettingsWidget::PenSettingsWidget(QWidget *parent) :
     });
 }
 
+PenSettingsWidget::~PenSettingsWidget()
+{
+
+}
+
 QPen PenSettingsWidget::pen() const
 {
     return m_pen;

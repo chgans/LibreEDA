@@ -14,6 +14,7 @@ class SnapStrategy
 {
 public:
     SnapStrategy(SchView *view);
+    virtual ~SnapStrategy();
 
     QString label() const;
     QString name() const;
@@ -129,6 +130,7 @@ class SnapManager: public QObject
 
 public:
     SnapManager(SchView *view);
+    ~SnapManager();
 
     QList<QString> groups() const;
     QList<QAction *> actions(const QString &group = QString("all")) const;

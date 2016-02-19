@@ -38,7 +38,8 @@ static const QColor GREEN("#859900");
 
 
 Palette::Palette(QObject *parent):
-    QObject(parent)
+    QObject(parent),
+    m_mode(Mode::Dark)
 {
 
 }

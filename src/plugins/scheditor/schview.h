@@ -65,7 +65,7 @@ private:
     QMouseEvent snapMouseEvent(QMouseEvent *event);
     bool m_snapToGridEnabled;
     Palette *m_palette;
-
+    void applyPalette();
     SnapManager *m_snapManager;
     bool m_snapping;
 };

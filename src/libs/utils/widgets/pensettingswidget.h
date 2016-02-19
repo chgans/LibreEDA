@@ -20,6 +20,7 @@ class UTILS_EXPORT PenSettingsWidget : public QWidget
 
 public:
     explicit PenSettingsWidget(QWidget *parent = 0);
+    ~PenSettingsWidget();
 
     QPen pen() const;
 

@@ -13,7 +13,7 @@ SchScene::SchScene(QObject *parent):
 
 SchScene::~SchScene()
 {
-
+    delete m_grid;
 }
 
 QList<SchItem *> SchScene::selectedObjects()

@@ -26,7 +26,12 @@ NavigationDockWidget::NavigationDockWidget(QWidget *parent):
 
 NavigationDockWidget::~NavigationDockWidget()
 {
-
+    m_comboBox->disconnect(this);
+    while (m_comboBox->count()) {
+        NavigationView *view = m_comboBox->itemData(0).value<NavigationView *>();
+        m_comboBox->removeItem(0);
+        delete view;
+    }
 }
 
 void NavigationDockWidget::setFactories(const QList<INavigationViewFactory *> &factories)
