@@ -180,9 +180,6 @@ void GraphicsSelectTool::mouseMoveEvent(QMouseEvent *event)
         case DragSelect: {
             QRect viewRect = QRect(m_mousePressPosition, event->pos()).normalized();
             m_rubberBand->setGeometry(viewRect);
-            QPainterPath path;
-            path.addPolygon(view()->mapToScene(viewRect));
-            scene()->setSelectionArea(path);
             break;
         }
         case MoveItem: {
@@ -228,9 +225,13 @@ void GraphicsSelectTool::mouseReleaseEvent(QMouseEvent *event)
         return;
 
     switch (m_operation) {
-    case DragSelect:
+    case DragSelect: {
+        QPainterPath path;
+        path.addPolygon(view()->mapToScene(m_rubberBand->geometry()));
+        scene()->setSelectionArea(path);
         m_rubberBand->hide();
         break;
+    }
     case MoveItem:
         m_items.clear();
         m_item = nullptr;
