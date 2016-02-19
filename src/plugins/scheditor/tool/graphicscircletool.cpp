@@ -91,8 +91,8 @@ void GraphicsCircleTool::movePoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx == 1);
 
-     QPointF itemPos = m_item->mapFromScene(pos);
-     m_item->setRadius(qAbs(itemPos.x()));
+     QLineF vector(m_item->pos(), pos);
+     m_item->setRadius(vector.length());
 }
 
 void GraphicsCircleTool::endInsert(const QPointF &pos)
