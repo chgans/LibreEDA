@@ -73,6 +73,8 @@ LedaPlugin {
         "item/graphicstextframeitem.h",
         "item/graphicswireitem.cpp",
         "item/graphicswireitem.h",
+        "propertyeditor/objectpropertyeditor.cpp",
+        "propertyeditor/objectpropertyeditor.h",
         "propertyeditor/peneditorfactory.cpp",
         "propertyeditor/peneditorfactory.h",
         "propertyeditor/penpropertymanager.cpp",

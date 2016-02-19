@@ -2,14 +2,14 @@
 #define PROPERTYEDITORDOCKWIDGET_H
 
 #include <QDockWidget>
+#include <QMap>
+#include <QList>
+#include <QString>
 
-class QtTreePropertyBrowser;
-class QtVariantPropertyManager;
-class QtVariantEditorFactory;
-class PenPropertyManager;
-class PenEditorFactory;
-class QtProperty;
+class ObjectPropertyEditor;
 class SchItem;
+class QStackedWidget;
+class QComboBox;
 
 class PropertyEditorDockWidget : public QDockWidget
 {
@@ -19,29 +19,17 @@ public:
 signals:
 
 public slots:
-    void setObject(QObject *object);
+    void setObjects(QList<QObject *> objects);
     void setItem(SchItem *item);
 
-private:
-    QtTreePropertyBrowser *m_browser;
-    QtVariantPropertyManager *m_manager;
-    QtVariantEditorFactory *m_factory;
-    PenPropertyManager *m_penManager;
-    PenEditorFactory *m_penFactory;
-    QObject *m_object;
-    SchItem *m_item;
-    QMap<QtProperty *, int> m_propertyToMetaPropertyIndex;
-
-    bool m_populatingBrowser;
-
-    void populateBrowser(QObject *object, const QMetaObject *metaObject);
-    void populateBrowser(SchItem *item);
-
-    //QMap<int, int> m_enumIndexToIntValue;
-
 private slots:
-    void setObjectPropertyValue(QtProperty *property, const QVariant &value);
-    void setBrowserPropertyValue(QtProperty *property, const QVariant &value);
+    void updateEditor(int index);
+
+private:
+    ObjectPropertyEditor *m_editor;
+    QComboBox *m_objectComboBox;
+    QMap<QString, QList<QObject *> > m_classNameToObjects;
+    QList<QObject *> m_objects;
 };
 
 #endif // PROPERTYEDITORDOCKWIDGET_H

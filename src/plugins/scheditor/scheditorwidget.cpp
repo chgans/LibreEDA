@@ -57,10 +57,11 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
 #if 1
     connect(m_scene, &SchScene::selectionChanged,
             this, [this]() {
-        if (m_scene->selectedObjects().count())
-            m_propertyEditorDockWidget->setObject(m_scene->selectedObjects().first());
-        else
-            m_propertyEditorDockWidget->setObject(nullptr);
+        QList<QObject *> objects;
+        foreach (QObject *object, m_scene->selectedObjects()) {
+            objects.append(object);
+        }
+        m_propertyEditorDockWidget->setObjects(objects);
     });
 #else
     connect(m_scene, &SchScene::selectionChanged,
