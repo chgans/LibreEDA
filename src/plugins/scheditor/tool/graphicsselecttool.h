@@ -34,6 +34,7 @@ private:
     Operation m_operation;
 
     QPoint m_mousePressPosition;
+    QPointF m_lastMouseScenePosition;
     SchItem *m_item;
     QList<SchItem *> m_items;
     QList<SchItem *> m_phantomItems;

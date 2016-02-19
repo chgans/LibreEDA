@@ -65,7 +65,7 @@ void GraphicsSelectTool::updateCursor(QMouseEvent *event)
         m_handle = handle;
         setOperation(MoveHandle);
     }
-    else if (object != nullptr) {
+    else if (object != nullptr && object->isEnabled()) {
         if (event->modifiers().testFlag(Qt::ControlModifier))
             setOperation(CloneItem);
         else
@@ -156,6 +156,7 @@ void GraphicsSelectTool::mousePressEvent(QMouseEvent *event)
             }
             m_item = object;
             m_items = scene()->selectedObjects();
+            m_lastMouseScenePosition = view()->mapToScene(event->pos());
             break;
         case MoveHandle:
             Q_ASSERT(handle != nullptr);
@@ -185,9 +186,12 @@ void GraphicsSelectTool::mouseMoveEvent(QMouseEvent *event)
             break;
         }
         case MoveItem: {
+            QPointF mouseScenePosition = view()->mapToScene(event->pos());
+            QLineF vector(m_lastMouseScenePosition, mouseScenePosition);
             for (int i = 0; i < m_items.count(); i++) {
-                m_items[i]->setPos(view()->mapToScene(event->pos()));
+                m_items[i]->moveBy(vector.dx(), vector.dy());
             }
+            m_lastMouseScenePosition = mouseScenePosition;
             break;
         }
         case CloneItem: {

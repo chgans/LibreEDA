@@ -4,10 +4,9 @@
 #include "schview.h"
 #include "item/schitem.h"
 
-#include <QGraphicsColorizeEffect>
-
 #include <QMouseEvent>
 #include <QKeyEvent>
+#include <QGraphicsColorizeEffect>
 
 AbstractGraphicsInteractiveTool::AbstractGraphicsInteractiveTool(QObject *parent):
     SchTool(parent)
