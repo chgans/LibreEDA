@@ -6,7 +6,7 @@
 
 GraphicsGrid::GraphicsGrid():
     mPriority(0),
-    mCoarseMultiplier(10),
+    mCoarseMultiplier(5),
     mFineLineStyle(Qt::SolidLine),
     mFineLineColor(QColor("#4d4d5c")),
     mCoarseLineStyle(Qt::SolidLine),

@@ -40,11 +40,15 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
     m_scene = new SchScene(this);
     m_scene->setSceneRect(0, 0, 297, 210);
     GraphicsCartesianGrid *grid = new GraphicsCartesianGrid();
+    grid->setCoarseLineStyle(Qt::SolidLine);
+    grid->setCoarseLineColor(QColor("#586e75"));
+    grid->setFineLineStyle(Qt::DotLine);
+    grid->setFineLineColor(QColor("#839496"));
     grid->setOrigin(QPointF(0, 0));
+    grid->setCoarseMultiplier(10);
     grid->setSize(QSize(m_scene->sceneRect().width(),
                         m_scene->sceneRect().height()));
     m_scene->setGrid(grid);
-    grid->setCoarseMultiplier(5);
     m_view = new SchView();
     m_view->setScene(m_scene);
     m_view->fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);

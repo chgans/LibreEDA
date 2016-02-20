@@ -105,11 +105,11 @@ void GraphicsCartesianGrid::drawQuadrantGrid(const QSizeF &pixelPerMm, QPainter 
     bool drawFine = shouldDrawFine(pixelPerMm);
 
     if (!rect.isEmpty()) {
+        drawGrid(painter, coarseLineColor(), coarseLineStyle(),
+                     rect, step().x(), step().y());
         if (drawFine)
             drawGrid(painter, fineLineColor(), fineLineStyle(),
                          rect, step().x()/coarseMultiplier(), step().y()/coarseMultiplier());
-        drawGrid(painter, coarseLineColor(), coarseLineStyle(),
-                     rect, step().x(), step().y());
     }
 }
 
