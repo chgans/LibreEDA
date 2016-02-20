@@ -115,6 +115,8 @@ LedaPlugin {
         "tool/graphicswiretool.h",
         "widget/coordinatewidget.cpp",
         "widget/coordinatewidget.h",
+        "widget/graphicsviewruler.cpp",
+        "widget/graphicsviewruler.h",
         "widget/taskeditwidget.cpp",
         "widget/taskeditwidget.h",
         "widget/taskoptionwidget.cpp",

@@ -5,12 +5,14 @@
 #include "grid/graphicsgrid.h"
 #include "palette.h"
 #include "snap/positionsnapper.h"
+#include "widget/graphicsviewruler.h"
 
 #include <QGLWidget>
 
 #include <QMouseEvent>
 #include <QMessageBox>
 #include <QGuiApplication>
+#include <QGridLayout>
 
 //#define NO_EVENT
 
@@ -41,7 +43,7 @@ SchView::SchView(QWidget *parent):
     m_snapManager(new SnapManager(this)),
     m_snapping(false)
 {    
-    setViewport(new QGLWidget);
+    //setViewport(new QGLWidget);
 
     // The widget emits the QWidget::customContextMenuRequested() signal
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -59,6 +61,24 @@ SchView::SchView(QWidget *parent):
     setTransformationAnchor(AnchorUnderMouse);
     setResizeAnchor(AnchorUnderMouse);
 #endif
+
+    QGridLayout *layout = new QGridLayout;
+    layout->setSpacing(0);
+    layout->setMargin(0);
+    m_hViewRuler = new GraphicsViewRuler(GraphicsViewRuler::Horizontal);
+    //m_hViewRuler->setMouseTrack(true);
+    m_vViewRuler = new GraphicsViewRuler(GraphicsViewRuler::Vertical);
+    //m_vViewRuler->setMouseTrack(true);
+    QWidget *cornerWidget = new QWidget;
+    cornerWidget->setStyleSheet("background-color:#073642;");
+    //cornerWidget->setBackgroundRole(QPalette::Window);
+    cornerWidget->setFixedSize(GraphicsViewRuler::BREADTH, GraphicsViewRuler::BREADTH);
+    setViewportMargins(GraphicsViewRuler::BREADTH, GraphicsViewRuler::BREADTH, 0, 0);
+    layout->addWidget(cornerWidget, 0, 0);
+    layout->addWidget(m_hViewRuler, 0, 1);
+    layout->addWidget(m_vViewRuler, 1, 0);
+    layout->addWidget(viewport(),   1, 1);
+    setLayout(layout);
 }
 
 SchView::~SchView()
@@ -129,6 +149,23 @@ void SchView::scaleView(qreal scaleFactor)
 
     scale(scaleFactor, scaleFactor);
     updateMousePos();
+
+    QPointF topLeft = mapToScene(QPoint(0, 0));
+    QPointF bottomRight = mapToScene(QPoint(viewport()->width(),
+                                            viewport()->height()));
+    m_hViewRuler->setRange(topLeft.x(), bottomRight.x());
+    m_vViewRuler->setRange(topLeft.y(), bottomRight.y());
+}
+
+void SchView::translateView(qreal dx, qreal dy)
+{
+    translate(dx, dy);
+    QPointF topLeft = mapToScene(QPoint(0, 0));
+    QPointF bottomRight = mapToScene(QPoint(viewport()->width(),
+                                            viewport()->height()));
+    m_hViewRuler->setRange(topLeft.x(), bottomRight.x());
+    m_vViewRuler->setRange(topLeft.y(), bottomRight.y());
+    updateMousePos();
 }
 
 void SchView::setPaletteMode(Palette::Mode mode)
@@ -170,7 +207,8 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
     if (p.isNull())
         return;
 
-    // Cursor
+    // Cursor: TODO allow to choose cursor
+#if 0
     qreal length = 50.0/transform().m11();
     QPointF top(p.x(),
                 p.y() - length);
@@ -183,12 +221,25 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
     painter->setPen(QPen(Qt::black, 0, Qt::SolidLine));
     painter->drawLine(top, bottom);
     painter->drawLine(left, right);
-
-    if (m_snapping) {
-        painter->setPen(QPen(Qt::red, 0, Qt::SolidLine));
-        painter->setBrush(Qt::red);
-        painter->drawPath(mapToScene(m_snapManager->decoration()));
-    }
+#else
+    QRectF r = mapToScene(geometry()).boundingRect();
+    QPointF top(p.x(),
+                r.top());
+    QPointF bottom(p.x(),
+                   r.bottom());
+    QPointF right(r.right(),
+                  p.y());
+    QPointF left(r.left(),
+                 p.y());
+    painter->setPen(QPen(QBrush(QColor("#586e75")), 0, Qt::DashLine));
+    painter->drawLine(top, bottom);
+    painter->drawLine(left, right);
+#endif
+//    if (m_snapping) {
+//        painter->setPen(QPen(QBrush(QColor("#93a1a1")), 0, Qt::SolidLine));
+//        painter->setBrush(Qt::red);
+//        painter->drawPath(mapToScene(m_snapManager->decoration()));
+//    }
 }
 
 // TODO: Zoom here or tool
@@ -199,13 +250,24 @@ void SchView::wheelEvent(QWheelEvent *event)
     return;
 #endif
     if (!event->modifiers().testFlag(Qt::ControlModifier)) {
-        QGraphicsView::wheelEvent(event);
+        // While doing pan view (mid-button), disable wheel event
+        // This improve usability for sensitive "vertical wheel" mouses
+        // Where you can inadvertly push the wheel sideway while holding
+        // the wheel down and the wheel is as well the "mid button"
+        if (!event->buttons().testFlag(Qt::MidButton)) {
+            QGraphicsView::wheelEvent(event);
+            QPointF topLeft = mapToScene(QPoint(0, 0));
+            QPointF bottomRight = mapToScene(QPoint(viewport()->width(),
+                                                    viewport()->height()));
+            m_hViewRuler->setRange(topLeft.x(), bottomRight.x());
+            m_vViewRuler->setRange(topLeft.y(), bottomRight.y());
+        }
         return;
     }
     QPointF pos = mapToScene(event->pos());
     scaleView(pow((double)2, -event->delta() / 240.0));
     pos -= mapToScene(event->pos());
-    translate(-pos.x(), -pos.y());
+    translateView(-pos.x(), -pos.y());
 
     event->accept();
 }
@@ -217,12 +279,19 @@ void SchView::mousePressEvent(QMouseEvent *event)
     return;
 #endif
 
+    if (event->button() == Qt::MidButton) {
+        m_panning = true;
+        m_lastGlobalPos = event->globalPos();
+        event->accept();
+        return;
+    }
+
     updateMousePos();
 
     if (event->button() == Qt::RightButton) {
         QGraphicsView::mousePressEvent(event);
     }
-    else if (event->button() == Qt::LeftButton && m_tool) {
+    else if (m_tool) {
         QMouseEvent ev = snapMouseEvent(event);
         m_tool->mousePressEvent(&ev);
     }
@@ -238,6 +307,23 @@ void SchView::mouseMoveEvent(QMouseEvent *event)
     QGraphicsView::mouseMoveEvent(event);
     return;
 #endif
+
+    if (event->buttons().testFlag(Qt::MidButton)) {
+        QPoint globalPos = event->globalPos();
+        if ((globalPos - m_lastGlobalPos).manhattanLength() > 2) {
+            QPointF p1 = mapToScene(mapFromGlobal(globalPos));
+            QPointF p2 = mapToScene(mapFromGlobal(m_lastGlobalPos));
+            QPointF delta = (p1 - p2);
+            translateView(delta.x(), delta.y());
+            m_lastGlobalPos = globalPos;
+            QPointF pos = mapToScene(mapFromGlobal(event->globalPos()));
+            m_hViewRuler->setCursorPosition(pos);
+            m_vViewRuler->setCursorPosition(pos);
+        }
+        event->accept();
+        return;
+    }
+
     updateMousePos();
 
     if (m_tool != nullptr) {
@@ -246,8 +332,9 @@ void SchView::mouseMoveEvent(QMouseEvent *event)
             m_tool->mouseMoveEvent(&ev);
         }
     }
-    else
-        event->ignore();
+    QPointF pos = mapToScene(mapFromGlobal(event->globalPos()));
+    m_hViewRuler->setCursorPosition(pos);
+    m_vViewRuler->setCursorPosition(pos);
 }
 
 void SchView::mouseReleaseEvent(QMouseEvent *event)
@@ -256,6 +343,11 @@ void SchView::mouseReleaseEvent(QMouseEvent *event)
     QGraphicsView::mouseReleaseEvent(event);
     return;
 #endif
+    if (event->button() == Qt::MidButton) {
+        m_panning = false;
+        event->accept();
+        return;
+    }
 
     updateMousePos();
 
@@ -324,6 +416,8 @@ void SchView::updateMousePos()
             m_mousePositionChanged = false;
         }
     }
+    qDebug() << "Mouse position:" << mapToScene(viewPos);
+    qDebug() << "Cursor position:" << mapToScene(m_mousePosition);
 }
 
 QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)
@@ -338,8 +432,8 @@ QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)
 void SchView::applyPalette()
 {
     scene()->setBackgroundBrush(QBrush(m_palette->background1()));
-    scene()->grid()->setCoarseLineColor(m_palette->content6());
-    scene()->grid()->setFineLineColor(m_palette->content3());
+    scene()->grid()->setCoarseLineColor(QColor("#839496"));
+    scene()->grid()->setFineLineColor(QColor("#586e75"));
     update();
 }
 
@@ -351,4 +445,20 @@ QSizeF SchView::pixelSize() const
 SnapManager *SchView::snapManager()
 {
     return m_snapManager;
+}
+
+
+void SchView::resizeEvent(QResizeEvent *event)
+{
+    updateMousePos();
+
+    QPointF topLeft = mapToScene(QPoint(0, 0));
+    QPointF bottomRight = mapToScene(QPoint(viewport()->width(),
+                                            viewport()->height()));
+    m_hViewRuler->setRange(topLeft.x(), bottomRight.x());
+    m_vViewRuler->setRange(topLeft.y(), bottomRight.y());
+    QPointF pos = mapToScene(mapFromGlobal(QCursor::pos()));
+    m_hViewRuler->setCursorPosition(pos);
+
+    QGraphicsView::resizeEvent(event);
 }

@@ -9,6 +9,7 @@ class AbstractGraphicsInteractiveTool;
 class SchItem;
 class AbstractGraphicsHandle;
 class SnapManager;
+class GraphicsViewRuler;
 
 class SchView : public QGraphicsView
 {
@@ -32,6 +33,7 @@ public:
     QPoint mousePosition() const;
 
     void scaleView(qreal scaleFactor);
+    void translateView(qreal dx, qreal dy);
 
     void setPaletteMode(Palette::Mode mode);
     Palette::Mode paletteMode() const;
@@ -54,8 +56,11 @@ protected:
 
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
+    void resizeEvent(QResizeEvent *);
 
 private:
+    GraphicsViewRuler *m_hViewRuler;
+    GraphicsViewRuler *m_vViewRuler;
     AbstractGraphicsInteractiveTool *m_tool;
     SchItem *m_objectUnderMouse;
     const AbstractGraphicsHandle *m_handleUnderMouse;
@@ -68,6 +73,10 @@ private:
     void applyPalette();
     SnapManager *m_snapManager;
     bool m_snapping;
+
+    bool m_panning = false;
+    QPoint m_lastGlobalPos;
+
 };
 
 #endif // GRAPHICSVIEW_H
