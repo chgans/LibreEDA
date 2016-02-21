@@ -47,6 +47,32 @@ GraphicsViewRuler::Alignment GraphicsViewRuler::rulerType() const
     return m_alignment;
 }
 
+void GraphicsViewRuler::setBackgroundColor(const QColor &color)
+{
+    if (m_backgroundColor == color)
+        return;
+    m_backgroundColor = color;
+    update();
+}
+
+QColor GraphicsViewRuler::backgroundColor() const
+{
+    return m_backgroundColor;
+}
+
+void GraphicsViewRuler::setForegroundColor(const QColor &color)
+{
+    if (m_foregroundColor == color)
+        return;
+    m_foregroundColor = color;
+    update();
+}
+
+QColor GraphicsViewRuler::foregroundColor() const
+{
+    return m_foregroundColor;
+}
+
 static const int FONT_SIZE = 10;
 static const int MAJOR_TICK_HEIGHT = 6;
 static const int MINOR_TICK_HEIGHT = 3;
@@ -58,9 +84,9 @@ void GraphicsViewRuler::paintEvent(QPaintEvent *event)
 
     QPainter painter(this);
     painter.setClipRect(event->rect());
-    painter.fillRect(event->rect(), QColor("#073642"));
-    QPen pen(QColor("#586e75"), 0);
-    QBrush brush(QColor("#586e75"));
+    painter.fillRect(event->rect(), m_backgroundColor);
+    QPen pen(m_foregroundColor, 0);
+    QBrush brush(m_foregroundColor);
     painter.setPen(pen);
     painter.setBrush(brush);
 

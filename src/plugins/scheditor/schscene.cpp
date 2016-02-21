@@ -37,6 +37,7 @@ void SchScene::setGrid(GraphicsGrid *grid)
     m_grid = grid;
 }
 
+// TBD: remove this, SchView take care of drawing sceneRect() background
 void SchScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);

@@ -20,14 +20,11 @@ public:
     void setMode(Mode mode);
     Mode mode() const;
 
-    QColor background1() const;
-    QColor background2() const;
-    QColor content1() const;
-    QColor content2() const;
-    QColor content3() const;
-    QColor content4() const;
-    QColor content5() const;
-    QColor content6() const;
+    QColor background() const;
+    QColor backgroundHighlight() const;
+    QColor primaryContent() const;
+    QColor secondaryContent() const;
+    QColor emphasisedContent() const;
 
     QColor yellow() const;
     QColor orange() const;

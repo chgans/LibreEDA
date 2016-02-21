@@ -21,11 +21,20 @@ public:
     QSize minimumSizeHint() const;
     GraphicsViewRuler::Alignment rulerType() const;
 
+    void setBackgroundColor(const QColor &color);
+    QColor backgroundColor() const;
+
+    void setForegroundColor(const QColor &color);
+    QColor foregroundColor() const;
+
+
 protected:
     void paintEvent(QPaintEvent* event);
 
 private:
     Alignment m_alignment;
+    QColor m_backgroundColor;
+    QColor m_foregroundColor;
     qreal m_firstPos;
     qreal m_lastPos;
     qreal m_currentPos;

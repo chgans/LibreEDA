@@ -19,14 +19,14 @@ $cyan:      #2aa198;
 $green:     #859900;
 */
 
-static const QColor BASED0("#657b83");
-static const QColor BASED1("#586e75");
-static const QColor BASED2("#073642");
-static const QColor BASED3("#002b36");
-static const QColor BASEL0("#839496");
-static const QColor BASEL1("#93a1a1");
-static const QColor BASEL2("#eee8d5");
-static const QColor BASEL3("#fdf6e3");
+static const QColor BASE00("#657b83");
+static const QColor BASE01("#586e75");
+static const QColor BASE02("#073642");
+static const QColor BASE03("#002b36");
+static const QColor BASE0("#839496");
+static const QColor BASE1("#93a1a1");
+static const QColor BASE2("#eee8d5");
+static const QColor BASE3("#fdf6e3");
 static const QColor YELLOW("#b58900");
 static const QColor ORANGE("#cb4b16");
 static const QColor RED("#dc322f");
@@ -59,68 +59,44 @@ Palette::Mode Palette::mode() const
     return m_mode;
 }
 
-QColor Palette::background1() const
+QColor Palette::background() const
 {
     if (m_mode == Dark)
-        return BASED3;
+        return BASE03;
     else
-        return BASEL3;
+        return BASE3;
 }
 
-QColor Palette::background2() const
+QColor Palette::backgroundHighlight() const
 {
     if (m_mode == Dark)
-        return BASED2;
+        return BASE02;
     else
-        return BASEL2;
+        return BASE2;
 }
 
-QColor Palette::content1() const
+QColor Palette::primaryContent() const
 {
     if (m_mode == Dark)
-        return BASED1;
+        return BASE0;
     else
-        return BASEL1;
+        return BASE00;
 }
 
-QColor Palette::content2() const
+QColor Palette::secondaryContent() const
 {
     if (m_mode == Dark)
-        return BASED0;
+        return BASE01;
     else
-        return BASEL0;
+        return BASE1;
 }
 
-QColor Palette::content3() const
+QColor Palette::emphasisedContent() const
 {
     if (m_mode == Dark)
-        return BASEL0;
+        return BASE1;
     else
-        return BASED0;
-}
-
-QColor Palette::content4() const
-{
-    if (m_mode == Dark)
-        return BASEL1;
-    else
-        return BASED1;
-}
-
-QColor Palette::content5() const
-{
-    if (m_mode == Dark)
-        return BASEL2;
-    else
-        return BASED2;
-}
-
-QColor Palette::content6() const
-{
-    if (m_mode == Dark)
-        return BASEL3;
-    else
-        return BASED3;
+        return BASE01;
 }
 
 QColor Palette::yellow() const

@@ -43,7 +43,7 @@ SchView::SchView(QWidget *parent):
     m_palette(new Palette(this)),
     m_snapManager(new SnapManager(this)),
     m_snapping(false)
-{    
+{
     //setViewport(new QGLWidget);
 
     // The widget emits the QWidget::customContextMenuRequested() signal
@@ -138,6 +138,7 @@ QPoint SchView::mousePosition() const
     return m_mousePosition;
 }
 
+
 void SchView::scaleView(qreal scaleFactor)
 {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
@@ -178,8 +179,8 @@ const Palette *SchView::palette() const
 
 void SchView::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    painter->fillRect(rect, QBrush(m_palette->background2()));
-    QGraphicsView::drawBackground(painter, rect);
+    painter->fillRect(rect, QBrush(m_palette->backgroundHighlight()));
+    painter->fillRect(rect.intersected(sceneRect()), QBrush(m_palette->background()));
 
     // Grid
     if (scene() && scene()->grid()) {
@@ -221,7 +222,7 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
                   p.y());
     QPointF left(r.left(),
                  p.y());
-    painter->setPen(QPen(QBrush(QColor("#586e75")), 0, Qt::DashLine));
+    painter->setPen(QPen(QBrush(m_palette->emphasisedContent()), 0, Qt::DashLine));
     painter->drawLine(top, bottom);
     painter->drawLine(left, right);
 #endif
@@ -229,7 +230,7 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
         // TODO: maybe let the snapmanager paint the decoration:
         // m_snapManager->renderDecoration(painter, pos);
         painter->setPen(Qt::NoPen);
-        painter->setBrush(QBrush(QColor("#93a1a1")));
+        painter->setBrush(QBrush(m_palette->emphasisedContent()));
         painter->setRenderHint(QPainter::TextAntialiasing); // Doesn't do anything!
         painter->drawPath(mapToScene(m_snapManager->decoration()));
     }
@@ -433,9 +434,14 @@ QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)
 
 void SchView::applyPalette()
 {
-    scene()->setBackgroundBrush(QBrush(m_palette->background1()));
-    scene()->grid()->setCoarseLineColor(QColor("#839496"));
-    scene()->grid()->setFineLineColor(QColor("#586e75"));
+    m_cornerWidget->setStyleSheet(QString("background-color:%1;").arg(m_palette->backgroundHighlight().name()));
+    m_horizontalRuler->setBackgroundColor(m_palette->backgroundHighlight());
+    m_verticalRuler->setBackgroundColor(m_palette->backgroundHighlight());
+    m_horizontalRuler->setForegroundColor(m_palette->primaryContent());
+    m_verticalRuler->setForegroundColor(m_palette->primaryContent());
+    scene()->setBackgroundBrush(QBrush(m_palette->background()));
+    scene()->grid()->setCoarseLineColor(m_palette->secondaryContent());
+    scene()->grid()->setFineLineColor(m_palette->secondaryContent());
     update();
 }
 
