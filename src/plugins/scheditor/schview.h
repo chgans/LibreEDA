@@ -59,8 +59,9 @@ protected:
     void resizeEvent(QResizeEvent *);
 
 private:
-    GraphicsViewRuler *m_hViewRuler;
-    GraphicsViewRuler *m_vViewRuler;
+    QWidget *m_cornerWidget;
+    GraphicsViewRuler *m_horizontalRuler;
+    GraphicsViewRuler *m_verticalRuler;
     AbstractGraphicsInteractiveTool *m_tool;
     SchItem *m_objectUnderMouse;
     const AbstractGraphicsHandle *m_handleUnderMouse;
@@ -77,6 +78,8 @@ private:
     bool m_panning = false;
     QPoint m_lastGlobalPos;
 
+    void updateRulerCursorPositions();
+    void updateRulerCursorRanges();
 };
 
 #endif // GRAPHICSVIEW_H

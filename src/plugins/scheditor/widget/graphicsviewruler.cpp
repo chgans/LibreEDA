@@ -21,7 +21,7 @@ GraphicsViewRuler::~GraphicsViewRuler()
 
 }
 
-void GraphicsViewRuler::setRange(qreal first, qreal last)
+void GraphicsViewRuler::setCursorRange(qreal first, qreal last)
 {
     m_firstPos = first;
     m_lastPos = last;

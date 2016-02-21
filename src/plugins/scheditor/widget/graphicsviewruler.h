@@ -15,7 +15,7 @@ public:
     explicit GraphicsViewRuler(GraphicsViewRuler::Alignment alignment, QWidget *parent = 0);
     ~GraphicsViewRuler();
 
-    void setRange(qreal first, qreal last);
+    void setCursorRange(qreal first, qreal last);
     void setCursorPosition(const QPointF &pos);
 
     QSize minimumSizeHint() const;
