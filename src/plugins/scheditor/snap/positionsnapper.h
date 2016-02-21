@@ -146,6 +146,7 @@ private:
     QList<QAction *> m_actions;
     QList<SnapStrategy *> m_strategies;
     SnapStrategy *m_winnerStrategy;
+    SnapStrategy *m_defaultStrategy;
 };
 
 #endif // POSITIONSNAPPER_H

@@ -123,7 +123,7 @@ QPainterPath SnapStrategy::decoration() const
 {
     QPainterPath decoration;
     decoration.addEllipse(m_snappedPosition, 2, 2);
-    decoration.addText(0, 25, QFont(), name());
+    decoration.addText(m_snappedPosition+QPoint(10, 25), QFont(), name());
     return decoration;
 }
 
@@ -394,11 +394,15 @@ bool SnapToItemCenterStrategy::snap(QPoint mousePos, qreal maxDistance)
  * Snap Manager
  *******************************************************************************/
 
+// TODO: Add auto strategy:
+//Snaps to all end points, intersection points, middle points,
+//reference points and grid points in this order of priority.
+
 SnapManager::SnapManager(SchView *view):
     QObject(view)
 {
-    SnapStrategy *defaultStrategy = new NoSnapStrategy(view);
-    m_strategies << defaultStrategy
+    m_defaultStrategy = new NoSnapStrategy(view);
+    m_strategies << m_defaultStrategy
                  << new SnapToGridStrategy(view)
                  << new SnapToItemHotSpotsStrategy(view)
                  << new SnapToItemEndPointStrategy(view)
@@ -413,8 +417,8 @@ SnapManager::SnapManager(SchView *view):
             action->setActionGroup(actionGroup);
         }
     }
-    defaultStrategy->action()->setChecked(true);
-    m_winnerStrategy = defaultStrategy;
+    m_defaultStrategy->action()->setChecked(true);
+    m_winnerStrategy = m_defaultStrategy;
 }
 
 SnapManager::~SnapManager()
@@ -445,7 +449,10 @@ QList<QAction *> SnapManager::actions(const QString &group) const
 QPainterPath SnapManager::decoration() const
 {
     Q_ASSERT(m_winnerStrategy != nullptr);
-    return m_winnerStrategy->decoration();
+    if (m_winnerStrategy != m_defaultStrategy)
+        return m_winnerStrategy->decoration();
+    else
+        return QPainterPath(); // Or make NoSnapStrategy returns an empty decoration?
 }
 
 bool SnapManager::snap(QPoint mousePos, qreal maxDistance)

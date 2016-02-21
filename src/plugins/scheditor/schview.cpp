@@ -235,11 +235,14 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
     painter->drawLine(top, bottom);
     painter->drawLine(left, right);
 #endif
-//    if (m_snapping) {
-//        painter->setPen(QPen(QBrush(QColor("#93a1a1")), 0, Qt::SolidLine));
-//        painter->setBrush(Qt::red);
-//        painter->drawPath(mapToScene(m_snapManager->decoration()));
-//    }
+    if (m_snapping) {
+        // TODO: maybe let the snapmanager paint the decoration:
+        // m_snapManager->renderDecoration(painter, pos);
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(QBrush(QColor("#93a1a1")));
+        painter->setRenderHint(QPainter::TextAntialiasing); // Doesn't do anything!
+        painter->drawPath(mapToScene(m_snapManager->decoration()));
+    }
 }
 
 // TODO: Zoom here or tool
