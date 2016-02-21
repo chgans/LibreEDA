@@ -32,6 +32,7 @@
         <file>snap/Snap_Parallel.svg</file>
         <file>snap/Snap_Perpendicular.svg</file>
         <file>snap/Snap_WorkingPlane.svg</file>
+        <file>snap/Snap_Free.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>icons/task_wipe.svg</file>
