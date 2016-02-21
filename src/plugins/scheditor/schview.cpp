@@ -47,8 +47,8 @@ SchView::SchView(QWidget *parent):
 
     // The widget emits the QWidget::customContextMenuRequested() signal
     setContextMenuPolicy(Qt::CustomContextMenu);
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setDragMode(QGraphicsView::NoDrag);
     setMouseTracking(true);
 
