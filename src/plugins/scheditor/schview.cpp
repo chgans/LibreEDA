@@ -13,55 +13,29 @@
 #include <QGuiApplication>
 #include <QGridLayout>
 
-#include <QDebug>
-
-//#define NO_EVENT
-
-// Tools:
-//  Select (default)
-//  ZoomBox
-//  Drag
-//  Insert
-//  Edit
-// Use graphical effect for item selection and move ?
-// createPhantom() and createClone() to help the model command stuff
-
-/* TODO:
- *  - context menu:
- *   - tool options
- *   - cancel
- *   - properties
- */
-
 SchView::SchView(QWidget *parent):
     QGraphicsView(parent),
     m_tool(nullptr),
     m_objectUnderMouse(nullptr),
     m_handleUnderMouse(nullptr),
     m_mousePositionChanged(true),
+    m_snapManager(new SnapManager(this)),
+    m_snapping(false),
     m_snapToGridEnabled(true),
     m_palette(new Palette(this)),
-    m_snapManager(new SnapManager(this)),
-    m_snapping(false)
+    m_panning(false),
+    m_openGLEnabled(false)
 {
-    //setViewport(new QGLWidget);
+    if (m_openGLEnabled)
+        setViewport(new QGLWidget);
 
-    // The widget emits the QWidget::customContextMenuRequested() signal
     setContextMenuPolicy(Qt::CustomContextMenu);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setDragMode(QGraphicsView::NoDrag);
     setMouseTracking(true);
-
-    // AnchorUnderMouse doesn't work for some reason
-    // Use NoAnchor and fix it up in scaleView()
     setTransformationAnchor(NoAnchor);
     setResizeAnchor(NoAnchor);
-#ifdef NO_EVENT
-    setDragMode(RubberBandDrag);
-    setTransformationAnchor(AnchorUnderMouse);
-    setResizeAnchor(AnchorUnderMouse);
-#endif
 
     QGridLayout *layout = new QGridLayout;
     layout->setSpacing(0);
@@ -182,7 +156,6 @@ void SchView::drawBackground(QPainter *painter, const QRectF &rect)
     painter->fillRect(rect, QBrush(m_palette->backgroundHighlight()));
     painter->fillRect(rect.intersected(sceneRect()), QBrush(m_palette->background()));
 
-    // Grid
     if (scene() && scene()->grid()) {
         scene()->grid()->draw(pixelSize(), painter, rect);
     }
@@ -191,28 +164,12 @@ void SchView::drawBackground(QPainter *painter, const QRectF &rect)
 void SchView::drawForeground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
-    //QGraphicsView::drawForeground(painter, rect);
 
     QPointF p = mapToScene(mousePosition());
 
     if (p.isNull())
         return;
 
-    // Cursor: TODO allow to choose cursor
-#if 0
-    qreal length = 50.0/transform().m11();
-    QPointF top(p.x(),
-                p.y() - length);
-    QPointF bottom(p.x(),
-                   p.y() + length);
-    QPointF right(p.x() + length,
-                  p.y());
-    QPointF left(p.x() - length,
-                 p.y());
-    painter->setPen(QPen(Qt::black, 0, Qt::SolidLine));
-    painter->drawLine(top, bottom);
-    painter->drawLine(left, right);
-#else
     QRectF r = mapToScene(geometry()).boundingRect();
     QPointF top(p.x(),
                 r.top());
@@ -225,7 +182,7 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
     painter->setPen(QPen(QBrush(m_palette->emphasisedContent()), 0, Qt::DashLine));
     painter->drawLine(top, bottom);
     painter->drawLine(left, right);
-#endif
+
     if (m_snapping) {
         // TODO: maybe let the snapmanager paint the decoration:
         // m_snapManager->renderDecoration(painter, pos);
@@ -236,13 +193,8 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
     }
 }
 
-// TODO: Zoom here or tool
 void SchView::wheelEvent(QWheelEvent *event)
 {
-#ifdef NO_EVENT
-    QGraphicsView::wheelEvent(event);
-    return;
-#endif
     if (!event->modifiers().testFlag(Qt::ControlModifier)) {
         // While doing pan view (mid-button), disable wheel event
         // This improve usability for sensitive "vertical wheel" mouses
@@ -265,11 +217,6 @@ void SchView::wheelEvent(QWheelEvent *event)
 
 void SchView::mousePressEvent(QMouseEvent *event)
 {
-#ifdef NO_EVENT
-    QGraphicsView::mousePressEvent(event);
-    return;
-#endif
-
     if (event->button() == Qt::MidButton) {
         m_panning = true;
         m_lastGlobalPos = event->globalPos();
@@ -283,11 +230,109 @@ void SchView::mousePressEvent(QMouseEvent *event)
         QGraphicsView::mousePressEvent(event);
     }
     else if (m_tool) {
-        QMouseEvent ev = snapMouseEvent(event);
+        QMouseEvent ev = createSnappedMouseEvent(event);
         m_tool->mousePressEvent(&ev);
     }
     else {
         event->ignore();
+    }
+}
+
+void SchView::mouseMoveEvent(QMouseEvent *event)
+{
+    if (event->buttons().testFlag(Qt::MidButton)) {
+        QPoint globalPos = event->globalPos();
+        if ((globalPos - m_lastGlobalPos).manhattanLength() > 2) {
+            QPointF p1 = mapToScene(mapFromGlobal(globalPos));
+            QPointF p2 = mapToScene(mapFromGlobal(m_lastGlobalPos));
+            QPointF delta = (p1 - p2);
+            translateView(delta.x(), delta.y());
+            m_lastGlobalPos = globalPos;
+            updateRulerCursorPositions();
+        }
+        event->accept();
+        return;
+    }
+
+    updateMousePos();
+
+    if (m_tool != nullptr) {
+        if (m_mousePositionChanged) {
+            QMouseEvent ev = createSnappedMouseEvent(event);
+            m_tool->mouseMoveEvent(&ev);
+        }
+    }
+    updateRulerCursorPositions();
+}
+
+void SchView::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::MidButton) {
+        m_panning = false;
+        event->accept();
+        return;
+    }
+
+    updateMousePos();
+
+    if (m_tool != nullptr) {
+        QMouseEvent ev = createSnappedMouseEvent(event);
+        m_tool->mouseReleaseEvent(&ev);
+    }
+    else
+        event->ignore();
+}
+
+void SchView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (m_tool != nullptr)
+        m_tool->mouseDoubleClickEvent(event);
+    else
+        event->ignore();
+}
+
+void SchView::keyPressEvent(QKeyEvent *event)
+{
+    if (m_tool != nullptr)
+        m_tool->keyPressEvent(event);
+    else
+        QGraphicsView::keyPressEvent(event);
+}
+
+void SchView::keyReleaseEvent(QKeyEvent *event)
+{
+    if (m_tool != nullptr)
+        m_tool->keyReleaseEvent(event);
+    else
+        QGraphicsView::keyReleaseEvent(event);
+}
+
+void SchView::resizeEvent(QResizeEvent *event)
+{
+    updateMousePos();
+    updateRulerCursorRanges();
+    updateRulerCursorPositions();
+
+    QGraphicsView::resizeEvent(event);
+}
+
+void SchView::updateMousePos()
+{
+    QPoint viewPos = viewport()->mapFromGlobal(QCursor::pos());
+    m_snapping = m_snapManager->snap(viewPos, 50);
+
+    if (!m_snapping) {
+        m_mousePositionChanged = false;
+    }
+    else {
+        if (m_mousePosition != m_snapManager->snappedPosition()) {
+            m_mousePosition = m_snapManager->snappedPosition();
+            m_mousePositionChanged = true;
+            scene()->update(); // Force redraw of foreground
+        }
+        else {
+            m_mousePositionChanged = false;
+        }
     }
 }
 
@@ -307,123 +352,7 @@ void SchView::updateRulerCursorPositions()
     m_verticalRuler->setCursorPosition(pos);
 }
 
-// FIXME: Don't snap cursor for handles
-void SchView::mouseMoveEvent(QMouseEvent *event)
-{
-#ifdef NO_EVENT
-    QGraphicsView::mouseMoveEvent(event);
-    return;
-#endif
-
-    if (event->buttons().testFlag(Qt::MidButton)) {
-        QPoint globalPos = event->globalPos();
-        if ((globalPos - m_lastGlobalPos).manhattanLength() > 2) {
-            QPointF p1 = mapToScene(mapFromGlobal(globalPos));
-            QPointF p2 = mapToScene(mapFromGlobal(m_lastGlobalPos));
-            QPointF delta = (p1 - p2);
-            translateView(delta.x(), delta.y());
-            m_lastGlobalPos = globalPos;
-            updateRulerCursorPositions();
-        }
-        event->accept();
-        return;
-    }
-
-    updateMousePos();
-
-    if (m_tool != nullptr) {
-        if (m_mousePositionChanged) {
-            QMouseEvent ev = snapMouseEvent(event);
-            m_tool->mouseMoveEvent(&ev);
-        }
-    }
-    updateRulerCursorPositions();
-}
-
-void SchView::mouseReleaseEvent(QMouseEvent *event)
-{
-#ifdef NO_EVENT
-    QGraphicsView::mouseReleaseEvent(event);
-    return;
-#endif
-    if (event->button() == Qt::MidButton) {
-        m_panning = false;
-        event->accept();
-        return;
-    }
-
-    updateMousePos();
-
-    if (m_tool != nullptr) {
-        QMouseEvent ev = snapMouseEvent(event);
-        m_tool->mouseReleaseEvent(&ev);
-    }
-    else
-        event->ignore();
-}
-
-void SchView::mouseDoubleClickEvent(QMouseEvent *event)
-{
-#ifdef NO_EVENT
-    QGraphicsView::mouseDoubleClickEvent(event);
-    return;
-#endif
-    if (m_tool != nullptr)
-        m_tool->mouseDoubleClickEvent(event);
-    else
-        event->ignore();
-}
-
-void SchView::keyPressEvent(QKeyEvent *event)
-{
-#ifdef NO_EVENT
-    QGraphicsView::keyPressEvent(event);
-    return;
-#endif
-
-    if (m_tool != nullptr)
-        m_tool->keyPressEvent(event);
-    else
-        QGraphicsView::keyPressEvent(event);
-}
-
-void SchView::keyReleaseEvent(QKeyEvent *event)
-{
-#ifdef NO_EVENT
-    QGraphicsView::keyReleaseEvent(event);
-    return;
-#endif
-
-    if (m_tool != nullptr)
-        m_tool->keyReleaseEvent(event);
-    else
-        QGraphicsView::keyReleaseEvent(event);
-}
-
-void SchView::updateMousePos()
-{
-    QPoint viewPos = viewport()->mapFromGlobal(QCursor::pos());
-    m_snapping = m_snapManager->snap(viewPos, 50);
-
-    if (!m_snapping) {
-        m_mousePositionChanged = false;
-    }
-    else {
-        // TODO: highlight snapped items
-        if (m_mousePosition != m_snapManager->snappedPosition()) {
-            m_mousePosition = m_snapManager->snappedPosition();
-            m_mousePositionChanged = true;
-            scene()->update(); // Force redraw of foreground
-        }
-        else {
-            m_mousePositionChanged = false;
-        }
-    }
-    qDebug() << "Mouse position:" << mapToScene(viewPos);
-    qDebug() << "Cursor position:" << mapToScene(m_mousePosition);
-}
-
-QMouseEvent SchView::snapMouseEvent(QMouseEvent *event)
+QMouseEvent SchView::createSnappedMouseEvent(QMouseEvent *event)
 {
     return QMouseEvent(event->type(),
                        m_mousePosition,
@@ -455,12 +384,3 @@ SnapManager *SchView::snapManager()
     return m_snapManager;
 }
 
-
-void SchView::resizeEvent(QResizeEvent *event)
-{
-    updateMousePos();
-    updateRulerCursorRanges();
-    updateRulerCursorPositions();
-
-    QGraphicsView::resizeEvent(event);
-}

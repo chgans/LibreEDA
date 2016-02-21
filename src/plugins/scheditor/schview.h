@@ -63,24 +63,28 @@ private:
     QWidget *m_cornerWidget;
     GraphicsViewRuler *m_horizontalRuler;
     GraphicsViewRuler *m_verticalRuler;
+    void updateRulerCursorPositions();
+    void updateRulerCursorRanges();
+
     AbstractGraphicsInteractiveTool *m_tool;
     SchItem *m_objectUnderMouse;
     const AbstractGraphicsHandle *m_handleUnderMouse;
     QPoint m_mousePosition;
     bool m_mousePositionChanged;
     void updateMousePos();
-    QMouseEvent snapMouseEvent(QMouseEvent *event);
-    bool m_snapToGridEnabled;
-    Palette *m_palette;
-    void applyPalette();
-    SnapManager *m_snapManager;
-    bool m_snapping;
-
-    bool m_panning = false;
     QPoint m_lastGlobalPos;
 
-    void updateRulerCursorPositions();
-    void updateRulerCursorRanges();
+    SnapManager *m_snapManager;
+    bool m_snapping;
+    bool m_snapToGridEnabled;
+    QMouseEvent createSnappedMouseEvent(QMouseEvent *event);
+
+    Palette *m_palette;
+    void applyPalette();
+
+    bool m_panning;
+
+    bool m_openGLEnabled;
 };
 
 #endif // GRAPHICSVIEW_H
