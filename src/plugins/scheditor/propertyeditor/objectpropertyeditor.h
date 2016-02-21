@@ -3,6 +3,8 @@
 
 #include "qtpropertybrowser/qttreepropertybrowser.h"
 
+#include <QMap>
+
 class QtVariantPropertyManager;
 class QtVariantEditorFactory;
 class PenPropertyManager;

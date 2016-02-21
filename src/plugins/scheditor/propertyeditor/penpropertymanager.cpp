@@ -4,6 +4,8 @@
 #include <QPainter>
 #include <QIcon>
 
+#include <QDebug>
+
 QIcon penWidthIcon(qreal width)
 {
     QPixmap pixmap(16,16);
@@ -220,7 +222,7 @@ void PenPropertyManager::slotEnumChanged(QtProperty *property, int val)
     else if (m_widthToPenProperty.contains(property))
         penProperty = m_widthToPenProperty[property];
     else {
-        qDebug() << "unknown property" << property;
+        qDebug() << "unknown property" << property->propertyName();
         return;
     }
 
@@ -236,7 +238,7 @@ void PenPropertyManager::slotColorChanged(QtProperty *property, const QColor &va
     if (m_colorToPenProperty.contains(property))
         penProperty = m_colorToPenProperty[property];
     else {
-        qDebug() << "unknown property" << property;
+        qDebug() << "unknown property" << property->propertyName();
         return;
     }
 
