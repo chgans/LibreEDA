@@ -91,6 +91,8 @@ private:
     void startPanView(QMouseEvent *event);
     void updatePanView(QMouseEvent *event);
     void endPanView();
+    void drawCursor(QPainter *painter, const QPointF &pos);
+    void drawSnapDecoration(QPainter *painter);
 };
 
 #endif // GRAPHICSVIEW_H

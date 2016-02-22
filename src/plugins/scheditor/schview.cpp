@@ -170,26 +170,10 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
     if (p.isNull())
         return;
 
-    QRectF r = mapToScene(geometry()).boundingRect();
-    QPointF top(p.x(),
-                r.top());
-    QPointF bottom(p.x(),
-                   r.bottom());
-    QPointF right(r.right(),
-                  p.y());
-    QPointF left(r.left(),
-                 p.y());
-    painter->setPen(QPen(QBrush(m_palette->emphasisedContent()), 0, Qt::DashLine));
-    painter->drawLine(top, bottom);
-    painter->drawLine(left, right);
+    drawCursor(painter, p);
 
     if (m_snapping) {
-        // TODO: maybe let the snapmanager paint the decoration:
-        // m_snapManager->renderDecoration(painter, pos);
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(QBrush(m_palette->emphasisedContent()));
-        painter->setRenderHint(QPainter::TextAntialiasing); // Doesn't do anything!
-        painter->drawPath(mapToScene(m_snapManager->decoration()));
+        drawSnapDecoration(painter);
     }
 }
 
@@ -342,6 +326,32 @@ void SchView::applyPalette()
     scene()->grid()->setCoarseLineColor(m_palette->secondaryContent());
     scene()->grid()->setFineLineColor(m_palette->secondaryContent());
     update();
+}
+
+void SchView::drawCursor(QPainter *painter, const QPointF &pos)
+{
+    QRectF r = mapToScene(geometry()).boundingRect();
+    QPointF top(pos.x(),
+                r.top());
+    QPointF bottom(pos.x(),
+                   r.bottom());
+    QPointF right(r.right(),
+                  pos.y());
+    QPointF left(r.left(),
+                 pos.y());
+    painter->setPen(QPen(QBrush(m_palette->emphasisedContent()), 0, Qt::DashLine));
+    painter->drawLine(top, bottom);
+    painter->drawLine(left, right);
+}
+
+void SchView::drawSnapDecoration(QPainter *painter)
+{
+    // TODO: maybe let the snapmanager paint the decoration:
+    // m_snapManager->renderDecoration(painter, pos);
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(QBrush(m_palette->emphasisedContent()));
+    painter->setRenderHint(QPainter::TextAntialiasing); // Doesn't do anything!
+    painter->drawPath(mapToScene(m_snapManager->decoration()));
 }
 
 QSizeF SchView::pixelSize() const
