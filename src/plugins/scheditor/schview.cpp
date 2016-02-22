@@ -207,80 +207,50 @@ void SchView::wheelEvent(QWheelEvent *event)
         }
         return;
     }
-    QPointF pos = mapToScene(event->pos());
-    scaleView(pow((double)2, -event->delta() / 240.0));
-    pos -= mapToScene(event->pos());
-    translateView(-pos.x(), -pos.y());
 
-    event->accept();
+    QPointF pos = mapToScene(event->pos());
+    qreal factor = pow((double)2, -event->delta() / 240.0);
+    zoomIn(pos, factor);
 }
 
 void SchView::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::MidButton) {
-        m_panning = true;
-        m_lastGlobalPos = event->globalPos();
-        event->accept();
-        return;
+        startPanView(event);
     }
-
-    updateMousePos();
-
-    if (event->button() == Qt::RightButton) {
+    else if (event->button() == Qt::RightButton) {
         QGraphicsView::mousePressEvent(event);
     }
     else if (m_tool) {
         QMouseEvent ev = createSnappedMouseEvent(event);
         m_tool->mousePressEvent(&ev);
     }
-    else {
-        event->ignore();
-    }
 }
 
 void SchView::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons().testFlag(Qt::MidButton)) {
-        QPoint globalPos = event->globalPos();
-        if ((globalPos - m_lastGlobalPos).manhattanLength() > 2) {
-            QPointF p1 = mapToScene(mapFromGlobal(globalPos));
-            QPointF p2 = mapToScene(mapFromGlobal(m_lastGlobalPos));
-            QPointF delta = (p1 - p2);
-            translateView(delta.x(), delta.y());
-            m_lastGlobalPos = globalPos;
-            updateRulerCursorPositions();
-        }
-        event->accept();
-        return;
+        updatePanView(event);
     }
-
-    updateMousePos();
-
-    if (m_tool != nullptr) {
+    else if (m_tool != nullptr) {
         if (m_mousePositionChanged) {
             QMouseEvent ev = createSnappedMouseEvent(event);
             m_tool->mouseMoveEvent(&ev);
         }
     }
+    updateMousePos();
     updateRulerCursorPositions();
 }
 
 void SchView::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::MidButton) {
-        m_panning = false;
-        event->accept();
-        return;
+        endPanView();
     }
-
-    updateMousePos();
-
-    if (m_tool != nullptr) {
+    else if (m_tool != nullptr) {
         QMouseEvent ev = createSnappedMouseEvent(event);
         m_tool->mouseReleaseEvent(&ev);
     }
-    else
-        event->ignore();
 }
 
 void SchView::mouseDoubleClickEvent(QMouseEvent *event)
@@ -382,5 +352,35 @@ QSizeF SchView::pixelSize() const
 SnapManager *SchView::snapManager()
 {
     return m_snapManager;
+}
+
+void SchView::zoomIn(QPointF pos, qreal factor)
+{
+    QPoint viewPos = mapFromScene(pos);
+    scaleView(factor);
+    pos -= mapToScene(viewPos);
+    translateView(-pos.x(), -pos.y());
+}
+
+void SchView::startPanView(QMouseEvent *event)
+{
+    // TODO: set cursor icon to closed hand
+    m_panning = true;
+    m_lastGlobalPos = event->globalPos();
+}
+
+void SchView::updatePanView(QMouseEvent *event)
+{
+    QPoint globalPos = event->globalPos();
+    QPointF p1 = mapToScene(mapFromGlobal(globalPos));
+    QPointF p2 = mapToScene(mapFromGlobal(m_lastGlobalPos));
+    QPointF delta = (p1 - p2);
+    translateView(delta.x(), delta.y());
+    m_lastGlobalPos = globalPos;
+}
+
+void SchView::endPanView()
+{
+    m_panning = false;
 }
 

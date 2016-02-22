@@ -44,6 +44,8 @@ public:
     SnapManager *snapManager();
 
 
+    void zoomIn(QPointF pos, qreal factor);
+
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
     void drawForeground(QPainter *painter, const QRectF &rect);
@@ -85,6 +87,10 @@ private:
     bool m_panning;
 
     bool m_openGLEnabled;
+
+    void startPanView(QMouseEvent *event);
+    void updatePanView(QMouseEvent *event);
+    void endPanView();
 };
 
 #endif // GRAPHICSVIEW_H
