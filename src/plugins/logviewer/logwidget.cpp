@@ -17,7 +17,9 @@ LogWidget::LogWidget(QWidget *parent) :
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->setAlternatingRowColors(true);
-    //ui->tableView->resizeColumnsToContents();
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
 
     ui->configToolButton->setMenu(m_categoriesMenu);
     connect(m_categoriesMenu, SIGNAL(triggered(QAction*)),
