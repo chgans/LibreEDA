@@ -141,7 +141,7 @@ void GraphicsSelectTool::mousePressEvent(QMouseEvent *event)
         case DragSelect:
             if (!event->modifiers().testFlag(Qt::ShiftModifier))
                 scene()->clearSelection();
-            m_rubberBand->setGeometry(QRect(m_mousePressPosition, m_mousePressPosition));
+            m_rubberBand->setGeometry(view()->mapFromScene(QRect(m_mousePressPosition, m_mousePressPosition)).boundingRect());
             m_rubberBand->show();
             break;
         case MoveItem:
@@ -156,7 +156,7 @@ void GraphicsSelectTool::mousePressEvent(QMouseEvent *event)
             }
             m_item = object;
             m_items = scene()->selectedObjects();
-            m_lastMouseScenePosition = view()->mapToScene(event->pos());
+            m_lastMouseScenePosition = event->pos();
             break;
         case MoveHandle:
             Q_ASSERT(handle != nullptr);
@@ -178,12 +178,12 @@ void GraphicsSelectTool::mouseMoveEvent(QMouseEvent *event)
     else {
         switch (m_operation) {
         case DragSelect: {
-            QRect viewRect = QRect(m_mousePressPosition, event->pos()).normalized();
+            QRect viewRect = view()->mapFromScene(QRect(m_mousePressPosition, event->pos())).boundingRect();
             m_rubberBand->setGeometry(viewRect);
             break;
         }
         case MoveItem: {
-            QPointF mouseScenePosition = view()->mapToScene(event->pos());
+            QPointF mouseScenePosition = event->pos();
             QLineF vector(m_lastMouseScenePosition, mouseScenePosition);
             for (int i = 0; i < m_items.count(); i++) {
                 m_items[i]->moveBy(vector.dx(), vector.dy());
@@ -196,8 +196,8 @@ void GraphicsSelectTool::mouseMoveEvent(QMouseEvent *event)
                 m_phantomItems = createPhantomItems(m_items);
             }
             Q_ASSERT(m_items.count() == m_phantomItems.count());
-            QRectF sceneShift = QRectF(view()->mapToScene(m_mousePressPosition),
-                                       view()->mapToScene(event->pos()));
+            QRectF sceneShift = QRectF(m_mousePressPosition,
+                                       event->pos());
             sceneShift.moveTopLeft(QPointF(0, 0));
             for (int i = 0; i < m_items.count(); i++) {
                 QPointF itemPos = m_items[i]->pos() + sceneShift.bottomRight();
@@ -207,7 +207,7 @@ void GraphicsSelectTool::mouseMoveEvent(QMouseEvent *event)
         }
         case MoveHandle: {
             // TODO: use phantomItem as well
-            QPointF scenePos = view()->mapToScene(event->pos());
+            QPointF scenePos = event->pos();
             QPointF handlePos = m_handle->mapToParent(m_handle->mapFromScene(scenePos));
             m_handle->setPos(handlePos);
             break;
