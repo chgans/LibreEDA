@@ -85,7 +85,7 @@ void AbstractGraphicsInsertTool::mousePressEvent(QMouseEvent *event)
         m_isActive = true;
     }
 
-    m_pressPos = mapToScene(event->pos());
+    m_pressPos = event->pos();
 
     if (m_index < 0)
         scene()->clearSelection();
@@ -98,7 +98,7 @@ void AbstractGraphicsInsertTool::mouseMoveEvent(QMouseEvent *event)
     if (!m_isActive || m_index < 0)
         return;
 
-    m_movePos = mapToScene(event->pos());
+    m_movePos = event->pos();
 
     if (!m_addPointOnMouseMove) {
         Q_ASSERT(m_index != 0);

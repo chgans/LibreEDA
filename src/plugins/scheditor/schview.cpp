@@ -16,8 +16,6 @@
 SchView::SchView(QWidget *parent):
     QGraphicsView(parent),
     m_tool(nullptr),
-    m_objectUnderMouse(nullptr),
-    m_handleUnderMouse(nullptr),
     m_mousePositionChanged(true),
     m_snapManager(new SnapManager(this)),
     m_snapping(false),
@@ -57,7 +55,7 @@ SchView::~SchView()
 
 }
 
-SchScene *SchView::scene()
+SchScene *SchView::scene() const
 {
     return static_cast<SchScene *>(QGraphicsView::scene());
 }
@@ -87,14 +85,14 @@ void SchView::setTool(AbstractGraphicsInteractiveTool *tool)
     }
 }
 
-SchItem *SchView::objectAt(const QPoint &pos) const
+SchItem *SchView::objectAt(const QPointF &pos) const
 {
-    return dynamic_cast<SchItem *>(QGraphicsView::itemAt(pos));
+    return dynamic_cast<SchItem *>(scene()->itemAt(pos, QTransform()));
 }
 
-AbstractGraphicsHandle *SchView::handleAt(const QPoint &pos) const
+AbstractGraphicsHandle *SchView::handleAt(const QPointF &pos) const
 {
-    return dynamic_cast<AbstractGraphicsHandle *>(QGraphicsView::itemAt(pos));
+    return dynamic_cast<AbstractGraphicsHandle *>(scene()->itemAt(pos, QTransform()));
 }
 
 AbstractGraphicsHandle *SchView::handleUnderMouse() const
@@ -107,9 +105,14 @@ SchItem *SchView::objectUnderMouse() const
     return objectAt(mousePosition());
 }
 
-QPoint SchView::mousePosition() const
+QPointF SchView::mousePosition() const
 {
     return m_mousePosition;
+}
+
+QPointF SchView::cursorPosition() const
+{
+    return m_snapManager->snappedPosition();
 }
 
 
@@ -165,12 +168,7 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
 
-    QPointF p = mapToScene(mousePosition());
-
-    if (p.isNull())
-        return;
-
-    drawCursor(painter, p);
+    drawCursor(painter);
 
     if (m_snapping) {
         drawSnapDecoration(painter);
@@ -272,8 +270,8 @@ void SchView::resizeEvent(QResizeEvent *event)
 
 void SchView::updateMousePos()
 {
-    QPoint viewPos = viewport()->mapFromGlobal(QCursor::pos());
-    m_snapping = m_snapManager->snap(viewPos, 50);
+    QPointF pos = mapToScene(viewport()->mapFromGlobal(QCursor::pos()));
+    m_snapping = m_snapManager->snap(pos, 50*transform().m11()); // FIXME: magic number: 50 view's pixels
 
     if (!m_snapping) {
         m_mousePositionChanged = false;
@@ -301,7 +299,7 @@ void SchView::updateRulerCursorRanges()
 
 void SchView::updateRulerCursorPositions()
 {
-    QPointF pos = mapToScene(viewport()->mapFromGlobal(QCursor::pos()));
+    QPointF pos = cursorPosition();
     m_horizontalRuler->setCursorPosition(pos);
     m_verticalRuler->setCursorPosition(pos);
 }
@@ -328,16 +326,17 @@ void SchView::applyPalette()
     update();
 }
 
-void SchView::drawCursor(QPainter *painter, const QPointF &pos)
+void SchView::drawCursor(QPainter *painter)
 {
-    QRectF r = mapToScene(geometry()).boundingRect();
+    QPointF pos = cursorPosition();
+    QRectF rect = mapToScene(geometry()).boundingRect();
     QPointF top(pos.x(),
-                r.top());
+                rect.top());
     QPointF bottom(pos.x(),
-                   r.bottom());
-    QPointF right(r.right(),
+                   rect.bottom());
+    QPointF right(rect.right(),
                   pos.y());
-    QPointF left(r.left(),
+    QPointF left(rect.left(),
                  pos.y());
     painter->setPen(QPen(QBrush(m_palette->emphasisedContent()), 0, Qt::DashLine));
     painter->drawLine(top, bottom);
@@ -348,10 +347,14 @@ void SchView::drawSnapDecoration(QPainter *painter)
 {
     // TODO: maybe let the snapmanager paint the decoration:
     // m_snapManager->renderDecoration(painter, pos);
+    painter->save();
+    painter->translate(cursorPosition());
+    painter->scale(1.0/transform().m11(), 1.0/transform().m22());
     painter->setPen(Qt::NoPen);
     painter->setBrush(QBrush(m_palette->emphasisedContent()));
     painter->setRenderHint(QPainter::TextAntialiasing); // Doesn't do anything!
-    painter->drawPath(mapToScene(m_snapManager->decoration()));
+    painter->drawPath(m_snapManager->decoration());
+    painter->restore();
 }
 
 QSizeF SchView::pixelSize() const

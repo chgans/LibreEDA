@@ -19,18 +19,19 @@ public:
     SchView(QWidget *parent = 0);
     ~SchView();
 
-    SchScene *scene();
+    SchScene *scene() const;
     void setScene(SchScene *scene);
 
     AbstractGraphicsInteractiveTool *tool();
     void setTool(AbstractGraphicsInteractiveTool *tool);
 
-    SchItem *objectAt(const QPoint &pos) const;
-    AbstractGraphicsHandle *handleAt(const QPoint &pos) const;
+    SchItem *objectAt(const QPointF &pos) const;
+    AbstractGraphicsHandle *handleAt(const QPointF &pos) const;
 
     AbstractGraphicsHandle *handleUnderMouse() const;
     SchItem *objectUnderMouse() const;
-    QPoint mousePosition() const;
+    QPointF mousePosition() const;
+    QPointF cursorPosition() const;
 
     void scaleView(qreal scaleFactor);
     void translateView(qreal dx, qreal dy);
@@ -69,9 +70,7 @@ private:
     void updateRulerCursorRanges();
 
     AbstractGraphicsInteractiveTool *m_tool;
-    SchItem *m_objectUnderMouse;
-    const AbstractGraphicsHandle *m_handleUnderMouse;
-    QPoint m_mousePosition;
+    QPointF m_mousePosition;
     bool m_mousePositionChanged;
     void updateMousePos();
     QPoint m_lastGlobalPos;
@@ -91,7 +90,7 @@ private:
     void startPanView(QMouseEvent *event);
     void updatePanView(QMouseEvent *event);
     void endPanView();
-    void drawCursor(QPainter *painter, const QPointF &pos);
+    void drawCursor(QPainter *painter);
     void drawSnapDecoration(QPainter *painter);
 };
 
