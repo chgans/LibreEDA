@@ -1,10 +1,8 @@
-#include "mainwindow.h"
-#include <QApplication>
-#include <QDir>
 
+#include "mainwindow.h"
 #include "core/extension/pluginmanager.h"
-#include "core/editormanager/editormanager.h"
-#include "core/editormanager/documentmanager.h"
+
+#include <QApplication>
 
 
 int main(int argc, char *argv[])

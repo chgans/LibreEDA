@@ -10,6 +10,7 @@
 #include "core/navigationview/inavigationviewfactory.h"
 #include "core/outputpane/outputdockwidget.h"
 #include "core/outputpane/ioutputpanefactory.h"
+#include "core/settings/settingsdialog.h"
 
 #include <QDebug>
 #include <QDockWidget>
@@ -196,6 +197,12 @@ void MainWindow::onEditorAboutToClose(IEditor *editor)
     m_editorView->removeEditor(editor);
 }
 
+void MainWindow::onSettingsDialogRequested()
+{
+    SettingsDialog dialog(this);
+    dialog.exec();
+}
+
 void MainWindow::updateEditorActions()
 {
     if (m_currentEditor && m_currentEditor->document()) {
@@ -236,6 +243,7 @@ void MainWindow::initMenus()
 {
     m_fileMenu = menuBar()->addMenu("&File");
     m_editMenu = menuBar()->addMenu("&Edit");
+    m_toolsMenu = menuBar()->addMenu("&Tools");
     m_windowMenu = menuBar()->addMenu("&Window");
     m_helpMenu = menuBar()->addMenu("&Help");
 }
@@ -306,6 +314,11 @@ void MainWindow::initActions()
     action->setShortcut(QKeySequence::Quit);
     connect(action, &QAction::triggered,
             this, &MainWindow::onApplicationExitRequested);
+
+    icon = QIcon::fromTheme("preferences-system");
+    m_settingsAction = m_toolsMenu->addAction(icon, "&Options...");
+    connect(m_settingsAction, &QAction::triggered,
+            this, &MainWindow::onSettingsDialogRequested);
 }
 
 void MainWindow::initEditorView()

@@ -39,6 +39,8 @@ LedaPlugin {
         "pcbphysicalboard.h",
         "pcbphysicallayer.cpp",
         "pcbphysicallayer.h",
+        "pcbsettingspage.cpp",
+        "pcbsettingspage.h",
         "primitive.cpp",
         "primitive.h",
         "scene.cpp",

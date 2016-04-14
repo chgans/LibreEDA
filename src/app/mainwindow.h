@@ -51,6 +51,8 @@ private slots:
     void onEditorCloseRequested(IEditor *editor);
     void onEditorAboutToClose(IEditor *editor);
 
+    void onSettingsDialogRequested();
+
 private:
     EditorView *m_editorView;
     IEditor *m_currentEditor = nullptr;
@@ -67,6 +69,10 @@ private:
 
     QMenu *m_recentFilesMenu;
     QMenu *m_editMenu;
+
+    QMenu *m_toolsMenu;
+    QAction *m_settingsAction;
+
     QMenu *m_windowMenu;
     QMenu *m_helpMenu;
 

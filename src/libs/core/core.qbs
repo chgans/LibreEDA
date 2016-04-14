@@ -48,5 +48,9 @@ LedaLibrary {
         "outputpane/ioutputpanefactory.h",
         "outputpane/outputdockwidget.cpp",
         "outputpane/outputdockwidget.h",
+        "settings/isettingspage.cpp",
+        "settings/isettingspage.h",
+        "settings/settingsdialog.cpp",
+        "settings/settingsdialog.h",
     ]
 }
