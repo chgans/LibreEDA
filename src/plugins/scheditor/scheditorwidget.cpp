@@ -1,7 +1,6 @@
 #include "scheditorwidget.h"
 #include "schview.h"
 #include "schscene.h"
-#include "palette.h"
 #include "item/schitem.h"
 
 #include "tool/graphicsbeziertool.h"
@@ -15,9 +14,6 @@
 #include "tool/graphicsarctool.h"
 
 #include "snap/positionsnapper.h"
-
-#include "grid/graphicscartesiangrid.h"
-#include "grid/graphicsgrid.h"
 
 #include "dock/taskdockwidget.h"
 #include "dock/propertyeditordockwidget.h"
@@ -39,21 +35,9 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
     layout()->setMargin(0);
     m_scene = new SchScene(this);
     m_scene->setSceneRect(0, 0, 297, 210);
-    GraphicsCartesianGrid *grid = new GraphicsCartesianGrid();
-    grid->setCoarseLineStyle(Qt::SolidLine);
-    grid->setCoarseLineColor(QColor("#586e75"));
-    grid->setFineLineStyle(Qt::DotLine);
-    grid->setFineLineColor(QColor("#839496"));
-    grid->setOrigin(QPointF(0, 0));
-    grid->setCoarseMultiplier(10);
-    grid->setSize(QSize(m_scene->sceneRect().width(),
-                        m_scene->sceneRect().height()));
-    m_scene->setGrid(grid);
     m_view = new SchView();
     m_view->setScene(m_scene);
     m_view->fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
-    m_view->ensureVisible(m_scene->sceneRect());
-    m_view->setPaletteMode(Palette::Dark);
     layout()->addWidget(m_view);
 
     m_taskDockWidget = new TaskDockWidget();
@@ -80,7 +64,6 @@ SchEditorWidget::SchEditorWidget(QWidget *parent):
     addInteractiveTools();
     addSnapTools();
     addPathPointTools();
-    addMiscTools();
 
     Q_INIT_RESOURCE(scheditor);
 }
@@ -91,7 +74,6 @@ SchEditorWidget::~SchEditorWidget()
     qDeleteAll(m_interactiveToolsToolBar->actions());
     qDeleteAll(m_snapToolBar->actions());
     qDeleteAll(m_pathPointToolBar->actions());
-    qDeleteAll(m_miscToolBar->actions());
 }
 
 void SchEditorWidget::readSettings(QSettings &settings)
@@ -123,8 +105,6 @@ void SchEditorWidget::activate(QMainWindow *win)
 {
     win->addToolBar(m_interactiveToolsToolBar);
     m_interactiveToolsToolBar->show();
-    win->addToolBar(m_miscToolBar);
-    m_miscToolBar->show();
     win->addToolBar(m_snapToolBar);
     m_snapToolBar->show();
     win->addToolBar(m_arrangeToolBar);
@@ -147,7 +127,6 @@ void SchEditorWidget::desactivate(QMainWindow *win)
     win->removeToolBar(m_pathPointToolBar);
     win->removeToolBar(m_snapToolBar);
     win->removeToolBar(m_interactiveToolsToolBar);
-    win->removeToolBar(m_miscToolBar);
 }
 
 void SchEditorWidget::addInteractiveTools()
@@ -283,24 +262,6 @@ void SchEditorWidget::addArrangeTools()
     //
     m_arrangeToolBar = new QToolBar();
 }
-
-void SchEditorWidget::addMiscTools()
-{
-    m_miscToolBar = new QToolBar();
-    m_paletteModeComboBox = new QComboBox;
-    m_paletteModeComboBox->addItem("Dark", QVariant::fromValue<Palette::Mode>(Palette::Dark));
-    m_paletteModeComboBox->addItem("Light", QVariant::fromValue<Palette::Mode>(Palette::Light));
-    m_paletteModeComboBox->setCurrentIndex(0);
-    connect(m_paletteModeComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onPaletteComboBoxIndexChanged(int)));
-    m_miscToolBar->addWidget(m_paletteModeComboBox);
-}
-
-void SchEditorWidget::onPaletteComboBoxIndexChanged(int index)
-{
-    m_view->setPaletteMode(m_paletteModeComboBox->itemData(index).value<Palette::Mode>());
-}
-
 
 void SchEditorWidget::keyPressEvent(QKeyEvent *event)
 {

@@ -5,8 +5,6 @@
 #include <QPainterPath>
 #include <cmath>
 
-//
-static const qreal MIN_SIZE_IN_PIXEL = 5;
 
 GraphicsCartesianGrid::GraphicsCartesianGrid():
     GraphicsGrid(),
@@ -147,14 +145,14 @@ void GraphicsCartesianGrid::drawGrid(QPainter *painter, const QColor &color, Qt:
 
 bool GraphicsCartesianGrid::shouldDrawCoarse(const QSizeF &pixelPerMm) const
 {
-    return pixelPerMm.width()*step().x() > MIN_SIZE_IN_PIXEL &&
-            pixelPerMm.height()*step().y() > MIN_SIZE_IN_PIXEL;
+    return pixelPerMm.width()*step().x() > minimalFeatureSize() &&
+            pixelPerMm.height()*step().y() > minimalFeatureSize();
 }
 
 bool GraphicsCartesianGrid::shouldDrawFine(const QSizeF &pixelPerMm) const
 {
-    return (pixelPerMm.width()*step().x()/coarseMultiplier()) > MIN_SIZE_IN_PIXEL &&
-            (pixelPerMm.height()*step().y()/coarseMultiplier()) > MIN_SIZE_IN_PIXEL;
+    return (pixelPerMm.width()*step().x()/coarseMultiplier()) > minimalFeatureSize() &&
+            (pixelPerMm.height()*step().y()/coarseMultiplier()) > minimalFeatureSize();
 }
 
 QRectF GraphicsCartesianGrid::quadrantRect(GraphicsCartesianGrid::Quadrant which) const

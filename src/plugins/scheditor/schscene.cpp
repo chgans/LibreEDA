@@ -1,19 +1,15 @@
 #include "schscene.h"
 #include "item/schitem.h"
-#include "handle/abstractgraphicshandle.h"
-#include "grid/graphicsgrid.h"
-#include "palette.h"
 
 #include <QPainter>
 
 SchScene::SchScene(QObject *parent):
-    QGraphicsScene(parent), m_grid(nullptr)
+    QGraphicsScene(parent)
 {
 }
 
 SchScene::~SchScene()
 {
-    delete m_grid;
 }
 
 QList<SchItem *> SchScene::selectedObjects()
@@ -25,16 +21,6 @@ QList<SchItem *> SchScene::selectedObjects()
             objects.append(object);
     }
     return objects;
-}
-
-GraphicsGrid *SchScene::grid()
-{
-    return m_grid;
-}
-
-void SchScene::setGrid(GraphicsGrid *grid)
-{
-    m_grid = grid;
 }
 
 // TBD: remove this, SchView take care of drawing sceneRect() background

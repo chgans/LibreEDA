@@ -2,8 +2,7 @@
 #include "widget/settingswidget.h"
 
 SchSettingsPage::SchSettingsPage(QObject *parent):
-    ISettingsPage(parent),
-    m_settingsWidget(new SettingsWidget)
+    ISettingsPage(parent)
 {
     setPageName("General");
     setCategoryName("Schematics");
@@ -13,7 +12,7 @@ SchSettingsPage::SchSettingsPage(QObject *parent):
 QWidget *SchSettingsPage::widget()
 {
     // TODO: init widget from settings
-    return m_settingsWidget;
+    return new SettingsWidget;
 }
 
 void SchSettingsPage::apply()

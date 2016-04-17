@@ -4,7 +4,6 @@
 #include <QGraphicsScene>
 
 class SchItem;
-class GraphicsGrid;
 
 class SchScene : public QGraphicsScene
 {
@@ -14,15 +13,9 @@ public:
 
     QList<SchItem *> selectedObjects();
 
-    GraphicsGrid *grid();
-    void setGrid(GraphicsGrid *grid);
-
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
 
-private:
-
-    GraphicsGrid *m_grid;
 };
 
 #endif // GRAPHICSSCENE_H

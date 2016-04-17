@@ -5,26 +5,24 @@
 // for snap/constraint ideas
 
 GraphicsGrid::GraphicsGrid():
-    mPriority(0),
-    mCoarseMultiplier(5),
-    mFineLineStyle(Qt::SolidLine),
-    mFineLineColor(QColor("#4d4d5c")),
-    mCoarseLineStyle(Qt::SolidLine),
-    mCoarseLineColor(QColor("#918d90")),
-    mEnabledForComponents(true)
+    m_priority(0),
+    m_coarseMultiplier(5),
+    m_fineLineStyle(Qt::SolidLine),
+    m_fineLineColor(QColor("#4d4d5c")),
+    m_coarseLineStyle(Qt::SolidLine),
+    m_coarseLineColor(QColor("#918d90"))
 {
 }
 
 GraphicsGrid::GraphicsGrid(const GraphicsGrid &other):
-    mLabel(other.mLabel),
-    mPriority(other.mPriority),
-    mOrigin(other.mOrigin),
-    mCoarseMultiplier(other.mCoarseMultiplier),
-    mFineLineStyle(other.mFineLineStyle),
-    mFineLineColor(other.mFineLineColor),
-    mCoarseLineStyle(other.mCoarseLineStyle),
-    mCoarseLineColor(other.mCoarseLineColor),
-    mEnabledForComponents(other.mEnabledForComponents)
+    m_label(other.m_label),
+    m_priority(other.m_priority),
+    m_origin(other.m_origin),
+    m_coarseMultiplier(other.m_coarseMultiplier),
+    m_fineLineStyle(other.m_fineLineStyle),
+    m_fineLineColor(other.m_fineLineColor),
+    m_coarseLineStyle(other.m_coarseLineStyle),
+    m_coarseLineColor(other.m_coarseLineColor)
 {
 
 }
@@ -32,9 +30,4 @@ GraphicsGrid::GraphicsGrid(const GraphicsGrid &other):
 GraphicsGrid::~GraphicsGrid()
 {
 
-}
-
-QBrush GraphicsGrid::backgroundBrush() const
-{
-    return Qt::NoBrush;
 }

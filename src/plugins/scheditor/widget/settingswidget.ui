@@ -13,9 +13,120 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,10,0">
+  <layout class="QGridLayout" name="gridLayout" columnstretch="0,10">
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="performanceGroupBox">
+     <property name="title">
+      <string>Performance</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="openGlCheckBox">
+        <property name="text">
+         <string>Use OpenGL</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="antiAliasingCheckBox">
+        <property name="text">
+         <string>Use anti-aliasing</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1" rowspan="5">
+    <widget class="SchView" name="graphicsView"/>
+   </item>
+   <item row="2" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="gridGroupBox">
+     <property name="title">
+      <string>Grid</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="minimalGridSizeLabel">
+        <property name="text">
+         <string>Minimal grid size (px)</string>
+        </property>
+        <property name="buddy">
+         <cstring>minimalGridSizeSpinBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="minimalGridSizeSpinBox">
+        <property name="minimum">
+         <number>5</number>
+        </property>
+        <property name="maximum">
+         <number>50</number>
+        </property>
+        <property name="singleStep">
+         <number>5</number>
+        </property>
+        <property name="value">
+         <number>5</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="solidCoarseGridLinesCheckBox">
+        <property name="text">
+         <string>Solid coarse lines</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="solidFineGridLinesCheckBox">
+        <property name="text">
+         <string>Solid fine lines</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="coarseMultiplierLabel">
+        <property name="text">
+         <string>Coarse multiplier</string>
+        </property>
+        <property name="buddy">
+         <cstring>coarseMultiplierSpinBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="coarseMultiplierSpinBox">
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="displayGroupBox">
      <property name="title">
       <string>Display</string>
      </property>
@@ -27,26 +138,8 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="gridCheckBox">
-        <property name="text">
-         <string>Grid</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="colorSchemeComboBox">
-        <item>
-         <property name="text">
-          <string>LibreEDA Solarised Dark</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>LibreEDA Solarised Light</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="colorSchemeComboBox"/>
       </item>
       <item row="4" column="0">
        <widget class="QCheckBox" name="cusorCrosshairCheckBox">
@@ -56,7 +149,7 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="colorSchemeLabel">
         <property name="text">
          <string>Color scheme</string>
         </property>
@@ -65,37 +158,31 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
-       <widget class="QCheckBox" name="openGlCheckBox">
-        <property name="text">
-         <string>Use OpenGL</string>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="1">
-       <widget class="QCheckBox" name="bigCursorCrosshairCheckBox">
+       <widget class="QCheckBox" name="largeCursorCrosshairCheckBox">
         <property name="text">
-         <string>Big crosshair</string>
+         <string>Large cursor crosshair</string>
         </property>
        </widget>
-      </item>
-      <item row="4" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
       </item>
       <item row="5" column="0">
-       <widget class="QCheckBox" name="originCrosshairCheckBox">
+       <widget class="QCheckBox" name="originCheckBox">
         <property name="text">
-         <string>Origin crosshair</string>
+         <string>Origin axis</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QCheckBox" name="largeOriginAxisCheckBox">
+        <property name="text">
+         <string>Large origin axis</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="gridCheckBox">
+        <property name="text">
+         <string>Grid</string>
         </property>
        </widget>
       </item>
@@ -106,24 +193,15 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="scrollBarsAsNeededCheckBox">
+        <property name="text">
+         <string>Scroll bars as needed</string>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
+       </widget>
       </item>
      </layout>
     </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="SchView" name="graphicsView"/>
    </item>
   </layout>
  </widget>
@@ -137,12 +215,20 @@
  <tabstops>
   <tabstop>colorSchemeComboBox</tabstop>
   <tabstop>rulerCheckBox</tabstop>
-  <tabstop>scrollBarsCheckBox</tabstop>
   <tabstop>gridCheckBox</tabstop>
+  <tabstop>scrollBarsCheckBox</tabstop>
+  <tabstop>scrollBarsAsNeededCheckBox</tabstop>
   <tabstop>cusorCrosshairCheckBox</tabstop>
-  <tabstop>bigCursorCrosshairCheckBox</tabstop>
-  <tabstop>originCrosshairCheckBox</tabstop>
+  <tabstop>largeCursorCrosshairCheckBox</tabstop>
+  <tabstop>originCheckBox</tabstop>
+  <tabstop>largeOriginAxisCheckBox</tabstop>
+  <tabstop>minimalGridSizeSpinBox</tabstop>
+  <tabstop>coarseMultiplierSpinBox</tabstop>
+  <tabstop>solidCoarseGridLinesCheckBox</tabstop>
+  <tabstop>solidFineGridLinesCheckBox</tabstop>
   <tabstop>openGlCheckBox</tabstop>
+  <tabstop>antiAliasingCheckBox</tabstop>
+  <tabstop>graphicsView</tabstop>
  </tabstops>
  <resources/>
  <connections/>

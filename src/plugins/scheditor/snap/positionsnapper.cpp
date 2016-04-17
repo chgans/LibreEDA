@@ -122,7 +122,7 @@ QIcon SnapStrategy::icon() const
 QPainterPath SnapStrategy::decoration() const
 {
     QPainterPath decoration;
-    decoration.addEllipse(QPoint(0, 0), 2, 2);
+    //decoration.addEllipse(QPoint(0, 0), 2, 2);
     decoration.addText(QPoint(10, 25), QFont(), name());
     return decoration;
 }
@@ -197,7 +197,7 @@ bool SnapToGridStrategy::snap(QPointF mousePos, qreal maxDistance)
     // TODO: foreach(GraphicsGrid *grid, view().grids()) { ... }
     // TODO: rename GraphicsGrid::snap() ?
     // TODO: or use the grid manager?
-    GraphicsGrid *grid = view()->scene()->grid();
+    const GraphicsGrid *grid = view()->grid();
     QPointF pos = grid->snap(view()->pixelSize(), mousePos);
     setSnappedPosition(pos);
     return true;

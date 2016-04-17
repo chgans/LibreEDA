@@ -34,16 +34,12 @@ public:
     SchView *view() const;
     SchScene *scene() const;
 
-private slots:
-    void onPaletteComboBoxIndexChanged(int index);
-
 private:
     QMainWindow *m_mainWindow = nullptr;
     SchView *m_view = nullptr;
     SchScene *m_scene = nullptr;
     TaskDockWidget *m_taskDockWidget = nullptr;
     PropertyEditorDockWidget *m_propertyEditorDockWidget = nullptr;
-    QComboBox *m_paletteModeComboBox = nullptr;
 
     void addInteractiveTools();
     void addInteractiveTool(AbstractGraphicsInteractiveTool *tool);
@@ -60,9 +56,6 @@ private:
 
     void addArrangeTools();
     QToolBar *m_arrangeToolBar = nullptr;
-
-    void addMiscTools();
-    QToolBar *m_miscToolBar = nullptr;
 
     // QWidget interface
 protected:
