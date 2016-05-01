@@ -4,7 +4,7 @@
 SchSettingsPage::SchSettingsPage(QObject *parent):
     ISettingsPage(parent), m_settingsWidget(nullptr)
 {
-    setPageName("General");
+    setPageName("Appearance");
     setCategoryName("Schematics");
     setCategoryIcon(QIcon(":/icons/sch.png"));
 }

@@ -23,7 +23,7 @@ public:
 private slots:
     void currentCategoryChanged(QListWidgetItem *current,
                                 QListWidgetItem *previous);
-    void currentPageChanged();
+    void currentPageChanged(int currentTabindex);
 
 private:
     QLineEdit *m_filterLineEdit;
@@ -42,6 +42,8 @@ private:
     QMap<QString, QTabWidget *> m_categoryTabWidgets;
     QMap<QListWidgetItem *, QTabWidget *> m_listItemToTabWidget;
     void populateSettingsPages();
+    void saveState();
+    void restoreState();
 
     // QDialog interface
 public slots:

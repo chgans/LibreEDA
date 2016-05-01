@@ -1,6 +1,7 @@
 #include "settingsdialog.h"
 #include "isettingspage.h"
 #include "extension/pluginmanager.h"
+#include "core.h"
 
 #include <QGridLayout>
 #include <QDialogButtonBox>
@@ -12,27 +13,43 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QTabWidget>
+#include <QSettings>
 
 SettingsDialog::SettingsDialog(QWidget *parent):
     QDialog(parent)
 {
     createGui();
     populateSettingsPages();
+    restoreState();
+
     m_categoryListWidget->setFocus();
     connect(m_categoryListWidget, &QListWidget::currentItemChanged,
             this, &SettingsDialog::currentCategoryChanged);
 }
 
 void SettingsDialog::currentCategoryChanged(QListWidgetItem *current,
-                                            QListWidgetItem */*previous*/)
+                                            QListWidgetItem *previous)
 {
-    QTabWidget *tabWidget = m_listItemToTabWidget.value(current);
-    m_stackedLayout->setCurrentWidget(tabWidget);
+    if (previous != nullptr)
+    {
+        QTabWidget *previousTabWidget = m_listItemToTabWidget.value(previous);
+        previousTabWidget->disconnect(this);
+    }
+    QTabWidget *currentTabWidget = m_listItemToTabWidget.value(current);
+    connect(currentTabWidget, &QTabWidget::currentChanged,
+            this, &SettingsDialog::currentPageChanged);
+    m_stackedLayout->setCurrentWidget(currentTabWidget);
+    currentPageChanged(currentTabWidget->currentIndex());
 }
 
-void SettingsDialog::currentPageChanged()
+void SettingsDialog::currentPageChanged(int /*currentTabindex*/)
 {
-
+    QTabWidget *currentTabWidget = m_listItemToTabWidget.value(m_categoryListWidget->currentItem());
+    m_currentPage = m_widgetToPage.value(currentTabWidget->currentWidget());
+    if (!m_visitedPages.contains(m_currentPage))
+    {
+        m_visitedPages.append(m_currentPage);
+    }
 }
 
 void SettingsDialog::createGui()
@@ -120,10 +137,52 @@ void SettingsDialog::populateSettingsPages()
     }
 }
 
+void SettingsDialog::saveState()
+{
+    QSettings *settings = Core::settings();
+    settings->beginGroup("core.settingsDialog");
+    settings->setValue("geometry", geometry());
+    settings->setValue("category", m_currentPage->categoryName());
+    settings->setValue("page", m_currentPage->pageName());
+    settings->endGroup();
+    settings->sync();
+}
+
+void SettingsDialog::restoreState()
+{
+    QSettings *settings = Core::settings();
+    settings->beginGroup("core.settingsDialog");
+    setGeometry(settings->value("geometry").toRect());
+
+    QString category = settings->value("category").toString();
+    if (!m_categoryNames.contains(category))
+    {
+        settings->endGroup();
+        return;
+    }
+    m_categoryListWidget->setCurrentRow(m_categoryNames.indexOf(category));
+    QTabWidget *tabWidget = m_categoryTabWidgets.value(category);
+    m_stackedLayout->setCurrentWidget(tabWidget);
+
+    QString page = settings->value("page").toString();
+    for (int i=0; i<tabWidget->count(); i++)
+    {
+        auto widget = tabWidget->widget(i);
+        auto ipage = m_widgetToPage.value(widget);
+        if (ipage->pageName() == page)
+        {
+            m_currentPage = ipage;
+            m_visitedPages.append(m_currentPage);
+            tabWidget->setCurrentWidget(widget);
+            break;
+        }
+    }
+    settings->endGroup();
+}
+
 void SettingsDialog::done(int code)
 {
-    // TODO: save our own settings: current page and dialog size
-
+    saveState();
     QDialog::done(code);
 }
 
