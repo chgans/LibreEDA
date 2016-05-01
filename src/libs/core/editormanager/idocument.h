@@ -11,7 +11,7 @@ class CORE_EXPORT IDocument : public QObject
     Q_PROPERTY(bool modified READ isModified NOTIFY modifiedChanged)
 
 public:
-    explicit IDocument(QObject *parent = 0);
+    explicit IDocument(QObject *parent = nullptr);
     ~IDocument();
 
     void setId(const QString &id);

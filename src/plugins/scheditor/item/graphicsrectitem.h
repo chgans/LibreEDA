@@ -30,7 +30,7 @@ public:
         NbHandles
     };
 
-    GraphicsRectItem(SchItem *parent = 0);
+    explicit GraphicsRectItem(SchItem *parent = nullptr);
     ~GraphicsRectItem();
 
     QRectF rect() const;

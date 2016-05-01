@@ -13,7 +13,7 @@ class TaskDockWidget : public QDockWidget
     Q_OBJECT
 
 public:
-    explicit TaskDockWidget(QWidget *parent = 0);
+    explicit TaskDockWidget(QWidget *parent = nullptr);
 
 signals:
 

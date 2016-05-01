@@ -19,7 +19,7 @@ public:
         FixedSizePolicy
     };
 
-    GraphicsTextFrameItem(SchItem *parent = 0);
+    explicit GraphicsTextFrameItem(SchItem *parent = nullptr);
 
 
 private:

@@ -9,10 +9,10 @@ class Scene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    explicit Scene(QObject *parent = 0);
-    explicit Scene(const QRectF & sceneRect, QObject * parent = 0);
+    explicit Scene(QObject *parent = nullptr);
+    explicit Scene(const QRectF & sceneRect, QObject * parent = nullptr);
     explicit Scene(qreal x, qreal y, qreal width, qreal height,
-                   QObject * parent = 0);
+                   QObject * parent = nullptr);
 
 public slots:
 

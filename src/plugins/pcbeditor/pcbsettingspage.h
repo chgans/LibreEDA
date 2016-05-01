@@ -7,7 +7,7 @@ class PcbSettingsPage: public ISettingsPage
 {
     Q_OBJECT
 public:
-    PcbSettingsPage(QObject *parent = nullptr);
+    explicit PcbSettingsPage(QObject *parent = nullptr);
 
     // ISettingsPage interface
 public:

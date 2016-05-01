@@ -10,7 +10,7 @@ class InsightConnectivityWidget : public QFrame
 {
     Q_OBJECT
 public:
-    explicit InsightConnectivityWidget(QWidget *parent = 0);
+    explicit InsightConnectivityWidget(QWidget *parent = nullptr);
 
     // TODO:
     // setProject(), setHighlightedObject(Idoc doc, IObj obj)

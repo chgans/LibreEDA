@@ -15,7 +15,7 @@ class GraphicsSelectTool : public AbstractGraphicsInteractiveTool
     Q_OBJECT
 
 public:
-    GraphicsSelectTool(QObject *parent = 0);
+    explicit GraphicsSelectTool(QObject *parent = nullptr);
     ~GraphicsSelectTool();
 
 private:

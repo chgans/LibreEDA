@@ -16,7 +16,7 @@ class DesignLayerSet: public QObject
     Q_PROPERTY(QString customName READ customName WRITE setCustomName NOTIFY customNameChanged)
     Q_PROPERTY(QString effectiveName READ effectiveName NOTIFY effectiveNameChanged STORED false)
 public:
-    DesignLayerSet(QObject *parent = 0);
+    explicit DesignLayerSet(QObject *parent = nullptr);
     ~DesignLayerSet();
 
     QString name() const;

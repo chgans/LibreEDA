@@ -126,7 +126,7 @@ private:
     void updateItems();
 
 protected:
-    DesignLayer(QGraphicsItem *parent = 0);
+    explicit DesignLayer(QGraphicsItem *parent = nullptr);
     friend class DesignLayerManager;
 
     // QGraphicsItem interface

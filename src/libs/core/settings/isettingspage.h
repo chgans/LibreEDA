@@ -8,7 +8,7 @@ class ISettingsPage : public QObject
 {
     Q_OBJECT
 public:
-    explicit ISettingsPage(QObject *parent = 0);
+    explicit ISettingsPage(QObject *parent = nullptr);
 
     QString pageName() const;
     QString categoryName() const;

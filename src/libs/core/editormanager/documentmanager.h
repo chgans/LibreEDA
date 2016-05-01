@@ -39,35 +39,35 @@ public:
     // GUI related stuff
     static QStringList getOpenFileNames(const QString &filters,
                                         const QString &path = QString(),
-                                        QString *selectedFilter = 0);
+                                        QString *selectedFilter = nullptr);
     static QString getSaveFileName(const QString &title, const QString &pathIn,
-                                   const QString &filter = QString(), QString *selectedFilter = 0);
+                                   const QString &filter = QString(), QString *selectedFilter = nullptr);
     static QString getSaveFileNameWithExtension(const QString &title, const QString &pathIn,
                                                 const QString &filter);
     static QString getSaveAsFileName(const IDocument *document, const QString &filter = QString(),
-                                     QString *selectedFilter = 0);
+                                     QString *selectedFilter = nullptr);
 
-    static bool saveAllModifiedDocumentsSilently(bool *canceled = 0,
-                                                 QList<IDocument *> *failedToClose = 0);
-    static bool saveModifiedDocumentsSilently(const QList<IDocument *> &documents, bool *canceled = 0,
-                                              QList<IDocument *> *failedToClose = 0);
-    static bool saveModifiedDocumentSilently(IDocument *document, bool *canceled = 0,
-                                             QList<IDocument *> *failedToClose = 0);
+    static bool saveAllModifiedDocumentsSilently(bool *canceled = nullptr,
+                                                 QList<IDocument *> *failedToClose = nullptr);
+    static bool saveModifiedDocumentsSilently(const QList<IDocument *> &documents, bool *canceled = nullptr,
+                                              QList<IDocument *> *failedToClose = nullptr);
+    static bool saveModifiedDocumentSilently(IDocument *document, bool *canceled = nullptr,
+                                             QList<IDocument *> *failedToClose = nullptr);
 
-    static bool saveAllModifiedDocuments(const QString &message = QString(), bool *canceled = 0,
+    static bool saveAllModifiedDocuments(const QString &message = QString(), bool *canceled = nullptr,
                                          const QString &alwaysSaveMessage = QString(),
-                                         bool *alwaysSave = 0,
-                                         QList<IDocument *> *failedToClose = 0);
+                                         bool *alwaysSave = nullptr,
+                                         QList<IDocument *> *failedToClose = nullptr);
     static bool saveModifiedDocuments(const QList<IDocument *> &documents,
-                                      const QString &message = QString(), bool *canceled = 0,
+                                      const QString &message = QString(), bool *canceled = nullptr,
                                       const QString &alwaysSaveMessage = QString(),
-                                      bool *alwaysSave = 0,
-                                      QList<IDocument *> *failedToClose = 0);
+                                      bool *alwaysSave = nullptr,
+                                      QList<IDocument *> *failedToClose = nullptr);
     static bool saveModifiedDocument(IDocument *document,
-                                     const QString &message = QString(), bool *canceled = 0,
+                                     const QString &message = QString(), bool *canceled = nullptr,
                                      const QString &alwaysSaveMessage = QString(),
-                                     bool *alwaysSave = 0,
-                                     QList<IDocument *> *failedToClose = 0);
+                                     bool *alwaysSave = nullptr,
+                                     QList<IDocument *> *failedToClose = nullptr);
 
     static QString fileDialogLastVisitedDirectory();
     static void setFileDialogLastVisitedDirectory(const QString &dir);
@@ -78,7 +78,7 @@ signals:
 public slots:
 
 private:
-    explicit DocumentManager(QObject *parent = 0);
+    explicit DocumentManager(QObject *parent = nullptr);
     static DocumentManager *m_instance;
     static QList<IDocument *> m_documents;
     static QList<QString> m_recentFiles;

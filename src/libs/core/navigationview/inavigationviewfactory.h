@@ -10,7 +10,7 @@ class QToolButton;
 
 struct CORE_EXPORT NavigationView
 {
-    NavigationView(QWidget *w = 0) : widget(w) {}
+    explicit NavigationView(QWidget *w = nullptr) : widget(w) {}
 
     QWidget *widget;
     QList<QWidget *> toolBarWidgets;
@@ -22,7 +22,7 @@ class CORE_EXPORT INavigationViewFactory : public QObject
 {
     Q_OBJECT
 public:
-    explicit INavigationViewFactory(QObject *parent = 0);
+    explicit INavigationViewFactory(QObject *parent = nullptr);
     ~INavigationViewFactory();
 
     void setDisplayName(const QString &displayName);

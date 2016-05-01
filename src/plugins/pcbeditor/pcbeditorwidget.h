@@ -20,7 +20,7 @@ class PcbEditorWidget : public AbstractEditor
 {
     Q_OBJECT
 public:
-    explicit PcbEditorWidget(QWidget *parent = 0);
+    explicit PcbEditorWidget(QWidget *parent = nullptr);
     ~PcbEditorWidget();
 
     MainView *graphicsView() { return m_view; }

@@ -10,8 +10,10 @@ class GraphicsItem;
 
 class PcbDocument : public IDocument
 {
+    Q_OBJECT
+
 public:
-    PcbDocument(QObject *parent = nullptr);
+    explicit PcbDocument(QObject *parent = nullptr);
     ~PcbDocument();
 
     bool load(QString *errorString, const QString &fileName);

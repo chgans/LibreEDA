@@ -12,7 +12,7 @@ class PcbPaletteSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PcbPaletteSettingsDialog(QWidget *parent = 0);
+    explicit PcbPaletteSettingsDialog(QWidget *parent = nullptr);
     ~PcbPaletteSettingsDialog();
 
 private:

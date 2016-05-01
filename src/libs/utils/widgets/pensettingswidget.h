@@ -19,7 +19,7 @@ class UTILS_EXPORT PenSettingsWidget : public QWidget
     Q_PROPERTY(QPen pen READ pen WRITE setPen NOTIFY penChanged)
 
 public:
-    explicit PenSettingsWidget(QWidget *parent = 0);
+    explicit PenSettingsWidget(QWidget *parent = nullptr);
     ~PenSettingsWidget();
 
     QPen pen() const;

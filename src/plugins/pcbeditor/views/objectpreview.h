@@ -9,7 +9,7 @@ class ObjectPreview : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit ObjectPreview(QWidget *parent = 0);
+    explicit ObjectPreview(QWidget *parent = nullptr);
 
     virtual void setObjectToPreview(QGraphicsItem *item);
 

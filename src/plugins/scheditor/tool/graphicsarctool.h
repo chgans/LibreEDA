@@ -14,7 +14,7 @@ class GraphicsArcTool : public AbstractGraphicsInsertTool
     Q_OBJECT
 
 public:
-    GraphicsArcTool(QObject *parent = nullptr);
+    explicit GraphicsArcTool(QObject *parent = nullptr);
     ~GraphicsArcTool();
 
 private:

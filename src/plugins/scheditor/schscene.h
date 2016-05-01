@@ -7,8 +7,10 @@ class SchItem;
 
 class SchScene : public QGraphicsScene
 {
+    Q_OBJECT
+
 public:
-    SchScene(QObject *parent);
+    explicit SchScene(QObject *parent = nullptr);
     ~SchScene();
 
     QList<SchItem *> selectedObjects();

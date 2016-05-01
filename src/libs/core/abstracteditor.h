@@ -12,7 +12,7 @@ class CORE_EXPORT AbstractEditor : public QWidget
 {
     Q_OBJECT
 public:
-    explicit AbstractEditor(QWidget *parent = 0);
+    explicit AbstractEditor(QWidget *parent = nullptr);
     ~AbstractEditor();
 
     virtual void activate(QMainWindow *window) = 0;

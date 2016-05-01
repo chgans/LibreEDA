@@ -48,7 +48,7 @@ public:
         SplitColor  ///< Show current and comparison colors side by side
     };
 
-    explicit ColorPreview(QWidget *parent = 0);
+    explicit ColorPreview(QWidget *parent = nullptr);
     ~ColorPreview();
 
     /// Get the background visible under transparent colors

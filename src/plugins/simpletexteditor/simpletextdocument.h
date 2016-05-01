@@ -7,6 +7,8 @@ class QTextDocument;
 
 class SimpleTextDocument : public IDocument
 {
+    Q_OBJECT
+
 public:
     SimpleTextDocument();
     bool load(QString *errorString, const QString &fileName);

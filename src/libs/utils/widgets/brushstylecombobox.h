@@ -12,7 +12,7 @@ class UTILS_EXPORT BrushStyleComboBox : public QComboBox
     Q_OBJECT
 
 public:
-    BrushStyleComboBox(QWidget *parent = 0);
+    explicit BrushStyleComboBox(QWidget *parent = nullptr);
 
     void addItem(Qt::BrushStyle style);
 

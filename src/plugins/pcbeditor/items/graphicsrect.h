@@ -8,7 +8,7 @@
 class GraphicsRect : public GraphicsItem
 {
 public:
-    GraphicsRect(GraphicsItem *parent = nullptr);
+    explicit GraphicsRect(GraphicsItem *parent = nullptr);
     ~GraphicsRect();
 
     QRectF rect() const;

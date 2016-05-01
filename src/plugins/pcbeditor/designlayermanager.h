@@ -47,7 +47,7 @@ signals:
     void layerSetRemoved(DesignLayerSet *set);
 
 private:
-    explicit DesignLayerManager(QObject *parent = 0);
+    explicit DesignLayerManager(QObject *parent = nullptr);
     static DesignLayerManager *m_instance;
     QList<DesignLayerSet *> m_sets;
     QString m_systemPath;

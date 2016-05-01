@@ -7,7 +7,7 @@ class OverView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit OverView(QWidget *parent = 0);
+    explicit OverView(QWidget *parent = nullptr);
 
     virtual void setScene(QGraphicsScene *scene);
     void setObservedView(QGraphicsView *view);

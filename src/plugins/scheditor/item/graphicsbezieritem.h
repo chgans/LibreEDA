@@ -12,7 +12,7 @@ class GraphicsBezierItem : public SchItem
     Q_OBJECT
 
 public:
-    GraphicsBezierItem(SchItem *parent = 0);
+    explicit GraphicsBezierItem(SchItem *parent = nullptr);
 
     QPainterPath path() const;
     void setPath(const QPainterPath &path);

@@ -9,7 +9,7 @@ class SimpleTextEditorPlugin : public IPlugin
     Q_PLUGIN_METADATA(IID "org.libre-eda.leda.plugin" FILE "SimpleTextEditor.json")
 
 public:
-    SimpleTextEditorPlugin(QObject *parent = nullptr);
+    explicit SimpleTextEditorPlugin(QObject *parent = nullptr);
     ~SimpleTextEditorPlugin();
 
     bool initialize(const QStringList &arguments, QString *errorString);

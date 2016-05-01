@@ -12,7 +12,7 @@ class InsightDockWidget : public QDockWidget
 {
     Q_OBJECT
 public:
-    explicit InsightDockWidget(QWidget *parent = 0);
+    explicit InsightDockWidget(QWidget *parent = nullptr);
 
     void attachView(MainView *view);
     void detachView();

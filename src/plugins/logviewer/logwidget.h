@@ -18,7 +18,7 @@ class LogWidget : public QFrame
     Q_OBJECT
 
 public:
-    explicit LogWidget(QWidget *parent = 0);
+    explicit LogWidget(QWidget *parent = nullptr);
     ~LogWidget();
 
     LogModel *model();

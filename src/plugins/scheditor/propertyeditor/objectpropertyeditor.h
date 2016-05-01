@@ -16,7 +16,7 @@ class ObjectPropertyEditor: public QtTreePropertyBrowser
     Q_OBJECT
 
 public:
-    ObjectPropertyEditor(QWidget *parent = 0);
+    explicit ObjectPropertyEditor(QWidget *parent = nullptr);
     ~ObjectPropertyEditor();
 
 public slots:

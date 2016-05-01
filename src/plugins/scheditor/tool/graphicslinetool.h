@@ -8,8 +8,10 @@ class PenSettingsWidget;
 
 class GraphicsLineTool : public AbstractGraphicsInsertTool
 {
+    Q_OBJECT
+
 public:
-    GraphicsLineTool(QObject *parent = 0);
+    explicit GraphicsLineTool(QObject *parent = nullptr);
 
 private:
     GraphicsLineItem *m_item;

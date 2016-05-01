@@ -9,8 +9,10 @@ class BrushSettingsWidget;
 
 class GraphicsCircleTool : public AbstractGraphicsInsertTool
 {
+    Q_OBJECT
+
 public:
-    GraphicsCircleTool(QObject *parent = 0);
+    explicit GraphicsCircleTool(QObject *parent = nullptr);
     ~GraphicsCircleTool();
 
 private:

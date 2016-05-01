@@ -37,7 +37,7 @@ class UTILS_EXPORT ColorWidget : public QWidget
     Q_PROPERTY(ColorWheel::Display_Flags wheelFlags READ wheelFlags WRITE setWheelFlags NOTIFY wheelFlagsChanged)
 
 public:
-    explicit ColorWidget(QWidget *parent = 0);
+    explicit ColorWidget(QWidget *parent = nullptr);
 
     /**
      * Get currently selected color

@@ -10,7 +10,7 @@ class PenPropertyManager : public QtAbstractPropertyManager
 {
     Q_OBJECT
 public:
-    PenPropertyManager(QObject *parent = 0);
+    explicit PenPropertyManager(QObject *parent = nullptr);
     ~PenPropertyManager();
 
     QtEnumPropertyManager *subEnumManager() const;

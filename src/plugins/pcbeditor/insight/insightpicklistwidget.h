@@ -17,7 +17,7 @@ class InsightPickListWidget : public QFrame
 {
     Q_OBJECT
 public:
-    explicit InsightPickListWidget(QWidget *parent = 0);
+    explicit InsightPickListWidget(QWidget *parent = nullptr);
     ~InsightPickListWidget();
 
     void setPickList(QGraphicsScene *scene, QList<QGraphicsItem*> list);

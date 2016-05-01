@@ -48,7 +48,7 @@ public:
         HoverMode
     };
 
-    explicit InsightHeadsUpWidget(QWidget *parent = 0);
+    explicit InsightHeadsUpWidget(QWidget *parent = nullptr);
 
     void setItemFont(Item item, const QFont &font);
     void setItemFont(Items items, const QFont &font);

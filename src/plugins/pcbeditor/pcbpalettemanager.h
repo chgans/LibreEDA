@@ -40,7 +40,7 @@ signals:
 public slots:
 
 private:
-    explicit PcbPaletteManager(QObject *parent = 0);
+    explicit PcbPaletteManager(QObject *parent = nullptr);
     static PcbPaletteManager *m_instance;
     QList<PcbPalette*> m_palettes;
     QString m_systemPath;

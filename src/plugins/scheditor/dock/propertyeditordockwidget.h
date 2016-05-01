@@ -13,6 +13,8 @@ class QComboBox;
 
 class PropertyEditorDockWidget : public QDockWidget
 {
+    Q_OBJECT
+
 public:
     PropertyEditorDockWidget();
 

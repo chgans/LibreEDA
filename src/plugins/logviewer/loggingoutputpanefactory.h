@@ -8,7 +8,7 @@ class LoggingOutputPaneFactory : public IOutputPaneFactory
 {
     Q_OBJECT
 public:
-    explicit LoggingOutputPaneFactory(QObject *parent = 0);
+    explicit LoggingOutputPaneFactory(QObject *parent = nullptr);
 
 signals:
 

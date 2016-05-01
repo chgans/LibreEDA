@@ -10,7 +10,7 @@ class DetailView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit DetailView(QWidget *parent = 0);
+    explicit DetailView(QWidget *parent = nullptr);
     void setObservedView(QGraphicsView *view);
 
 signals:

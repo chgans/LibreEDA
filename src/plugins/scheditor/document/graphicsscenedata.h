@@ -14,7 +14,7 @@ class GraphicsSceneData : public SchDocumentObject
     QSize m_size;
 
 public:
-    GraphicsSceneData(SchDocumentObject *parent = nullptr);
+    explicit GraphicsSceneData(SchDocumentObject *parent = nullptr);
 
     QSize size() const
     {

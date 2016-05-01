@@ -18,7 +18,7 @@ class CORE_EXPORT NavigationDockWidget : public QDockWidget
     Q_OBJECT
 
 public:
-    NavigationDockWidget(QWidget *parent = nullptr);
+    explicit NavigationDockWidget(QWidget *parent = nullptr);
     ~NavigationDockWidget();
 
     void setFactories(const QList<INavigationViewFactory*> &factories);

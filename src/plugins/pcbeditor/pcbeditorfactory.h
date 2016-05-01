@@ -8,7 +8,7 @@ class PcbEditorFactory : public IEditorFactory
     Q_OBJECT
 
 public:
-    PcbEditorFactory(QObject *parent = 0);
+    explicit PcbEditorFactory(QObject *parent = nullptr);
     ~PcbEditorFactory();
 
     // IEditorFactory interface

@@ -5,8 +5,10 @@
 
 class FileSystemNavigationViewFactory: public INavigationViewFactory
 {
+    Q_OBJECT
+
 public:
-    FileSystemNavigationViewFactory(QObject *parent = nullptr);
+    explicit FileSystemNavigationViewFactory(QObject *parent = nullptr);
     ~FileSystemNavigationViewFactory();
 
     // INavigationViewFactory interface

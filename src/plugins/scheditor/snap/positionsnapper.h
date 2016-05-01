@@ -13,7 +13,7 @@ class QAction;
 class SnapStrategy
 {
 public:
-    SnapStrategy(SchView *view);
+    explicit SnapStrategy(SchView *view);
     virtual ~SnapStrategy();
 
     QString label() const;
@@ -64,7 +64,7 @@ private:
 class NoSnapStrategy: public SnapStrategy
 {
 public:
-    NoSnapStrategy(SchView *view);
+    explicit NoSnapStrategy(SchView *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 };
@@ -72,7 +72,7 @@ public:
 class SnapToGridStrategy: public SnapStrategy
 {
 public:
-    SnapToGridStrategy(SchView *view);
+    explicit SnapToGridStrategy(SchView *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 };
@@ -80,7 +80,7 @@ public:
 class SnapToItemHotSpotsStrategy:  public SnapStrategy
 {
 public:
-    SnapToItemHotSpotsStrategy(SchView *view);
+    explicit SnapToItemHotSpotsStrategy(SchView *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 };
@@ -88,7 +88,7 @@ public:
 class SnapToItemEndPointStrategy: public SnapStrategy
 {
 public:
-    SnapToItemEndPointStrategy(SchView *view);
+    explicit SnapToItemEndPointStrategy(SchView *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 };
@@ -96,7 +96,7 @@ public:
 class SnapToItemMidPointStrategy: public SnapStrategy
 {
 public:
-    SnapToItemMidPointStrategy(SchView *view);
+    explicit SnapToItemMidPointStrategy(SchView *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 };
@@ -105,7 +105,7 @@ public:
 class SnapToItemShapeStrategy: public SnapStrategy
 {
 public:
-    SnapToItemShapeStrategy(SchView *view);
+    explicit SnapToItemShapeStrategy(SchView *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 
@@ -115,7 +115,7 @@ public:
 class SnapToItemCenterStrategy: public SnapStrategy
 {
 public:
-    SnapToItemCenterStrategy(SchView *view);
+    explicit SnapToItemCenterStrategy(SchView *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 
@@ -129,7 +129,7 @@ class SnapManager: public QObject
     Q_OBJECT
 
 public:
-    SnapManager(SchView *view);
+    explicit SnapManager(SchView *view);
     ~SnapManager();
 
     QList<QString> groups() const;

@@ -13,7 +13,7 @@ class LogModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    LogModel(QObject *parent = 0);
+    explicit LogModel(QObject *parent = nullptr);
     ~LogModel();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;

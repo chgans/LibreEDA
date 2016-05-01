@@ -11,7 +11,7 @@ class SimpleTextEditor : public IEditor
 {
     Q_OBJECT
 public:
-    explicit SimpleTextEditor(QObject *parent = 0);
+    explicit SimpleTextEditor(QObject *parent = nullptr);
 
 signals:
 

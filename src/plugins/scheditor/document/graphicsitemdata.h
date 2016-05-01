@@ -39,7 +39,7 @@ class GraphicsItemData: public SchDocumentObject
     bool m_vMirrored;
 
 public:
-    GraphicsItemData(SchDocumentObject *parent = nullptr);
+    explicit GraphicsItemData(SchDocumentObject *parent = nullptr);
 
     QPen pen() const
     {

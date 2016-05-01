@@ -10,7 +10,7 @@ class TaskEditWidget : public QGroupBox
 {
     Q_OBJECT
 public:
-    explicit TaskEditWidget(QWidget *parent = 0);
+    explicit TaskEditWidget(QWidget *parent = nullptr);
 
     void setCentralWidget(QWidget *widget);
 

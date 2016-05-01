@@ -10,7 +10,7 @@ class PcbEditor: public IEditor
 {
     Q_OBJECT
 public:
-    PcbEditor(QObject *parent = nullptr);
+    explicit PcbEditor(QObject *parent = nullptr);
     ~PcbEditor();
 
     // IEditor interface

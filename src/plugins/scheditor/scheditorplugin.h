@@ -9,7 +9,7 @@ class SchEditorPlugin : public IPlugin
     Q_PLUGIN_METADATA(IID "org.libre-eda.leda.plugin" FILE "SchEditor.json")
 
 public:
-    SchEditorPlugin(QObject *parent = nullptr);
+    explicit SchEditorPlugin(QObject *parent = nullptr);
     ~SchEditorPlugin();
 
     bool initialize(const QStringList &arguments, QString *errorString);

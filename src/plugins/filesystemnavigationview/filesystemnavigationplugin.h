@@ -9,7 +9,7 @@ class FileSystemNavigationPlugin : public IPlugin
     Q_PLUGIN_METADATA(IID "org.libre-eda.leda.plugin" FILE "FilesystemNavigationView.json")
 
 public:
-    FileSystemNavigationPlugin(QObject *parent = nullptr);
+    explicit FileSystemNavigationPlugin(QObject *parent = nullptr);
     ~FileSystemNavigationPlugin();
 
     bool initialize(const QStringList &arguments, QString *errorString);

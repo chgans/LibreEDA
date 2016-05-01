@@ -10,7 +10,7 @@ class SchEditor : public IEditor
 {
     Q_OBJECT
 public:
-    explicit SchEditor(QObject *parent = 0);
+    explicit SchEditor(QObject *parent = nullptr);
     ~SchEditor();
 
 signals:

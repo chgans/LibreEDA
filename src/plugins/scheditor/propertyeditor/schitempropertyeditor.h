@@ -14,7 +14,7 @@ class SchItemPropertyEditor : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SchItemPropertyEditor(QWidget *parent = 0);
+    explicit SchItemPropertyEditor(QWidget *parent = nullptr);
     virtual ~SchItemPropertyEditor();
 
     SchItem *object() const;

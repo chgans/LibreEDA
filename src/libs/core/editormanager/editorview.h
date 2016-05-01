@@ -15,7 +15,7 @@ class CORE_EXPORT EditorView : public QWidget
     Q_OBJECT
 
 public:
-    explicit EditorView(QWidget *parent = 0);
+    explicit EditorView(QWidget *parent = nullptr);
     virtual ~EditorView();
 
     int editorCount() const;

@@ -16,7 +16,7 @@ public:
         RoundLens = 1
     };
 
-    explicit InsightLensWidget(QWidget *parent = 0);
+    explicit InsightLensWidget(QWidget *parent = nullptr);
 
     // TODO: Q_PROPERTY
 

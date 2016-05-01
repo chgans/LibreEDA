@@ -11,7 +11,7 @@ class LogViewerPlugin : public IPlugin
     Q_PLUGIN_METADATA(IID "org.libre-eda.leda.plugin" FILE "LogViewer.json")
 
 public:
-    LogViewerPlugin(QObject *parent = nullptr);
+    explicit LogViewerPlugin(QObject *parent = nullptr);
     ~LogViewerPlugin();
 
     bool initialize(const QStringList &arguments, QString *errorString);

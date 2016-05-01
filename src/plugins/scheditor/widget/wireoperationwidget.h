@@ -11,7 +11,7 @@ class WireOperationWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WireOperationWidget(QWidget *parent = 0);
+    explicit WireOperationWidget(QWidget *parent = nullptr);
 
     void setTool(GraphicsWireTool *tool);
 

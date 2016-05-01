@@ -14,7 +14,7 @@ class GraphicsPolygonTool : public AbstractGraphicsInsertTool
     Q_OBJECT
 
 public:
-    GraphicsPolygonTool(QObject *parent = 0);
+    explicit GraphicsPolygonTool(QObject *parent = nullptr);
     ~GraphicsPolygonTool();
 
 private:

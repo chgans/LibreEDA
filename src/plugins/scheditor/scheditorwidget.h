@@ -20,7 +20,7 @@ class SchEditorWidget: public AbstractEditor
     Q_OBJECT
 
 public:
-    SchEditorWidget(QWidget *parent = 0);
+    explicit SchEditorWidget(QWidget *parent = nullptr);
     ~SchEditorWidget();
 
     void activate(QMainWindow *win);

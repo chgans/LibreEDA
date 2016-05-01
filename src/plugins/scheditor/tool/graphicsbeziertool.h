@@ -11,8 +11,10 @@ class BrushSettingsWidget;
 
 class GraphicsBezierTool : public AbstractGraphicsInsertTool
 {
+    Q_OBJECT
+
 public:
-    GraphicsBezierTool(QObject *parent);
+    explicit GraphicsBezierTool(QObject *parent = nullptr);
     ~GraphicsBezierTool();
 
 private:

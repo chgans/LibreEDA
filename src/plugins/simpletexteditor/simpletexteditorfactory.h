@@ -7,7 +7,7 @@ class SimpleTextEditorFactory : public IEditorFactory
 {
     Q_OBJECT
 public:
-    explicit SimpleTextEditorFactory(QObject *parent = 0);
+    explicit SimpleTextEditorFactory(QObject *parent = nullptr);
 
 signals:
 

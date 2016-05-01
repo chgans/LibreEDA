@@ -11,7 +11,7 @@ class UTILS_EXPORT PenStyleComboBox : public QComboBox
     Q_OBJECT
 
 public:
-    explicit PenStyleComboBox(QWidget *parent = 0);
+    explicit PenStyleComboBox(QWidget *parent = nullptr);
 
     void addItem(Qt::PenStyle style);
 

@@ -12,7 +12,7 @@ class CORE_EXPORT IEditorFactory : public QObject
     Q_OBJECT
 
 public:
-    IEditorFactory(QObject *parent = 0);
+    explicit IEditorFactory(QObject *parent = nullptr);
     ~IEditorFactory();
 
     QString displayName() const;

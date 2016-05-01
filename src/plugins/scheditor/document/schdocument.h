@@ -17,7 +17,7 @@ class SchDocument: public QObject
 
 
 public:
-    explicit SchDocument(QObject *parent = 0);
+    explicit SchDocument(QObject *parent = nullptr);
 
     SchDocumentObject *rootObject();
     const SchDocumentObject *documentObject(const QUuid &uid) const;

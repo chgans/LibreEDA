@@ -14,7 +14,7 @@ class GraphicsEllipseTool : public AbstractGraphicsInsertTool
     Q_OBJECT
 
 public:
-    GraphicsEllipseTool(QObject *parent = 0);
+    explicit GraphicsEllipseTool(QObject *parent = nullptr);
     ~GraphicsEllipseTool();
 
 private:

@@ -17,7 +17,7 @@ class SchEditorDocument : public IDocument
 {
     Q_OBJECT
 public:
-    explicit SchEditorDocument(QObject *parent = 0);
+    explicit SchEditorDocument(QObject *parent = nullptr);
 
     bool load(QString *errorString, const QString &fileName);
 

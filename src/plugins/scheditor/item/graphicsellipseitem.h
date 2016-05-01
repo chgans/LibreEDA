@@ -17,7 +17,7 @@ public:
         NbHandles
     };
 
-    GraphicsEllipseItem(SchItem *parent = 0);
+    explicit GraphicsEllipseItem(SchItem *parent = nullptr);
     ~GraphicsEllipseItem();
 
     qreal xRadius() const;

@@ -270,4 +270,5 @@ void SchEditorWidget::keyPressEvent(QKeyEvent *event)
 
 void SchEditorWidget::keyReleaseEvent(QKeyEvent *event)
 {
+    Q_UNUSED(event)
 }

@@ -69,7 +69,7 @@ public:
     Q_DECLARE_FLAGS(Display_Flags, Display_Enum)
     Q_FLAGS(Display_Flags)
 
-    explicit ColorWheel(QWidget *parent = 0);
+    explicit ColorWheel(QWidget *parent = nullptr);
     ~ColorWheel();
 
     /// Get current color

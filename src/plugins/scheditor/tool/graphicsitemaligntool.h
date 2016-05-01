@@ -6,8 +6,10 @@
 
 class GraphicsItemAlignTool : public SchTool
 {
+    Q_OBJECT
+
 public:
-    GraphicsItemAlignTool();
+    explicit GraphicsItemAlignTool(QObject *parent = nullptr);
     ~GraphicsItemAlignTool();
 
 public slots:

@@ -8,7 +8,7 @@ class SchSettingsPage : public ISettingsPage
     Q_OBJECT
 
 public:
-    SchSettingsPage(QObject *parent);
+    explicit SchSettingsPage(QObject *parent = nullptr);
 
 private:
     QWidget *m_settingsWidget;

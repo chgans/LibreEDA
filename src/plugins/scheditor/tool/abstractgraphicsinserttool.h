@@ -17,8 +17,9 @@ class QAction;
 class AbstractGraphicsInsertTool : public AbstractGraphicsInteractiveTool
 {
     Q_OBJECT
+
 public:
-    AbstractGraphicsInsertTool(QObject *parent = 0);
+    explicit AbstractGraphicsInsertTool(QObject *parent = nullptr);
     ~AbstractGraphicsInsertTool();
 
     // Typ. mouse clicked, idx == 0

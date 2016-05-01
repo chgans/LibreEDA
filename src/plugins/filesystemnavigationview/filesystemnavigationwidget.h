@@ -9,9 +9,10 @@ class QFileSystemModel;
 
 class FileSystemNavigationWidget: public QWidget
 {
+    Q_OBJECT
 
 public:
-    FileSystemNavigationWidget(QWidget *parent = nullptr);
+    explicit FileSystemNavigationWidget(QWidget *parent = nullptr);
     ~FileSystemNavigationWidget();
 
     bool setCurrentDirectory(const QString &directory);

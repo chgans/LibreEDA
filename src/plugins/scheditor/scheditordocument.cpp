@@ -1,8 +1,6 @@
 #include "scheditordocument.h"
 #include "schscene.h"
 
-#include "command/additemcommand.h"
-
 #include "item/schitem.h"
 #include "item/graphicsbezieritem.h"
 #include "item/graphicscircleitem.h"

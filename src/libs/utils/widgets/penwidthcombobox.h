@@ -10,7 +10,7 @@ class UTILS_EXPORT PenWidthComboBox : public QComboBox
     Q_OBJECT
 
 public:
-    explicit PenWidthComboBox(QWidget *parent = 0);
+    explicit PenWidthComboBox(QWidget *parent = nullptr);
 
     void addItem(const QString &label, qreal width);
 

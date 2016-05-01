@@ -45,6 +45,11 @@ void PropertyEditorDockWidget::setObjects(QList<QObject *> objects)
     }
 }
 
+void PropertyEditorDockWidget::setItem(SchItem */*item*/)
+{
+
+}
+
 void PropertyEditorDockWidget::updateEditor(int)
 {
     if (m_objectComboBox->count() == 0) {

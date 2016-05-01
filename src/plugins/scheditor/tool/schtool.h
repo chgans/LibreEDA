@@ -22,7 +22,7 @@ class SchTool : public QObject
 {
     Q_OBJECT
 public:
-    explicit SchTool(QObject *parent = 0);
+    explicit SchTool(QObject *parent = nullptr);
     ~SchTool();
 
     SchView *view();

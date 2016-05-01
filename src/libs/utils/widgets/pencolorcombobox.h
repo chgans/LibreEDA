@@ -12,7 +12,7 @@ class UTILS_EXPORT PenColorComboBox : public QComboBox
     Q_OBJECT
 
 public:
-    PenColorComboBox(QWidget *parent = nullptr);
+    explicit PenColorComboBox(QWidget *parent = nullptr);
 
     void addItem(const QString &label, QColor color);
 

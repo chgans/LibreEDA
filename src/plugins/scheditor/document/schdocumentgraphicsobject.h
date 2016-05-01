@@ -10,7 +10,7 @@ class SchDocumentGraphicsObject : public SchDocumentObject
 {
     Q_GADGET
 public:
-    SchDocumentGraphicsObject(SchDocumentObject *parent = nullptr);
+    explicit SchDocumentGraphicsObject(SchDocumentObject *parent = nullptr);
 };
 
 

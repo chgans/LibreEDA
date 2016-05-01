@@ -16,7 +16,7 @@ class UTILS_EXPORT BrushSettingsWidget : public QWidget
     Q_PROPERTY(QBrush brush READ brush WRITE setBrush NOTIFY brushChanged)
 
 public:
-    explicit BrushSettingsWidget(QWidget *parent = 0);
+    explicit BrushSettingsWidget(QWidget *parent = nullptr);
 
     QBrush brush() const;
 

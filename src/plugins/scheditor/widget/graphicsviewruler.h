@@ -12,7 +12,7 @@ public:
     enum Alignment { Horizontal, Vertical };
     static const int BREADTH;
 
-    explicit GraphicsViewRuler(GraphicsViewRuler::Alignment alignment, QWidget *parent = 0);
+    explicit GraphicsViewRuler(GraphicsViewRuler::Alignment alignment, QWidget *parent = nullptr);
     ~GraphicsViewRuler();
 
     void setCursorRange(qreal first, qreal last);

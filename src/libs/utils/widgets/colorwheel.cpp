@@ -142,11 +142,11 @@ public:
     QColor (*color_from)(qreal,qreal,qreal,qreal);
     QColor (*rainbow_from_hue)(qreal);
 
-    Private(ColorWheel *widget)
+    explicit Private(ColorWheel *widget)
         : w(widget), hue(0), sat(0), val(0),
-        wheel_width(20), mouse_status(Nothing),
-        display_flags(FLAGS_DEFAULT),
-        color_from(&QColor::fromHsvF), rainbow_from_hue(&rainbow_hsv)
+          wheel_width(20), mouse_status(Nothing),
+          display_flags(FLAGS_DEFAULT),
+          color_from(&QColor::fromHsvF), rainbow_from_hue(&rainbow_hsv)
     { }
 
     /// Calculate outer wheel radius from idget center

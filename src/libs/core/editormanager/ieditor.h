@@ -16,7 +16,7 @@ class CORE_EXPORT IEditor : public QObject
 {
     Q_OBJECT
 public:
-    explicit IEditor(QObject *parent = 0);
+    explicit IEditor(QObject *parent = nullptr);
     ~IEditor();
 
     virtual bool open(QString *errorString, const QString &fileName) = 0;

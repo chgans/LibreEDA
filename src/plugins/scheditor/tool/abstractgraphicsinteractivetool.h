@@ -17,7 +17,7 @@ class AbstractGraphicsInteractiveTool: public SchTool
     Q_OBJECT
 
 public:
-    AbstractGraphicsInteractiveTool(QObject *parent = 0);
+    explicit AbstractGraphicsInteractiveTool(QObject *parent = nullptr);
     ~AbstractGraphicsInteractiveTool();
 
     QWidget *optionWidget();

@@ -9,7 +9,7 @@
 class LogSortFilterProxyModel : public QSortFilterProxyModel
 {
 public:
-    LogSortFilterProxyModel(QObject *parent);
+    explicit LogSortFilterProxyModel(QObject *parent = nullptr);
     ~LogSortFilterProxyModel();
 
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;

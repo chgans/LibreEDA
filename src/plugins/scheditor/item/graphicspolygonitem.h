@@ -11,7 +11,7 @@ class GraphicsPolygonItem : public SchItem
     Q_PROPERTY(QPolygonF polygon READ polygon WRITE setPolygon NOTIFY polygonChanged)
 
 public:
-    GraphicsPolygonItem(SchItem *parent = 0);
+    explicit GraphicsPolygonItem(SchItem *parent = nullptr);
     ~GraphicsPolygonItem();
 
     Qt::FillRule fillRule() const;

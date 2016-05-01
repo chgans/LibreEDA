@@ -18,7 +18,7 @@ class SettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    SettingsDialog(QWidget *parent);
+    explicit SettingsDialog(QWidget *parent = nullptr);
 
 private slots:
     void currentCategoryChanged(QListWidgetItem *current,

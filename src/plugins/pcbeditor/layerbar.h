@@ -16,7 +16,7 @@ class LayerTabBar : public QTabBar
 public:
     typedef std::function<void(QMenu*)> MenuProvider;
 
-    explicit LayerTabBar(QWidget *parent = 0);
+    explicit LayerTabBar(QWidget *parent = nullptr);
     ~LayerTabBar();
 
     DesignLayer *currentLayer() const;

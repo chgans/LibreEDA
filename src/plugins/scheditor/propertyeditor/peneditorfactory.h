@@ -8,7 +8,7 @@ class PenEditorFactory: public QtAbstractEditorFactory<PenPropertyManager>
 {
     Q_OBJECT
 public:
-    PenEditorFactory(QObject *parent = 0);
+    explicit PenEditorFactory(QObject *parent = nullptr);
     ~PenEditorFactory();
 
     QtEnumEditorFactory *subEnumEditorFactory();

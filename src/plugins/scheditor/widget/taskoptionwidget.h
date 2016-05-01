@@ -9,7 +9,7 @@ class TaskOptionWidget : public QGroupBox
 {
     Q_OBJECT
 public:
-    explicit TaskOptionWidget(QWidget *parent = 0);
+    explicit TaskOptionWidget(QWidget *parent = nullptr);
 
     void setCentralWidget(QWidget *widget);
 

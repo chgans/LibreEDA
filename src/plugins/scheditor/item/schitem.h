@@ -33,7 +33,7 @@ class SchItem: public QGraphicsObject, public IGraphicsItemObserver
     Q_PROPERTY(bool yMirrored READ isYMirrored WRITE setYMirrored NOTIFY yMirroredChanged)
 
 public:
-    SchItem(SchItem *parent = 0);
+    explicit SchItem(SchItem *parent = nullptr);
     virtual ~SchItem();
 
     virtual SchItem *clone() = 0;

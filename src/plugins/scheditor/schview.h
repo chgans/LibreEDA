@@ -36,7 +36,7 @@ public:
     };
     Q_ENUM(OriginMark)
 
-    SchView(QWidget *parent = 0);
+    explicit SchView(QWidget *parent = nullptr);
     ~SchView();
 
     SchScene *scene() const;

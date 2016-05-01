@@ -8,7 +8,7 @@ class SchDocument;
 class DocumentReader
 {
 public:
-    DocumentReader(const QByteArray &data);
+    explicit DocumentReader(const QByteArray &data);
 
     SchDocument *read();
 

@@ -13,7 +13,7 @@ class QToolBar;
 class CORE_EXPORT OutputDockWidget : public QDockWidget
 {
 public:
-    OutputDockWidget(QWidget *parent = nullptr);
+    explicit OutputDockWidget(QWidget *parent = nullptr);
     ~OutputDockWidget();
 
     void setFactories(const QList<IOutputPaneFactory*> &factories);

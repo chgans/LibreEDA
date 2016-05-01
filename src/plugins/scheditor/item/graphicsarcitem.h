@@ -23,9 +23,9 @@ public:
         SpanAngleHandle
     };
 
-    GraphicsArcItem(SchItem *parent = 0);
-    GraphicsArcItem(qreal xRadius, qreal yRadius, SchItem *parent = 0);
-    GraphicsArcItem(qreal xRadius, qreal yRadius, int startAngle, int spanAngle, SchItem *parent = 0);
+    explicit GraphicsArcItem(SchItem *parent = nullptr);
+    explicit GraphicsArcItem(qreal xRadius, qreal yRadius, SchItem *parent = nullptr);
+    explicit GraphicsArcItem(qreal xRadius, qreal yRadius, int startAngle, int spanAngle, SchItem *parent = nullptr);
     ~GraphicsArcItem();
 
     qreal xRadius() const;

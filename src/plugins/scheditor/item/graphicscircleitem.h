@@ -15,7 +15,7 @@ public:
         NbHandles
     };
 
-    explicit GraphicsCircleItem(SchItem *parent = 0);
+    explicit GraphicsCircleItem(SchItem *parent = nullptr);
     ~GraphicsCircleItem();
 
     qreal radius() const;

@@ -15,7 +15,7 @@ class GraphicsWireItem : public SchItem
     Q_PROPERTY(QList<QPointF> points READ points WRITE setPoints NOTIFY pointsChanged)
 
 public:
-    GraphicsWireItem(SchItem *parent = 0);
+    explicit GraphicsWireItem(SchItem *parent = nullptr);
     ~GraphicsWireItem();
 
     QList<QPointF> points() const;

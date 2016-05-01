@@ -41,7 +41,7 @@ enum GraphicsHandleBehaviour {
 class AbstractGraphicsHandle: public QGraphicsPathItem, public IGraphicsObservableItem
 {
 public:
-    AbstractGraphicsHandle(SchItem *parent);
+    explicit AbstractGraphicsHandle(SchItem *parent = nullptr);
     virtual ~AbstractGraphicsHandle();
 
     QCursor handleCursor() const;

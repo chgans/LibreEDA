@@ -8,7 +8,7 @@
 class GraphicsLine : public GraphicsItem
 {
 public:
-    GraphicsLine(GraphicsItem *parent = nullptr);
+   explicit  GraphicsLine(GraphicsItem *parent = nullptr);
     ~GraphicsLine();
 
     QLineF line() const;

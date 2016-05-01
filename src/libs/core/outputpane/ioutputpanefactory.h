@@ -9,7 +9,7 @@ class CORE_EXPORT IOutputPaneFactory : public QObject
 {
     Q_OBJECT
 public:
-    explicit IOutputPaneFactory(QObject *parent = 0);
+    explicit IOutputPaneFactory(QObject *parent = nullptr);
     virtual ~IOutputPaneFactory();
 
     void setDisplayName(const QString &displayName);

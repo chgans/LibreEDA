@@ -24,7 +24,7 @@ public:
     };
     Q_DECLARE_FLAGS(Axes, Axis)
 
-    explicit CoordinateWidget(QWidget *parent = 0);
+    explicit CoordinateWidget(QWidget *parent = nullptr);
 
     QPointF coordinate() const;
 

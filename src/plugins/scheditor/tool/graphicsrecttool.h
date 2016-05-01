@@ -13,7 +13,7 @@ class GraphicsRectTool : public AbstractGraphicsInsertTool
     Q_OBJECT
 
 public:
-    GraphicsRectTool(QObject *parent);
+    explicit GraphicsRectTool(QObject *parent = nullptr);
     ~GraphicsRectTool();
 
 protected:

@@ -16,7 +16,7 @@ class QPainter;
 class GraphicsItem : public QGraphicsItem
 {
 public:
-    GraphicsItem(GraphicsItem *parent = nullptr);
+    explicit GraphicsItem(GraphicsItem *parent = nullptr);
     ~GraphicsItem();
 
     int layer() const;

@@ -19,7 +19,7 @@ public:
         P2Handle,
         NbHandles
     };
-    GraphicsLineItem(SchItem *parent = 0);
+    explicit GraphicsLineItem(SchItem *parent = nullptr);
 
     QLineF line() const;
 

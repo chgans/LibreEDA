@@ -8,7 +8,7 @@ class SchDocumentObject
     Q_GADGET
 
 public:
-    SchDocumentObject(SchDocumentObject *parent = nullptr);
+    explicit SchDocumentObject(SchDocumentObject *parent = nullptr);
 
 private:
     SchDocumentObject *m_parent;

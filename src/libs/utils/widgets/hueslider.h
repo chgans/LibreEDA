@@ -37,8 +37,8 @@ class UTILS_EXPORT HueSlider : public GradientSlider
     Q_PROPERTY(qreal colorValue READ colorValue WRITE setColorValue)
 
 public:
-    explicit HueSlider(QWidget *parent = 0);
-    explicit HueSlider(Qt::Orientation orientation, QWidget *parent = 0);
+    explicit HueSlider(QWidget *parent = nullptr);
+    explicit HueSlider(Qt::Orientation orientation, QWidget *parent = nullptr);
     ~HueSlider();
 
     qreal colorSaturation() const;

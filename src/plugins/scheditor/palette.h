@@ -6,10 +6,12 @@
 
 class Palette: public QObject
 {
+    Q_OBJECT
+
     Q_ENUMS(Mode)
 
 public:
-    Palette(QObject *parent = nullptr);
+    explicit Palette(QObject *parent = nullptr);
     ~Palette();
 
     enum Mode {

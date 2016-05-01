@@ -41,8 +41,8 @@ public:
         _EndDisplayMode = HideOtherLayers + 1
     };
 
-    explicit MainView(QWidget *parent = 0);
-    explicit MainView(Scene *layoutScene, QWidget *parent = 0);
+    explicit MainView(QWidget *parent = nullptr);
+    explicit MainView(Scene *layoutScene, QWidget *parent = nullptr);
 
     void addLayer(DesignLayer *layer);
     void removeLayer(DesignLayer *layer);

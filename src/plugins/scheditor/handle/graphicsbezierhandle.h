@@ -12,7 +12,7 @@ class GraphicsBezierHandle:
         public IGraphicsItemObserver
 {
 public:
-    GraphicsBezierHandle(SchItem *parent = 0);
+    explicit GraphicsBezierHandle(SchItem *parent = nullptr);
     ~GraphicsBezierHandle();
 
     enum HandleType {

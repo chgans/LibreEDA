@@ -7,7 +7,7 @@ class SchEditorFactory : public IEditorFactory
 {
     Q_OBJECT
 public:
-    explicit SchEditorFactory(QObject *parent = 0);
+    explicit SchEditorFactory(QObject *parent = nullptr);
 
 signals:
 

@@ -9,7 +9,7 @@ class LayoutView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit LayoutView(Scene *scene, QWidget *parent = 0);
+    explicit LayoutView(Scene *scene, QWidget *parent = nullptr);
 
     Scene *layoutScene() const;
 

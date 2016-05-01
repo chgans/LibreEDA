@@ -9,7 +9,7 @@ class PcbEditorPlugin : public IPlugin
     Q_PLUGIN_METADATA(IID "org.libre-eda.leda.plugin" FILE "PcbEditor.json")
 
 public:
-    PcbEditorPlugin(QObject *parent = nullptr);
+    explicit PcbEditorPlugin(QObject *parent = nullptr);
     ~PcbEditorPlugin();
 
     bool initialize(const QStringList &arguments, QString *errorString);

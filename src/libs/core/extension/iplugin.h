@@ -12,7 +12,7 @@ class CORE_EXPORT IPlugin : public QObject
 {
     Q_OBJECT
 public:
-    explicit IPlugin(QObject *parent = 0);
+    explicit IPlugin(QObject *parent = nullptr);
     virtual ~IPlugin();
 
     virtual bool initialize(const QStringList &arguments, QString *errorString) = 0;

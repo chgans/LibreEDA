@@ -7,7 +7,7 @@ class SchItemPropertyManager : public QtVariantPropertyManager
 {
     Q_OBJECT
 public:
-    SchItemPropertyManager(QObject *parent = 0);
+    explicit SchItemPropertyManager(QObject *parent = nullptr);
     ~SchItemPropertyManager();
 
 };

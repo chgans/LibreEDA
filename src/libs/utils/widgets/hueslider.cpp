@@ -32,7 +32,7 @@ public:
     qreal saturation;
     qreal value;
 
-    Private(HueSlider *widget) : w(widget), saturation(1), value(1)
+    explicit Private(HueSlider *widget) : w(widget), saturation(1), value(1)
     {
         updateGradient();
     }

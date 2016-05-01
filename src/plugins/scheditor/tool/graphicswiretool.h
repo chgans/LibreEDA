@@ -14,7 +14,7 @@ class GraphicsWireTool : public AbstractGraphicsInsertTool
     Q_OBJECT
 
 public:
-    GraphicsWireTool(QObject *parent = 0);
+    explicit GraphicsWireTool(QObject *parent = nullptr);
     ~GraphicsWireTool();
 
 private:
