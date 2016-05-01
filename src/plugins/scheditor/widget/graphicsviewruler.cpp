@@ -94,7 +94,6 @@ void GraphicsViewRuler::paintEvent(QPaintEvent *event)
     int nbLocalStep = length()/minLocalStep;
     if (nbLocalStep <= 0)
         return;
-    int localStep = length()/nbLocalStep;
     qreal logicalRange = (m_lastPos - m_firstPos);
     qreal logicalStep = logicalRange/nbLocalStep;
     qreal logicalMinorStep = std::pow(10.0f, floor(log10(logicalStep)));

@@ -4,9 +4,15 @@
 
 // FIXME
 static LogModel *logModel = nullptr;
+static QtMessageHandler previousHandler = nullptr;
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
+    if (previousHandler != nullptr)
+    {
+        (*previousHandler)(type, context, msg);
+    }
+
     if (logModel == nullptr)
         return;
 
@@ -18,7 +24,7 @@ LogViewerPlugin::LogViewerPlugin(QObject *parent):
 {
     if (logModel == nullptr) {
         logModel = new LogModel;
-        qInstallMessageHandler(myMessageOutput);
+        previousHandler = qInstallMessageHandler(myMessageOutput);
     }
 }
 

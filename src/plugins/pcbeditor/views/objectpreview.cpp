@@ -6,14 +6,14 @@
 #include <QDebug>
 
 ObjectPreview::ObjectPreview(QWidget *parent) :
-    QGraphicsView(parent)
+    QGraphicsView(parent),
+    m_object(nullptr)
 {
     //setAttribute(Qt::WA_TransparentForMouseEvents, true);
     setInteractive(false);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setOptimizationFlag(QGraphicsView::IndirectPainting, true);
-    m_object = 0;
 }
 
 void ObjectPreview::setObjectToPreview(QGraphicsItem *item)

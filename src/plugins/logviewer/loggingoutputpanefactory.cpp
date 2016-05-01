@@ -2,7 +2,7 @@
 #include "logwidget.h"
 
 LoggingOutputPaneFactory::LoggingOutputPaneFactory(QObject *parent):
-    IOutputPaneFactory(parent)
+    IOutputPaneFactory(parent), m_logModel(nullptr)
 {
     setPriority(8);
     setDisplayName("General Messages");

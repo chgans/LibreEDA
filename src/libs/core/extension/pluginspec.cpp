@@ -168,11 +168,9 @@ int versionCompare(const QString &version1, const QString &version2)
         return 0;
     if (!reg2.exactMatch(version2))
         return 0;
-    int number1;
-    int number2;
     for (int i = 0; i < 4; ++i) {
-        number1 = reg1.cap(i+1).toInt();
-        number2 = reg2.cap(i+1).toInt();
+        int number1 = reg1.cap(i+1).toInt();
+        int number2 = reg2.cap(i+1).toInt();
         if (number1 < number2)
             return -1;
         if (number1 > number2)

@@ -89,14 +89,21 @@ void ObjectPropertyEditor::populateBrowser(QObject *object, const QMetaObject *m
                 QMetaEnum metaEnum = metaProperty.enumerator();
                 QStringList enumNames;
                 int enumValue = metaProperty.read(object).toInt();
-                int enumIndex;
+                int enumIndex = -1;
                 for (int i = 0; i < metaEnum.keyCount(); i++) {
                     if (enumValue == metaEnum.value(i))
                         enumIndex = i;
                     enumNames.append(QLatin1String(metaEnum.key(i)));
                 }
                 m_manager->setAttribute(property, QLatin1String("enumNames"), enumNames);
-                m_manager->setValue(property, enumIndex);
+                if (enumIndex == -1)
+                {
+                    qCWarning(LogPropEditor2) << QString("Enum index/value not found for value of %1").arg(property->propertyName());
+                }
+                else
+                {
+                    m_manager->setValue(property, enumIndex);
+                }
             }
         }
         else if (metaProperty.type() == QVariant::Pen) {
@@ -147,5 +154,6 @@ void ObjectPropertyEditor::setObjectPropertyValue(QtProperty *property, const QV
 
 void ObjectPropertyEditor::setBrowserPropertyValue(QtProperty *property, const QVariant &value)
 {
-
+    Q_UNUSED(property);
+    Q_UNUSED(value);
 }

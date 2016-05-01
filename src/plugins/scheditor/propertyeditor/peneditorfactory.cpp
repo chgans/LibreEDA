@@ -30,6 +30,8 @@ void PenEditorFactory::connectPropertyManager(PenPropertyManager *manager)
 
 QWidget *PenEditorFactory::createEditor(PenPropertyManager *manager, QtProperty *property, QWidget *parent)
 {
+    Q_UNUSED(manager);
+
     QtAbstractEditorFactoryBase *factory = m_comboBoxFactory;
     return factory->createEditor(property, parent);
 }

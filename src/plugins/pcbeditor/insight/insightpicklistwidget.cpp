@@ -78,8 +78,8 @@ void InsightPickListWidget::setPickList(QGraphicsScene *scene, QList<QGraphicsIt
     m_view->setScene(scene);
 
     m_table->setRowCount(list.size());
-    QTableWidgetItem *item;
     for (int i=0; i<list.size(); ++i) {
+        QTableWidgetItem *item;
         item = new QTableWidgetItem(QIcon(":/icons/chip-package.png"), "chip");
         item->setData(Qt::UserRole, QVariant::fromValue(list.at(i)));
         item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);

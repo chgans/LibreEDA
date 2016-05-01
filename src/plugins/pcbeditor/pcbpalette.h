@@ -198,9 +198,9 @@ public:
     PcbPalette &operator=(PcbPalette &other);
     bool operator==(const PcbPalette &p) const;
 
-    QList<ColorRole> allValidColorRoles() const;
-    QString colorRoleLabel(ColorRole role) const;
-    QString colorRoleToAltiumName(ColorRole role) const;
+    static QList<ColorRole> allValidColorRoles();
+    static QString colorRoleLabel(ColorRole role);
+    static QString colorRoleToAltiumName(ColorRole role);
 
 private:
     friend class PcbPaletteManager;

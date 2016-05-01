@@ -30,7 +30,6 @@ private:
     void setBoundingRectDirty();
     void computeBoundingRect() const;
     mutable bool m_boundingRectIsDirty;
-    mutable QRectF m_boundingRect;
 
     void setShapeDirty();
     void computeShape() const;

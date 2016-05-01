@@ -20,7 +20,6 @@ public:
 
 private:
     QTabWidget *m_tabWidget;
-    QToolBar *m_toolBar;
 };
 
 #endif // OUTPUTDOCKWIDGET_H

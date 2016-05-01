@@ -4,7 +4,7 @@
 #include <QFile>
 
 SimpleTextDocument::SimpleTextDocument():
-    m_textDocument(new QTextDocument)
+    m_textDocument(new QTextDocument(this))
 {
 
 }

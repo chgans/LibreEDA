@@ -7,7 +7,7 @@
 
 SimpleTextEditor::SimpleTextEditor(QObject *parent) :
     IEditor(parent),
-    m_textEdit(new QTextEdit)
+    m_textEdit(new QTextEdit), m_document(nullptr)
 {
     setWidget(m_textEdit);
 }

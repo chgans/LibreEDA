@@ -1,6 +1,6 @@
 #include "ioutputpanefactory.h"
 
-IOutputPaneFactory::IOutputPaneFactory(QObject *parent) : QObject(parent)
+IOutputPaneFactory::IOutputPaneFactory(QObject *parent) : QObject(parent), m_priority(-1)
 {
 
 }

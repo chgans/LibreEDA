@@ -25,7 +25,6 @@ protected:
 
 private:
     QGraphicsItem *m_object;
-    bool m_movable;
 };
 
 #endif // OBJECTPREVIEW_H

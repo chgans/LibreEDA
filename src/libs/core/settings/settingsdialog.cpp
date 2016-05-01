@@ -24,7 +24,7 @@ SettingsDialog::SettingsDialog(QWidget *parent):
 }
 
 void SettingsDialog::currentCategoryChanged(QListWidgetItem *current,
-                                            QListWidgetItem *previous)
+                                            QListWidgetItem */*previous*/)
 {
     QTabWidget *tabWidget = m_listItemToTabWidget.value(current);
     m_stackedLayout->setCurrentWidget(tabWidget);

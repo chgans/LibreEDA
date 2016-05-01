@@ -1,6 +1,7 @@
 #include "schitempropertyeditor.h"
 
-SchItemPropertyEditor::SchItemPropertyEditor(QWidget *parent) : QWidget(parent)
+SchItemPropertyEditor::SchItemPropertyEditor(QWidget *parent) :
+    QWidget(parent), m_object(nullptr)
 {
 
 }

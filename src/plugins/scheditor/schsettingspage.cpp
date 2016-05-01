@@ -2,7 +2,7 @@
 #include "widget/settingswidget.h"
 
 SchSettingsPage::SchSettingsPage(QObject *parent):
-    ISettingsPage(parent)
+    ISettingsPage(parent), m_settingsWidget(nullptr)
 {
     setPageName("General");
     setCategoryName("Schematics");

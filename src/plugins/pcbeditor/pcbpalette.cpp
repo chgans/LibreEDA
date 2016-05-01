@@ -109,7 +109,7 @@ bool PcbPalette::operator==(const PcbPalette &p) const
     return (memcmp(this->m_palette, p.m_palette, sizeof(m_palette)) == 0);
 }
 
-QList<PcbPalette::ColorRole> PcbPalette::allValidColorRoles() const
+QList<PcbPalette::ColorRole> PcbPalette::allValidColorRoles()
 {
     QList<PcbPalette::ColorRole> list;
     for (int i=1; i<=124; ++i)
@@ -117,7 +117,7 @@ QList<PcbPalette::ColorRole> PcbPalette::allValidColorRoles() const
     return list;
 }
 
-QString PcbPalette::colorRoleLabel(PcbPalette::ColorRole role) const
+QString PcbPalette::colorRoleLabel(PcbPalette::ColorRole role)
 {
     if (role == SignalLayer1)
         return QString("Top Layer");
@@ -163,7 +163,7 @@ QString PcbPalette::colorRoleLabel(PcbPalette::ColorRole role) const
 
 }
 
-QString PcbPalette::colorRoleToAltiumName(PcbPalette::ColorRole role) const
+QString PcbPalette::colorRoleToAltiumName(PcbPalette::ColorRole role)
 {
     if (role == SignalLayer1)
         return QString("LayerColors/TopLayer");

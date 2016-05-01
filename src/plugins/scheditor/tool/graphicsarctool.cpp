@@ -93,7 +93,7 @@ bool GraphicsArcTool::removePoint(int idx, const QPointF &pos)
     default:
         // Fail loudly
         Q_ASSERT(idx < 4);
-        break;
+        return false;
     }
     QPointF p = m_item->mapFromScene(pos);
     m_item->handleAt(handleId)->setPos(p);

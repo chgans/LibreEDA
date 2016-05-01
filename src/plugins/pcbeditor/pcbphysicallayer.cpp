@@ -1,6 +1,6 @@
 #include "pcbphysicallayer.h"
 
-PcbPhysicalLayer::PcbPhysicalLayer()
+PcbPhysicalLayer::PcbPhysicalLayer(): m_thickness(0.0f)
 {
 }
 

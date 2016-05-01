@@ -106,8 +106,8 @@ bool EditorManager::closeEditor(IEditor *editor)
         return false;
     emit instance()->editorAboutToClose(editor);
     m_filePathEditorMap.remove(editor->document()->filePath());// FIXME
-    delete editor;
     emit instance()->editorClosed(editor);
+    delete editor;
     return true;
 }
 

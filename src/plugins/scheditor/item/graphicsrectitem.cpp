@@ -151,7 +151,6 @@ void GraphicsRectItem::itemNotification(IGraphicsObservableItem *item)
     case TopLeft:
         rect.setTopLeft(handle->pos());
         break;
-        break;
     case BottomRight:
         rect.setBottomRight(handle->pos());
         break;

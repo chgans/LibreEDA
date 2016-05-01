@@ -163,6 +163,8 @@ void PenPropertyManager::setValue(QtProperty *property, const QPen &pen)
 
 QString PenPropertyManager::valueText(const QtProperty *property) const
 {
+    Q_UNUSED(property)
+
     return QString(); //FIXME: [#rgb, ...]
 }
 
@@ -248,6 +250,6 @@ void PenPropertyManager::slotColorChanged(QtProperty *property, const QColor &va
 
 void PenPropertyManager::slotPropertyDestroyed(QtProperty *property)
 {
-
+    Q_UNUSED(property);
 }
 

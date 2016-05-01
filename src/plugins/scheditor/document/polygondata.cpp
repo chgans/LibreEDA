@@ -1,6 +1,7 @@
 #include "polygondata.h"
 
-PolygonData::PolygonData()
+PolygonData::PolygonData():
+    m_isClosed(false)
 {
 
 }
