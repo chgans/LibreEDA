@@ -4,6 +4,7 @@
 #include "core/core_global.h"
 
 #include <QObject>
+class QPainter;
 
 class CORE_EXPORT IDocument : public QObject
 {
@@ -18,6 +19,7 @@ public:
     QString id() const;
 
     virtual bool save(QString *errorString, const QString &fileName = QString()) = 0;
+    virtual void render(QPainter *painter) = 0;
 
     const QString filePath() const;
     virtual void setFilePath(const QString &filePath);

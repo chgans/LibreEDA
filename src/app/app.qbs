@@ -8,7 +8,7 @@ LedaProduct {
     consoleApplication: qbs.debugInformation
     installDir: project.leda_app_path
 
-    Depends { name: "Qt"; submodules: ["core", "widgets", "network"] }
+    Depends { name: "Qt"; submodules: ["core", "widgets", "network", "printsupport"] }
     Depends { name: "Utils" }
     Depends { name: "Core" }
 

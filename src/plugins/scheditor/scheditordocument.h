@@ -42,6 +42,7 @@ private:
     // IDocument interface
 public:
     bool save(QString *errorString, const QString &fileName);
+    void render(QPainter *painter);
 };
 
 #endif // SCHEDITORDOCUMENT_H

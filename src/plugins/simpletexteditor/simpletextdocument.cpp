@@ -40,3 +40,8 @@ bool SimpleTextDocument::save(QString *errorString, const QString &fileName)
     return true;
 }
 
+void SimpleTextDocument::render(QPainter *painter)
+{
+    Q_UNUSED(painter);
+}
+

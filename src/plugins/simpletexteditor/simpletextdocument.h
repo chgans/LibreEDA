@@ -18,6 +18,7 @@ public:
     // IDocument interface
 public:
     bool save(QString *errorString, const QString &fileName);
+    void render(QPainter *painter);
 
 private:
     QTextDocument *m_textDocument;

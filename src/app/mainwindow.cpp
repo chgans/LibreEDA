@@ -22,6 +22,9 @@
 #include <QMenu>
 #include <QAction>
 #include <QIcon>
+#include <QPrinter>
+#include <QPrintDialog>
+#include <QPainter>
 
 #include <QLoggingCategory>
 
@@ -158,7 +161,17 @@ void MainWindow::onCloseAllFilesRequested()
 
 void MainWindow::onPrintCurrentFileRequested()
 {
+    if (m_currentEditor == nullptr || m_currentEditor->document() == nullptr)
+    {
+        return;
+    }
 
+    QPrinter printer;
+    QPrintDialog printDialog(&printer, this);
+    if (printDialog.exec() == QDialog::Accepted) {
+        QPainter painter(&printer);
+        m_currentEditor->document()->render(&painter);
+    }
 }
 
 void MainWindow::onApplicationExitRequested()

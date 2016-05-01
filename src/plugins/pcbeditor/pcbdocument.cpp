@@ -138,3 +138,8 @@ bool PcbDocument::save(QString *errorString, const QString &fileName)
     Q_UNUSED(fileName);
     return false;
 }
+
+void PcbDocument::render(QPainter *painter)
+{
+    Q_UNUSED(painter);
+}

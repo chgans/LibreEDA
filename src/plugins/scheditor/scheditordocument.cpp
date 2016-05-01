@@ -162,3 +162,15 @@ bool SchEditorDocument::save(QString *errorString, const QString &fileName)
     Q_UNUSED(fileName);
     return true;
 }
+
+void SchEditorDocument::render(QPainter *painter)
+{
+    if (m_scene == nullptr)
+    {
+        return;
+    }
+
+    qCDebug(Log) << QString("Scene rect:") << m_scene->sceneRect()
+                 << QString("Painter rect:") << painter->viewport();
+    m_scene->render(painter);
+}

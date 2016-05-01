@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("libreeda.org");
     QCoreApplication::setApplicationName("leda");
 
-    QIcon::setThemeName("breeze");
+    // QIcon::setThemeName("breeze");
 
     // Loading plugins
     PluginManager::setPluginIID("org.libre-eda.leda.plugin");
