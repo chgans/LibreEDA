@@ -83,6 +83,7 @@ LedaPlugin {
         "propertyeditor/schitempropertyeditor.h",
         "propertyeditor/schitempropertymanager.cpp",
         "propertyeditor/schitempropertymanager.h",
+        "scheditor.qmodel",
         "scheditordocument.cpp",
         "scheditordocument.h",
         "schsettingspage.cpp",
