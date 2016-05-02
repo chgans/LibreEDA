@@ -60,7 +60,7 @@ Project {
     qbsSearchPaths: "qbs"
 
     references: [
-        "doc/doc.qbs",
+        //"doc/doc.qbs",
         "src/src.qbs"
     ]
 }
