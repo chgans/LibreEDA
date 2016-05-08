@@ -184,8 +184,6 @@ void SettingsWidget::updateGuiScrollBars()
         ui->scrollBarsCheckBox->setChecked(true);
         ui->scrollBarsAsNeededCheckBox->setChecked(false);
         break;
-    default:
-        break;
     }
     ui->scrollBarsAsNeededCheckBox->setEnabled(ui->scrollBarsCheckBox->isChecked());
 }
@@ -219,8 +217,6 @@ void SettingsWidget::updateGuiMouseCursor()
     case SchView::LargeMouseCursor:
         ui->cusorCrosshairCheckBox->setChecked(true);
         ui->largeCursorCrosshairCheckBox->setChecked(true);
-    default:
-        break;
     }
     ui->largeCursorCrosshairCheckBox->setEnabled(ui->cusorCrosshairCheckBox->isChecked());
 }
@@ -253,8 +249,6 @@ void SettingsWidget::updateGuiOriginMark()
     case SchView::LargeOriginMark:
         ui->originCheckBox->setChecked(true);
         ui->largeOriginAxisCheckBox->setChecked(true);
-    default:
-        break;
     }
     ui->largeOriginAxisCheckBox->setEnabled(ui->originCheckBox->isChecked());
 }
