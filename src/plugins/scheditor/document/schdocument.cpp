@@ -11,14 +11,56 @@
 // Eagle symbol: polygon, wire, text, pin, circle, rectangle, frame
 // gEDA symbol: line, picture, box, circle, arc, text, pin
 // Kicad symbol: arc, circle, polygon, rectangle, text, bezier, pin
-SchDocument::SchDocument(QObject *parent):
-    QObject(parent)
+
+
+
+
+SymbolDocument::SymbolDocument(QObject *parent):
+    QObject(parent), m_itemIndex(0)
 {
 
 }
 
-const SchDocumentObject *SchDocument::documentObject(const QUuid &uid) const
+QList<uint64_t> SymbolDocument::items() const
 {
-    Q_UNUSED(uid);
-    return nullptr;
+    return m_items.keys();
+}
+
+ItemData *SymbolDocument::item(uint64_t id) const
+{
+    if (!m_items.contains(id))
+        return nullptr;
+    return m_items.value(id);
+}
+
+QPointF SymbolDocument::origin() const
+{
+    return m_origin;
+}
+
+uint64_t SymbolDocument::addItem(ItemData *data)
+{
+    m_itemIndex++;
+    data->itemId = m_itemIndex;
+    m_items.insert(data->itemId, data);
+    emit itemAdded(data->itemId);
+    return data->itemId;
+}
+
+void SymbolDocument::removeItem(uint64_t id)
+{
+    if (!m_items.contains(id))
+        return;
+    ItemData *item = m_items.value(id);
+    m_items.remove(id);
+    emit itemRemoved(id);
+    delete item;
+}
+
+void SymbolDocument::setOrigin(const QPointF &origin)
+{
+    if (m_origin == origin)
+        return;
+    m_origin = origin;
+    emit originChanged();
 }
