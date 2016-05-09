@@ -16,7 +16,7 @@ public:
 signals:
 
 public slots:
-
+    void loadSettings();
 
     // IEditor interface
 public:

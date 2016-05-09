@@ -10,7 +10,22 @@ SchEditorFactory::SchEditorFactory(QObject *parent) :
     setDisplayName("SCH editor");
 }
 
+void SchEditorFactory::loadSettings()
+{
+    for (auto editor: m_editors)
+    {
+        editor->loadSettings();
+    }
+}
+
 IEditor *SchEditorFactory::createEditor()
 {
-    return new SchEditor();
+    auto editor = new SchEditor();
+    editor->loadSettings();
+    m_editors.append(editor);
+    connect(editor, &QObject::destroyed,
+            this, [this, editor](QObject *) {
+        m_editors.removeOne(editor);
+    });
+    return editor;
 }

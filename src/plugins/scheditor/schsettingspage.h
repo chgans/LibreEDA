@@ -3,6 +3,8 @@
 
 #include "core/settings/isettingspage.h"
 
+class SettingsWidget;
+
 class SchSettingsPage : public ISettingsPage
 {
     Q_OBJECT
@@ -10,8 +12,11 @@ class SchSettingsPage : public ISettingsPage
 public:
     explicit SchSettingsPage(QObject *parent = nullptr);
 
+signals:
+    void settingsChanged();
+
 private:
-    QWidget *m_settingsWidget;
+    SettingsWidget *m_widget;
 
     // ISettingsPage interface
 public:

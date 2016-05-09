@@ -8,6 +8,8 @@
 class QMainWindow;
 class QSettings;
 
+// FIXME: Get rid of this, activate/desactivate is part of IEditor,
+//  and read/write settings should be manage in a custom way by plugins
 class CORE_EXPORT AbstractEditor : public QWidget
 {
     Q_OBJECT

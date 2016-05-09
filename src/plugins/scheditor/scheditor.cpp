@@ -17,6 +17,11 @@ SchEditor::~SchEditor()
     delete m_document;
 }
 
+void SchEditor::loadSettings()
+{
+
+}
+
 
 bool SchEditor::open(QString *errorString, const QString &fileName)
 {

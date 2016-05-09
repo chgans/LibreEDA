@@ -3,6 +3,8 @@
 
 #include "core/editormanager/ieditorfactory.h"
 
+class SchEditor;
+
 class SchEditorFactory : public IEditorFactory
 {
     Q_OBJECT
@@ -12,6 +14,10 @@ public:
 signals:
 
 public slots:
+    void loadSettings();
+
+private:
+    QList<SchEditor *> m_editors;
 
     // IEditorFactory interface
 public:

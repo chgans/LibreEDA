@@ -18,8 +18,14 @@ bool SchEditorPlugin::initialize(const QStringList &arguments, QString *errorStr
     Q_UNUSED(arguments);
     Q_UNUSED(errorString);
 
-    addObject(new SchEditorFactory(this));
-    addObject(new SchSettingsPage(this));
+    auto editorFactory = new SchEditorFactory(this);
+    auto settingsPage = new SchSettingsPage(this);
+    connect(settingsPage, &SchSettingsPage::settingsChanged,
+            editorFactory, &SchEditorFactory::loadSettings);
+
+    addObject(editorFactory);
+    addObject(settingsPage);
+
     return true;
 }
 

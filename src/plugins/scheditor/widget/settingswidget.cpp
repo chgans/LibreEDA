@@ -1,3 +1,4 @@
+#include "core/core.h"
 #include "settingswidget.h"
 #include "ui_settingswidget.h"
 #include "schscene.h"
@@ -6,6 +7,7 @@
 
 #include <QScrollBar>
 #include <QOpenGLWidget>
+#include <QSettings>
 
 SettingsWidget::SettingsWidget(QWidget *parent) :
     QWidget(parent),
@@ -30,7 +32,7 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     });
 
     ui->rulerCheckBox->setChecked(ui->graphicsView->rulerEnabled());
-    connect(ui->rulerCheckBox, &QCheckBox::clicked,
+    connect(ui->rulerCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
        ui->graphicsView->setRulerEnabled(checked);
@@ -38,7 +40,7 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
 
     ui->gridCheckBox->setChecked(ui->graphicsView->gridEnabled());
     ui->gridGroupBox->setEnabled(ui->graphicsView->gridEnabled());
-    connect(ui->gridCheckBox, &QCheckBox::clicked,
+    connect(ui->gridCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
         ui->gridGroupBox->setEnabled(checked);
@@ -46,13 +48,13 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     });
 
     updateGuiScrollBars();
-    connect(ui->scrollBarsCheckBox, &QCheckBox::clicked,
+    connect(ui->scrollBarsCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewScrollBars();
         updateGuiScrollBars();
     });
-    connect(ui->scrollBarsCheckBox, &QCheckBox::clicked,
+    connect(ui->scrollBarsCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewScrollBars();
@@ -60,13 +62,13 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     });
 
     updateGuiMouseCursor();
-    connect(ui->cusorCrosshairCheckBox, &QCheckBox::clicked,
+    connect(ui->cusorCrosshairCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewMouseCursor();
         updateGuiMouseCursor();
     });
-    connect(ui->largeCursorCrosshairCheckBox, &QCheckBox::clicked,
+    connect(ui->largeCursorCrosshairCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewMouseCursor();
@@ -74,13 +76,13 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     });
 
     updateGuiOriginMark();
-    connect(ui->originCheckBox, &QCheckBox::clicked,
+    connect(ui->originCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewOriginMark();
         updateGuiOriginMark();
     });
-    connect(ui->largeOriginAxisCheckBox, &QCheckBox::clicked,
+    connect(ui->largeOriginAxisCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewOriginMark();
@@ -102,7 +104,7 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     });
 
     ui->solidCoarseGridLinesCheckBox->setChecked(ui->graphicsView->gridCoarseLineStyle() == Qt::SolidLine);
-    connect(ui->solidCoarseGridLinesCheckBox, &QCheckBox::clicked,
+    connect(ui->solidCoarseGridLinesCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
        if (checked)
@@ -116,7 +118,7 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     });
 
     ui->solidFineGridLinesCheckBox->setChecked(ui->graphicsView->gridFineLineStyle() == Qt::SolidLine);
-    connect(ui->solidFineGridLinesCheckBox, &QCheckBox::clicked,
+    connect(ui->solidFineGridLinesCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
        if (checked)
@@ -129,7 +131,7 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
        }
     });
 
-    connect(ui->antiAliasingCheckBox, &QCheckBox::clicked,
+    connect(ui->antiAliasingCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
         ui->graphicsView->setRenderHint(QPainter::Antialiasing, checked);
@@ -138,7 +140,7 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     });
 
     ui->openGlCheckBox->setChecked(ui->graphicsView->hardwareAccelerationEnabled());
-    connect(ui->openGlCheckBox, &QCheckBox::clicked,
+    connect(ui->openGlCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
         ui->graphicsView->setHardwareAccelerationEnabled(checked);
@@ -148,6 +150,37 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
 SettingsWidget::~SettingsWidget()
 {
     delete ui;
+}
+
+void SettingsWidget::loadSettings()
+{
+    QSettings *settings = Core::settings();
+    settings->beginGroup("SchEditor/Appearance");
+
+    Palette::Mode mode = Palette::Dark;
+    QString paletteModeString = settings->value("PaletteMode", QString("Dark")).toString();
+    if (paletteModeString == "Light")
+    {
+        mode = Palette::Light;
+    }
+    ui->colorSchemeComboBox->setCurrentIndex(m_colorSchemeToIndex.value(mode));
+    ui->rulerCheckBox->setChecked(settings->value("RulerEnabled", true).toBool());
+    ui->gridCheckBox->setChecked(settings->value("GridEnabled", true).toBool());
+
+    settings->endGroup();
+    settings->sync();
+}
+
+void SettingsWidget::saveSettings()
+{
+    QSettings *settings = Core::settings();
+    settings->beginGroup("SchEditor/Appearance");
+
+    settings->setValue("PaletteMode", ui->colorSchemeComboBox->currentData().value<Palette::Mode>());
+    settings->setValue("RulerEnabled", ui->rulerCheckBox->isChecked());
+    settings->setValue("GridEnabled", ui->gridCheckBox->isChecked());
+
+    settings->endGroup();
 }
 
 void SettingsWidget::updateViewScrollBars()

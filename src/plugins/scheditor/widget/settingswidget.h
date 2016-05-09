@@ -17,6 +17,10 @@ public:
     explicit SettingsWidget(QWidget *parent = nullptr);
     ~SettingsWidget();
 
+public slots:
+    void loadSettings();
+    void saveSettings();
+
 private slots:
     void updateViewScrollBars();
     void updateGuiScrollBars();
