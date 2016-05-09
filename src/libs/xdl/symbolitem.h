@@ -1,11 +1,18 @@
-#ifndef ITEMDATA_H
-#define ITEMDATA_H
+#ifndef XDLSYMBOLITEM_H
+#define XDLSYMBOLITEM_H
+
+#include "xdl_global.h"
 
 #include <QPen>
 #include <QBrush>
 #include <QRectF>
 
-struct ItemData
+namespace xdl
+{
+namespace symbol
+{
+  
+struct XDL_EXPORT Item
 {
     uint64_t itemId;
     QPen pen;
@@ -20,19 +27,19 @@ struct ItemData
     bool yMirrored;
 };
 
-struct RectangleData: public ItemData
+struct XDL_EXPORT RectangleItem: public Item
 {
     QPointF topLeft;
     QPointF bottomRight;
 };
 
-struct CircleData: public ItemData
+struct XDL_EXPORT CircleItem: public Item
 {
     QPointF center;
     qreal radius;
 };
 
-struct CircularArcData: public ItemData
+struct XDL_EXPORT CircularArcItem: public Item
 {
     QPointF center;
     qreal radius;
@@ -40,14 +47,14 @@ struct CircularArcData: public ItemData
     qreal spanAngle;
 };
 
-struct EllipseData: public ItemData
+struct XDL_EXPORT EllipseItem: public Item
 {
     QPointF center;
     qreal xRadius;
     qreal yRadius;
 };
 
-struct EllipticalArcData: public ItemData
+struct XDL_EXPORT EllipticalArcItem: public Item
 {
     QPointF center;
     qreal xRadius;
@@ -56,32 +63,34 @@ struct EllipticalArcData: public ItemData
     qreal spanAngle;
 };
 
-struct PolyLineData: public ItemData
+struct XDL_EXPORT PolyLineItem: public Item
 {
     QList<QPointF> vertices;
 };
 
-struct PolygonData: public ItemData
+struct XDL_EXPORT PolygonItem: public Item
 {
     QList<QPointF> vertices;
 };
 
-struct LabelData: public ItemData
+struct XDL_EXPORT LabelItem: public Item
 {
     QString text;
 };
 
-struct PinData: public ItemData
+struct XDL_EXPORT PinItem: public Item
 {
-    LabelData designator;
-    LabelData label;
+    LabelItem designator;
+    LabelItem label;
 };
 
-struct ItemGroupData: public ItemData
+struct XDL_EXPORT ItemGroup: public Item
 {
     QList<int> childrenId;
 };
 
 // Text (frame)
 
-#endif // ITEMDATA_H
+}
+}
+#endif // XDLSYMBOLITEM_H

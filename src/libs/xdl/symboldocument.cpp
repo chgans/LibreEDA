@@ -1,4 +1,4 @@
-#include "document/schdocument.h"
+#include "xdl/symboldocument.h"
 
 // TODO:
 //  - import xsd stuff from leda-playground
@@ -15,8 +15,8 @@
 
 
 
-SymbolDocument::SymbolDocument(QObject *parent):
-    QObject(parent), m_itemIndex(0)
+SymbolDocument::SymbolDocument():
+  m_itemIndex(0)
 {
 
 }
@@ -43,7 +43,6 @@ uint64_t SymbolDocument::addItem(ItemData *data)
     m_itemIndex++;
     data->itemId = m_itemIndex;
     m_items.insert(data->itemId, data);
-    emit itemAdded(data->itemId);
     return data->itemId;
 }
 
@@ -53,7 +52,6 @@ void SymbolDocument::removeItem(uint64_t id)
         return;
     ItemData *item = m_items.value(id);
     m_items.remove(id);
-    emit itemRemoved(id);
     delete item;
 }
 
@@ -62,5 +60,4 @@ void SymbolDocument::setOrigin(const QPointF &origin)
     if (m_origin == origin)
         return;
     m_origin = origin;
-    emit originChanged();
 }

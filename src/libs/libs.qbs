@@ -4,6 +4,7 @@ Project {
     name: "Libraries"
     references: [
         "core",
-        "utils"
+        "utils",
+	"xdl"
     ]
 }

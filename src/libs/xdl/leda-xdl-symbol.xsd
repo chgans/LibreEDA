@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.leda.org/xdl" xmlns:xdl="http://www.leda.org/xdl">
+  <xs:element name="symbol" type="xdl:Symbol"/>
+  <xs:complexType name="Symbol">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="label" type="xs:string"/>
+      <xs:element name="drawing" type="xdl:ItemList"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ItemList">
+    <xs:sequence>
+    	<xs:group ref="xdl:AnyItem" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Item">
+    <xs:sequence>
+        <xs:element name="pen" type="xdl:Pen" minOccurs="0"/>
+        <xs:element name="brush" type="xdl:Brush" minOccurs="0"/>
+    	<xs:element name="position" type="xdl:Point" />
+    	<xs:element name="z-value" type="xs:double" minOccurs="0" />
+    	<xs:element name="rotation" type="xdl:Angle" minOccurs="0" />
+    	<xs:element name="opacity" type="xdl:Opacity" minOccurs="0" />
+    	<xs:element name="locked" type="xs:boolean" minOccurs="0" />
+        <xs:element name="x-mirrored" type="xs:bolean" minOccurs="0" />
+        <xs:element name="visible" type="xs:boolean" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Circle">
+    <xs:complexContent>
+      <xs:extension base="xdl:Item">
+        <xs:sequence>
+          <xs:element name="center" type="xdl:Point"/>
+          <xs:element name="radius" type="xdl:NonNegativeDouble"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CircularArc">
+    <xs:complexContent>
+      <xs:extension base="xdl:Item">
+        <xs:sequence>
+          <xs:element name="center" type="xdl:Point"/>
+          <xs:element name="radius" type="xdl:NonNegativeDouble"/>
+          <xs:element name="start-angle" type="xdl:Angle"/>
+          <xs:element name="span-angle" type="xdl:Angle"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Ellipse">
+    <xs:complexContent>
+      <xs:extension base="xdl:Item">
+        <xs:sequence>
+          <xs:element name="center" type="xdl:Point"/>
+          <xs:element name="x-radius" type="xdl:NonNegativeDouble"/>
+          <xs:element name="y-radius" type="xdl:NonNegativeDouble"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EllipticalArc">
+    <xs:complexContent>
+      <xs:extension base="xdl:Item">
+        <xs:sequence>
+          <xs:element name="center" type="xdl:Point"/>
+          <xs:element name="x-radius" type="xdl:NonNegativeDouble"/>
+          <xs:element name="y-radius" type="xdl:NonNegativeDouble"/>
+          <xs:element name="start-angle" type="xdl:Angle"/>
+          <xs:element name="span-angle" type="xdl:Angle"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Rectangle">
+    <xs:complexContent>
+      <xs:extension base="xdl:Item">
+        <xs:sequence>
+          <xs:element name="top-left" type="xdl:Point"/>
+          <xs:element name="bottom-right" type="xdl:Point"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Polyline">
+    <xs:complexContent>
+      <xs:extension base="xdl:Item">
+        <xs:sequence>
+                <xs:element name="vertices" type="xdl:PointList" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Polygon">
+    <xs:complexContent>
+      <xs:extension base="xdl:Item">
+        <xs:sequence>
+                <xs:element name="vertices" type="xdl:PointList" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Pin">
+    <xs:complexContent>
+      <xs:extension base="xdl:Item">
+        <xs:sequence>
+          <xs:element name="designator" type="xs:string" />
+          <xs:element name="label" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ItemGroup">
+    <xs:complexContent>
+      <xs:extension base="xdl:Item">
+        <xs:sequence>
+          <xs:element name="children" type="xdl:ItemList"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Label">
+    <xs:complexContent>
+      <xs:extension base="xdl:Shape">
+        <xs:sequence>
+          <xs:element name="text" type="xs:string" />
+          <xs:element name="font" type="xdl:Font" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="AnyItem">
+    <xs:choice>
+        <xs:element name="polyline" type="xdl:Polyline" />
+        <xs:element name="polygon" type="xdl:Polygon" />
+        <xs:element name="rectangle" type="xdl:Rectangle" />
+        <xs:element name="circle" type="xdl:Circle" />
+        <xs:element name="circular-arc" type="xdl:CircularArc" />
+        <xs:element name="ellipse" type="xdl:Ellipse" />
+        <xs:element name="elliptical-arc" type="xdl:EllipticalArc" />
+        <xs:element name="label" type="xdl:Label" />
+        <xs:element name="pin" type="xdl:Pin" />
+    	<xs:element name="group" type="xdl:ItemGroup" />
+    </xs:choice>
+  </xs:group>
+  <xs:complexType name="Point">
+    <xs:sequence>
+      <xs:element name="x" type="xs:double"/>
+      <xs:element name="y" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PointList">
+    <xs:sequence>
+      <xs:element name="point" type="xdl:Point" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Pen">
+    <xs:sequence>
+      <xs:element name="width" type="xdl:NonNegativeDouble"/>
+      <xs:element name="color" type="xdl:Color"/>
+      <!-- QPen defaults -->
+      <xs:element name="style" type="xdl:PenStyle" minOccurs="0"/>
+      <xs:element name="cap-style" type="xdl:PenCapStyle" minOccurs="0"/>
+      <xs:element name="join-style" type="xdl:PenJoinStyle" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Brush">
+    <xs:sequence>
+      <xs:element name="color" type="xdl:Color"/>
+      <xs:element name="style" type="xdl:BrushStyle" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="PenStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NoPen"/>
+      <xs:enumeration value="SolidLine"/>
+      <xs:enumeration value="DashLine"/>
+      <xs:enumeration value="DotLine"/>
+      <xs:enumeration value="DashDotLine"/>
+      <xs:enumeration value="DashDotDotLine"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PenCapStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Flat"/>
+      <xs:enumeration value="Square"/>
+      <xs:enumeration value="Round"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PenJoinStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Miter"/>
+      <xs:enumeration value="Bevel"/>
+      <xs:enumeration value="Round"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="BrushStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NoBrush"/>
+      <xs:enumeration value="Solid"/>
+      <xs:enumeration value="Horizontal"/>
+      <xs:enumeration value="Vertival"/>
+      <xs:enumeration value="Cross"/>
+      <xs:enumeration value="BDiagonal"/>
+      <xs:enumeration value="FDiagonal"/>
+      <xs:enumeration value="CrossDiagonal"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Color">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="#[0-9a-fA-F]{6}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Angle">
+  	<xs:restriction base="xs:double">
+  		<xs:minInclusive value="0.0"></xs:minInclusive>
+  		<xs:maxInclusive value="360.0"></xs:maxInclusive>
+  		<xs:whiteSpace value="collapse"></xs:whiteSpace>
+  	</xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Opacity">
+  	<xs:restriction base="xs:double">
+  		<xs:minInclusive value="0.0"></xs:minInclusive>
+  		<xs:maxInclusive value="1.0"></xs:maxInclusive>
+  		<xs:whiteSpace value="collapse"></xs:whiteSpace>
+  	</xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="NonNegativeDouble">
+  	<xs:restriction base="xs:double">
+  		<xs:minInclusive value="0.0"></xs:minInclusive>
+  	</xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Font">
+  	<xs:sequence>
+  		<xs:element name="family" type="xs:string"></xs:element>
+  		<xs:element name="size" type="xs:nonNegativeInteger"></xs:element>
+  		<xs:element name="bold" type="xs:boolean" maxOccurs="1" minOccurs="0"></xs:element>
+  		<xs:element name="italic" type="xs:boolean" maxOccurs="1" minOccurs="0"></xs:element>
+  		<xs:element name="underline" type="xs:boolean" maxOccurs="1" minOccurs="0"></xs:element>
+  		<xs:element name="strikeout" type="xs:boolean" maxOccurs="1" minOccurs="0"></xs:element>
+  	</xs:sequence>
+  </xs:complexType>
+</xs:schema>
