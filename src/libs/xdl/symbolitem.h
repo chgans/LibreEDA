@@ -1,32 +1,27 @@
 #ifndef XDLSYMBOLITEM_H
 #define XDLSYMBOLITEM_H
 
-#include <QtGlobal>
-
 #include "xdl_global.h"
 
+#include <QtGlobal>
 #include <QPen>
 #include <QBrush>
 #include <QRectF>
 
-namespace xdl
-{
-namespace symbol
-{
-  
+namespace xdl { namespace symbol {
+
 struct XDL_EXPORT Item
 {
-    uint64_t itemId;
     QPen pen;
     QBrush brush;
-    qreal opacity;
+    qreal opacity = 1.0f;
     QPointF position;
-    qreal rotation;
-    qreal zValue;
-    bool locked;
-    bool visible;
-    bool xMirrored;
-    bool yMirrored;
+    qreal rotation = 0.0f;
+    qreal zValue = 0.0;
+    bool locked = false;
+    bool visible = true;
+    bool xMirrored = false;
+    bool yMirrored = false;
 };
 
 struct XDL_EXPORT RectangleItem: public Item
@@ -38,15 +33,15 @@ struct XDL_EXPORT RectangleItem: public Item
 struct XDL_EXPORT CircleItem: public Item
 {
     QPointF center;
-    qreal radius;
+    qreal radius = 0.0f;
 };
 
 struct XDL_EXPORT CircularArcItem: public Item
 {
     QPointF center;
-    qreal radius;
-    qreal startAngle;
-    qreal spanAngle;
+    qreal radius = 0.0f;
+    qreal startAngle = 0.0f;
+    qreal spanAngle = 360.0f;
 };
 
 struct XDL_EXPORT EllipseItem: public Item
@@ -59,10 +54,10 @@ struct XDL_EXPORT EllipseItem: public Item
 struct XDL_EXPORT EllipticalArcItem: public Item
 {
     QPointF center;
-    qreal xRadius;
-    qreal yRadius;
-    qreal startAngle;
-    qreal spanAngle;
+    qreal xRadius = 0.0f;
+    qreal yRadius = 0.0f;
+    qreal startAngle = 0.0f;
+    qreal spanAngle = 360.0f;
 };
 
 struct XDL_EXPORT PolylineItem: public Item
@@ -93,6 +88,5 @@ struct XDL_EXPORT ItemGroup: public Item
 
 // Text (frame)
 
-}
-}
+}}
 #endif // XDLSYMBOLITEM_H
