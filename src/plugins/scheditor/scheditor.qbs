@@ -86,6 +86,8 @@ LedaPlugin {
         "scheditor.qmodel",
         "scheditordocument.cpp",
         "scheditordocument.h",
+        "scheditorsettings.cpp",
+        "scheditorsettings.h",
         "schsettingspage.cpp",
         "schsettingspage.h",
         "snap/positionsnapper.cpp",

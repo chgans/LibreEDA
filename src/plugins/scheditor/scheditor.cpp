@@ -1,8 +1,12 @@
 #include "scheditor.h"
 #include "scheditorwidget.h"
 #include "scheditordocument.h"
+#include "schview.h"
 #include "schscene.h"
 #include "item/schitem.h"
+#include "scheditorsettings.h"
+
+#include "core/core.h"
 
 #include <QFileInfo>
 
@@ -19,7 +23,74 @@ SchEditor::~SchEditor()
 
 void SchEditor::loadSettings()
 {
+    SchEditorSettings settings;
+    settings.load(Core::settings());
 
+    schWidget()->view()->setPaletteMode(settings.colorScheme);
+    schWidget()->view()->setRulerEnabled(settings.rulerEnabled);
+    schWidget()->view()->setGridEnabled(settings.gridEnabled);
+    schWidget()->view()->setMinimalGridSize(int(settings.minimalGridSize)); // FIXME: int vs uint
+    schWidget()->view()->setGridCoarseMultiplier(int(settings.coarseGridMultiplier));
+    if (settings.solidCoarseGridLinesEnabled)
+    {
+        schWidget()->view()->setGridCoarseLineStyle(Qt::SolidLine);
+    }
+    else
+    {
+        schWidget()->view()->setGridCoarseLineStyle(Qt::DotLine);
+    }
+    if (settings.solidFineGridLinesEnabled)
+    {
+        schWidget()->view()->setGridFineLineStyle(Qt::SolidLine);
+    }
+    else
+    {
+        schWidget()->view()->setGridFineLineStyle(Qt::DotLine);
+    }
+
+    if (!settings.scrollBarsEnabled)
+    {
+        schWidget()->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        schWidget()->view()->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    }
+    else if (settings.scrollBarsAsNeededEnabled)
+    {
+        schWidget()->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        schWidget()->view()->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    }
+    else
+    {
+        schWidget()->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        schWidget()->view()->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    }
+    if (!settings.cursorCrosshairEnabled)
+    {
+        schWidget()->view()->setMouseCursor(SchView::NoMouseCursor);
+    }
+    else if (settings.largeCursorCrosshairEnabled)
+    {
+        schWidget()->view()->setMouseCursor(SchView::LargeMouseCursor);
+    }
+    else
+    {
+        schWidget()->view()->setMouseCursor(SchView::SmallMouseCursor);
+    }
+    if (!settings.originCrosshairEnabled)
+    {
+        schWidget()->view()->setOriginMark(SchView::NoOriginMark);
+    }
+    else if (settings.largeOriginCrosshairEnabled)
+    {
+        schWidget()->view()->setOriginMark(SchView::LargeOriginMark);
+    }
+    else
+    {
+        schWidget()->view()->setOriginMark(SchView::SmallOriginMark);
+    }
+    schWidget()->view()->setRenderHint(QPainter::Antialiasing, settings.antiAliasingEnabled);
+    schWidget()->view()->setRenderHint(QPainter::TextAntialiasing, settings.antiAliasingEnabled);
+    schWidget()->view()->setRenderHint(QPainter::HighQualityAntialiasing, settings.antiAliasingEnabled);
+    schWidget()->view()->setHardwareAccelerationEnabled(settings.hardwareAccelerationEnabled);
 }
 
 

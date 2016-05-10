@@ -4,6 +4,7 @@
 #include "schscene.h"
 #include "grid/graphicscartesiangrid.h"
 #include "palette.h"
+#include "scheditorsettings.h"
 
 #include <QScrollBar>
 #include <QOpenGLWidget>
@@ -11,50 +12,50 @@
 
 SettingsWidget::SettingsWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::SettingsWidget)
+    m_ui(new Ui::SettingsWidget)
 {
-    ui->setupUi(this);
+    m_ui->setupUi(this);
 
     auto scene = new SchScene(this);
     scene->setSceneRect(-100, -100, 200, 200);
-    ui->graphicsView->setScene(scene);
+    m_ui->graphicsView->setScene(scene);
 
 
-    ui->colorSchemeComboBox->addItem("Dark", QVariant::fromValue<Palette::Mode>(Palette::Dark));
+    m_ui->colorSchemeComboBox->addItem("Dark", QVariant::fromValue<Palette::Mode>(Palette::Dark));
     m_colorSchemeToIndex.insert(Palette::Dark, 0);
-    ui->colorSchemeComboBox->addItem("Light", QVariant::fromValue<Palette::Mode>(Palette::Light));
+    m_ui->colorSchemeComboBox->addItem("Light", QVariant::fromValue<Palette::Mode>(Palette::Light));
     m_colorSchemeToIndex.insert(Palette::Light, 1);
-    ui->colorSchemeComboBox->setCurrentIndex(m_colorSchemeToIndex[ui->graphicsView->paletteMode()]);
-    connect(ui->colorSchemeComboBox, &QComboBox::currentTextChanged,
+    m_ui->colorSchemeComboBox->setCurrentIndex(m_colorSchemeToIndex[m_ui->graphicsView->paletteMode()]);
+    connect(m_ui->colorSchemeComboBox, &QComboBox::currentTextChanged,
             this, [this](const QString &)
     {
-        ui->graphicsView->setPaletteMode(ui->colorSchemeComboBox->currentData().value<Palette::Mode>());
+        m_ui->graphicsView->setPaletteMode(m_ui->colorSchemeComboBox->currentData().value<Palette::Mode>());
     });
 
-    ui->rulerCheckBox->setChecked(ui->graphicsView->rulerEnabled());
-    connect(ui->rulerCheckBox, &QCheckBox::toggled,
+    m_ui->rulerCheckBox->setChecked(m_ui->graphicsView->rulerEnabled());
+    connect(m_ui->rulerCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
-       ui->graphicsView->setRulerEnabled(checked);
+       m_ui->graphicsView->setRulerEnabled(checked);
     });
 
-    ui->gridCheckBox->setChecked(ui->graphicsView->gridEnabled());
-    ui->gridGroupBox->setEnabled(ui->graphicsView->gridEnabled());
-    connect(ui->gridCheckBox, &QCheckBox::toggled,
+    m_ui->gridCheckBox->setChecked(m_ui->graphicsView->gridEnabled());
+    m_ui->gridGroupBox->setEnabled(m_ui->graphicsView->gridEnabled());
+    connect(m_ui->gridCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
-        ui->gridGroupBox->setEnabled(checked);
-        ui->graphicsView->setGridEnabled(checked);
+        m_ui->gridGroupBox->setEnabled(checked);
+        m_ui->graphicsView->setGridEnabled(checked);
     });
 
     updateGuiScrollBars();
-    connect(ui->scrollBarsCheckBox, &QCheckBox::toggled,
+    connect(m_ui->scrollBarsCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewScrollBars();
         updateGuiScrollBars();
     });
-    connect(ui->scrollBarsCheckBox, &QCheckBox::toggled,
+    connect(m_ui->scrollBarsAsNeededCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewScrollBars();
@@ -62,13 +63,13 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     });
 
     updateGuiMouseCursor();
-    connect(ui->cusorCrosshairCheckBox, &QCheckBox::toggled,
+    connect(m_ui->cusorCrosshairCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewMouseCursor();
         updateGuiMouseCursor();
     });
-    connect(ui->largeCursorCrosshairCheckBox, &QCheckBox::toggled,
+    connect(m_ui->largeCursorCrosshairCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewMouseCursor();
@@ -76,212 +77,226 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     });
 
     updateGuiOriginMark();
-    connect(ui->originCheckBox, &QCheckBox::toggled,
+    connect(m_ui->originCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewOriginMark();
         updateGuiOriginMark();
     });
-    connect(ui->largeOriginAxisCheckBox, &QCheckBox::toggled,
+    connect(m_ui->largeOriginAxisCheckBox, &QCheckBox::toggled,
             this, [this](bool)
     {
         updateViewOriginMark();
         updateGuiOriginMark();
     });
 
-    ui->minimalGridSizeSpinBox->setValue(ui->graphicsView->minimalGridSize());
-    connect(ui->minimalGridSizeSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+    m_ui->minimalGridSizeSpinBox->setValue(m_ui->graphicsView->minimalGridSize());
+    connect(m_ui->minimalGridSizeSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
             this, [this](int value)
     {
-        ui->graphicsView->setMinimalGridSize(value);
+        m_ui->graphicsView->setMinimalGridSize(value);
     });
 
-    ui->coarseMultiplierSpinBox->setValue(ui->graphicsView->gridCoarseMultiplier());
-    connect(ui->coarseMultiplierSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+    m_ui->coarseMultiplierSpinBox->setValue(m_ui->graphicsView->gridCoarseMultiplier());
+    connect(m_ui->coarseMultiplierSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
             this, [this](int value)
     {
-        ui->graphicsView->setGridCoarseMultiplier(value);
+        m_ui->graphicsView->setGridCoarseMultiplier(value);
     });
 
-    ui->solidCoarseGridLinesCheckBox->setChecked(ui->graphicsView->gridCoarseLineStyle() == Qt::SolidLine);
-    connect(ui->solidCoarseGridLinesCheckBox, &QCheckBox::toggled,
+    m_ui->solidCoarseGridLinesCheckBox->setChecked(m_ui->graphicsView->gridCoarseLineStyle() == Qt::SolidLine);
+    connect(m_ui->solidCoarseGridLinesCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
        if (checked)
        {
-           ui->graphicsView->setGridCoarseLineStyle(Qt::SolidLine);
+           m_ui->graphicsView->setGridCoarseLineStyle(Qt::SolidLine);
        }
        else
        {
-           ui->graphicsView->setGridCoarseLineStyle(Qt::DotLine);
+           m_ui->graphicsView->setGridCoarseLineStyle(Qt::DotLine);
        }
     });
 
-    ui->solidFineGridLinesCheckBox->setChecked(ui->graphicsView->gridFineLineStyle() == Qt::SolidLine);
-    connect(ui->solidFineGridLinesCheckBox, &QCheckBox::toggled,
+    m_ui->solidFineGridLinesCheckBox->setChecked(m_ui->graphicsView->gridFineLineStyle() == Qt::SolidLine);
+    connect(m_ui->solidFineGridLinesCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
        if (checked)
        {
-           ui->graphicsView->setGridFineLineStyle(Qt::SolidLine);
+           m_ui->graphicsView->setGridFineLineStyle(Qt::SolidLine);
        }
        else
        {
-           ui->graphicsView->setGridFineLineStyle(Qt::DotLine);
+           m_ui->graphicsView->setGridFineLineStyle(Qt::DotLine);
        }
     });
 
-    connect(ui->antiAliasingCheckBox, &QCheckBox::toggled,
+    connect(m_ui->antiAliasingCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
-        ui->graphicsView->setRenderHint(QPainter::Antialiasing, checked);
-        ui->graphicsView->setRenderHint(QPainter::TextAntialiasing, checked);
-        ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing, checked);
+        m_ui->graphicsView->setRenderHint(QPainter::Antialiasing, checked);
+        m_ui->graphicsView->setRenderHint(QPainter::TextAntialiasing, checked);
+        m_ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing, checked);
     });
 
-    ui->openGlCheckBox->setChecked(ui->graphicsView->hardwareAccelerationEnabled());
-    connect(ui->openGlCheckBox, &QCheckBox::toggled,
+    m_ui->openGlCheckBox->setChecked(m_ui->graphicsView->hardwareAccelerationEnabled());
+    connect(m_ui->openGlCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
-        ui->graphicsView->setHardwareAccelerationEnabled(checked);
+        m_ui->graphicsView->setHardwareAccelerationEnabled(checked);
     });
 }
 
 SettingsWidget::~SettingsWidget()
 {
-    delete ui;
+    delete m_ui;
 }
 
 void SettingsWidget::loadSettings()
 {
-    QSettings *settings = Core::settings();
-    settings->beginGroup("SchEditor/Appearance");
+    SchEditorSettings settings;
+    settings.load(Core::settings());
 
-    Palette::Mode mode = Palette::Dark;
-    QString paletteModeString = settings->value("PaletteMode", QString("Dark")).toString();
-    if (paletteModeString == "Light")
-    {
-        mode = Palette::Light;
-    }
-    ui->colorSchemeComboBox->setCurrentIndex(m_colorSchemeToIndex.value(mode));
-    ui->rulerCheckBox->setChecked(settings->value("RulerEnabled", true).toBool());
-    ui->gridCheckBox->setChecked(settings->value("GridEnabled", true).toBool());
-
-    settings->endGroup();
-    settings->sync();
+    m_ui->colorSchemeComboBox->setCurrentIndex(m_colorSchemeToIndex.value(settings.colorScheme));
+    m_ui->rulerCheckBox->setChecked(settings.rulerEnabled);
+    m_ui->gridCheckBox->setChecked(settings.gridEnabled);
+    m_ui->scrollBarsCheckBox->setChecked(settings.scrollBarsEnabled);
+    m_ui->scrollBarsAsNeededCheckBox->setChecked(settings.scrollBarsAsNeededEnabled);
+    m_ui->cusorCrosshairCheckBox->setChecked(settings.cursorCrosshairEnabled);
+    m_ui->largeCursorCrosshairCheckBox->setChecked(settings.largeCursorCrosshairEnabled);
+    m_ui->originCheckBox->setChecked(settings.originCrosshairEnabled);
+    m_ui->largeOriginAxisCheckBox->setChecked(settings.largeOriginCrosshairEnabled);
+    m_ui->minimalGridSizeSpinBox->setValue(int(settings.minimalGridSize));
+    m_ui->coarseMultiplierSpinBox->setValue(int(settings.coarseGridMultiplier));
+    m_ui->solidCoarseGridLinesCheckBox->setChecked(settings.solidCoarseGridLinesEnabled);
+    m_ui->solidFineGridLinesCheckBox->setChecked(settings.solidFineGridLinesEnabled);
+    m_ui->antiAliasingCheckBox->setChecked(settings.antiAliasingEnabled);
+    m_ui->openGlCheckBox->setChecked(settings.hardwareAccelerationEnabled);
 }
 
 void SettingsWidget::saveSettings()
 {
-    QSettings *settings = Core::settings();
-    settings->beginGroup("SchEditor/Appearance");
+    SchEditorSettings settings;
 
-    settings->setValue("PaletteMode", ui->colorSchemeComboBox->currentData().value<Palette::Mode>());
-    settings->setValue("RulerEnabled", ui->rulerCheckBox->isChecked());
-    settings->setValue("GridEnabled", ui->gridCheckBox->isChecked());
+    settings.colorScheme = m_ui->colorSchemeComboBox->currentData().value<Palette::Mode>();
+    settings.rulerEnabled = m_ui->rulerCheckBox->isChecked();
+    settings.gridEnabled = m_ui->gridCheckBox->isChecked();
+    settings.scrollBarsEnabled = m_ui->scrollBarsCheckBox->isChecked();
+    settings.scrollBarsAsNeededEnabled = m_ui->scrollBarsAsNeededCheckBox->isChecked();
+    settings.cursorCrosshairEnabled = m_ui->cusorCrosshairCheckBox->isChecked();
+    settings.largeCursorCrosshairEnabled = m_ui->largeCursorCrosshairCheckBox->isChecked();
+    settings.originCrosshairEnabled = m_ui->originCheckBox->isChecked();
+    settings.largeOriginCrosshairEnabled = m_ui->largeOriginAxisCheckBox->isChecked();
+    settings.minimalGridSize = uint(m_ui->minimalGridSizeSpinBox->value());
+    settings.coarseGridMultiplier = uint(m_ui->coarseMultiplierSpinBox->value());
+    settings.solidCoarseGridLinesEnabled = m_ui->solidCoarseGridLinesCheckBox->isChecked();
+    settings.solidFineGridLinesEnabled = m_ui->solidFineGridLinesCheckBox->isChecked();
+    settings.antiAliasingEnabled = m_ui->antiAliasingCheckBox->isChecked();
+    settings.hardwareAccelerationEnabled = m_ui->openGlCheckBox->isChecked();
 
-    settings->endGroup();
+    settings.save(Core::settings());
 }
 
 void SettingsWidget::updateViewScrollBars()
 {
-    if (!ui->scrollBarsCheckBox->isChecked())
+    if (!m_ui->scrollBarsCheckBox->isChecked())
     {
-        ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        m_ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        m_ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     }
-    else if (ui->scrollBarsAsNeededCheckBox->isChecked())
+    else if (m_ui->scrollBarsAsNeededCheckBox->isChecked())
     {
-        ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-        ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        m_ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        m_ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     }
     else
     {
-        ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-        ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        m_ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        m_ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     }
 }
 
 void SettingsWidget::updateGuiScrollBars()
 {
-    switch (ui->graphicsView->horizontalScrollBarPolicy()) {
+    switch (m_ui->graphicsView->horizontalScrollBarPolicy()) {
     case Qt::ScrollBarAlwaysOff:
-        ui->scrollBarsCheckBox->setChecked(false);
-        ui->scrollBarsAsNeededCheckBox->setChecked(false);
+        m_ui->scrollBarsCheckBox->setChecked(false);
+        m_ui->scrollBarsAsNeededCheckBox->setChecked(false);
         break;
     case Qt::ScrollBarAsNeeded:
-        ui->scrollBarsCheckBox->setChecked(true);
-        ui->scrollBarsAsNeededCheckBox->setChecked(true);
+        m_ui->scrollBarsCheckBox->setChecked(true);
+        m_ui->scrollBarsAsNeededCheckBox->setChecked(true);
         break;
     case Qt::ScrollBarAlwaysOn:
-        ui->scrollBarsCheckBox->setChecked(true);
-        ui->scrollBarsAsNeededCheckBox->setChecked(false);
+        m_ui->scrollBarsCheckBox->setChecked(true);
+        m_ui->scrollBarsAsNeededCheckBox->setChecked(false);
         break;
     }
-    ui->scrollBarsAsNeededCheckBox->setEnabled(ui->scrollBarsCheckBox->isChecked());
+    m_ui->scrollBarsAsNeededCheckBox->setEnabled(m_ui->scrollBarsCheckBox->isChecked());
 }
 
 void SettingsWidget::updateViewMouseCursor()
 {
 
-    if (!ui->cusorCrosshairCheckBox->isChecked())
+    if (!m_ui->cusorCrosshairCheckBox->isChecked())
     {
-        ui->graphicsView->setMouseCursor(SchView::NoMouseCursor);
+        m_ui->graphicsView->setMouseCursor(SchView::NoMouseCursor);
     }
-    else if (ui->largeCursorCrosshairCheckBox->isChecked())
+    else if (m_ui->largeCursorCrosshairCheckBox->isChecked())
     {
-        ui->graphicsView->setMouseCursor(SchView::LargeMouseCursor);
+        m_ui->graphicsView->setMouseCursor(SchView::LargeMouseCursor);
     }
     else
-        ui->graphicsView->setMouseCursor(SchView::SmallMouseCursor);
+        m_ui->graphicsView->setMouseCursor(SchView::SmallMouseCursor);
 }
 
 void SettingsWidget::updateGuiMouseCursor()
 {
-    switch (ui->graphicsView->mouseCursor()) {
+    switch (m_ui->graphicsView->mouseCursor()) {
     case SchView::NoMouseCursor:
-        ui->cusorCrosshairCheckBox->setChecked(false);
-        ui->largeCursorCrosshairCheckBox->setChecked(false);
+        m_ui->cusorCrosshairCheckBox->setChecked(false);
+        m_ui->largeCursorCrosshairCheckBox->setChecked(false);
         break;
     case SchView::SmallMouseCursor:
-        ui->cusorCrosshairCheckBox->setChecked(true);
-        ui->largeCursorCrosshairCheckBox->setChecked(false);
+        m_ui->cusorCrosshairCheckBox->setChecked(true);
+        m_ui->largeCursorCrosshairCheckBox->setChecked(false);
         break;
     case SchView::LargeMouseCursor:
-        ui->cusorCrosshairCheckBox->setChecked(true);
-        ui->largeCursorCrosshairCheckBox->setChecked(true);
+        m_ui->cusorCrosshairCheckBox->setChecked(true);
+        m_ui->largeCursorCrosshairCheckBox->setChecked(true);
     }
-    ui->largeCursorCrosshairCheckBox->setEnabled(ui->cusorCrosshairCheckBox->isChecked());
+    m_ui->largeCursorCrosshairCheckBox->setEnabled(m_ui->cusorCrosshairCheckBox->isChecked());
 }
 
 void SettingsWidget::updateViewOriginMark()
 {
-    if (!ui->originCheckBox->isChecked())
+    if (!m_ui->originCheckBox->isChecked())
     {
-        ui->graphicsView->setOriginMark(SchView::NoOriginMark);
+        m_ui->graphicsView->setOriginMark(SchView::NoOriginMark);
     }
-    else if (ui->largeOriginAxisCheckBox->isChecked())
+    else if (m_ui->largeOriginAxisCheckBox->isChecked())
     {
-        ui->graphicsView->setOriginMark(SchView::LargeOriginMark);
+        m_ui->graphicsView->setOriginMark(SchView::LargeOriginMark);
     }
     else
-        ui->graphicsView->setOriginMark(SchView::SmallOriginMark);
+        m_ui->graphicsView->setOriginMark(SchView::SmallOriginMark);
 }
 
 void SettingsWidget::updateGuiOriginMark()
 {
-    switch (ui->graphicsView->originMark()) {
+    switch (m_ui->graphicsView->originMark()) {
     case SchView::NoOriginMark:
-        ui->originCheckBox->setChecked(false);
-        ui->largeOriginAxisCheckBox->setChecked(false);
+        m_ui->originCheckBox->setChecked(false);
+        m_ui->largeOriginAxisCheckBox->setChecked(false);
         break;
     case SchView::SmallOriginMark:
-        ui->originCheckBox->setChecked(true);
-        ui->largeOriginAxisCheckBox->setChecked(false);
+        m_ui->originCheckBox->setChecked(true);
+        m_ui->largeOriginAxisCheckBox->setChecked(false);
         break;
     case SchView::LargeOriginMark:
-        ui->originCheckBox->setChecked(true);
-        ui->largeOriginAxisCheckBox->setChecked(true);
+        m_ui->originCheckBox->setChecked(true);
+        m_ui->largeOriginAxisCheckBox->setChecked(true);
     }
-    ui->largeOriginAxisCheckBox->setEnabled(ui->originCheckBox->isChecked());
+    m_ui->largeOriginAxisCheckBox->setEnabled(m_ui->originCheckBox->isChecked());
 }

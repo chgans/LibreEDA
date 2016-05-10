@@ -195,7 +195,7 @@
                          <object>{914c0021-6bf6-4f9f-bd1d-38d51d805a30}</object>
                          <context>Settings</context>
                          <name>ISettingsPage</name>
-                         <pos>x:745;y:495</pos>
+                         <pos>x:750;y:455</pos>
                          <rect>x:-90;y:-60;w:180;h:120</rect>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -218,7 +218,7 @@
                          <object>{723a9e74-56bd-4d9f-9641-d4a41bf9c00d}</object>
                          <context>Settings</context>
                          <name>SettingsDialog</name>
-                         <pos>x:1015;y:500</pos>
+                         <pos>x:1020;y:460</pos>
                          <rect>x:-45;y:-60;w:90;h:120</rect>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -277,7 +277,7 @@
                          <object>{1e66637f-171a-4509-af58-edd630635b6e}</object>
                          <context>Editormanager</context>
                          <name>IEditor</name>
-                         <pos>x:85;y:515</pos>
+                         <pos>x:90;y:475</pos>
                          <rect>x:-40;y:-30;w:80;h:60</rect>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -298,7 +298,7 @@
                          <object>{ddcbc0bd-f9ac-4718-b797-c83cc1687d53}</object>
                          <context>Editormanager</context>
                          <name>IEditorFactory</name>
-                         <pos>x:305;y:520</pos>
+                         <pos>x:310;y:480</pos>
                          <rect>x:-100;y:-40;w:200;h:80</rect>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -320,7 +320,7 @@
                          <object>{c5dfc4dd-b8aa-4bab-a330-780b7ffab125}</object>
                          <context>Extension</context>
                          <name>IPlugin</name>
-                         <pos>x:530;y:495</pos>
+                         <pos>x:535;y:455</pos>
                          <rect>x:-65;y:-40;w:130;h:80</rect>
                          <visual-role>0</visual-role>
                         </DObject>
@@ -392,7 +392,7 @@
                         </DElement>
                        </base-DElement>
                        <text>Core</text>
-                       <pos>x:550;y:475</pos>
+                       <pos>x:555;y:435</pos>
                        <rect>x:-560;y:-110;w:1120;h:220</rect>
                       </DBoundary>
                      </instance>
@@ -406,7 +406,7 @@
                         </DElement>
                        </base-DElement>
                        <text>Editor</text>
-                       <pos>x:225;y:490</pos>
+                       <pos>x:230;y:450</pos>
                        <rect>x:-200;y:-85;w:400;h:170</rect>
                       </DBoundary>
                      </instance>
@@ -420,7 +420,7 @@
                         </DElement>
                        </base-DElement>
                        <text>Settings</text>
-                       <pos>x:860;y:490</pos>
+                       <pos>x:865;y:450</pos>
                        <rect>x:-215;y:-85;w:430;h:170</rect>
                       </DBoundary>
                      </instance>
@@ -434,7 +434,7 @@
                         </DElement>
                        </base-DElement>
                        <text>Extension</text>
-                       <pos>x:535;y:490</pos>
+                       <pos>x:540;y:450</pos>
                        <rect>x:-100;y:-85;w:200;h:170</rect>
                       </DBoundary>
                      </instance>
@@ -474,7 +474,7 @@
                     </item>
                    </qlist>
                   </elements>
-                  <last-modified>1462761899957</last-modified>
+                  <last-modified>1462849966856</last-modified>
                  </MDiagram>
                 </base-MDiagram>
                </MCanvasDiagram>
@@ -1075,7 +1075,7 @@
                                                   <qlist>
                                                    <item>
                                                     <MClassMember>
-                                                     <uid>{c1a2c364-a9f7-429a-b730-6104e66255f8}</uid>
+                                                     <uid>{3ee73cbe-6b6a-45c6-8ad7-407810f683a0}</uid>
                                                      <type>2</type>
                                                      <properties>3</properties>
                                                      <declaration>QWidget *widget()</declaration>
@@ -1083,7 +1083,7 @@
                                                    </item>
                                                    <item>
                                                     <MClassMember>
-                                                     <uid>{d0ef5405-eda4-46e7-998d-fdc8aa0b125a}</uid>
+                                                     <uid>{64abb232-4894-414b-9d50-b1361ae9adc8}</uid>
                                                      <type>2</type>
                                                      <properties>3</properties>
                                                      <declaration>void apply()</declaration>
@@ -1091,7 +1091,7 @@
                                                    </item>
                                                    <item>
                                                     <MClassMember>
-                                                     <uid>{dfd984d4-4dd4-4922-bcdd-90a29467b3f0}</uid>
+                                                     <uid>{b36563b8-e6a9-4ab8-8c41-799373387370}</uid>
                                                      <type>2</type>
                                                      <properties>3</properties>
                                                      <declaration>void finish()</declaration>

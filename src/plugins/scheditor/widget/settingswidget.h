@@ -30,7 +30,7 @@ private slots:
     void updateGuiOriginMark();
 
 private:
-    Ui::SettingsWidget *ui;
+    Ui::SettingsWidget *m_ui;
     QMap<Palette::Mode, int> m_colorSchemeToIndex;
 };
 
