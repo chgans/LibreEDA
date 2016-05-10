@@ -3,6 +3,7 @@
   <xs:element name="symbol" type="xdl:Symbol"/>
   <xs:complexType name="Symbol">
     <xs:sequence>
+    <!-- TODO: name and label should be xdl::Label as they can be 'placed' and displayed -->
       <xs:element name="name" type="xs:string"/>
       <xs:element name="label" type="xs:string"/>
       <xs:element name="drawing" type="xdl:ItemList"/>
@@ -14,6 +15,7 @@
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="Item">
+    <!-- FIXME: not all items need a pen and a brush -->
     <xs:sequence>
         <xs:element name="pen" type="xdl:Pen" minOccurs="0"/>
         <xs:element name="brush" type="xdl:Brush" minOccurs="0"/>
@@ -22,10 +24,14 @@
     	<xs:element name="rotation" type="xdl:Angle" minOccurs="0" />
     	<xs:element name="opacity" type="xdl:Opacity" minOccurs="0" />
     	<xs:element name="locked" type="xs:boolean" minOccurs="0" />
-        <xs:element name="x-mirrored" type="xs:bolean" minOccurs="0" />
+        <xs:element name="x-mirrored" type="xs:boolean" minOccurs="0" />
+        <xs:element name="y-mirrored" type="xs:boolean" minOccurs="0" />
         <xs:element name="visible" type="xs:boolean" minOccurs="0" />
     </xs:sequence>
   </xs:complexType>
+  <!-- TBD: circle vs ellipse and square vs rectangle -> use a fixed ratio property?
+       TBD: Similarly use an 'arc' boolean property
+  -->
   <xs:complexType name="Circle">
     <xs:complexContent>
       <xs:extension base="xdl:Item">
@@ -103,6 +109,7 @@
   <xs:complexType name="Pin">
     <xs:complexContent>
       <xs:extension base="xdl:Item">
+        <!-- FIXME: label and designator should be xdl::Label -->
         <xs:sequence>
           <xs:element name="designator" type="xs:string" />
           <xs:element name="label" type="xs:string" />
@@ -121,7 +128,7 @@
   </xs:complexType>
   <xs:complexType name="Label">
     <xs:complexContent>
-      <xs:extension base="xdl:Shape">
+      <xs:extension base="xdl:Item">
         <xs:sequence>
           <xs:element name="text" type="xs:string" />
           <xs:element name="font" type="xdl:Font" minOccurs="0" />
@@ -230,6 +237,7 @@
   		<xs:minInclusive value="0.0"></xs:minInclusive>
   	</xs:restriction>
   </xs:simpleType>
+  <!-- TBD: just serialise familiy and size? italic and co are actually part of the (rich) text itself -->
   <xs:complexType name="Font">
   	<xs:sequence>
   		<xs:element name="family" type="xs:string"></xs:element>

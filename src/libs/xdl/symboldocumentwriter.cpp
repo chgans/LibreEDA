@@ -1,35 +1,41 @@
 #include "xdl/symboldocumentwriter.h"
 #include "xdl/symbolitem.h"
+#include "xdl/symboldocument.h"
 
 #include <QFile>
 #include <QXmlStreamWriter>
 #include <QPen>
 #include <QBrush>
 
+namespace xdl { namespace symbol {
+
+
 struct SymbolWriterPrivate
 {
     // Polymorphics
-    void writeGraphicsItem(QGraphicsItem *item);
-    void writeGraphicsItemList(const char *listTag, QList<QGraphicsItem *> items);
+    void writeGraphicsItem(Item *item);
+    void writeItemList(const char *listTag, QList<Item *> items);
 
     // Items
-    void writeEllipse(QGraphicsItem *item);
-    void writeLine(QGraphicsItem *item);
-    void writePin(QGraphicsItem *item);
-    void writeRect(QGraphicsItem *item);
-    void writeGroup(QGraphicsItem *item);
-    void writeArc(QGraphicsItem *item);
-    void writeLabel(QGraphicsItem *item);
+    void writePolyline(PolylineItem *item);
+    void writePolygon(PolygonItem *item);
+    void writeRectangle(RectangleItem *item);
+    void writeCircle(CircleItem *item);
+    void writeCircularArc(CircularArcItem *item);
+    void writeEllipse(EllipseItem *item);
+    void writeEllipticalArc(EllipticalArcItem *item);
+    void writeLabel(LabelItem *item);
+    void writePin(PinItem *item);
+    void writeGroup(ItemGroup *item);
 
     // Abstract items
-    void writeShape(QAbstractGraphicsShapeItem *item);
-    void writeItem(QGraphicsItem *item);
+    void writeItem(Item *item);
 
     // Complex types
     void writePen(const char *tag, const QPen &pen);
     void writeBrush(const char *tag, const QBrush &brush);
-    void writePos(const char *tag, const QPointF &pos);
-    void writePosList(const char *listTag, const char *posTag, const QList<QPointF> &posList);
+    void writePoint(const char *tag, const QPointF &point);
+    void writePointList(const char *listTag, const char *pointTag, const QList<QPointF> &pointList);
 
     // Simple types
     void writeColor(const char *tag, const QColor &color);
@@ -51,7 +57,7 @@ SymbolWriter::SymbolWriter()
     p->writer = new QXmlStreamWriter();
 }
 
-bool SymbolWriter::write(const QString &filename, const Symbol *symbol)
+bool SymbolWriter::write(const QString &filename, const Document *symbol)
 {
     QFile file(filename);
     if (!file.open(QFile::WriteOnly | QIODevice::Truncate)) {
@@ -63,9 +69,9 @@ bool SymbolWriter::write(const QString &filename, const Symbol *symbol)
     p->writer->writeStartDocument("1.0");
     p->writer->writeDefaultNamespace("http://www.leda.org/xsd");
     p->writer->writeStartElement("symbol");
-    p->writer->writeTextElement("name", symbol->caption);
-    p->writer->writeTextElement("label", symbol->description);
-    p->writeGraphicsItemList("drawing", symbol->drawings);
+    p->writer->writeTextElement("name", symbol->symbolName());
+    p->writer->writeTextElement("label", symbol->symbolDescription());
+    //p->writeItemList("drawing", symbol->it);
     p->writer->writeEndElement(); // symbol
     p->writer->writeEndDocument();
     return true;
@@ -73,116 +79,129 @@ bool SymbolWriter::write(const QString &filename, const Symbol *symbol)
 
 
 
-void SymbolWriterPrivate::writeGraphicsItem(QGraphicsItem *item)
+void SymbolWriterPrivate::writeGraphicsItem(Item *item)
 {
-    QString type = item->data(0).toString();
-    writer->writeStartElement(type);
-    if (type == "ellipse") {
-        writeEllipse(item);
-    }
-    else if (type == "line") {
-        writeLine(item);
-    }
-    else if (type == "pin") {
-        writePin(item);
-    }
-    else if (type == "rectangle") {
-        writeRect(item);
-    }
-    else if (type == "group") {
-        writeGroup(item);
-    }
-    else if (type == "arc") {
-        writeArc(item);
-    }
-    else if (type == "label") {
-        writeLabel(item);
-    }
-    writer->writeEndElement();
+//    QString type = item->data(0).toString();
+//    writer->writeStartElement(type);
+//    if (type == "ellipse") {
+//        writeEllipse(item);
+//    }
+//    else if (type == "line") {
+//        writePolyline(item);
+//    }
+//    else if (type == "pin") {
+//        writePin(item);
+//    }
+//    else if (type == "rectangle") {
+//        writeRectangle(item);
+//    }
+//    else if (type == "group") {
+//        writeGroup(item);
+//    }
+//    else if (type == "arc") {
+//        writeArc(item);
+//    }
+//    else if (type == "label") {
+//        writeLabel(item);
+//    }
+//    writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writeGraphicsItemList(const char *listTag, QList<QGraphicsItem *> items)
+void SymbolWriterPrivate::writeItemList(const char *listTag, QList<Item *> items)
 {
     writer->writeStartElement(listTag);
-    foreach (QGraphicsItem *item, items) {
-       writeGraphicsItem(item);
-    }
+//    foreach (QGraphicsItem *item, items) {
+//       writeGraphicsItem(item);
+//    }
     writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writeEllipse(QGraphicsItem *item)
-{
-    QGraphicsEllipseItem *ellipse = static_cast<QGraphicsEllipseItem*>(item);
-    writeShape(ellipse);
-    writePos("center", ellipse->rect().center());
-    writeDouble("x-radius", ellipse->rect().width());
-    writeDouble("y-radius", ellipse->rect().height());
-    writeDouble("start-angle", ellipse->startAngle());
-    writeDouble("span-angle", ellipse->spanAngle());
-}
-
-void SymbolWriterPrivate::writeLine(QGraphicsItem *item)
-{
-    QGraphicsLineItem *line = static_cast<QGraphicsLineItem*>(item);
-    writeItem(line);
-    writer->writeStartElement("points");
-    writePos("point", line->line().p1());
-    writePos("point", line->line().p2());
-    writer->writeEndElement();
-}
-
-// FIXME
-void SymbolWriterPrivate::writePin(QGraphicsItem *item)
-{
-    QGraphicsEllipseItem *pin = static_cast<QGraphicsEllipseItem*>(item);
-    writeItem(pin);
-    //writer->writeTextElement("designator", "0");
-}
-
-void SymbolWriterPrivate::writeRect(QGraphicsItem *item)
-{
-    QGraphicsRectItem *rect = static_cast<QGraphicsRectItem*>(item);
-    writeShape(rect);
-    writePos("top-left", rect->rect().topLeft());
-    writePos("bottom-right", rect->rect().bottomRight());
-}
-
-void SymbolWriterPrivate::writeGroup(QGraphicsItem *item)
-{
-    QGraphicsItemGroup *group = static_cast<QGraphicsItemGroup*>(item);
-    writeItem(group);
-    writeGraphicsItemList("children", group->childItems());
-}
-
-void SymbolWriterPrivate::writeArc(QGraphicsItem *item)
-{
-    QGraphicsEllipseItem *ellipse = static_cast<QGraphicsEllipseItem*>(item);
-    writeShape(ellipse);
-}
-
-void SymbolWriterPrivate::writeLabel(QGraphicsItem *item)
-{
-    QGraphicsEllipseItem *ellipse = static_cast<QGraphicsEllipseItem*>(item);
-    writeShape(ellipse);
-}
-
-void SymbolWriterPrivate::writeShape(QAbstractGraphicsShapeItem *item)
+void SymbolWriterPrivate::writePolyline(PolylineItem *item)
 {
     writeItem(item);
-    writePen("pen", item->pen());
-    writeBrush("brush", item->brush());
+    writePointList("vertices", "point", item->vertices);
+    writer->writeEndElement();
 }
 
-// FIXME
-void SymbolWriterPrivate::writeItem(QGraphicsItem *item)
+void SymbolWriterPrivate::writePolygon(PolygonItem *item)
 {
-    writePos("position", item->pos());
-    writeDouble("z-value", item->zValue());
-    writeDouble("rotation", item->rotation()); // % 360
-    writeDouble("opacity", item->opacity());
-    writeBoolean("locked", !item->isEnabled());
-    // writeMirroring("mirrored", item.transform());
-    writeBoolean("visible", item->isVisible());
+    writeItem(item);
+    writePointList("vertices", "point", item->vertices);
+    writer->writeEndElement();
+}
+
+void SymbolWriterPrivate::writeRectangle(RectangleItem *item)
+{
+    writeItem(item);
+    writePoint("top-left", item->topLeft);
+    writePoint("bottom-right", item->bottomRight);
+}
+
+void SymbolWriterPrivate::writeCircle(CircleItem *item)
+{
+    writeItem(item);
+    writePoint("center", item->center);
+    writeDouble("radius", item->radius);
+}
+
+void SymbolWriterPrivate::writeCircularArc(CircularArcItem *item)
+{
+    writeItem(item);
+    writePoint("center", item->center);
+    writeDouble("radius", item->radius);
+    writeDouble("start-angle", item->startAngle);
+    writeDouble("span-angle", item->spanAngle);
+}
+
+void SymbolWriterPrivate::writeEllipse(EllipseItem *item)
+{
+    writeItem(item);
+    writePoint("center", item->center);
+    writeDouble("x-radius", item->xRadius);
+    writeDouble("y-radius", item->yRadius);
+}
+
+void SymbolWriterPrivate::writeEllipticalArc(EllipticalArcItem *item)
+{
+    writeItem(item);
+    writePoint("center", item->center);
+    writeDouble("x-radius", item->xRadius);
+    writeDouble("y-radius", item->yRadius);
+    writeDouble("start-angle", item->startAngle);
+    writeDouble("span-angle", item->spanAngle);
+}
+
+void SymbolWriterPrivate::writeLabel(LabelItem *item)
+{
+    writeItem(item);
+    // FIXME
+}
+
+void SymbolWriterPrivate::writePin(PinItem *item)
+{
+    writeItem(item);
+    writer->writeTextElement("designator", item->designator.text); // FIXME
+    writer->writeTextElement("label", item->label.text); // FIXME
+}
+
+void SymbolWriterPrivate::writeGroup(ItemGroup *item)
+{
+    writeItem(item);
+    // writeItemList("children", item->childrenId);
+}
+
+void SymbolWriterPrivate::writeItem(Item *item)
+{
+    writePen("pen", item->pen);
+    writeBrush("brush", item->brush);
+    writePoint("position", item->position);
+    writeDouble("z-value", item->zValue);
+    writeDouble("rotation", item->rotation); // % 360
+    writeDouble("opacity", item->opacity);
+    writeBoolean("locked", !item->locked);
+    writeBoolean("x-mirrored", item->xMirrored);
+    writeBoolean("y-mirrored", item->yMirrored);
+    writeBoolean("visible", item->visible);
 }
 
 void SymbolWriterPrivate::writePen(const char *tag, const QPen &pen)
@@ -204,19 +223,19 @@ void SymbolWriterPrivate::writeBrush(const char *tag, const QBrush &brush)
     writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writePos(const char *tag, const QPointF &pos)
+void SymbolWriterPrivate::writePoint(const char *tag, const QPointF &point)
 {
     writer->writeStartElement(tag);
-    writeDouble("x", pos.x());
-    writeDouble("y", pos.y());
+    writeDouble("x", point.x());
+    writeDouble("y", point.y());
     writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writePosList(const char *listTag, const char *posTag, const QList<QPointF> &posList)
+void SymbolWriterPrivate::writePointList(const char *listTag, const char *pointTag, const QList<QPointF> &pointList)
 {
     writer->writeStartElement(listTag);
-    foreach (const QPointF &pos, posList)
-        writePos(posTag, pos);
+    foreach (const QPointF &pos, pointList)
+        writePoint(pointTag, pos);
     writer->writeEndElement();
 }
 
@@ -291,3 +310,5 @@ void SymbolWriterPrivate::writeDouble(const char *tag, qreal value)
 {
     writer->writeTextElement(tag, QString("%1").arg(value, 0, 'E', 6));
 }
+
+}}

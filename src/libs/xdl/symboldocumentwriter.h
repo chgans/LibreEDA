@@ -3,15 +3,17 @@
 
 #include <QString>
 
-class Symbol;
+namespace xdl { namespace symbol {
 
+class Document;
 class SymbolWriterPrivate;
+
 class SymbolWriter
 {
 public:
     SymbolWriter();
 
-    bool write(const QString &filename, const Symbol *symbol);
+    bool write(const QString &filename, const Document *symbol);
 
     QString errorString() const
     {
@@ -23,4 +25,5 @@ private:
     QString m_errorString;
 };
 
+}}
 #endif // SYMBOLWRITER_H

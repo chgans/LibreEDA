@@ -6,14 +6,20 @@ LedaLibrary {
                                  "XDL_LIBRARY",
                              ])
 
+    cpp.dynamicLibraries: [
+        "expat"
+    ]
+
     Depends { name: "Qt"; submodules: ["core", "gui"] }
 
     files: [
+        "leda-xdl-symbol-pskel.cxx",
         "leda-xdl-symbol.make",
         "leda-xdl-symbol.map",
         "leda-xdl-symbol-pimpl.cpp",
         "leda-xdl-symbol-pimpl.h",
         "leda-xdl-symbol.xsd",
+        "leda-xdl-symbol-pskel.hxx",
         "symboldocument.h",
         "symboldocument.cpp",
         "symboldocumentreader.cpp",
@@ -21,6 +27,6 @@ LedaLibrary {
         "symboldocumentwriter.cpp",
         "symboldocumentwriter.h",
         "symbolitem.h",
-        "xdl_global.h"
+        "xdl_global.h",
     ]
 }

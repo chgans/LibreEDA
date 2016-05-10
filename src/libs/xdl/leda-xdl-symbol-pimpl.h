@@ -8,7 +8,7 @@
 #ifndef LEDA_XDL_SYMBOL_PIMPL_HXX
 #define LEDA_XDL_SYMBOL_PIMPL_HXX
 
-#include "leda-xdl-symbol-pskel.hxx"
+#include "xdl/leda-xdl-symbol-pskel.hxx"
 
 namespace xdl
 {
@@ -19,75 +19,117 @@ public:
     virtual void pre();
     virtual void name(const ::std::string&);
     virtual void label(const ::std::string&);
-    virtual void drawing(QList<QGraphicsItem*>);
-    virtual Symbol* post_Symbol();
+    virtual void drawing(QList<xdl::symbol::Item*>);
+    virtual xdl::symbol::Document* post_Symbol();
 
 private:
     QString m_name;
     QString m_label;
-    QList<QGraphicsItem*> m_drawing;
+    QList<xdl::symbol::Item*> m_drawing;
 };
 
 class ItemList_pimpl: public virtual ItemList_pskel
 {
 public:
     virtual void pre();
-    virtual void ellipse(QGraphicsEllipseItem*);
-    virtual void line(QGraphicsLineItem*);
-    virtual void pin(QGraphicsEllipseItem*);
-    virtual void rectangle(QGraphicsRectItem*);
-    virtual void group(QGraphicsItemGroup*);
-    virtual void arc(QGraphicsPathItem *);
-    virtual void label(QGraphicsSimpleTextItem *);
-    virtual QList<QGraphicsItem*> post_ItemList();
+    virtual void polyline (xdl::symbol::PolylineItem*);
+    virtual void polygon (xdl::symbol::PolygonItem*);
+    virtual void rectangle (xdl::symbol::RectangleItem*);
+    virtual void circle (xdl::symbol::CircleItem*);
+    virtual void circular_arc (xdl::symbol::CircularArcItem*);
+    virtual void ellipse (xdl::symbol::EllipseItem*);
+    virtual void elliptical_arc (xdl::symbol::EllipticalArcItem*);
+    virtual void label (xdl::symbol::LabelItem*);
+    virtual void pin (xdl::symbol::PinItem*);
+    virtual void group (xdl::symbol::ItemGroup*);
+    virtual QList<xdl::symbol::Item*> post_ItemList();
 
 private:
-    QList<QGraphicsItem*> m_items;
+    QList<xdl::symbol::Item*> m_items;
 };
 
 class Item_pimpl: public virtual Item_pskel
 {
 public:
     virtual void pre();
+    virtual void pen(const QPen&);
+    virtual void brush(const QBrush&);
     virtual void position(const QPointF&);
     virtual void z_value(double);
     virtual void rotation(const qreal&);
     virtual void opacity(const qreal&);
     virtual void locked(bool);
-    virtual void mirrored(const QTransform&);
+    virtual void x_mirrored(bool);
+    virtual void y_mirrored(bool);
     virtual void visible(bool);
     virtual void post_Item();
 
 protected:
-    QGraphicsItem *m_item;
+    xdl::symbol::Item *m_item;
 
-private:
+protected:
+    QPen m_pen;
+    QBrush m_brush;
     QPointF m_position;
     qreal m_zValue;
     qreal m_rotation;
     qreal m_opacity;
     bool m_locked;
-    QTransform m_transform;
+    bool m_xMirrored;
+    bool m_yMirrored;
     bool m_visible;
 };
 
-class Shape_pimpl: public virtual Shape_pskel,
+class Circle_pimpl: public virtual Circle_pskel,
         public ::xdl::Item_pimpl
 {
 public:
     virtual void pre();
-    virtual void pen(const QPen&);
-    virtual void brush(const QBrush&);
-    virtual void post_Shape();
+    virtual void center(const QPointF&);
+    virtual void radius(const qreal&);
+    virtual xdl::symbol::CircleItem *post_Circle();
 
-protected:
-    QAbstractGraphicsShapeItem *m_shapeItem;
-    QPen m_pen;
-    QBrush m_brush;
+private:
+    QPointF m_center;
+    qreal m_radius;
+};
+
+class CircularArc_pimpl: public virtual CircularArc_pskel,
+        public ::xdl::Item_pimpl
+{
+public:
+    virtual void pre();
+    virtual void center(const QPointF&);
+    virtual void radius(const qreal&);
+    virtual void start_angle(const qreal&);
+    virtual void span_angle(const qreal&);
+    virtual xdl::symbol::CircularArcItem *post_CircularArc();
+
+private:
+    QPointF m_center;
+    qreal m_radius;
+    qreal m_startAngle;
+    qreal m_spanAngle;
 };
 
 class Ellipse_pimpl: public virtual Ellipse_pskel,
-        public ::xdl::Shape_pimpl
+        public ::xdl::Item_pimpl
+{
+public:
+    virtual void pre();
+    virtual void center(const QPointF&);
+    virtual void x_radius(const qreal&);
+    virtual void y_radius(const qreal&);
+    virtual xdl::symbol::EllipseItem *post_Ellipse();
+
+private:
+    QPointF m_center;
+    qreal m_xRadius;
+    qreal m_yRadius;
+};
+
+class EllipticalArc_pimpl: public virtual EllipticalArc_pskel,
+        public ::xdl::Item_pimpl
 {
 public:
     virtual void pre();
@@ -96,7 +138,7 @@ public:
     virtual void y_radius(const qreal&);
     virtual void start_angle(const qreal&);
     virtual void span_angle(const qreal&);
-    virtual QGraphicsEllipseItem *post_Ellipse();
+    virtual xdl::symbol::EllipticalArcItem* post_EllipticalArc();
 
 private:
     QPointF m_center;
@@ -107,31 +149,41 @@ private:
 };
 
 class Rectangle_pimpl: public virtual Rectangle_pskel,
-        public ::xdl::Shape_pimpl
+        public ::xdl::Item_pimpl
 {
 public:
     virtual void pre();
     virtual void top_left(const QPointF&);
     virtual void bottom_right(const QPointF&);
-    virtual QGraphicsRectItem *post_Rectangle();
+    virtual xdl::symbol::RectangleItem *post_Rectangle();
 
 private:
     QPointF m_topLeft;
     QPointF m_bottomRight;
 };
 
-class Line_pimpl: public virtual Line_pskel,
+class Polyline_pimpl: public virtual Polyline_pskel,
         public ::xdl::Item_pimpl
 {
 public:
     virtual void pre();
-    virtual void points(const QList<QPointF>&);
-    virtual void pen(const QPen&);
-    virtual QGraphicsLineItem *post_Line();
+    virtual void vertices(const QList<QPointF>&);
+    virtual xdl::symbol::PolylineItem *post_Polyline();
 
 private:
-    QLineF m_line;
-    QPen m_pen;
+    QList<QPointF> m_vertices;
+};
+
+class Polygon_pimpl: public virtual Polygon_pskel,
+        public ::xdl::Item_pimpl
+{
+public:
+    virtual void pre();
+    virtual void vertices(const QList<QPointF>&);
+    virtual xdl::symbol::PolygonItem *post_Polygon();
+
+private:
+    QList<QPointF> m_vertices;
 };
 
 class Pin_pimpl: public virtual Pin_pskel,
@@ -140,10 +192,12 @@ class Pin_pimpl: public virtual Pin_pskel,
 public:
     virtual void pre();
     virtual void designator(const ::std::string&);
-    virtual QGraphicsEllipseItem *post_Pin();
+    virtual void label(const ::std::string&);
+    virtual xdl::symbol::PinItem *post_Pin();
 
 private:
     QString m_designator;
+    QString m_label;
 };
 
 class ItemGroup_pimpl: public virtual ItemGroup_pskel,
@@ -151,41 +205,23 @@ class ItemGroup_pimpl: public virtual ItemGroup_pskel,
 {
 public:
     virtual void pre();
-    virtual void children(QList<QGraphicsItem*>);
-    virtual QGraphicsItemGroup *post_ItemGroup();
+    virtual void children(const QList<xdl::symbol::Item*> &items);
+    virtual xdl::symbol::ItemGroup *post_ItemGroup();
 
 private:
-    QList<QGraphicsItem*> m_children;
+    QList<xdl::symbol::Item*> m_children;
 };
 
-class Arc_pimpl: public virtual Arc_pskel,
-        public ::xdl::Shape_pimpl
-{
-public:
-    virtual void pre();
-    virtual void center(const QPointF&);
-    virtual void x_radius(const qreal&);
-    virtual void y_radius(const qreal&);
-    virtual void start_angle(const qreal&);
-    virtual void span_angle(const qreal&);
-    virtual QGraphicsPathItem *post_Arc();
 
-private:
-    QPointF m_center;
-    qreal m_xRadius;
-    qreal m_yRadius;
-    qreal m_startAngle;
-    qreal m_spanAngle;
-};
 
 class Label_pimpl: public virtual Label_pskel,
-        public Shape_pimpl
+        public Item_pimpl
 {
 public:
     virtual void pre();
     virtual void text(const ::std::string&);
     virtual void font(const QFont&);
-    virtual QGraphicsSimpleTextItem* post_Label();
+    virtual xdl::symbol::LabelItem* post_Label();
 
 private:
     QString m_text;
@@ -298,15 +334,6 @@ public:
     virtual void pre();
     virtual QColor post_Color();
 };
-
-class Side_pimpl: public virtual Side_pskel,
-        public ::xml_schema::string_pimpl
-{
-public:
-    virtual void pre();
-    virtual void post_Side();
-};
-
 class Angle_pimpl: public virtual Angle_pskel,
         public ::xml_schema::double_pimpl
 {
@@ -323,19 +350,6 @@ public:
     virtual qreal post_Opacity();
 };
 
-class Mirroring_pimpl: public virtual Mirroring_pskel
-{
-public:
-    virtual void pre();
-    virtual void x(bool);
-    virtual void y(bool);
-    virtual QTransform post_Mirroring();
-
-private:
-    bool m_xScale;
-    bool m_yScale;
-};
-
 class NonNegativeDouble_pimpl: public virtual NonNegativeDouble_pskel,
         public ::xml_schema::double_pimpl
 {
@@ -344,31 +358,6 @@ public:
     virtual qreal post_NonNegativeDouble();
 };
 
-
-class PinSymbol_pimpl: public virtual PinSymbol_pskel
-{
-public:
-    virtual void pre() {}
-    virtual void type() {}
-    virtual void location() {}
-    virtual void post_PinSymbol() {}
-};
-
-class PinSymbolList_pimpl: public virtual PinSymbolList_pskel
-{
-public:
-    virtual void pre() {}
-    virtual void symbol() {}
-    virtual void post_PinSymbolList() {}
-};
-
-class PinSymbolEnum_pimpl: public virtual PinSymbolEnum_pskel,
-        public ::xml_schema::string_pimpl
-{
-public:
-    virtual void pre() {}
-    virtual void post_PinSymbolEnum() {}
-};
 }
 
 #endif // LEDA_XDL_SYMBOL_PIMPL_HXX

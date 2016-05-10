@@ -1,6 +1,8 @@
 #ifndef XDLSYMBOLITEM_H
 #define XDLSYMBOLITEM_H
 
+#include <QtGlobal>
+
 #include "xdl_global.h"
 
 #include <QPen>
@@ -63,7 +65,7 @@ struct XDL_EXPORT EllipticalArcItem: public Item
     qreal spanAngle;
 };
 
-struct XDL_EXPORT PolyLineItem: public Item
+struct XDL_EXPORT PolylineItem: public Item
 {
     QList<QPointF> vertices;
 };

@@ -13,7 +13,7 @@ GEN = leda-xdl-symbol-pskel.cxx \
 	leda-xdl-symbol-driver.cxx \
 	leda-xdl-symbol-driver.hxx
 
-$(GEN): $(XSD) $(MAP) xsd.make
+$(GEN): $(XSD) $(MAP) leda-xdl-symbol.make
 	rm -f $(GEN)
 	$(XSDCXX) $(XSD)
 	$(XSDCXX) --generate-print-impl $(XSD)

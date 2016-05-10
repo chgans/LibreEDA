@@ -4,14 +4,11 @@
 #include "xdl/xdl_global.h"
 #include "xdl/symbolitem.h"
 
-#incluse <QPointF>
+#include <QPointF>
 #include <QList>
 #include <QMap>
 
-namespace xdl
-{
-namespace symbol
-{
+namespace xdl { namespace symbol {
 
 struct Document
 {
@@ -20,7 +17,11 @@ public:
 
     QList<uint64_t> items() const;
     Item *item(uint64_t id) const;
+
     QPointF origin() const;
+
+    QString symbolName() const;
+    QString symbolDescription() const;
 
 signals:
     void itemAdded(uint64_t id);
@@ -29,7 +30,7 @@ signals:
     void originChanged();
 
 public slots:
-    uint64_t addItem(Item *data);
+    uint64_t addItem(Item *item);
     void removeItem(uint64_t id);
     //void updateItem(const Item &data);
     void setOrigin(const QPointF &origin);
@@ -40,6 +41,5 @@ protected:
     QPointF m_origin;
 };
 
-}
-}
+}}
 #endif // XDLSYMBOLDOCUMENT_H

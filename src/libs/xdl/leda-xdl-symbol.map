@@ -8,30 +8,27 @@ namespace http://www.leda.org/xdl
     include <QPointF>;
     include <QPen>;
     include <QBrush>;
-    include <QTransform>;
     include <QColor>;
     include <QFont>;
-    include <QGraphicsLineItem>;
-    include <QGraphicsEllipseItem>;
-    include <QGraphicsRectItem>;
-    include <QGraphicsItemGroup>;
-    include <QGraphicsSimpleTextItem>;
 
-    include "symbol.h";
+    include "symboldocument.h";
+    include "symbolitem.h";
 
-    Symbol Symbol*;
-    ItemList QList<QGraphicsItem*> QList<QGraphicsItem*>;
-    ItemGroup QGraphicsItemGroup*;
-    Rectangle QGraphicsRectItem*;
-    Line QGraphicsLineItem*;
-    Ellipse QGraphicsEllipseItem*;
-    Pin QGraphicsEllipseItem*;
-    Arc QGraphicsPathItem*;
-    Label QGraphicsSimpleTextItem*;
+    Symbol xdl::symbol::Document*;
+    ItemList QList<xdl::symbol::Item*>;
+    Polyline xdl::symbol::PolylineItem*;
+    Polygon xdl::symbol::PolygonItem*;
+    Rectangle xdl::symbol::RectangleItem*;
+    Circle xdl::symbol::CircleItem*;
+    CircularArc xdl::symbol::CircularArcItem*;
+    Ellipse xdl::symbol::EllipseItem*;
+    EllipticalArc xdl::symbol::EllipticalArcItem*;
+    Label xdl::symbol::LabelItem*;
+    Pin xdl::symbol::PinItem*;
+    ItemGroup xdl::symbol::ItemGroup*;
 
     Angle qreal;
     Opacity qreal;
-    Mirroring QTransform;
     NonNegativeDouble qreal;
 
     Pen QPen;

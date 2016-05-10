@@ -13,51 +13,63 @@
 // Kicad symbol: arc, circle, polygon, rectangle, text, bezier, pin
 
 
+namespace xdl { namespace symbol {
 
-
-SymbolDocument::SymbolDocument():
+Document::Document():
   m_itemIndex(0)
 {
 
 }
 
-QList<uint64_t> SymbolDocument::items() const
+QList<uint64_t> Document::items() const
 {
     return m_items.keys();
 }
 
-ItemData *SymbolDocument::item(uint64_t id) const
+Item *Document::item(uint64_t id) const
 {
     if (!m_items.contains(id))
         return nullptr;
     return m_items.value(id);
 }
 
-QPointF SymbolDocument::origin() const
+QPointF Document::origin() const
 {
     return m_origin;
 }
 
-uint64_t SymbolDocument::addItem(ItemData *data)
+QString Document::symbolName() const
 {
-    m_itemIndex++;
-    data->itemId = m_itemIndex;
-    m_items.insert(data->itemId, data);
-    return data->itemId;
+    return "fixme: symbol name";
 }
 
-void SymbolDocument::removeItem(uint64_t id)
+QString Document::symbolDescription() const
+{
+    return "fixme: symbol desc";
+}
+
+uint64_t Document::addItem(Item *item)
+{
+    m_itemIndex++;
+    item->itemId = m_itemIndex;
+    m_items.insert(item->itemId, item);
+    return item->itemId;
+}
+
+void Document::removeItem(uint64_t id)
 {
     if (!m_items.contains(id))
         return;
-    ItemData *item = m_items.value(id);
+    Item *item = m_items.value(id);
     m_items.remove(id);
     delete item;
 }
 
-void SymbolDocument::setOrigin(const QPointF &origin)
+void Document::setOrigin(const QPointF &origin)
 {
     if (m_origin == origin)
         return;
     m_origin = origin;
 }
+
+}}

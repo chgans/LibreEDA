@@ -3,15 +3,17 @@
 
 #include <QString>
 
-class Symbol;
+namespace xdl { namespace symbol {
 
+class Document;
 struct SymbolReaderPrivate;
+
 class SymbolReader
 {
 public:
     SymbolReader();
 
-    Symbol *parse(const QString &filename);
+    Document *parse(const QString &filename);
 
     QString errorString() const
     {
@@ -22,5 +24,7 @@ private:
     SymbolReaderPrivate *p;
     QString m_errorString;
 };
+
+}}
 
 #endif // SYMBOLPARSER_H
