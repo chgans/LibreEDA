@@ -10,7 +10,7 @@
 namespace xdl { namespace symbol {
 
 
-struct SymbolWriterPrivate
+struct DocumentWriterPrivate
 {
     // Polymorphics
     void writeGraphicsItem(Item *item);
@@ -52,12 +52,12 @@ struct SymbolWriterPrivate
     QXmlStreamWriter *writer;
 };
 
-SymbolWriter::SymbolWriter()
+DocumentWriter::DocumentWriter()
 {
     p->writer = new QXmlStreamWriter();
 }
 
-bool SymbolWriter::write(const QString &filename, const Document *symbol)
+bool DocumentWriter::write(const QString &filename, const Document *symbol)
 {
     QFile file(filename);
     if (!file.open(QFile::WriteOnly | QIODevice::Truncate)) {
@@ -79,7 +79,7 @@ bool SymbolWriter::write(const QString &filename, const Document *symbol)
 
 
 
-void SymbolWriterPrivate::writeGraphicsItem(Item *item)
+void DocumentWriterPrivate::writeGraphicsItem(Item *item)
 {
 //    QString type = item->data(0).toString();
 //    writer->writeStartElement(type);
@@ -107,7 +107,7 @@ void SymbolWriterPrivate::writeGraphicsItem(Item *item)
 //    writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writeItemList(const char *listTag, QList<Item *> items)
+void DocumentWriterPrivate::writeItemList(const char *listTag, QList<Item *> items)
 {
     writer->writeStartElement(listTag);
 //    foreach (QGraphicsItem *item, items) {
@@ -116,35 +116,35 @@ void SymbolWriterPrivate::writeItemList(const char *listTag, QList<Item *> items
     writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writePolyline(PolylineItem *item)
+void DocumentWriterPrivate::writePolyline(PolylineItem *item)
 {
     writeItem(item);
     writePointList("vertices", "point", item->vertices);
     writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writePolygon(PolygonItem *item)
+void DocumentWriterPrivate::writePolygon(PolygonItem *item)
 {
     writeItem(item);
     writePointList("vertices", "point", item->vertices);
     writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writeRectangle(RectangleItem *item)
+void DocumentWriterPrivate::writeRectangle(RectangleItem *item)
 {
     writeItem(item);
     writePoint("top-left", item->topLeft);
     writePoint("bottom-right", item->bottomRight);
 }
 
-void SymbolWriterPrivate::writeCircle(CircleItem *item)
+void DocumentWriterPrivate::writeCircle(CircleItem *item)
 {
     writeItem(item);
     writePoint("center", item->center);
     writeDouble("radius", item->radius);
 }
 
-void SymbolWriterPrivate::writeCircularArc(CircularArcItem *item)
+void DocumentWriterPrivate::writeCircularArc(CircularArcItem *item)
 {
     writeItem(item);
     writePoint("center", item->center);
@@ -153,7 +153,7 @@ void SymbolWriterPrivate::writeCircularArc(CircularArcItem *item)
     writeDouble("span-angle", item->spanAngle);
 }
 
-void SymbolWriterPrivate::writeEllipse(EllipseItem *item)
+void DocumentWriterPrivate::writeEllipse(EllipseItem *item)
 {
     writeItem(item);
     writePoint("center", item->center);
@@ -161,7 +161,7 @@ void SymbolWriterPrivate::writeEllipse(EllipseItem *item)
     writeDouble("y-radius", item->yRadius);
 }
 
-void SymbolWriterPrivate::writeEllipticalArc(EllipticalArcItem *item)
+void DocumentWriterPrivate::writeEllipticalArc(EllipticalArcItem *item)
 {
     writeItem(item);
     writePoint("center", item->center);
@@ -171,26 +171,26 @@ void SymbolWriterPrivate::writeEllipticalArc(EllipticalArcItem *item)
     writeDouble("span-angle", item->spanAngle);
 }
 
-void SymbolWriterPrivate::writeLabel(LabelItem *item)
+void DocumentWriterPrivate::writeLabel(LabelItem *item)
 {
     writeItem(item);
     // FIXME
 }
 
-void SymbolWriterPrivate::writePin(PinItem *item)
+void DocumentWriterPrivate::writePin(PinItem *item)
 {
     writeItem(item);
     writer->writeTextElement("designator", item->designator.text); // FIXME
     writer->writeTextElement("label", item->label.text); // FIXME
 }
 
-void SymbolWriterPrivate::writeGroup(ItemGroup *item)
+void DocumentWriterPrivate::writeGroup(ItemGroup *item)
 {
     writeItem(item);
     // writeItemList("children", item->childrenId);
 }
 
-void SymbolWriterPrivate::writeItem(Item *item)
+void DocumentWriterPrivate::writeItem(Item *item)
 {
     writePen("pen", item->pen);
     writeBrush("brush", item->brush);
@@ -204,7 +204,7 @@ void SymbolWriterPrivate::writeItem(Item *item)
     writeBoolean("visible", item->visible);
 }
 
-void SymbolWriterPrivate::writePen(const char *tag, const QPen &pen)
+void DocumentWriterPrivate::writePen(const char *tag, const QPen &pen)
 {
     writer->writeStartElement(tag);
     writeDouble("width", pen.width());
@@ -215,7 +215,7 @@ void SymbolWriterPrivate::writePen(const char *tag, const QPen &pen)
     writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writeBrush(const char *tag, const QBrush &brush)
+void DocumentWriterPrivate::writeBrush(const char *tag, const QBrush &brush)
 {
     writer->writeStartElement(tag);
     writeColor("color", brush.color());
@@ -223,7 +223,7 @@ void SymbolWriterPrivate::writeBrush(const char *tag, const QBrush &brush)
     writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writePoint(const char *tag, const QPointF &point)
+void DocumentWriterPrivate::writePoint(const char *tag, const QPointF &point)
 {
     writer->writeStartElement(tag);
     writeDouble("x", point.x());
@@ -231,7 +231,7 @@ void SymbolWriterPrivate::writePoint(const char *tag, const QPointF &point)
     writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writePointList(const char *listTag, const char *pointTag, const QList<QPointF> &pointList)
+void DocumentWriterPrivate::writePointList(const char *listTag, const char *pointTag, const QList<QPointF> &pointList)
 {
     writer->writeStartElement(listTag);
     foreach (const QPointF &pos, pointList)
@@ -239,12 +239,12 @@ void SymbolWriterPrivate::writePointList(const char *listTag, const char *pointT
     writer->writeEndElement();
 }
 
-void SymbolWriterPrivate::writeColor(const char *tag, const QColor &color)
+void DocumentWriterPrivate::writeColor(const char *tag, const QColor &color)
 {
     writer->writeTextElement(tag, color.name());
 }
 
-void SymbolWriterPrivate::writePenStyle(const char *tag, Qt::PenStyle style)
+void DocumentWriterPrivate::writePenStyle(const char *tag, Qt::PenStyle style)
 {
     QString str;
     switch (style) {
@@ -258,7 +258,7 @@ void SymbolWriterPrivate::writePenStyle(const char *tag, Qt::PenStyle style)
     writer->writeTextElement(tag, str);
 }
 
-void SymbolWriterPrivate::writePenCapStyle(const char *tag, Qt::PenCapStyle style)
+void DocumentWriterPrivate::writePenCapStyle(const char *tag, Qt::PenCapStyle style)
 {
     QString str;
     switch (style) {
@@ -269,7 +269,7 @@ void SymbolWriterPrivate::writePenCapStyle(const char *tag, Qt::PenCapStyle styl
     writer->writeTextElement(tag, str);
 }
 
-void SymbolWriterPrivate::writePenJoinStyle(const char *tag, Qt::PenJoinStyle style)
+void DocumentWriterPrivate::writePenJoinStyle(const char *tag, Qt::PenJoinStyle style)
 {
     QString str;
     switch (style) {
@@ -280,7 +280,7 @@ void SymbolWriterPrivate::writePenJoinStyle(const char *tag, Qt::PenJoinStyle st
     writer->writeTextElement(tag, str);
 }
 
-void SymbolWriterPrivate::writeBrushStyle(const char *tag, Qt::BrushStyle style)
+void DocumentWriterPrivate::writeBrushStyle(const char *tag, Qt::BrushStyle style)
 {
     QString str;
     switch (style) {
@@ -296,17 +296,17 @@ void SymbolWriterPrivate::writeBrushStyle(const char *tag, Qt::BrushStyle style)
     writer->writeTextElement(tag, str);
 }
 
-void SymbolWriterPrivate::writeBoolean(const char *tag, bool value)
+void DocumentWriterPrivate::writeBoolean(const char *tag, bool value)
 {
     writer->writeTextElement(tag, value ? "true" : "false");
 }
 
-void SymbolWriterPrivate::writeInt(const char *tag, int value)
+void DocumentWriterPrivate::writeInt(const char *tag, int value)
 {
     writer->writeTextElement(tag, QString("%1").arg(value));
 }
 
-void SymbolWriterPrivate::writeDouble(const char *tag, qreal value)
+void DocumentWriterPrivate::writeDouble(const char *tag, qreal value)
 {
     writer->writeTextElement(tag, QString("%1").arg(value, 0, 'E', 6));
 }

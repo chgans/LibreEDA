@@ -6,12 +6,12 @@
 namespace xdl { namespace symbol {
 
 class Document;
-class SymbolWriterPrivate;
+class DocumentWriterPrivate;
 
-class SymbolWriter
+class DocumentWriter
 {
 public:
-    SymbolWriter();
+    DocumentWriter();
 
     bool write(const QString &filename, const Document *symbol);
 
@@ -21,7 +21,7 @@ public:
     }
 
 private:
-    SymbolWriterPrivate *p;
+    DocumentWriterPrivate *p;
     QString m_errorString;
 };
 

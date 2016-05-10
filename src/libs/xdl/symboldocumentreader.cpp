@@ -5,9 +5,9 @@
 
 namespace xdl { namespace symbol {
 
-struct SymbolReaderPrivate
+struct DocumentReaderPrivate
 {
-    SymbolReaderPrivate()
+    DocumentReaderPrivate()
     {
         // Connect the parsers together.
         //
@@ -205,12 +205,12 @@ struct SymbolReaderPrivate
     ::xml_schema::non_negative_integer_pimpl non_negative_integer_p;
 };
 
-SymbolReader::SymbolReader():
-    p(new SymbolReaderPrivate)
+DocumentReader::DocumentReader():
+    p(new DocumentReaderPrivate)
 {
 }
 
-Document *SymbolReader::parse(const QString &filename)
+Document *DocumentReader::parse(const QString &filename)
 {
     m_errorString.clear();
     try

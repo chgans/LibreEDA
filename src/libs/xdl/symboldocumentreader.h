@@ -6,12 +6,12 @@
 namespace xdl { namespace symbol {
 
 class Document;
-struct SymbolReaderPrivate;
+struct DocumentReaderPrivate;
 
-class SymbolReader
+class DocumentReader
 {
 public:
-    SymbolReader();
+    DocumentReader();
 
     Document *parse(const QString &filename);
 
@@ -21,7 +21,7 @@ public:
     }
 
 private:
-    SymbolReaderPrivate *p;
+    DocumentReaderPrivate *p;
     QString m_errorString;
 };
 
