@@ -7,6 +7,7 @@ LedaPlugin {
     Depends { name: "Utils" }
     Depends { name: "Core" }
     Depends { name: "QtPropertyBrowser" }
+    Depends { name: "Xdl" }
 
     files: [
         "dock/taskdockwidget.cpp",

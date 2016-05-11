@@ -1,11 +1,11 @@
 #include "leda-xdl-symbol-pimpl.h"
 
-// Black pen, cosmetic(width = 0.0), solid aith round joins and round cap
+namespace xdl { namespace symbol {
+
+// Black pen, cosmetic (width = 0.0), solid line with round joins and round cap
 static const QPen DEFAUL_PEN(QBrush(Qt::black), 0.0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 static const QBrush DEFAULT_BRUSH(Qt::NoBrush);
 
-namespace xdl
-{
 
 // Symbol_pimpl
 //
@@ -27,18 +27,19 @@ void Symbol_pimpl::label(const ::std::string& label)
     m_label = QString::fromStdString(label);
 }
 
-void Symbol_pimpl::drawing(QList<xdl::symbol::Item *> drawing)
+void Symbol_pimpl::drawing(const QList<Item *> &drawing)
 {
     m_drawing = drawing;
 }
 
-symbol::Document *Symbol_pimpl::post_Symbol()
+Symbol *Symbol_pimpl::post_Symbol()
 {
-    auto *sym = new xdl::symbol::Document();
-    //    sym->symbolName() = m_name;
-    //    sym->symbolDescription() = m_label;
-    //    sym->drawings = m_drawing;
-    return sym;
+    auto symbol = new Symbol();
+    symbol->name = m_name;
+    symbol->description = m_label; // FIXME
+    symbol->designatorPrefix = "X"; // FIXME
+    symbol->drawingItems = m_drawing;
+    return symbol;
 }
 
 // ItemList_pimpl
@@ -49,52 +50,52 @@ void ItemList_pimpl::pre()
     m_items.clear();
 }
 
-void ItemList_pimpl::polyline(xdl::symbol::PolylineItem* polyline)
+void ItemList_pimpl::polyline(PolylineItem* polyline)
 {
     m_items.append(polyline);
 }
 
-void ItemList_pimpl::polygon(xdl::symbol::PolygonItem* polygon)
+void ItemList_pimpl::polygon(PolygonItem* polygon)
 {
     m_items.append(polygon);
 }
 
-void ItemList_pimpl::rectangle(xdl::symbol::RectangleItem* rectangle)
+void ItemList_pimpl::rectangle(RectangleItem* rectangle)
 {
     m_items.append(rectangle);
 }
 
-void ItemList_pimpl::circle(xdl::symbol::CircleItem* circle)
+void ItemList_pimpl::circle(CircleItem* circle)
 {
     m_items.append(circle);
 }
 
-void ItemList_pimpl::circular_arc(xdl::symbol::CircularArcItem* circular_arc)
+void ItemList_pimpl::circular_arc(CircularArcItem* circular_arc)
 {
     m_items.append(circular_arc);
 }
 
-void ItemList_pimpl::ellipse(xdl::symbol::EllipseItem* ellipse)
+void ItemList_pimpl::ellipse(EllipseItem* ellipse)
 {
     m_items.append(ellipse);
 }
 
-void ItemList_pimpl::elliptical_arc(xdl::symbol::EllipticalArcItem* elliptical_arc)
+void ItemList_pimpl::elliptical_arc(EllipticalArcItem* elliptical_arc)
 {
     m_items.append(elliptical_arc);
 }
 
-void ItemList_pimpl::label(xdl::symbol::LabelItem* label)
+void ItemList_pimpl::label(LabelItem* label)
 {
     m_items.append(label);
 }
 
-void ItemList_pimpl::pin(xdl::symbol::PinItem* pin)
+void ItemList_pimpl::pin(PinItem* pin)
 {
     m_items.append(pin);
 }
 
-void ItemList_pimpl::group(xdl::symbol::ItemGroup* group)
+void ItemList_pimpl::group(ItemGroup* group)
 {
     m_items.append(group);
 }
@@ -191,6 +192,8 @@ void Item_pimpl::post_Item()
 void Circle_pimpl::pre()
 {
     Item_pimpl::pre();
+    m_center = QPointF(0, 0);
+    m_radius = 0.0f;
 }
 
 void Circle_pimpl::center(const QPointF& center)
@@ -203,9 +206,9 @@ void Circle_pimpl::radius(const qreal& radius)
     m_radius = radius;
 }
 
-xdl::symbol::CircleItem* Circle_pimpl::post_Circle()
+CircleItem* Circle_pimpl::post_Circle()
 {
-    auto *circle = new xdl::symbol::CircleItem();
+    auto *circle = new CircleItem();
     m_item = circle;
     post_Item();
     circle->radius = m_radius;
@@ -219,10 +222,10 @@ xdl::symbol::CircleItem* Circle_pimpl::post_Circle()
 void CircularArc_pimpl::pre()
 {
     Item_pimpl::pre();
-    m_center = QPointF();
+    m_center = QPointF(0.0, 0.0);
     m_radius = 0.0;
     m_startAngle = 0.0;
-    m_spanAngle = 0.0;
+    m_spanAngle = 360.0;
 }
 
 void CircularArc_pimpl::center(const QPointF& center)
@@ -245,9 +248,9 @@ void CircularArc_pimpl::span_angle(const qreal& span_angle)
     m_spanAngle = span_angle;
 }
 
-xdl::symbol::CircularArcItem* CircularArc_pimpl::post_CircularArc()
+CircularArcItem* CircularArc_pimpl::post_CircularArc()
 {
-    auto arc = new xdl::symbol::CircularArcItem();
+    auto arc = new CircularArcItem();
     m_item = arc;
     post_Item();
     arc->radius = m_radius;
@@ -263,7 +266,7 @@ xdl::symbol::CircularArcItem* CircularArc_pimpl::post_CircularArc()
 void Ellipse_pimpl::pre()
 {
     Item_pimpl::pre();
-    m_center = QPointF();
+    m_center = QPointF(0.0, 0.0);
     m_xRadius = 0.0;
     m_yRadius = 0.0;
 }
@@ -283,9 +286,9 @@ void Ellipse_pimpl::y_radius(const qreal &y_radius)
     m_yRadius = y_radius;
 }
 
-xdl::symbol::EllipseItem *Ellipse_pimpl::post_Ellipse()
+EllipseItem *Ellipse_pimpl::post_Ellipse()
 {
-    auto *ellipse = new xdl::symbol::EllipseItem();
+    auto *ellipse = new EllipseItem();
     m_item = ellipse;
     post_Item();
     ellipse->xRadius = m_xRadius;
@@ -300,11 +303,11 @@ xdl::symbol::EllipseItem *Ellipse_pimpl::post_Ellipse()
 void EllipticalArc_pimpl::pre()
 {
     Item_pimpl::pre();
-    m_center = QPointF();
+    m_center = QPointF(0.0, 0.0);
     m_xRadius = 0.0;
     m_yRadius = 0.0;
     m_startAngle = 0.0;
-    m_spanAngle = 0.0;
+    m_spanAngle = 360.0;
 }
 
 void EllipticalArc_pimpl::center(const QPointF& center)
@@ -332,9 +335,9 @@ void EllipticalArc_pimpl::span_angle(const qreal& span_angle)
     m_spanAngle = span_angle;
 }
 
-xdl::symbol::EllipticalArcItem* EllipticalArc_pimpl::post_EllipticalArc()
+EllipticalArcItem* EllipticalArc_pimpl::post_EllipticalArc()
 {
-    auto *arc = new xdl::symbol::EllipticalArcItem();
+    auto *arc = new EllipticalArcItem();
     m_item = arc;
     post_Item();
     arc->xRadius = m_xRadius;
@@ -367,7 +370,7 @@ void Rectangle_pimpl::bottom_right(const QPointF& bottom_right)
 
 symbol::RectangleItem *Rectangle_pimpl::post_Rectangle()
 {
-    auto rect  = new xdl::symbol::RectangleItem();
+    auto rect  = new RectangleItem();
     m_item = rect;
     post_Item();
     rect->topLeft = m_topLeft;
@@ -375,12 +378,13 @@ symbol::RectangleItem *Rectangle_pimpl::post_Rectangle()
     return rect;
 }
 
-// Line_pimpl
+// Polyline_pimpl
 //
 
 void Polyline_pimpl::pre()
 {
     Item_pimpl::pre();
+    m_vertices.clear();
 }
 
 void Polyline_pimpl::vertices(const QList<QPointF>& points)
@@ -388,9 +392,9 @@ void Polyline_pimpl::vertices(const QList<QPointF>& points)
     m_vertices = points;
 }
 
-xdl::symbol::PolylineItem *Polyline_pimpl::post_Polyline()
+PolylineItem *Polyline_pimpl::post_Polyline()
 {
-    auto *polyline = new xdl::symbol::PolylineItem();
+    auto *polyline = new PolylineItem();
     m_item = polyline;
     post_Item();
     polyline->vertices = m_vertices;
@@ -403,6 +407,7 @@ xdl::symbol::PolylineItem *Polyline_pimpl::post_Polyline()
 void Polygon_pimpl::pre()
 {
     Item_pimpl::pre();
+    m_vertices.clear();
 }
 
 void Polygon_pimpl::vertices(const QList<QPointF>& vertices)
@@ -410,9 +415,9 @@ void Polygon_pimpl::vertices(const QList<QPointF>& vertices)
     m_vertices = vertices;
 }
 
-xdl::symbol::PolygonItem* Polygon_pimpl::post_Polygon()
+PolygonItem* Polygon_pimpl::post_Polygon()
 {
-    auto *polygon = new xdl::symbol::PolygonItem();
+    auto *polygon = new PolygonItem();
     m_item = polygon;
     post_Item();
     polygon->vertices = m_vertices;
@@ -425,9 +430,10 @@ xdl::symbol::PolygonItem* Polygon_pimpl::post_Polygon()
 void Pin_pimpl::pre()
 {
     Item_pimpl::pre();
+    m_designator.clear();
+    m_label.clear();
 }
 
-// FIXME
 void Pin_pimpl::designator(const ::std::string &designator)
 {
     m_designator = QString::fromStdString(designator);
@@ -438,13 +444,15 @@ void Pin_pimpl::label(const ::std::string &label)
     m_label = QString::fromStdString(label);;
 }
 
-xdl::symbol::PinItem *Pin_pimpl::post_Pin()
+PinItem *Pin_pimpl::post_Pin()
 {
-    auto *pin = new xdl::symbol::PinItem();
+    auto *pin = new PinItem();
     m_item = pin;
     post_Item();
-    //    pin->designator = m_designator;
-    //    pin->label = m_label;
+    pin->designator = new LabelItem();
+    pin->designator->text = m_designator; // FIXME
+    pin->label = new LabelItem();
+    pin->label->text = m_label; // FIXME
     return pin;
 }
 
@@ -456,18 +464,17 @@ void ItemGroup_pimpl::pre()
     m_children.clear();
 }
 
-void ItemGroup_pimpl::children(const QList<xdl::symbol::Item *> &children)
+void ItemGroup_pimpl::children(const QList<Item *> &children)
 {
     m_children = children;
 }
 
-xdl::symbol::ItemGroup *ItemGroup_pimpl::post_ItemGroup()
+ItemGroup *ItemGroup_pimpl::post_ItemGroup()
 {
-    auto *group = new xdl::symbol::ItemGroup();
+    auto *group = new ItemGroup();
     m_item = group;
     post_Item();
-    //    foreach(xdl::symbol::Item *child, m_children)
-    //        group->children.append(child);
+    group->children = m_children;
     return group;
 }
 
@@ -495,12 +502,12 @@ void Label_pimpl::font(const QFont &font)
     m_font = font;
 }
 
-xdl::symbol::LabelItem *Label_pimpl::post_Label()
+LabelItem *Label_pimpl::post_Label()
 {
-    auto *label = new xdl::symbol::LabelItem();
+    auto *label = new LabelItem();
     m_item = label;
     post_Item();
-    // font
+    // FIXME: font
     label->text = m_text;
     return label;
 }
@@ -785,5 +792,4 @@ QFont Font_pimpl::post_Font()
     return m_font;
 }
 
-}
-
+}}

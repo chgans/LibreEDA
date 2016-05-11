@@ -232,7 +232,7 @@
   		<xs:whiteSpace value="collapse"></xs:whiteSpace>
   	</xs:restriction>
   </xs:simpleType>
-  <xs:simpleType name="NonNegativeDouble">
+  <xs:simpleType name="NonNegativeDouble"> <!-- TODO: rename to Length -->
   	<xs:restriction base="xs:double">
   		<xs:minInclusive value="0.0"></xs:minInclusive>
   	</xs:restriction>

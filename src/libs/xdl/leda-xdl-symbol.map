@@ -11,21 +11,20 @@ namespace http://www.leda.org/xdl
     include <QColor>;
     include <QFont>;
 
-    include "symboldocument.h";
-    include "symbolitem.h";
+    include "symbol.h";
 
-    Symbol xdl::symbol::Document*;
-    ItemList QList<xdl::symbol::Item*>;
-    Polyline xdl::symbol::PolylineItem*;
-    Polygon xdl::symbol::PolygonItem*;
-    Rectangle xdl::symbol::RectangleItem*;
-    Circle xdl::symbol::CircleItem*;
-    CircularArc xdl::symbol::CircularArcItem*;
-    Ellipse xdl::symbol::EllipseItem*;
-    EllipticalArc xdl::symbol::EllipticalArcItem*;
-    Label xdl::symbol::LabelItem*;
-    Pin xdl::symbol::PinItem*;
-    ItemGroup xdl::symbol::ItemGroup*;
+    Symbol Symbol*;
+    ItemList QList<Item*>;
+    Polyline PolylineItem*;
+    Polygon PolygonItem*;
+    Rectangle RectangleItem*;
+    Circle CircleItem*;
+    CircularArc CircularArcItem*;
+    Ellipse EllipseItem*;
+    EllipticalArc EllipticalArcItem*;
+    Label LabelItem*;
+    Pin PinItem*;
+    ItemGroup ItemGroup*;
 
     Angle qreal;
     Opacity qreal;

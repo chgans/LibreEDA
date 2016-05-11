@@ -1,67 +1,13 @@
-{
-    "leda-document-type": "sch",
-    "sheet-size": [297, 210],
-    "items": [
-        {
-            "type": "rectangle",
-            "position": [10, 10],
-            "points": [[0, 0], [20, 30]],
-            "pen" : {
-                "width": 1.0,
-                "color": "#cc6633"
-            },
-            "brush": {
-                "color": "#336699"
-            }
-        },
-        {
-            "type": "line",
-            "position": [50, 70],
-            "points": [[0, 0], [115, -25]],
-            "pen" : {
-                "width": 1.0,
-                "color": "#cc6633"
-            },
-            "brush": {
-                "color": "#336699"
-            }
-        },
-        {
-            "type": "circle",
-            "position": [150, 105],
-            "radius": 25,
-            "pen" : {
-                "width": 1.0,
-                "color": "#cc6633"
-            },
-            "brush": {
-                "color": "#336699"
-            }
-        },
-        {
-            "type": "ellipse",
-            "position": [50, 150],
-            "x-radius": 15,
-            "y-radius": 30,
-            "pen" : {
-                "width": 1.0,
-                "color": "#cc6633"
-            },
-            "brush": {
-                "color": "#336699"
-            }
-        },
-        {
-            "type": "wire",
-            "position": [200, 120],
-            "points": [[0, 0], [20, 20], [40, 0], [60, 20]],
-            "pen" : {
-                "width": 1.0,
-                "color": "#cc6633"
-            },
-            "brush": {
-                "color": "#336699"
-            }
-        }
-    ]
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<symbol xmlns="http://www.leda.org/xdl">
+  <name>IEC Resistor</name>
+  <label>Resistor (IEC)</label>
+  <drawing>
+    <circle>
+      <pen><width>1.0</width><color>#000000</color></pen>
+      <position><x>0.0</x><y>0.0</y></position>
+      <center><x>0.0</x><y>0.0</y></center>
+      <radius>20</radius>
+    </circle>
+  </drawing>
+</symbol>

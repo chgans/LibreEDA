@@ -42,1334 +42,1374 @@
 
 namespace xdl
 {
-  // Symbol_pskel
-  //
-
-  void Symbol_pskel::
-  name_parser (::xml_schema::string_pskel& p)
-  {
-    this->name_parser_ = &p;
-  }
-
-  void Symbol_pskel::
-  label_parser (::xml_schema::string_pskel& p)
-  {
-    this->label_parser_ = &p;
-  }
-
-  void Symbol_pskel::
-  drawing_parser (::xdl::ItemList_pskel& p)
-  {
-    this->drawing_parser_ = &p;
-  }
-
-  void Symbol_pskel::
-  parsers (::xml_schema::string_pskel& name,
-           ::xml_schema::string_pskel& label,
-           ::xdl::ItemList_pskel& drawing)
-  {
-    this->name_parser_ = &name;
-    this->label_parser_ = &label;
-    this->drawing_parser_ = &drawing;
-  }
-
-  Symbol_pskel::
-  Symbol_pskel ()
-  : name_parser_ (0),
-    label_parser_ (0),
-    drawing_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // ItemList_pskel
-  //
-
-  void ItemList_pskel::
-  polyline_parser (::xdl::Polyline_pskel& p)
-  {
-    this->polyline_parser_ = &p;
-  }
-
-  void ItemList_pskel::
-  polygon_parser (::xdl::Polygon_pskel& p)
-  {
-    this->polygon_parser_ = &p;
-  }
-
-  void ItemList_pskel::
-  rectangle_parser (::xdl::Rectangle_pskel& p)
-  {
-    this->rectangle_parser_ = &p;
-  }
-
-  void ItemList_pskel::
-  circle_parser (::xdl::Circle_pskel& p)
-  {
-    this->circle_parser_ = &p;
-  }
-
-  void ItemList_pskel::
-  circular_arc_parser (::xdl::CircularArc_pskel& p)
-  {
-    this->circular_arc_parser_ = &p;
-  }
-
-  void ItemList_pskel::
-  ellipse_parser (::xdl::Ellipse_pskel& p)
-  {
-    this->ellipse_parser_ = &p;
-  }
-
-  void ItemList_pskel::
-  elliptical_arc_parser (::xdl::EllipticalArc_pskel& p)
-  {
-    this->elliptical_arc_parser_ = &p;
-  }
-
-  void ItemList_pskel::
-  label_parser (::xdl::Label_pskel& p)
-  {
-    this->label_parser_ = &p;
-  }
-
-  void ItemList_pskel::
-  pin_parser (::xdl::Pin_pskel& p)
-  {
-    this->pin_parser_ = &p;
-  }
-
-  void ItemList_pskel::
-  group_parser (::xdl::ItemGroup_pskel& p)
-  {
-    this->group_parser_ = &p;
-  }
-
-  void ItemList_pskel::
-  parsers (::xdl::Polyline_pskel& polyline,
-           ::xdl::Polygon_pskel& polygon,
-           ::xdl::Rectangle_pskel& rectangle,
-           ::xdl::Circle_pskel& circle,
-           ::xdl::CircularArc_pskel& circular_arc,
-           ::xdl::Ellipse_pskel& ellipse,
-           ::xdl::EllipticalArc_pskel& elliptical_arc,
-           ::xdl::Label_pskel& label,
-           ::xdl::Pin_pskel& pin,
-           ::xdl::ItemGroup_pskel& group)
-  {
-    this->polyline_parser_ = &polyline;
-    this->polygon_parser_ = &polygon;
-    this->rectangle_parser_ = &rectangle;
-    this->circle_parser_ = &circle;
-    this->circular_arc_parser_ = &circular_arc;
-    this->ellipse_parser_ = &ellipse;
-    this->elliptical_arc_parser_ = &elliptical_arc;
-    this->label_parser_ = &label;
-    this->pin_parser_ = &pin;
-    this->group_parser_ = &group;
-  }
-
-  ItemList_pskel::
-  ItemList_pskel ()
-  : polyline_parser_ (0),
-    polygon_parser_ (0),
-    rectangle_parser_ (0),
-    circle_parser_ (0),
-    circular_arc_parser_ (0),
-    ellipse_parser_ (0),
-    elliptical_arc_parser_ (0),
-    label_parser_ (0),
-    pin_parser_ (0),
-    group_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Item_pskel
-  //
-
-  void Item_pskel::
-  pen_parser (::xdl::Pen_pskel& p)
-  {
-    this->pen_parser_ = &p;
-  }
-
-  void Item_pskel::
-  brush_parser (::xdl::Brush_pskel& p)
-  {
-    this->brush_parser_ = &p;
-  }
-
-  void Item_pskel::
-  position_parser (::xdl::Point_pskel& p)
-  {
-    this->position_parser_ = &p;
-  }
-
-  void Item_pskel::
-  z_value_parser (::xml_schema::double_pskel& p)
-  {
-    this->z_value_parser_ = &p;
-  }
-
-  void Item_pskel::
-  rotation_parser (::xdl::Angle_pskel& p)
-  {
-    this->rotation_parser_ = &p;
-  }
-
-  void Item_pskel::
-  opacity_parser (::xdl::Opacity_pskel& p)
-  {
-    this->opacity_parser_ = &p;
-  }
-
-  void Item_pskel::
-  locked_parser (::xml_schema::boolean_pskel& p)
-  {
-    this->locked_parser_ = &p;
-  }
-
-  void Item_pskel::
-  x_mirrored_parser (::xml_schema::boolean_pskel& p)
-  {
-    this->x_mirrored_parser_ = &p;
-  }
-
-  void Item_pskel::
-  visible_parser (::xml_schema::boolean_pskel& p)
-  {
-    this->visible_parser_ = &p;
-  }
-
-  void Item_pskel::
-  parsers (::xdl::Pen_pskel& pen,
-           ::xdl::Brush_pskel& brush,
-           ::xdl::Point_pskel& position,
-           ::xml_schema::double_pskel& z_value,
-           ::xdl::Angle_pskel& rotation,
-           ::xdl::Opacity_pskel& opacity,
-           ::xml_schema::boolean_pskel& locked,
-           ::xml_schema::boolean_pskel& x_mirrored,
-           ::xml_schema::boolean_pskel& visible)
-  {
-    this->pen_parser_ = &pen;
-    this->brush_parser_ = &brush;
-    this->position_parser_ = &position;
-    this->z_value_parser_ = &z_value;
-    this->rotation_parser_ = &rotation;
-    this->opacity_parser_ = &opacity;
-    this->locked_parser_ = &locked;
-    this->x_mirrored_parser_ = &x_mirrored;
-    this->visible_parser_ = &visible;
-  }
-
-  Item_pskel::
-  Item_pskel ()
-  : pen_parser_ (0),
-    brush_parser_ (0),
-    position_parser_ (0),
-    z_value_parser_ (0),
-    rotation_parser_ (0),
-    opacity_parser_ (0),
-    locked_parser_ (0),
-    x_mirrored_parser_ (0),
-    visible_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Circle_pskel
-  //
-
-  void Circle_pskel::
-  center_parser (::xdl::Point_pskel& p)
-  {
-    this->center_parser_ = &p;
-  }
-
-  void Circle_pskel::
-  radius_parser (::xdl::NonNegativeDouble_pskel& p)
-  {
-    this->radius_parser_ = &p;
-  }
-
-  void Circle_pskel::
-  parsers (::xdl::Pen_pskel& pen,
-           ::xdl::Brush_pskel& brush,
-           ::xdl::Point_pskel& position,
-           ::xml_schema::double_pskel& z_value,
-           ::xdl::Angle_pskel& rotation,
-           ::xdl::Opacity_pskel& opacity,
-           ::xml_schema::boolean_pskel& locked,
-           ::xml_schema::boolean_pskel& x_mirrored,
-           ::xml_schema::boolean_pskel& visible,
-           ::xdl::Point_pskel& center,
-           ::xdl::NonNegativeDouble_pskel& radius)
-  {
-    this->pen_parser_ = &pen;
-    this->brush_parser_ = &brush;
-    this->position_parser_ = &position;
-    this->z_value_parser_ = &z_value;
-    this->rotation_parser_ = &rotation;
-    this->opacity_parser_ = &opacity;
-    this->locked_parser_ = &locked;
-    this->x_mirrored_parser_ = &x_mirrored;
-    this->visible_parser_ = &visible;
-    this->center_parser_ = &center;
-    this->radius_parser_ = &radius;
-  }
-
-  Circle_pskel::
-  Circle_pskel ()
-  : center_parser_ (0),
-    radius_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // CircularArc_pskel
-  //
-
-  void CircularArc_pskel::
-  center_parser (::xdl::Point_pskel& p)
-  {
-    this->center_parser_ = &p;
-  }
-
-  void CircularArc_pskel::
-  radius_parser (::xdl::NonNegativeDouble_pskel& p)
-  {
-    this->radius_parser_ = &p;
-  }
-
-  void CircularArc_pskel::
-  start_angle_parser (::xdl::Angle_pskel& p)
-  {
-    this->start_angle_parser_ = &p;
-  }
-
-  void CircularArc_pskel::
-  span_angle_parser (::xdl::Angle_pskel& p)
-  {
-    this->span_angle_parser_ = &p;
-  }
-
-  void CircularArc_pskel::
-  parsers (::xdl::Pen_pskel& pen,
-           ::xdl::Brush_pskel& brush,
-           ::xdl::Point_pskel& position,
-           ::xml_schema::double_pskel& z_value,
-           ::xdl::Angle_pskel& rotation,
-           ::xdl::Opacity_pskel& opacity,
-           ::xml_schema::boolean_pskel& locked,
-           ::xml_schema::boolean_pskel& x_mirrored,
-           ::xml_schema::boolean_pskel& visible,
-           ::xdl::Point_pskel& center,
-           ::xdl::NonNegativeDouble_pskel& radius,
-           ::xdl::Angle_pskel& start_angle,
-           ::xdl::Angle_pskel& span_angle)
-  {
-    this->pen_parser_ = &pen;
-    this->brush_parser_ = &brush;
-    this->position_parser_ = &position;
-    this->z_value_parser_ = &z_value;
-    this->rotation_parser_ = &rotation;
-    this->opacity_parser_ = &opacity;
-    this->locked_parser_ = &locked;
-    this->x_mirrored_parser_ = &x_mirrored;
-    this->visible_parser_ = &visible;
-    this->center_parser_ = &center;
-    this->radius_parser_ = &radius;
-    this->start_angle_parser_ = &start_angle;
-    this->span_angle_parser_ = &span_angle;
-  }
-
-  CircularArc_pskel::
-  CircularArc_pskel ()
-  : center_parser_ (0),
-    radius_parser_ (0),
-    start_angle_parser_ (0),
-    span_angle_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Ellipse_pskel
-  //
-
-  void Ellipse_pskel::
-  center_parser (::xdl::Point_pskel& p)
-  {
-    this->center_parser_ = &p;
-  }
-
-  void Ellipse_pskel::
-  x_radius_parser (::xdl::NonNegativeDouble_pskel& p)
-  {
-    this->x_radius_parser_ = &p;
-  }
-
-  void Ellipse_pskel::
-  y_radius_parser (::xdl::NonNegativeDouble_pskel& p)
-  {
-    this->y_radius_parser_ = &p;
-  }
-
-  void Ellipse_pskel::
-  parsers (::xdl::Pen_pskel& pen,
-           ::xdl::Brush_pskel& brush,
-           ::xdl::Point_pskel& position,
-           ::xml_schema::double_pskel& z_value,
-           ::xdl::Angle_pskel& rotation,
-           ::xdl::Opacity_pskel& opacity,
-           ::xml_schema::boolean_pskel& locked,
-           ::xml_schema::boolean_pskel& x_mirrored,
-           ::xml_schema::boolean_pskel& visible,
-           ::xdl::Point_pskel& center,
-           ::xdl::NonNegativeDouble_pskel& x_radius,
-           ::xdl::NonNegativeDouble_pskel& y_radius)
-  {
-    this->pen_parser_ = &pen;
-    this->brush_parser_ = &brush;
-    this->position_parser_ = &position;
-    this->z_value_parser_ = &z_value;
-    this->rotation_parser_ = &rotation;
-    this->opacity_parser_ = &opacity;
-    this->locked_parser_ = &locked;
-    this->x_mirrored_parser_ = &x_mirrored;
-    this->visible_parser_ = &visible;
-    this->center_parser_ = &center;
-    this->x_radius_parser_ = &x_radius;
-    this->y_radius_parser_ = &y_radius;
-  }
-
-  Ellipse_pskel::
-  Ellipse_pskel ()
-  : center_parser_ (0),
-    x_radius_parser_ (0),
-    y_radius_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // EllipticalArc_pskel
-  //
-
-  void EllipticalArc_pskel::
-  center_parser (::xdl::Point_pskel& p)
-  {
-    this->center_parser_ = &p;
-  }
-
-  void EllipticalArc_pskel::
-  x_radius_parser (::xdl::NonNegativeDouble_pskel& p)
-  {
-    this->x_radius_parser_ = &p;
-  }
-
-  void EllipticalArc_pskel::
-  y_radius_parser (::xdl::NonNegativeDouble_pskel& p)
-  {
-    this->y_radius_parser_ = &p;
-  }
-
-  void EllipticalArc_pskel::
-  start_angle_parser (::xdl::Angle_pskel& p)
-  {
-    this->start_angle_parser_ = &p;
-  }
-
-  void EllipticalArc_pskel::
-  span_angle_parser (::xdl::Angle_pskel& p)
-  {
-    this->span_angle_parser_ = &p;
-  }
-
-  void EllipticalArc_pskel::
-  parsers (::xdl::Pen_pskel& pen,
-           ::xdl::Brush_pskel& brush,
-           ::xdl::Point_pskel& position,
-           ::xml_schema::double_pskel& z_value,
-           ::xdl::Angle_pskel& rotation,
-           ::xdl::Opacity_pskel& opacity,
-           ::xml_schema::boolean_pskel& locked,
-           ::xml_schema::boolean_pskel& x_mirrored,
-           ::xml_schema::boolean_pskel& visible,
-           ::xdl::Point_pskel& center,
-           ::xdl::NonNegativeDouble_pskel& x_radius,
-           ::xdl::NonNegativeDouble_pskel& y_radius,
-           ::xdl::Angle_pskel& start_angle,
-           ::xdl::Angle_pskel& span_angle)
-  {
-    this->pen_parser_ = &pen;
-    this->brush_parser_ = &brush;
-    this->position_parser_ = &position;
-    this->z_value_parser_ = &z_value;
-    this->rotation_parser_ = &rotation;
-    this->opacity_parser_ = &opacity;
-    this->locked_parser_ = &locked;
-    this->x_mirrored_parser_ = &x_mirrored;
-    this->visible_parser_ = &visible;
-    this->center_parser_ = &center;
-    this->x_radius_parser_ = &x_radius;
-    this->y_radius_parser_ = &y_radius;
-    this->start_angle_parser_ = &start_angle;
-    this->span_angle_parser_ = &span_angle;
-  }
-
-  EllipticalArc_pskel::
-  EllipticalArc_pskel ()
-  : center_parser_ (0),
-    x_radius_parser_ (0),
-    y_radius_parser_ (0),
-    start_angle_parser_ (0),
-    span_angle_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Rectangle_pskel
-  //
-
-  void Rectangle_pskel::
-  top_left_parser (::xdl::Point_pskel& p)
-  {
-    this->top_left_parser_ = &p;
-  }
-
-  void Rectangle_pskel::
-  bottom_right_parser (::xdl::Point_pskel& p)
-  {
-    this->bottom_right_parser_ = &p;
-  }
-
-  void Rectangle_pskel::
-  parsers (::xdl::Pen_pskel& pen,
-           ::xdl::Brush_pskel& brush,
-           ::xdl::Point_pskel& position,
-           ::xml_schema::double_pskel& z_value,
-           ::xdl::Angle_pskel& rotation,
-           ::xdl::Opacity_pskel& opacity,
-           ::xml_schema::boolean_pskel& locked,
-           ::xml_schema::boolean_pskel& x_mirrored,
-           ::xml_schema::boolean_pskel& visible,
-           ::xdl::Point_pskel& top_left,
-           ::xdl::Point_pskel& bottom_right)
-  {
-    this->pen_parser_ = &pen;
-    this->brush_parser_ = &brush;
-    this->position_parser_ = &position;
-    this->z_value_parser_ = &z_value;
-    this->rotation_parser_ = &rotation;
-    this->opacity_parser_ = &opacity;
-    this->locked_parser_ = &locked;
-    this->x_mirrored_parser_ = &x_mirrored;
-    this->visible_parser_ = &visible;
-    this->top_left_parser_ = &top_left;
-    this->bottom_right_parser_ = &bottom_right;
-  }
-
-  Rectangle_pskel::
-  Rectangle_pskel ()
-  : top_left_parser_ (0),
-    bottom_right_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Polyline_pskel
-  //
-
-  void Polyline_pskel::
-  vertices_parser (::xdl::PointList_pskel& p)
-  {
-    this->vertices_parser_ = &p;
-  }
-
-  void Polyline_pskel::
-  parsers (::xdl::Pen_pskel& pen,
-           ::xdl::Brush_pskel& brush,
-           ::xdl::Point_pskel& position,
-           ::xml_schema::double_pskel& z_value,
-           ::xdl::Angle_pskel& rotation,
-           ::xdl::Opacity_pskel& opacity,
-           ::xml_schema::boolean_pskel& locked,
-           ::xml_schema::boolean_pskel& x_mirrored,
-           ::xml_schema::boolean_pskel& visible,
-           ::xdl::PointList_pskel& vertices)
-  {
-    this->pen_parser_ = &pen;
-    this->brush_parser_ = &brush;
-    this->position_parser_ = &position;
-    this->z_value_parser_ = &z_value;
-    this->rotation_parser_ = &rotation;
-    this->opacity_parser_ = &opacity;
-    this->locked_parser_ = &locked;
-    this->x_mirrored_parser_ = &x_mirrored;
-    this->visible_parser_ = &visible;
-    this->vertices_parser_ = &vertices;
-  }
-
-  Polyline_pskel::
-  Polyline_pskel ()
-  : vertices_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Polygon_pskel
-  //
-
-  void Polygon_pskel::
-  vertices_parser (::xdl::PointList_pskel& p)
-  {
-    this->vertices_parser_ = &p;
-  }
-
-  void Polygon_pskel::
-  parsers (::xdl::Pen_pskel& pen,
-           ::xdl::Brush_pskel& brush,
-           ::xdl::Point_pskel& position,
-           ::xml_schema::double_pskel& z_value,
-           ::xdl::Angle_pskel& rotation,
-           ::xdl::Opacity_pskel& opacity,
-           ::xml_schema::boolean_pskel& locked,
-           ::xml_schema::boolean_pskel& x_mirrored,
-           ::xml_schema::boolean_pskel& visible,
-           ::xdl::PointList_pskel& vertices)
-  {
-    this->pen_parser_ = &pen;
-    this->brush_parser_ = &brush;
-    this->position_parser_ = &position;
-    this->z_value_parser_ = &z_value;
-    this->rotation_parser_ = &rotation;
-    this->opacity_parser_ = &opacity;
-    this->locked_parser_ = &locked;
-    this->x_mirrored_parser_ = &x_mirrored;
-    this->visible_parser_ = &visible;
-    this->vertices_parser_ = &vertices;
-  }
-
-  Polygon_pskel::
-  Polygon_pskel ()
-  : vertices_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Pin_pskel
-  //
-
-  void Pin_pskel::
-  designator_parser (::xml_schema::string_pskel& p)
-  {
-    this->designator_parser_ = &p;
-  }
-
-  void Pin_pskel::
-  label_parser (::xml_schema::string_pskel& p)
-  {
-    this->label_parser_ = &p;
-  }
-
-  void Pin_pskel::
-  parsers (::xdl::Pen_pskel& pen,
-           ::xdl::Brush_pskel& brush,
-           ::xdl::Point_pskel& position,
-           ::xml_schema::double_pskel& z_value,
-           ::xdl::Angle_pskel& rotation,
-           ::xdl::Opacity_pskel& opacity,
-           ::xml_schema::boolean_pskel& locked,
-           ::xml_schema::boolean_pskel& x_mirrored,
-           ::xml_schema::boolean_pskel& visible,
-           ::xml_schema::string_pskel& designator,
-           ::xml_schema::string_pskel& label)
-  {
-    this->pen_parser_ = &pen;
-    this->brush_parser_ = &brush;
-    this->position_parser_ = &position;
-    this->z_value_parser_ = &z_value;
-    this->rotation_parser_ = &rotation;
-    this->opacity_parser_ = &opacity;
-    this->locked_parser_ = &locked;
-    this->x_mirrored_parser_ = &x_mirrored;
-    this->visible_parser_ = &visible;
-    this->designator_parser_ = &designator;
-    this->label_parser_ = &label;
-  }
-
-  Pin_pskel::
-  Pin_pskel ()
-  : designator_parser_ (0),
-    label_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // ItemGroup_pskel
-  //
-
-  void ItemGroup_pskel::
-  children_parser (::xdl::ItemList_pskel& p)
-  {
-    this->children_parser_ = &p;
-  }
-
-  void ItemGroup_pskel::
-  parsers (::xdl::Pen_pskel& pen,
-           ::xdl::Brush_pskel& brush,
-           ::xdl::Point_pskel& position,
-           ::xml_schema::double_pskel& z_value,
-           ::xdl::Angle_pskel& rotation,
-           ::xdl::Opacity_pskel& opacity,
-           ::xml_schema::boolean_pskel& locked,
-           ::xml_schema::boolean_pskel& x_mirrored,
-           ::xml_schema::boolean_pskel& visible,
-           ::xdl::ItemList_pskel& children)
-  {
-    this->pen_parser_ = &pen;
-    this->brush_parser_ = &brush;
-    this->position_parser_ = &position;
-    this->z_value_parser_ = &z_value;
-    this->rotation_parser_ = &rotation;
-    this->opacity_parser_ = &opacity;
-    this->locked_parser_ = &locked;
-    this->x_mirrored_parser_ = &x_mirrored;
-    this->visible_parser_ = &visible;
-    this->children_parser_ = &children;
-  }
-
-  ItemGroup_pskel::
-  ItemGroup_pskel ()
-  : children_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Label_pskel
-  //
-
-  void Label_pskel::
-  text_parser (::xml_schema::string_pskel& p)
-  {
-    this->text_parser_ = &p;
-  }
-
-  void Label_pskel::
-  font_parser (::xdl::Font_pskel& p)
-  {
-    this->font_parser_ = &p;
-  }
-
-  void Label_pskel::
-  parsers (::xdl::Pen_pskel& pen,
-           ::xdl::Brush_pskel& brush,
-           ::xdl::Point_pskel& position,
-           ::xml_schema::double_pskel& z_value,
-           ::xdl::Angle_pskel& rotation,
-           ::xdl::Opacity_pskel& opacity,
-           ::xml_schema::boolean_pskel& locked,
-           ::xml_schema::boolean_pskel& x_mirrored,
-           ::xml_schema::boolean_pskel& visible,
-           ::xml_schema::string_pskel& text,
-           ::xdl::Font_pskel& font)
-  {
-    this->pen_parser_ = &pen;
-    this->brush_parser_ = &brush;
-    this->position_parser_ = &position;
-    this->z_value_parser_ = &z_value;
-    this->rotation_parser_ = &rotation;
-    this->opacity_parser_ = &opacity;
-    this->locked_parser_ = &locked;
-    this->x_mirrored_parser_ = &x_mirrored;
-    this->visible_parser_ = &visible;
-    this->text_parser_ = &text;
-    this->font_parser_ = &font;
-  }
-
-  Label_pskel::
-  Label_pskel ()
-  : text_parser_ (0),
-    font_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Point_pskel
-  //
-
-  void Point_pskel::
-  x_parser (::xml_schema::double_pskel& p)
-  {
-    this->x_parser_ = &p;
-  }
-
-  void Point_pskel::
-  y_parser (::xml_schema::double_pskel& p)
-  {
-    this->y_parser_ = &p;
-  }
-
-  void Point_pskel::
-  parsers (::xml_schema::double_pskel& x,
-           ::xml_schema::double_pskel& y)
-  {
-    this->x_parser_ = &x;
-    this->y_parser_ = &y;
-  }
-
-  Point_pskel::
-  Point_pskel ()
-  : x_parser_ (0),
-    y_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // PointList_pskel
-  //
-
-  void PointList_pskel::
-  point_parser (::xdl::Point_pskel& p)
-  {
-    this->point_parser_ = &p;
-  }
-
-  void PointList_pskel::
-  parsers (::xdl::Point_pskel& point)
-  {
-    this->point_parser_ = &point;
-  }
-
-  PointList_pskel::
-  PointList_pskel ()
-  : point_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Pen_pskel
-  //
-
-  void Pen_pskel::
-  width_parser (::xdl::NonNegativeDouble_pskel& p)
-  {
-    this->width_parser_ = &p;
-  }
-
-  void Pen_pskel::
-  color_parser (::xdl::Color_pskel& p)
-  {
-    this->color_parser_ = &p;
-  }
-
-  void Pen_pskel::
-  style_parser (::xdl::PenStyle_pskel& p)
-  {
-    this->style_parser_ = &p;
-  }
-
-  void Pen_pskel::
-  cap_style_parser (::xdl::PenCapStyle_pskel& p)
-  {
-    this->cap_style_parser_ = &p;
-  }
-
-  void Pen_pskel::
-  join_style_parser (::xdl::PenJoinStyle_pskel& p)
-  {
-    this->join_style_parser_ = &p;
-  }
-
-  void Pen_pskel::
-  parsers (::xdl::NonNegativeDouble_pskel& width,
-           ::xdl::Color_pskel& color,
-           ::xdl::PenStyle_pskel& style,
-           ::xdl::PenCapStyle_pskel& cap_style,
-           ::xdl::PenJoinStyle_pskel& join_style)
-  {
-    this->width_parser_ = &width;
-    this->color_parser_ = &color;
-    this->style_parser_ = &style;
-    this->cap_style_parser_ = &cap_style;
-    this->join_style_parser_ = &join_style;
-  }
-
-  Pen_pskel::
-  Pen_pskel ()
-  : width_parser_ (0),
-    color_parser_ (0),
-    style_parser_ (0),
-    cap_style_parser_ (0),
-    join_style_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Brush_pskel
-  //
-
-  void Brush_pskel::
-  color_parser (::xdl::Color_pskel& p)
-  {
-    this->color_parser_ = &p;
-  }
-
-  void Brush_pskel::
-  style_parser (::xdl::BrushStyle_pskel& p)
-  {
-    this->style_parser_ = &p;
-  }
-
-  void Brush_pskel::
-  parsers (::xdl::Color_pskel& color,
-           ::xdl::BrushStyle_pskel& style)
-  {
-    this->color_parser_ = &color;
-    this->style_parser_ = &style;
-  }
-
-  Brush_pskel::
-  Brush_pskel ()
-  : color_parser_ (0),
-    style_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
-  }
-
-  // Font_pskel
-  //
-
-  void Font_pskel::
-  family_parser (::xml_schema::string_pskel& p)
-  {
-    this->family_parser_ = &p;
-  }
-
-  void Font_pskel::
-  size_parser (::xml_schema::non_negative_integer_pskel& p)
-  {
-    this->size_parser_ = &p;
-  }
-
-  void Font_pskel::
-  bold_parser (::xml_schema::boolean_pskel& p)
-  {
-    this->bold_parser_ = &p;
-  }
-
-  void Font_pskel::
-  italic_parser (::xml_schema::boolean_pskel& p)
-  {
-    this->italic_parser_ = &p;
-  }
-
-  void Font_pskel::
-  underline_parser (::xml_schema::boolean_pskel& p)
-  {
-    this->underline_parser_ = &p;
-  }
-
-  void Font_pskel::
-  strikeout_parser (::xml_schema::boolean_pskel& p)
-  {
-    this->strikeout_parser_ = &p;
-  }
-
-  void Font_pskel::
-  parsers (::xml_schema::string_pskel& family,
-           ::xml_schema::non_negative_integer_pskel& size,
-           ::xml_schema::boolean_pskel& bold,
-           ::xml_schema::boolean_pskel& italic,
-           ::xml_schema::boolean_pskel& underline,
-           ::xml_schema::boolean_pskel& strikeout)
-  {
-    this->family_parser_ = &family;
-    this->size_parser_ = &size;
-    this->bold_parser_ = &bold;
-    this->italic_parser_ = &italic;
-    this->underline_parser_ = &underline;
-    this->strikeout_parser_ = &strikeout;
-  }
-
-  Font_pskel::
-  Font_pskel ()
-  : family_parser_ (0),
-    size_parser_ (0),
-    bold_parser_ (0),
-    italic_parser_ (0),
-    underline_parser_ (0),
-    strikeout_parser_ (0),
-    v_state_stack_ (sizeof (v_state_), &v_state_first_)
-  {
+  namespace symbol
+  {
+    // Symbol_pskel
+    //
+
+    void Symbol_pskel::
+    name_parser (::xml_schema::string_pskel& p)
+    {
+      this->name_parser_ = &p;
+    }
+
+    void Symbol_pskel::
+    label_parser (::xml_schema::string_pskel& p)
+    {
+      this->label_parser_ = &p;
+    }
+
+    void Symbol_pskel::
+    drawing_parser (::xdl::symbol::ItemList_pskel& p)
+    {
+      this->drawing_parser_ = &p;
+    }
+
+    void Symbol_pskel::
+    parsers (::xml_schema::string_pskel& name,
+             ::xml_schema::string_pskel& label,
+             ::xdl::symbol::ItemList_pskel& drawing)
+    {
+      this->name_parser_ = &name;
+      this->label_parser_ = &label;
+      this->drawing_parser_ = &drawing;
+    }
+
+    Symbol_pskel::
+    Symbol_pskel ()
+    : name_parser_ (0),
+      label_parser_ (0),
+      drawing_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // ItemList_pskel
+    //
+
+    void ItemList_pskel::
+    polyline_parser (::xdl::symbol::Polyline_pskel& p)
+    {
+      this->polyline_parser_ = &p;
+    }
+
+    void ItemList_pskel::
+    polygon_parser (::xdl::symbol::Polygon_pskel& p)
+    {
+      this->polygon_parser_ = &p;
+    }
+
+    void ItemList_pskel::
+    rectangle_parser (::xdl::symbol::Rectangle_pskel& p)
+    {
+      this->rectangle_parser_ = &p;
+    }
+
+    void ItemList_pskel::
+    circle_parser (::xdl::symbol::Circle_pskel& p)
+    {
+      this->circle_parser_ = &p;
+    }
+
+    void ItemList_pskel::
+    circular_arc_parser (::xdl::symbol::CircularArc_pskel& p)
+    {
+      this->circular_arc_parser_ = &p;
+    }
+
+    void ItemList_pskel::
+    ellipse_parser (::xdl::symbol::Ellipse_pskel& p)
+    {
+      this->ellipse_parser_ = &p;
+    }
+
+    void ItemList_pskel::
+    elliptical_arc_parser (::xdl::symbol::EllipticalArc_pskel& p)
+    {
+      this->elliptical_arc_parser_ = &p;
+    }
+
+    void ItemList_pskel::
+    label_parser (::xdl::symbol::Label_pskel& p)
+    {
+      this->label_parser_ = &p;
+    }
+
+    void ItemList_pskel::
+    pin_parser (::xdl::symbol::Pin_pskel& p)
+    {
+      this->pin_parser_ = &p;
+    }
+
+    void ItemList_pskel::
+    group_parser (::xdl::symbol::ItemGroup_pskel& p)
+    {
+      this->group_parser_ = &p;
+    }
+
+    void ItemList_pskel::
+    parsers (::xdl::symbol::Polyline_pskel& polyline,
+             ::xdl::symbol::Polygon_pskel& polygon,
+             ::xdl::symbol::Rectangle_pskel& rectangle,
+             ::xdl::symbol::Circle_pskel& circle,
+             ::xdl::symbol::CircularArc_pskel& circular_arc,
+             ::xdl::symbol::Ellipse_pskel& ellipse,
+             ::xdl::symbol::EllipticalArc_pskel& elliptical_arc,
+             ::xdl::symbol::Label_pskel& label,
+             ::xdl::symbol::Pin_pskel& pin,
+             ::xdl::symbol::ItemGroup_pskel& group)
+    {
+      this->polyline_parser_ = &polyline;
+      this->polygon_parser_ = &polygon;
+      this->rectangle_parser_ = &rectangle;
+      this->circle_parser_ = &circle;
+      this->circular_arc_parser_ = &circular_arc;
+      this->ellipse_parser_ = &ellipse;
+      this->elliptical_arc_parser_ = &elliptical_arc;
+      this->label_parser_ = &label;
+      this->pin_parser_ = &pin;
+      this->group_parser_ = &group;
+    }
+
+    ItemList_pskel::
+    ItemList_pskel ()
+    : polyline_parser_ (0),
+      polygon_parser_ (0),
+      rectangle_parser_ (0),
+      circle_parser_ (0),
+      circular_arc_parser_ (0),
+      ellipse_parser_ (0),
+      elliptical_arc_parser_ (0),
+      label_parser_ (0),
+      pin_parser_ (0),
+      group_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Item_pskel
+    //
+
+    void Item_pskel::
+    pen_parser (::xdl::symbol::Pen_pskel& p)
+    {
+      this->pen_parser_ = &p;
+    }
+
+    void Item_pskel::
+    brush_parser (::xdl::symbol::Brush_pskel& p)
+    {
+      this->brush_parser_ = &p;
+    }
+
+    void Item_pskel::
+    position_parser (::xdl::symbol::Point_pskel& p)
+    {
+      this->position_parser_ = &p;
+    }
+
+    void Item_pskel::
+    z_value_parser (::xml_schema::double_pskel& p)
+    {
+      this->z_value_parser_ = &p;
+    }
+
+    void Item_pskel::
+    rotation_parser (::xdl::symbol::Angle_pskel& p)
+    {
+      this->rotation_parser_ = &p;
+    }
+
+    void Item_pskel::
+    opacity_parser (::xdl::symbol::Opacity_pskel& p)
+    {
+      this->opacity_parser_ = &p;
+    }
+
+    void Item_pskel::
+    locked_parser (::xml_schema::boolean_pskel& p)
+    {
+      this->locked_parser_ = &p;
+    }
+
+    void Item_pskel::
+    x_mirrored_parser (::xml_schema::boolean_pskel& p)
+    {
+      this->x_mirrored_parser_ = &p;
+    }
+
+    void Item_pskel::
+    y_mirrored_parser (::xml_schema::boolean_pskel& p)
+    {
+      this->y_mirrored_parser_ = &p;
+    }
+
+    void Item_pskel::
+    visible_parser (::xml_schema::boolean_pskel& p)
+    {
+      this->visible_parser_ = &p;
+    }
+
+    void Item_pskel::
+    parsers (::xdl::symbol::Pen_pskel& pen,
+             ::xdl::symbol::Brush_pskel& brush,
+             ::xdl::symbol::Point_pskel& position,
+             ::xml_schema::double_pskel& z_value,
+             ::xdl::symbol::Angle_pskel& rotation,
+             ::xdl::symbol::Opacity_pskel& opacity,
+             ::xml_schema::boolean_pskel& locked,
+             ::xml_schema::boolean_pskel& x_mirrored,
+             ::xml_schema::boolean_pskel& y_mirrored,
+             ::xml_schema::boolean_pskel& visible)
+    {
+      this->pen_parser_ = &pen;
+      this->brush_parser_ = &brush;
+      this->position_parser_ = &position;
+      this->z_value_parser_ = &z_value;
+      this->rotation_parser_ = &rotation;
+      this->opacity_parser_ = &opacity;
+      this->locked_parser_ = &locked;
+      this->x_mirrored_parser_ = &x_mirrored;
+      this->y_mirrored_parser_ = &y_mirrored;
+      this->visible_parser_ = &visible;
+    }
+
+    Item_pskel::
+    Item_pskel ()
+    : pen_parser_ (0),
+      brush_parser_ (0),
+      position_parser_ (0),
+      z_value_parser_ (0),
+      rotation_parser_ (0),
+      opacity_parser_ (0),
+      locked_parser_ (0),
+      x_mirrored_parser_ (0),
+      y_mirrored_parser_ (0),
+      visible_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Circle_pskel
+    //
+
+    void Circle_pskel::
+    center_parser (::xdl::symbol::Point_pskel& p)
+    {
+      this->center_parser_ = &p;
+    }
+
+    void Circle_pskel::
+    radius_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
+    {
+      this->radius_parser_ = &p;
+    }
+
+    void Circle_pskel::
+    parsers (::xdl::symbol::Pen_pskel& pen,
+             ::xdl::symbol::Brush_pskel& brush,
+             ::xdl::symbol::Point_pskel& position,
+             ::xml_schema::double_pskel& z_value,
+             ::xdl::symbol::Angle_pskel& rotation,
+             ::xdl::symbol::Opacity_pskel& opacity,
+             ::xml_schema::boolean_pskel& locked,
+             ::xml_schema::boolean_pskel& x_mirrored,
+             ::xml_schema::boolean_pskel& y_mirrored,
+             ::xml_schema::boolean_pskel& visible,
+             ::xdl::symbol::Point_pskel& center,
+             ::xdl::symbol::NonNegativeDouble_pskel& radius)
+    {
+      this->pen_parser_ = &pen;
+      this->brush_parser_ = &brush;
+      this->position_parser_ = &position;
+      this->z_value_parser_ = &z_value;
+      this->rotation_parser_ = &rotation;
+      this->opacity_parser_ = &opacity;
+      this->locked_parser_ = &locked;
+      this->x_mirrored_parser_ = &x_mirrored;
+      this->y_mirrored_parser_ = &y_mirrored;
+      this->visible_parser_ = &visible;
+      this->center_parser_ = &center;
+      this->radius_parser_ = &radius;
+    }
+
+    Circle_pskel::
+    Circle_pskel ()
+    : center_parser_ (0),
+      radius_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // CircularArc_pskel
+    //
+
+    void CircularArc_pskel::
+    center_parser (::xdl::symbol::Point_pskel& p)
+    {
+      this->center_parser_ = &p;
+    }
+
+    void CircularArc_pskel::
+    radius_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
+    {
+      this->radius_parser_ = &p;
+    }
+
+    void CircularArc_pskel::
+    start_angle_parser (::xdl::symbol::Angle_pskel& p)
+    {
+      this->start_angle_parser_ = &p;
+    }
+
+    void CircularArc_pskel::
+    span_angle_parser (::xdl::symbol::Angle_pskel& p)
+    {
+      this->span_angle_parser_ = &p;
+    }
+
+    void CircularArc_pskel::
+    parsers (::xdl::symbol::Pen_pskel& pen,
+             ::xdl::symbol::Brush_pskel& brush,
+             ::xdl::symbol::Point_pskel& position,
+             ::xml_schema::double_pskel& z_value,
+             ::xdl::symbol::Angle_pskel& rotation,
+             ::xdl::symbol::Opacity_pskel& opacity,
+             ::xml_schema::boolean_pskel& locked,
+             ::xml_schema::boolean_pskel& x_mirrored,
+             ::xml_schema::boolean_pskel& y_mirrored,
+             ::xml_schema::boolean_pskel& visible,
+             ::xdl::symbol::Point_pskel& center,
+             ::xdl::symbol::NonNegativeDouble_pskel& radius,
+             ::xdl::symbol::Angle_pskel& start_angle,
+             ::xdl::symbol::Angle_pskel& span_angle)
+    {
+      this->pen_parser_ = &pen;
+      this->brush_parser_ = &brush;
+      this->position_parser_ = &position;
+      this->z_value_parser_ = &z_value;
+      this->rotation_parser_ = &rotation;
+      this->opacity_parser_ = &opacity;
+      this->locked_parser_ = &locked;
+      this->x_mirrored_parser_ = &x_mirrored;
+      this->y_mirrored_parser_ = &y_mirrored;
+      this->visible_parser_ = &visible;
+      this->center_parser_ = &center;
+      this->radius_parser_ = &radius;
+      this->start_angle_parser_ = &start_angle;
+      this->span_angle_parser_ = &span_angle;
+    }
+
+    CircularArc_pskel::
+    CircularArc_pskel ()
+    : center_parser_ (0),
+      radius_parser_ (0),
+      start_angle_parser_ (0),
+      span_angle_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Ellipse_pskel
+    //
+
+    void Ellipse_pskel::
+    center_parser (::xdl::symbol::Point_pskel& p)
+    {
+      this->center_parser_ = &p;
+    }
+
+    void Ellipse_pskel::
+    x_radius_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
+    {
+      this->x_radius_parser_ = &p;
+    }
+
+    void Ellipse_pskel::
+    y_radius_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
+    {
+      this->y_radius_parser_ = &p;
+    }
+
+    void Ellipse_pskel::
+    parsers (::xdl::symbol::Pen_pskel& pen,
+             ::xdl::symbol::Brush_pskel& brush,
+             ::xdl::symbol::Point_pskel& position,
+             ::xml_schema::double_pskel& z_value,
+             ::xdl::symbol::Angle_pskel& rotation,
+             ::xdl::symbol::Opacity_pskel& opacity,
+             ::xml_schema::boolean_pskel& locked,
+             ::xml_schema::boolean_pskel& x_mirrored,
+             ::xml_schema::boolean_pskel& y_mirrored,
+             ::xml_schema::boolean_pskel& visible,
+             ::xdl::symbol::Point_pskel& center,
+             ::xdl::symbol::NonNegativeDouble_pskel& x_radius,
+             ::xdl::symbol::NonNegativeDouble_pskel& y_radius)
+    {
+      this->pen_parser_ = &pen;
+      this->brush_parser_ = &brush;
+      this->position_parser_ = &position;
+      this->z_value_parser_ = &z_value;
+      this->rotation_parser_ = &rotation;
+      this->opacity_parser_ = &opacity;
+      this->locked_parser_ = &locked;
+      this->x_mirrored_parser_ = &x_mirrored;
+      this->y_mirrored_parser_ = &y_mirrored;
+      this->visible_parser_ = &visible;
+      this->center_parser_ = &center;
+      this->x_radius_parser_ = &x_radius;
+      this->y_radius_parser_ = &y_radius;
+    }
+
+    Ellipse_pskel::
+    Ellipse_pskel ()
+    : center_parser_ (0),
+      x_radius_parser_ (0),
+      y_radius_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // EllipticalArc_pskel
+    //
+
+    void EllipticalArc_pskel::
+    center_parser (::xdl::symbol::Point_pskel& p)
+    {
+      this->center_parser_ = &p;
+    }
+
+    void EllipticalArc_pskel::
+    x_radius_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
+    {
+      this->x_radius_parser_ = &p;
+    }
+
+    void EllipticalArc_pskel::
+    y_radius_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
+    {
+      this->y_radius_parser_ = &p;
+    }
+
+    void EllipticalArc_pskel::
+    start_angle_parser (::xdl::symbol::Angle_pskel& p)
+    {
+      this->start_angle_parser_ = &p;
+    }
+
+    void EllipticalArc_pskel::
+    span_angle_parser (::xdl::symbol::Angle_pskel& p)
+    {
+      this->span_angle_parser_ = &p;
+    }
+
+    void EllipticalArc_pskel::
+    parsers (::xdl::symbol::Pen_pskel& pen,
+             ::xdl::symbol::Brush_pskel& brush,
+             ::xdl::symbol::Point_pskel& position,
+             ::xml_schema::double_pskel& z_value,
+             ::xdl::symbol::Angle_pskel& rotation,
+             ::xdl::symbol::Opacity_pskel& opacity,
+             ::xml_schema::boolean_pskel& locked,
+             ::xml_schema::boolean_pskel& x_mirrored,
+             ::xml_schema::boolean_pskel& y_mirrored,
+             ::xml_schema::boolean_pskel& visible,
+             ::xdl::symbol::Point_pskel& center,
+             ::xdl::symbol::NonNegativeDouble_pskel& x_radius,
+             ::xdl::symbol::NonNegativeDouble_pskel& y_radius,
+             ::xdl::symbol::Angle_pskel& start_angle,
+             ::xdl::symbol::Angle_pskel& span_angle)
+    {
+      this->pen_parser_ = &pen;
+      this->brush_parser_ = &brush;
+      this->position_parser_ = &position;
+      this->z_value_parser_ = &z_value;
+      this->rotation_parser_ = &rotation;
+      this->opacity_parser_ = &opacity;
+      this->locked_parser_ = &locked;
+      this->x_mirrored_parser_ = &x_mirrored;
+      this->y_mirrored_parser_ = &y_mirrored;
+      this->visible_parser_ = &visible;
+      this->center_parser_ = &center;
+      this->x_radius_parser_ = &x_radius;
+      this->y_radius_parser_ = &y_radius;
+      this->start_angle_parser_ = &start_angle;
+      this->span_angle_parser_ = &span_angle;
+    }
+
+    EllipticalArc_pskel::
+    EllipticalArc_pskel ()
+    : center_parser_ (0),
+      x_radius_parser_ (0),
+      y_radius_parser_ (0),
+      start_angle_parser_ (0),
+      span_angle_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Rectangle_pskel
+    //
+
+    void Rectangle_pskel::
+    top_left_parser (::xdl::symbol::Point_pskel& p)
+    {
+      this->top_left_parser_ = &p;
+    }
+
+    void Rectangle_pskel::
+    bottom_right_parser (::xdl::symbol::Point_pskel& p)
+    {
+      this->bottom_right_parser_ = &p;
+    }
+
+    void Rectangle_pskel::
+    parsers (::xdl::symbol::Pen_pskel& pen,
+             ::xdl::symbol::Brush_pskel& brush,
+             ::xdl::symbol::Point_pskel& position,
+             ::xml_schema::double_pskel& z_value,
+             ::xdl::symbol::Angle_pskel& rotation,
+             ::xdl::symbol::Opacity_pskel& opacity,
+             ::xml_schema::boolean_pskel& locked,
+             ::xml_schema::boolean_pskel& x_mirrored,
+             ::xml_schema::boolean_pskel& y_mirrored,
+             ::xml_schema::boolean_pskel& visible,
+             ::xdl::symbol::Point_pskel& top_left,
+             ::xdl::symbol::Point_pskel& bottom_right)
+    {
+      this->pen_parser_ = &pen;
+      this->brush_parser_ = &brush;
+      this->position_parser_ = &position;
+      this->z_value_parser_ = &z_value;
+      this->rotation_parser_ = &rotation;
+      this->opacity_parser_ = &opacity;
+      this->locked_parser_ = &locked;
+      this->x_mirrored_parser_ = &x_mirrored;
+      this->y_mirrored_parser_ = &y_mirrored;
+      this->visible_parser_ = &visible;
+      this->top_left_parser_ = &top_left;
+      this->bottom_right_parser_ = &bottom_right;
+    }
+
+    Rectangle_pskel::
+    Rectangle_pskel ()
+    : top_left_parser_ (0),
+      bottom_right_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Polyline_pskel
+    //
+
+    void Polyline_pskel::
+    vertices_parser (::xdl::symbol::PointList_pskel& p)
+    {
+      this->vertices_parser_ = &p;
+    }
+
+    void Polyline_pskel::
+    parsers (::xdl::symbol::Pen_pskel& pen,
+             ::xdl::symbol::Brush_pskel& brush,
+             ::xdl::symbol::Point_pskel& position,
+             ::xml_schema::double_pskel& z_value,
+             ::xdl::symbol::Angle_pskel& rotation,
+             ::xdl::symbol::Opacity_pskel& opacity,
+             ::xml_schema::boolean_pskel& locked,
+             ::xml_schema::boolean_pskel& x_mirrored,
+             ::xml_schema::boolean_pskel& y_mirrored,
+             ::xml_schema::boolean_pskel& visible,
+             ::xdl::symbol::PointList_pskel& vertices)
+    {
+      this->pen_parser_ = &pen;
+      this->brush_parser_ = &brush;
+      this->position_parser_ = &position;
+      this->z_value_parser_ = &z_value;
+      this->rotation_parser_ = &rotation;
+      this->opacity_parser_ = &opacity;
+      this->locked_parser_ = &locked;
+      this->x_mirrored_parser_ = &x_mirrored;
+      this->y_mirrored_parser_ = &y_mirrored;
+      this->visible_parser_ = &visible;
+      this->vertices_parser_ = &vertices;
+    }
+
+    Polyline_pskel::
+    Polyline_pskel ()
+    : vertices_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Polygon_pskel
+    //
+
+    void Polygon_pskel::
+    vertices_parser (::xdl::symbol::PointList_pskel& p)
+    {
+      this->vertices_parser_ = &p;
+    }
+
+    void Polygon_pskel::
+    parsers (::xdl::symbol::Pen_pskel& pen,
+             ::xdl::symbol::Brush_pskel& brush,
+             ::xdl::symbol::Point_pskel& position,
+             ::xml_schema::double_pskel& z_value,
+             ::xdl::symbol::Angle_pskel& rotation,
+             ::xdl::symbol::Opacity_pskel& opacity,
+             ::xml_schema::boolean_pskel& locked,
+             ::xml_schema::boolean_pskel& x_mirrored,
+             ::xml_schema::boolean_pskel& y_mirrored,
+             ::xml_schema::boolean_pskel& visible,
+             ::xdl::symbol::PointList_pskel& vertices)
+    {
+      this->pen_parser_ = &pen;
+      this->brush_parser_ = &brush;
+      this->position_parser_ = &position;
+      this->z_value_parser_ = &z_value;
+      this->rotation_parser_ = &rotation;
+      this->opacity_parser_ = &opacity;
+      this->locked_parser_ = &locked;
+      this->x_mirrored_parser_ = &x_mirrored;
+      this->y_mirrored_parser_ = &y_mirrored;
+      this->visible_parser_ = &visible;
+      this->vertices_parser_ = &vertices;
+    }
+
+    Polygon_pskel::
+    Polygon_pskel ()
+    : vertices_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Pin_pskel
+    //
+
+    void Pin_pskel::
+    designator_parser (::xml_schema::string_pskel& p)
+    {
+      this->designator_parser_ = &p;
+    }
+
+    void Pin_pskel::
+    label_parser (::xml_schema::string_pskel& p)
+    {
+      this->label_parser_ = &p;
+    }
+
+    void Pin_pskel::
+    parsers (::xdl::symbol::Pen_pskel& pen,
+             ::xdl::symbol::Brush_pskel& brush,
+             ::xdl::symbol::Point_pskel& position,
+             ::xml_schema::double_pskel& z_value,
+             ::xdl::symbol::Angle_pskel& rotation,
+             ::xdl::symbol::Opacity_pskel& opacity,
+             ::xml_schema::boolean_pskel& locked,
+             ::xml_schema::boolean_pskel& x_mirrored,
+             ::xml_schema::boolean_pskel& y_mirrored,
+             ::xml_schema::boolean_pskel& visible,
+             ::xml_schema::string_pskel& designator,
+             ::xml_schema::string_pskel& label)
+    {
+      this->pen_parser_ = &pen;
+      this->brush_parser_ = &brush;
+      this->position_parser_ = &position;
+      this->z_value_parser_ = &z_value;
+      this->rotation_parser_ = &rotation;
+      this->opacity_parser_ = &opacity;
+      this->locked_parser_ = &locked;
+      this->x_mirrored_parser_ = &x_mirrored;
+      this->y_mirrored_parser_ = &y_mirrored;
+      this->visible_parser_ = &visible;
+      this->designator_parser_ = &designator;
+      this->label_parser_ = &label;
+    }
+
+    Pin_pskel::
+    Pin_pskel ()
+    : designator_parser_ (0),
+      label_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // ItemGroup_pskel
+    //
+
+    void ItemGroup_pskel::
+    children_parser (::xdl::symbol::ItemList_pskel& p)
+    {
+      this->children_parser_ = &p;
+    }
+
+    void ItemGroup_pskel::
+    parsers (::xdl::symbol::Pen_pskel& pen,
+             ::xdl::symbol::Brush_pskel& brush,
+             ::xdl::symbol::Point_pskel& position,
+             ::xml_schema::double_pskel& z_value,
+             ::xdl::symbol::Angle_pskel& rotation,
+             ::xdl::symbol::Opacity_pskel& opacity,
+             ::xml_schema::boolean_pskel& locked,
+             ::xml_schema::boolean_pskel& x_mirrored,
+             ::xml_schema::boolean_pskel& y_mirrored,
+             ::xml_schema::boolean_pskel& visible,
+             ::xdl::symbol::ItemList_pskel& children)
+    {
+      this->pen_parser_ = &pen;
+      this->brush_parser_ = &brush;
+      this->position_parser_ = &position;
+      this->z_value_parser_ = &z_value;
+      this->rotation_parser_ = &rotation;
+      this->opacity_parser_ = &opacity;
+      this->locked_parser_ = &locked;
+      this->x_mirrored_parser_ = &x_mirrored;
+      this->y_mirrored_parser_ = &y_mirrored;
+      this->visible_parser_ = &visible;
+      this->children_parser_ = &children;
+    }
+
+    ItemGroup_pskel::
+    ItemGroup_pskel ()
+    : children_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Label_pskel
+    //
+
+    void Label_pskel::
+    text_parser (::xml_schema::string_pskel& p)
+    {
+      this->text_parser_ = &p;
+    }
+
+    void Label_pskel::
+    font_parser (::xdl::symbol::Font_pskel& p)
+    {
+      this->font_parser_ = &p;
+    }
+
+    void Label_pskel::
+    parsers (::xdl::symbol::Pen_pskel& pen,
+             ::xdl::symbol::Brush_pskel& brush,
+             ::xdl::symbol::Point_pskel& position,
+             ::xml_schema::double_pskel& z_value,
+             ::xdl::symbol::Angle_pskel& rotation,
+             ::xdl::symbol::Opacity_pskel& opacity,
+             ::xml_schema::boolean_pskel& locked,
+             ::xml_schema::boolean_pskel& x_mirrored,
+             ::xml_schema::boolean_pskel& y_mirrored,
+             ::xml_schema::boolean_pskel& visible,
+             ::xml_schema::string_pskel& text,
+             ::xdl::symbol::Font_pskel& font)
+    {
+      this->pen_parser_ = &pen;
+      this->brush_parser_ = &brush;
+      this->position_parser_ = &position;
+      this->z_value_parser_ = &z_value;
+      this->rotation_parser_ = &rotation;
+      this->opacity_parser_ = &opacity;
+      this->locked_parser_ = &locked;
+      this->x_mirrored_parser_ = &x_mirrored;
+      this->y_mirrored_parser_ = &y_mirrored;
+      this->visible_parser_ = &visible;
+      this->text_parser_ = &text;
+      this->font_parser_ = &font;
+    }
+
+    Label_pskel::
+    Label_pskel ()
+    : text_parser_ (0),
+      font_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Point_pskel
+    //
+
+    void Point_pskel::
+    x_parser (::xml_schema::double_pskel& p)
+    {
+      this->x_parser_ = &p;
+    }
+
+    void Point_pskel::
+    y_parser (::xml_schema::double_pskel& p)
+    {
+      this->y_parser_ = &p;
+    }
+
+    void Point_pskel::
+    parsers (::xml_schema::double_pskel& x,
+             ::xml_schema::double_pskel& y)
+    {
+      this->x_parser_ = &x;
+      this->y_parser_ = &y;
+    }
+
+    Point_pskel::
+    Point_pskel ()
+    : x_parser_ (0),
+      y_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // PointList_pskel
+    //
+
+    void PointList_pskel::
+    point_parser (::xdl::symbol::Point_pskel& p)
+    {
+      this->point_parser_ = &p;
+    }
+
+    void PointList_pskel::
+    parsers (::xdl::symbol::Point_pskel& point)
+    {
+      this->point_parser_ = &point;
+    }
+
+    PointList_pskel::
+    PointList_pskel ()
+    : point_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Pen_pskel
+    //
+
+    void Pen_pskel::
+    width_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
+    {
+      this->width_parser_ = &p;
+    }
+
+    void Pen_pskel::
+    color_parser (::xdl::symbol::Color_pskel& p)
+    {
+      this->color_parser_ = &p;
+    }
+
+    void Pen_pskel::
+    style_parser (::xdl::symbol::PenStyle_pskel& p)
+    {
+      this->style_parser_ = &p;
+    }
+
+    void Pen_pskel::
+    cap_style_parser (::xdl::symbol::PenCapStyle_pskel& p)
+    {
+      this->cap_style_parser_ = &p;
+    }
+
+    void Pen_pskel::
+    join_style_parser (::xdl::symbol::PenJoinStyle_pskel& p)
+    {
+      this->join_style_parser_ = &p;
+    }
+
+    void Pen_pskel::
+    parsers (::xdl::symbol::NonNegativeDouble_pskel& width,
+             ::xdl::symbol::Color_pskel& color,
+             ::xdl::symbol::PenStyle_pskel& style,
+             ::xdl::symbol::PenCapStyle_pskel& cap_style,
+             ::xdl::symbol::PenJoinStyle_pskel& join_style)
+    {
+      this->width_parser_ = &width;
+      this->color_parser_ = &color;
+      this->style_parser_ = &style;
+      this->cap_style_parser_ = &cap_style;
+      this->join_style_parser_ = &join_style;
+    }
+
+    Pen_pskel::
+    Pen_pskel ()
+    : width_parser_ (0),
+      color_parser_ (0),
+      style_parser_ (0),
+      cap_style_parser_ (0),
+      join_style_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Brush_pskel
+    //
+
+    void Brush_pskel::
+    color_parser (::xdl::symbol::Color_pskel& p)
+    {
+      this->color_parser_ = &p;
+    }
+
+    void Brush_pskel::
+    style_parser (::xdl::symbol::BrushStyle_pskel& p)
+    {
+      this->style_parser_ = &p;
+    }
+
+    void Brush_pskel::
+    parsers (::xdl::symbol::Color_pskel& color,
+             ::xdl::symbol::BrushStyle_pskel& style)
+    {
+      this->color_parser_ = &color;
+      this->style_parser_ = &style;
+    }
+
+    Brush_pskel::
+    Brush_pskel ()
+    : color_parser_ (0),
+      style_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
+
+    // Font_pskel
+    //
+
+    void Font_pskel::
+    family_parser (::xml_schema::string_pskel& p)
+    {
+      this->family_parser_ = &p;
+    }
+
+    void Font_pskel::
+    size_parser (::xml_schema::non_negative_integer_pskel& p)
+    {
+      this->size_parser_ = &p;
+    }
+
+    void Font_pskel::
+    bold_parser (::xml_schema::boolean_pskel& p)
+    {
+      this->bold_parser_ = &p;
+    }
+
+    void Font_pskel::
+    italic_parser (::xml_schema::boolean_pskel& p)
+    {
+      this->italic_parser_ = &p;
+    }
+
+    void Font_pskel::
+    underline_parser (::xml_schema::boolean_pskel& p)
+    {
+      this->underline_parser_ = &p;
+    }
+
+    void Font_pskel::
+    strikeout_parser (::xml_schema::boolean_pskel& p)
+    {
+      this->strikeout_parser_ = &p;
+    }
+
+    void Font_pskel::
+    parsers (::xml_schema::string_pskel& family,
+             ::xml_schema::non_negative_integer_pskel& size,
+             ::xml_schema::boolean_pskel& bold,
+             ::xml_schema::boolean_pskel& italic,
+             ::xml_schema::boolean_pskel& underline,
+             ::xml_schema::boolean_pskel& strikeout)
+    {
+      this->family_parser_ = &family;
+      this->size_parser_ = &size;
+      this->bold_parser_ = &bold;
+      this->italic_parser_ = &italic;
+      this->underline_parser_ = &underline;
+      this->strikeout_parser_ = &strikeout;
+    }
+
+    Font_pskel::
+    Font_pskel ()
+    : family_parser_ (0),
+      size_parser_ (0),
+      bold_parser_ (0),
+      italic_parser_ (0),
+      underline_parser_ (0),
+      strikeout_parser_ (0),
+      v_state_stack_ (sizeof (v_state_), &v_state_first_)
+    {
+    }
   }
 }
 
 namespace xdl
 {
-  // Symbol_pskel
-  //
-
-  void Symbol_pskel::
-  name (const ::std::string&)
+  namespace symbol
   {
-  }
-
-  void Symbol_pskel::
-  label (const ::std::string&)
-  {
-  }
-
-  void Symbol_pskel::
-  drawing (const QList<xdl::symbol::Item*>&)
-  {
-  }
-
-  // ItemList_pskel
-  //
-
-  void ItemList_pskel::
-  polyline (xdl::symbol::PolylineItem*)
-  {
-  }
-
-  void ItemList_pskel::
-  polygon (xdl::symbol::PolygonItem*)
-  {
-  }
-
-  void ItemList_pskel::
-  rectangle (xdl::symbol::RectangleItem*)
-  {
-  }
-
-  void ItemList_pskel::
-  circle (xdl::symbol::CircleItem*)
-  {
-  }
-
-  void ItemList_pskel::
-  circular_arc (xdl::symbol::CircularArcItem*)
-  {
-  }
-
-  void ItemList_pskel::
-  ellipse (xdl::symbol::EllipseItem*)
-  {
-  }
-
-  void ItemList_pskel::
-  elliptical_arc (xdl::symbol::EllipticalArcItem*)
-  {
-  }
-
-  void ItemList_pskel::
-  label (xdl::symbol::LabelItem*)
-  {
-  }
-
-  void ItemList_pskel::
-  pin (xdl::symbol::PinItem*)
-  {
-  }
-
-  void ItemList_pskel::
-  group (xdl::symbol::ItemGroup*)
-  {
-  }
-
-  // Item_pskel
-  //
-
-  void Item_pskel::
-  pen (const QPen&)
-  {
-  }
-
-  void Item_pskel::
-  brush (const QBrush&)
-  {
-  }
-
-  void Item_pskel::
-  position (const QPointF&)
-  {
-  }
-
-  void Item_pskel::
-  z_value (double)
-  {
-  }
-
-  void Item_pskel::
-  rotation (const qreal&)
-  {
-  }
-
-  void Item_pskel::
-  opacity (const qreal&)
-  {
-  }
-
-  void Item_pskel::
-  locked (bool)
-  {
-  }
-
-  void Item_pskel::
-  x_mirrored (bool)
-  {
-  }
-
-  void Item_pskel::
-  visible (bool)
-  {
-  }
-
-  void Item_pskel::
-  post_Item ()
-  {
-  }
-
-  // Circle_pskel
-  //
-
-  void Circle_pskel::
-  center (const QPointF&)
-  {
-  }
-
-  void Circle_pskel::
-  radius (const qreal&)
-  {
-  }
-
-  // CircularArc_pskel
-  //
-
-  void CircularArc_pskel::
-  center (const QPointF&)
-  {
-  }
-
-  void CircularArc_pskel::
-  radius (const qreal&)
-  {
-  }
-
-  void CircularArc_pskel::
-  start_angle (const qreal&)
-  {
-  }
-
-  void CircularArc_pskel::
-  span_angle (const qreal&)
-  {
-  }
-
-  // Ellipse_pskel
-  //
-
-  void Ellipse_pskel::
-  center (const QPointF&)
-  {
-  }
-
-  void Ellipse_pskel::
-  x_radius (const qreal&)
-  {
-  }
-
-  void Ellipse_pskel::
-  y_radius (const qreal&)
-  {
-  }
-
-  // EllipticalArc_pskel
-  //
-
-  void EllipticalArc_pskel::
-  center (const QPointF&)
-  {
-  }
-
-  void EllipticalArc_pskel::
-  x_radius (const qreal&)
-  {
-  }
-
-  void EllipticalArc_pskel::
-  y_radius (const qreal&)
-  {
-  }
-
-  void EllipticalArc_pskel::
-  start_angle (const qreal&)
-  {
-  }
-
-  void EllipticalArc_pskel::
-  span_angle (const qreal&)
-  {
-  }
-
-  // Rectangle_pskel
-  //
-
-  void Rectangle_pskel::
-  top_left (const QPointF&)
-  {
-  }
-
-  void Rectangle_pskel::
-  bottom_right (const QPointF&)
-  {
-  }
-
-  // Polyline_pskel
-  //
-
-  void Polyline_pskel::
-  vertices (const QList<QPointF>&)
-  {
-  }
-
-  // Polygon_pskel
-  //
-
-  void Polygon_pskel::
-  vertices (const QList<QPointF>&)
-  {
-  }
-
-  // Pin_pskel
-  //
-
-  void Pin_pskel::
-  designator (const ::std::string&)
-  {
-  }
-
-  void Pin_pskel::
-  label (const ::std::string&)
-  {
-  }
-
-  // ItemGroup_pskel
-  //
-
-  void ItemGroup_pskel::
-  children (const QList<xdl::symbol::Item*>&)
-  {
-  }
-
-  // Label_pskel
-  //
-
-  void Label_pskel::
-  text (const ::std::string&)
-  {
-  }
-
-  void Label_pskel::
-  font (const QFont&)
-  {
-  }
-
-  // Point_pskel
-  //
-
-  void Point_pskel::
-  x (double)
-  {
-  }
-
-  void Point_pskel::
-  y (double)
-  {
-  }
-
-  // PointList_pskel
-  //
-
-  void PointList_pskel::
-  point (const QPointF&)
-  {
-  }
-
-  // Pen_pskel
-  //
-
-  void Pen_pskel::
-  width (const qreal&)
-  {
-  }
-
-  void Pen_pskel::
-  color (const QColor&)
-  {
-  }
-
-  void Pen_pskel::
-  style (const Qt::PenStyle&)
-  {
-  }
-
-  void Pen_pskel::
-  cap_style (const Qt::PenCapStyle&)
-  {
-  }
-
-  void Pen_pskel::
-  join_style (const Qt::PenJoinStyle&)
-  {
-  }
-
-  // Brush_pskel
-  //
-
-  void Brush_pskel::
-  color (const QColor&)
-  {
-  }
-
-  void Brush_pskel::
-  style (const Qt::BrushStyle&)
-  {
-  }
-
-  // Font_pskel
-  //
-
-  void Font_pskel::
-  family (const ::std::string&)
-  {
-  }
-
-  void Font_pskel::
-  size (unsigned long long)
-  {
-  }
-
-  void Font_pskel::
-  bold (bool)
-  {
-  }
-
-  void Font_pskel::
-  italic (bool)
-  {
-  }
-
-  void Font_pskel::
-  underline (bool)
-  {
-  }
-
-  void Font_pskel::
-  strikeout (bool)
-  {
+    // Symbol_pskel
+    //
+
+    void Symbol_pskel::
+    name (const ::std::string&)
+    {
+    }
+
+    void Symbol_pskel::
+    label (const ::std::string&)
+    {
+    }
+
+    void Symbol_pskel::
+    drawing (const QList<Item*>&)
+    {
+    }
+
+    // ItemList_pskel
+    //
+
+    void ItemList_pskel::
+    polyline (PolylineItem*)
+    {
+    }
+
+    void ItemList_pskel::
+    polygon (PolygonItem*)
+    {
+    }
+
+    void ItemList_pskel::
+    rectangle (RectangleItem*)
+    {
+    }
+
+    void ItemList_pskel::
+    circle (CircleItem*)
+    {
+    }
+
+    void ItemList_pskel::
+    circular_arc (CircularArcItem*)
+    {
+    }
+
+    void ItemList_pskel::
+    ellipse (EllipseItem*)
+    {
+    }
+
+    void ItemList_pskel::
+    elliptical_arc (EllipticalArcItem*)
+    {
+    }
+
+    void ItemList_pskel::
+    label (LabelItem*)
+    {
+    }
+
+    void ItemList_pskel::
+    pin (PinItem*)
+    {
+    }
+
+    void ItemList_pskel::
+    group (ItemGroup*)
+    {
+    }
+
+    // Item_pskel
+    //
+
+    void Item_pskel::
+    pen (const QPen&)
+    {
+    }
+
+    void Item_pskel::
+    brush (const QBrush&)
+    {
+    }
+
+    void Item_pskel::
+    position (const QPointF&)
+    {
+    }
+
+    void Item_pskel::
+    z_value (double)
+    {
+    }
+
+    void Item_pskel::
+    rotation (const qreal&)
+    {
+    }
+
+    void Item_pskel::
+    opacity (const qreal&)
+    {
+    }
+
+    void Item_pskel::
+    locked (bool)
+    {
+    }
+
+    void Item_pskel::
+    x_mirrored (bool)
+    {
+    }
+
+    void Item_pskel::
+    y_mirrored (bool)
+    {
+    }
+
+    void Item_pskel::
+    visible (bool)
+    {
+    }
+
+    void Item_pskel::
+    post_Item ()
+    {
+    }
+
+    // Circle_pskel
+    //
+
+    void Circle_pskel::
+    center (const QPointF&)
+    {
+    }
+
+    void Circle_pskel::
+    radius (const qreal&)
+    {
+    }
+
+    // CircularArc_pskel
+    //
+
+    void CircularArc_pskel::
+    center (const QPointF&)
+    {
+    }
+
+    void CircularArc_pskel::
+    radius (const qreal&)
+    {
+    }
+
+    void CircularArc_pskel::
+    start_angle (const qreal&)
+    {
+    }
+
+    void CircularArc_pskel::
+    span_angle (const qreal&)
+    {
+    }
+
+    // Ellipse_pskel
+    //
+
+    void Ellipse_pskel::
+    center (const QPointF&)
+    {
+    }
+
+    void Ellipse_pskel::
+    x_radius (const qreal&)
+    {
+    }
+
+    void Ellipse_pskel::
+    y_radius (const qreal&)
+    {
+    }
+
+    // EllipticalArc_pskel
+    //
+
+    void EllipticalArc_pskel::
+    center (const QPointF&)
+    {
+    }
+
+    void EllipticalArc_pskel::
+    x_radius (const qreal&)
+    {
+    }
+
+    void EllipticalArc_pskel::
+    y_radius (const qreal&)
+    {
+    }
+
+    void EllipticalArc_pskel::
+    start_angle (const qreal&)
+    {
+    }
+
+    void EllipticalArc_pskel::
+    span_angle (const qreal&)
+    {
+    }
+
+    // Rectangle_pskel
+    //
+
+    void Rectangle_pskel::
+    top_left (const QPointF&)
+    {
+    }
+
+    void Rectangle_pskel::
+    bottom_right (const QPointF&)
+    {
+    }
+
+    // Polyline_pskel
+    //
+
+    void Polyline_pskel::
+    vertices (const QList<QPointF>&)
+    {
+    }
+
+    // Polygon_pskel
+    //
+
+    void Polygon_pskel::
+    vertices (const QList<QPointF>&)
+    {
+    }
+
+    // Pin_pskel
+    //
+
+    void Pin_pskel::
+    designator (const ::std::string&)
+    {
+    }
+
+    void Pin_pskel::
+    label (const ::std::string&)
+    {
+    }
+
+    // ItemGroup_pskel
+    //
+
+    void ItemGroup_pskel::
+    children (const QList<Item*>&)
+    {
+    }
+
+    // Label_pskel
+    //
+
+    void Label_pskel::
+    text (const ::std::string&)
+    {
+    }
+
+    void Label_pskel::
+    font (const QFont&)
+    {
+    }
+
+    // Point_pskel
+    //
+
+    void Point_pskel::
+    x (double)
+    {
+    }
+
+    void Point_pskel::
+    y (double)
+    {
+    }
+
+    // PointList_pskel
+    //
+
+    void PointList_pskel::
+    point (const QPointF&)
+    {
+    }
+
+    // Pen_pskel
+    //
+
+    void Pen_pskel::
+    width (const qreal&)
+    {
+    }
+
+    void Pen_pskel::
+    color (const QColor&)
+    {
+    }
+
+    void Pen_pskel::
+    style (const Qt::PenStyle&)
+    {
+    }
+
+    void Pen_pskel::
+    cap_style (const Qt::PenCapStyle&)
+    {
+    }
+
+    void Pen_pskel::
+    join_style (const Qt::PenJoinStyle&)
+    {
+    }
+
+    // Brush_pskel
+    //
+
+    void Brush_pskel::
+    color (const QColor&)
+    {
+    }
+
+    void Brush_pskel::
+    style (const Qt::BrushStyle&)
+    {
+    }
+
+    // Font_pskel
+    //
+
+    void Font_pskel::
+    family (const ::std::string&)
+    {
+    }
+
+    void Font_pskel::
+    size (unsigned long long)
+    {
+    }
+
+    void Font_pskel::
+    bold (bool)
+    {
+    }
+
+    void Font_pskel::
+    italic (bool)
+    {
+    }
+
+    void Font_pskel::
+    underline (bool)
+    {
+    }
+
+    void Font_pskel::
+    strikeout (bool)
+    {
+    }
   }
 }
 
@@ -1377,187 +1417,641 @@ namespace xdl
 
 namespace xdl
 {
-  // Element validation and dispatch functions for Symbol_pskel.
-  //
-  bool Symbol_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
+  namespace symbol
   {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
+    // Element validation and dispatch functions for Symbol_pskel.
+    //
+    bool Symbol_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
     {
-      if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
-    }
+      XSD_UNUSED (t);
 
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
 
-      vd = vs.data + (vs.size - 1);
-
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
+      if (vd->func == 0 && vd->state == 0)
       {
-        unsigned long s = ~0UL;
+        if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
 
-        if (n == "name" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
 
-        if (s != ~0UL)
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
         {
-          vd->count++;
-          vd->state = ~0UL;
+          unsigned long s = ~0UL;
 
-          vd = vs.data + vs.size++;
-          vd->func = &Symbol_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
+          if (n == "name" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
 
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Symbol_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "name",
+                ns, n);
+            return false;
+          }
         }
         else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "name",
-              ns, n);
           return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
-
-  bool Symbol_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xml_schema::complex_content::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Symbol_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-  }
-
-  void Symbol_pskel::
-  _post_e_validate ()
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    bool Symbol_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xml_schema::complex_content::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
     }
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "name");
+    void Symbol_pskel::
+    _pre_e_validate ()
+    {
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
 
-    this->v_state_stack_.pop ();
-  }
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
 
-  void Symbol_pskel::
-  sequence_0 (unsigned long& state,
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+    }
+
+    void Symbol_pskel::
+    _post_e_validate ()
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "name");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Symbol_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "name" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->name_parser_;
+
+              if (this->name_parser_)
+                this->name_parser_->pre ();
+            }
+            else
+            {
+              if (this->name_parser_)
+              {
+                this->name (this->name_parser_->post_string ());
+              }
+
+              count = 0;
+              state = 1UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "name",
+                ns, n);
+            count = 0;
+            state = 1UL;
+            // Fall through.
+          }
+        }
+        case 1UL:
+        {
+          if (n == "label" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->label_parser_;
+
+              if (this->label_parser_)
+                this->label_parser_->pre ();
+            }
+            else
+            {
+              if (this->label_parser_)
+              {
+                this->label (this->label_parser_->post_string ());
+              }
+
+              count = 0;
+              state = 2UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "label",
+                ns, n);
+            count = 0;
+            state = 2UL;
+            // Fall through.
+          }
+        }
+        case 2UL:
+        {
+          if (n == "drawing" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->drawing_parser_;
+
+              if (this->drawing_parser_)
+                this->drawing_parser_->pre ();
+            }
+            else
+            {
+              if (this->drawing_parser_)
+              {
+                this->drawing (this->drawing_parser_->post_ItemList ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "drawing",
+                ns, n);
+            count = 0;
+            state = ~0UL;
+            // Fall through.
+          }
+        }
+        case ~0UL:
+          break;
+      }
+    }
+
+    // Element validation and dispatch functions for ItemList_pskel.
+    //
+    bool ItemList_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
+    {
+      XSD_UNUSED (t);
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      if (vd->func == 0 && vd->state == 0)
+      {
+        if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
+
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
+        {
+          unsigned long s = ~0UL;
+
+          if ((n == "polyline" &&
+               ns == "http://www.leda.org/xdl") ||
+              (n == "polygon" &&
+               ns == "http://www.leda.org/xdl") ||
+              (n == "rectangle" &&
+               ns == "http://www.leda.org/xdl") ||
+              (n == "circle" &&
+               ns == "http://www.leda.org/xdl") ||
+              (n == "circular-arc" &&
+               ns == "http://www.leda.org/xdl") ||
+              (n == "ellipse" &&
+               ns == "http://www.leda.org/xdl") ||
+              (n == "elliptical-arc" &&
+               ns == "http://www.leda.org/xdl") ||
+              (n == "label" &&
+               ns == "http://www.leda.org/xdl") ||
+              (n == "pin" &&
+               ns == "http://www.leda.org/xdl") ||
+              (n == "group" &&
+               ns == "http://www.leda.org/xdl"))
+            s = 0UL;
+
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &ItemList_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            return false;
+          }
+        }
+        else
+          return false;
+      }
+
+      return true;
+    }
+
+    bool ItemList_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xml_schema::complex_content::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
+    }
+
+    void ItemList_pskel::
+    _pre_e_validate ()
+    {
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+    }
+
+    void ItemList_pskel::
+    _post_e_validate ()
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+
+      this->v_state_stack_.pop ();
+    }
+
+    void ItemList_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          unsigned long s (~0UL);
+
+          if (n == "polyline" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
+          else if (n == "polygon" &&
+                   ns == "http://www.leda.org/xdl")
+            s = 1UL;
+          else if (n == "rectangle" &&
+                   ns == "http://www.leda.org/xdl")
+            s = 2UL;
+          else if (n == "circle" &&
+                   ns == "http://www.leda.org/xdl")
+            s = 3UL;
+          else if (n == "circular-arc" &&
+                   ns == "http://www.leda.org/xdl")
+            s = 4UL;
+          else if (n == "ellipse" &&
+                   ns == "http://www.leda.org/xdl")
+            s = 5UL;
+          else if (n == "elliptical-arc" &&
+                   ns == "http://www.leda.org/xdl")
+            s = 6UL;
+          else if (n == "label" &&
+                   ns == "http://www.leda.org/xdl")
+            s = 7UL;
+          else if (n == "pin" &&
+                   ns == "http://www.leda.org/xdl")
+            s = 8UL;
+          else if (n == "group" &&
+                   ns == "http://www.leda.org/xdl")
+            s = 9UL;
+
+          if (s != ~0UL)
+          {
+            assert (start);
+            count++;
+
+            v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+            v_state_descr_& vd = vs.data[vs.size++];
+
+            vd.func = &ItemList_pskel::choice_0;
+            vd.state = s;
+            vd.count = 0;
+
+            this->choice_0 (vd.state, vd.count, ns, n, t, true);
+            break;
+          }
+          else
+          {
+            assert (start);
+            count = 0;
+            state = ~0UL;
+            // Fall through.
+          }
+        }
+        case ~0UL:
+          break;
+      }
+    }
+
+    void ItemList_pskel::
+    choice_0 (unsigned long& state,
               unsigned long& count,
               const ::xml_schema::ro_string& ns,
               const ::xml_schema::ro_string& n,
               const ::xml_schema::ro_string* t,
               bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
     {
-      case 0UL:
+      XSD_UNUSED (count);
+      XSD_UNUSED (ns);
+      XSD_UNUSED (n);
+      XSD_UNUSED (t);
+
+      switch (state)
       {
-        if (n == "name" &&
-            ns == "http://www.leda.org/xdl")
+        case 0UL:
         {
           if (start)
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->name_parser_;
+            this->::xml_schema::complex_content::context_.top ().parser_ = this->polyline_parser_;
 
-            if (this->name_parser_)
-              this->name_parser_->pre ();
+            if (this->polyline_parser_)
+              this->polyline_parser_->pre ();
           }
           else
           {
-            if (this->name_parser_)
+            if (this->polyline_parser_)
             {
-              this->name (this->name_parser_->post_string ());
+              this->polyline (this->polyline_parser_->post_Polyline ());
             }
 
-            count = 0;
-            state = 1UL;
+            state = ~0UL;
           }
 
           break;
         }
-        else
+        case 1UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "name",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
+          if (start)
+          {
+            this->::xml_schema::complex_content::context_.top ().parser_ = this->polygon_parser_;
+
+            if (this->polygon_parser_)
+              this->polygon_parser_->pre ();
+          }
+          else
+          {
+            if (this->polygon_parser_)
+            {
+              this->polygon (this->polygon_parser_->post_Polygon ());
+            }
+
+            state = ~0UL;
+          }
+
+          break;
         }
-      }
-      case 1UL:
-      {
-        if (n == "label" &&
-            ns == "http://www.leda.org/xdl")
+        case 2UL:
+        {
+          if (start)
+          {
+            this->::xml_schema::complex_content::context_.top ().parser_ = this->rectangle_parser_;
+
+            if (this->rectangle_parser_)
+              this->rectangle_parser_->pre ();
+          }
+          else
+          {
+            if (this->rectangle_parser_)
+            {
+              this->rectangle (this->rectangle_parser_->post_Rectangle ());
+            }
+
+            state = ~0UL;
+          }
+
+          break;
+        }
+        case 3UL:
+        {
+          if (start)
+          {
+            this->::xml_schema::complex_content::context_.top ().parser_ = this->circle_parser_;
+
+            if (this->circle_parser_)
+              this->circle_parser_->pre ();
+          }
+          else
+          {
+            if (this->circle_parser_)
+            {
+              this->circle (this->circle_parser_->post_Circle ());
+            }
+
+            state = ~0UL;
+          }
+
+          break;
+        }
+        case 4UL:
+        {
+          if (start)
+          {
+            this->::xml_schema::complex_content::context_.top ().parser_ = this->circular_arc_parser_;
+
+            if (this->circular_arc_parser_)
+              this->circular_arc_parser_->pre ();
+          }
+          else
+          {
+            if (this->circular_arc_parser_)
+            {
+              this->circular_arc (this->circular_arc_parser_->post_CircularArc ());
+            }
+
+            state = ~0UL;
+          }
+
+          break;
+        }
+        case 5UL:
+        {
+          if (start)
+          {
+            this->::xml_schema::complex_content::context_.top ().parser_ = this->ellipse_parser_;
+
+            if (this->ellipse_parser_)
+              this->ellipse_parser_->pre ();
+          }
+          else
+          {
+            if (this->ellipse_parser_)
+            {
+              this->ellipse (this->ellipse_parser_->post_Ellipse ());
+            }
+
+            state = ~0UL;
+          }
+
+          break;
+        }
+        case 6UL:
+        {
+          if (start)
+          {
+            this->::xml_schema::complex_content::context_.top ().parser_ = this->elliptical_arc_parser_;
+
+            if (this->elliptical_arc_parser_)
+              this->elliptical_arc_parser_->pre ();
+          }
+          else
+          {
+            if (this->elliptical_arc_parser_)
+            {
+              this->elliptical_arc (this->elliptical_arc_parser_->post_EllipticalArc ());
+            }
+
+            state = ~0UL;
+          }
+
+          break;
+        }
+        case 7UL:
         {
           if (start)
           {
@@ -1570,4580 +2064,4168 @@ namespace xdl
           {
             if (this->label_parser_)
             {
-              this->label (this->label_parser_->post_string ());
+              this->label (this->label_parser_->post_Label ());
             }
 
-            count = 0;
-            state = 2UL;
-          }
-
-          break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "label",
-              ns, n);
-          count = 0;
-          state = 2UL;
-          // Fall through.
-        }
-      }
-      case 2UL:
-      {
-        if (n == "drawing" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->drawing_parser_;
-
-            if (this->drawing_parser_)
-              this->drawing_parser_->pre ();
-          }
-          else
-          {
-            if (this->drawing_parser_)
-            {
-              this->drawing (this->drawing_parser_->post_ItemList ());
-            }
-
-            count = 0;
             state = ~0UL;
           }
 
           break;
         }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "drawing",
-              ns, n);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
-      }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for ItemList_pskel.
-  //
-  bool ItemList_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
-    }
-
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
-
-      vd = vs.data + (vs.size - 1);
-
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
-      {
-        unsigned long s = ~0UL;
-
-        if ((n == "polyline" &&
-             ns == "http://www.leda.org/xdl") ||
-            (n == "polygon" &&
-             ns == "http://www.leda.org/xdl") ||
-            (n == "rectangle" &&
-             ns == "http://www.leda.org/xdl") ||
-            (n == "circle" &&
-             ns == "http://www.leda.org/xdl") ||
-            (n == "circular-arc" &&
-             ns == "http://www.leda.org/xdl") ||
-            (n == "ellipse" &&
-             ns == "http://www.leda.org/xdl") ||
-            (n == "elliptical-arc" &&
-             ns == "http://www.leda.org/xdl") ||
-            (n == "label" &&
-             ns == "http://www.leda.org/xdl") ||
-            (n == "pin" &&
-             ns == "http://www.leda.org/xdl") ||
-            (n == "group" &&
-             ns == "http://www.leda.org/xdl"))
-          s = 0UL;
-
-        if (s != ~0UL)
-        {
-          vd->count++;
-          vd->state = ~0UL;
-
-          vd = vs.data + vs.size++;
-          vd->func = &ItemList_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
-
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-        }
-        else
-        {
-          return false;
-        }
-      }
-      else
-        return false;
-    }
-
-    return true;
-  }
-
-  bool ItemList_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xml_schema::complex_content::_end_element_impl (ns, n))
-        assert (false);
-      return true;
-    }
-
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void ItemList_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-  }
-
-  void ItemList_pskel::
-  _post_e_validate ()
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
-    }
-
-
-    this->v_state_stack_.pop ();
-  }
-
-  void ItemList_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
-    {
-      case 0UL:
-      {
-        unsigned long s (~0UL);
-
-        if (n == "polyline" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
-        else if (n == "polygon" &&
-                 ns == "http://www.leda.org/xdl")
-          s = 1UL;
-        else if (n == "rectangle" &&
-                 ns == "http://www.leda.org/xdl")
-          s = 2UL;
-        else if (n == "circle" &&
-                 ns == "http://www.leda.org/xdl")
-          s = 3UL;
-        else if (n == "circular-arc" &&
-                 ns == "http://www.leda.org/xdl")
-          s = 4UL;
-        else if (n == "ellipse" &&
-                 ns == "http://www.leda.org/xdl")
-          s = 5UL;
-        else if (n == "elliptical-arc" &&
-                 ns == "http://www.leda.org/xdl")
-          s = 6UL;
-        else if (n == "label" &&
-                 ns == "http://www.leda.org/xdl")
-          s = 7UL;
-        else if (n == "pin" &&
-                 ns == "http://www.leda.org/xdl")
-          s = 8UL;
-        else if (n == "group" &&
-                 ns == "http://www.leda.org/xdl")
-          s = 9UL;
-
-        if (s != ~0UL)
-        {
-          assert (start);
-          count++;
-
-          v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-          v_state_descr_& vd = vs.data[vs.size++];
-
-          vd.func = &ItemList_pskel::choice_0;
-          vd.state = s;
-          vd.count = 0;
-
-          this->choice_0 (vd.state, vd.count, ns, n, t, true);
-          break;
-        }
-        else
-        {
-          assert (start);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
-      }
-      case ~0UL:
-        break;
-    }
-  }
-
-  void ItemList_pskel::
-  choice_0 (unsigned long& state,
-            unsigned long& count,
-            const ::xml_schema::ro_string& ns,
-            const ::xml_schema::ro_string& n,
-            const ::xml_schema::ro_string* t,
-            bool start)
-  {
-    XSD_UNUSED (count);
-    XSD_UNUSED (ns);
-    XSD_UNUSED (n);
-    XSD_UNUSED (t);
-
-    switch (state)
-    {
-      case 0UL:
-      {
-        if (start)
-        {
-          this->::xml_schema::complex_content::context_.top ().parser_ = this->polyline_parser_;
-
-          if (this->polyline_parser_)
-            this->polyline_parser_->pre ();
-        }
-        else
-        {
-          if (this->polyline_parser_)
-          {
-            this->polyline (this->polyline_parser_->post_Polyline ());
-          }
-
-          state = ~0UL;
-        }
-
-        break;
-      }
-      case 1UL:
-      {
-        if (start)
-        {
-          this->::xml_schema::complex_content::context_.top ().parser_ = this->polygon_parser_;
-
-          if (this->polygon_parser_)
-            this->polygon_parser_->pre ();
-        }
-        else
-        {
-          if (this->polygon_parser_)
-          {
-            this->polygon (this->polygon_parser_->post_Polygon ());
-          }
-
-          state = ~0UL;
-        }
-
-        break;
-      }
-      case 2UL:
-      {
-        if (start)
-        {
-          this->::xml_schema::complex_content::context_.top ().parser_ = this->rectangle_parser_;
-
-          if (this->rectangle_parser_)
-            this->rectangle_parser_->pre ();
-        }
-        else
-        {
-          if (this->rectangle_parser_)
-          {
-            this->rectangle (this->rectangle_parser_->post_Rectangle ());
-          }
-
-          state = ~0UL;
-        }
-
-        break;
-      }
-      case 3UL:
-      {
-        if (start)
-        {
-          this->::xml_schema::complex_content::context_.top ().parser_ = this->circle_parser_;
-
-          if (this->circle_parser_)
-            this->circle_parser_->pre ();
-        }
-        else
-        {
-          if (this->circle_parser_)
-          {
-            this->circle (this->circle_parser_->post_Circle ());
-          }
-
-          state = ~0UL;
-        }
-
-        break;
-      }
-      case 4UL:
-      {
-        if (start)
-        {
-          this->::xml_schema::complex_content::context_.top ().parser_ = this->circular_arc_parser_;
-
-          if (this->circular_arc_parser_)
-            this->circular_arc_parser_->pre ();
-        }
-        else
-        {
-          if (this->circular_arc_parser_)
-          {
-            this->circular_arc (this->circular_arc_parser_->post_CircularArc ());
-          }
-
-          state = ~0UL;
-        }
-
-        break;
-      }
-      case 5UL:
-      {
-        if (start)
-        {
-          this->::xml_schema::complex_content::context_.top ().parser_ = this->ellipse_parser_;
-
-          if (this->ellipse_parser_)
-            this->ellipse_parser_->pre ();
-        }
-        else
-        {
-          if (this->ellipse_parser_)
-          {
-            this->ellipse (this->ellipse_parser_->post_Ellipse ());
-          }
-
-          state = ~0UL;
-        }
-
-        break;
-      }
-      case 6UL:
-      {
-        if (start)
-        {
-          this->::xml_schema::complex_content::context_.top ().parser_ = this->elliptical_arc_parser_;
-
-          if (this->elliptical_arc_parser_)
-            this->elliptical_arc_parser_->pre ();
-        }
-        else
-        {
-          if (this->elliptical_arc_parser_)
-          {
-            this->elliptical_arc (this->elliptical_arc_parser_->post_EllipticalArc ());
-          }
-
-          state = ~0UL;
-        }
-
-        break;
-      }
-      case 7UL:
-      {
-        if (start)
-        {
-          this->::xml_schema::complex_content::context_.top ().parser_ = this->label_parser_;
-
-          if (this->label_parser_)
-            this->label_parser_->pre ();
-        }
-        else
-        {
-          if (this->label_parser_)
-          {
-            this->label (this->label_parser_->post_Label ());
-          }
-
-          state = ~0UL;
-        }
-
-        break;
-      }
-      case 8UL:
-      {
-        if (start)
-        {
-          this->::xml_schema::complex_content::context_.top ().parser_ = this->pin_parser_;
-
-          if (this->pin_parser_)
-            this->pin_parser_->pre ();
-        }
-        else
-        {
-          if (this->pin_parser_)
-          {
-            this->pin (this->pin_parser_->post_Pin ());
-          }
-
-          state = ~0UL;
-        }
-
-        break;
-      }
-      case 9UL:
-      {
-        if (start)
-        {
-          this->::xml_schema::complex_content::context_.top ().parser_ = this->group_parser_;
-
-          if (this->group_parser_)
-            this->group_parser_->pre ();
-        }
-        else
-        {
-          if (this->group_parser_)
-          {
-            this->group (this->group_parser_->post_ItemGroup ());
-          }
-
-          state = ~0UL;
-        }
-
-        break;
-      }
-    }
-  }
-
-  // Element validation and dispatch functions for Item_pskel.
-  //
-  bool Item_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
-    }
-
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
-
-      vd = vs.data + (vs.size - 1);
-
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
-      {
-        unsigned long s = ~0UL;
-
-        if (n == "pen" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
-        else if (n == "brush" &&
-                 ns == "http://www.leda.org/xdl")
-          s = 1UL;
-        else if (n == "position" &&
-                 ns == "http://www.leda.org/xdl")
-          s = 2UL;
-
-        if (s != ~0UL)
-        {
-          vd->count++;
-          vd->state = ~0UL;
-
-          vd = vs.data + vs.size++;
-          vd->func = &Item_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
-
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-        }
-        else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "pen",
-              ns, n);
-          return false;
-        }
-      }
-      else
-        return false;
-    }
-
-    return true;
-  }
-
-  bool Item_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xml_schema::complex_content::_end_element_impl (ns, n))
-        assert (false);
-      return true;
-    }
-
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Item_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-  }
-
-  void Item_pskel::
-  _post_e_validate ()
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
-    }
-
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "pen");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Item_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
-    {
-      case 0UL:
-      {
-        if (n == "pen" &&
-            ns == "http://www.leda.org/xdl")
+        case 8UL:
         {
           if (start)
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->pen_parser_;
+            this->::xml_schema::complex_content::context_.top ().parser_ = this->pin_parser_;
 
-            if (this->pen_parser_)
-              this->pen_parser_->pre ();
+            if (this->pin_parser_)
+              this->pin_parser_->pre ();
           }
           else
           {
-            if (this->pen_parser_)
+            if (this->pin_parser_)
             {
-              this->pen (this->pen_parser_->post_Pen ());
+              this->pin (this->pin_parser_->post_Pin ());
             }
 
+            state = ~0UL;
+          }
+
+          break;
+        }
+        case 9UL:
+        {
+          if (start)
+          {
+            this->::xml_schema::complex_content::context_.top ().parser_ = this->group_parser_;
+
+            if (this->group_parser_)
+              this->group_parser_->pre ();
+          }
+          else
+          {
+            if (this->group_parser_)
+            {
+              this->group (this->group_parser_->post_ItemGroup ());
+            }
+
+            state = ~0UL;
+          }
+
+          break;
+        }
+      }
+    }
+
+    // Element validation and dispatch functions for Item_pskel.
+    //
+    bool Item_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
+    {
+      XSD_UNUSED (t);
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      if (vd->func == 0 && vd->state == 0)
+      {
+        if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
+
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
+        {
+          unsigned long s = ~0UL;
+
+          if (n == "pen" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
+          else if (n == "brush" &&
+                   ns == "http://www.leda.org/xdl")
+            s = 1UL;
+          else if (n == "position" &&
+                   ns == "http://www.leda.org/xdl")
+            s = 2UL;
+
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Item_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "pen",
+                ns, n);
+            return false;
+          }
+        }
+        else
+          return false;
+      }
+
+      return true;
+    }
+
+    bool Item_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xml_schema::complex_content::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
+    }
+
+    void Item_pskel::
+    _pre_e_validate ()
+    {
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+    }
+
+    void Item_pskel::
+    _post_e_validate ()
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "pen");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Item_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "pen" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->pen_parser_;
+
+              if (this->pen_parser_)
+                this->pen_parser_->pre ();
+            }
+            else
+            {
+              if (this->pen_parser_)
+              {
+                this->pen (this->pen_parser_->post_Pen ());
+              }
+
+              count = 0;
+              state = 1UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
             count = 0;
             state = 1UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 1UL:
         {
-          assert (start);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "brush" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "brush" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->brush_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->brush_parser_;
 
-            if (this->brush_parser_)
-              this->brush_parser_->pre ();
+              if (this->brush_parser_)
+                this->brush_parser_->pre ();
+            }
+            else
+            {
+              if (this->brush_parser_)
+              {
+                this->brush (this->brush_parser_->post_Brush ());
+              }
+
+              count = 0;
+              state = 2UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->brush_parser_)
-            {
-              this->brush (this->brush_parser_->post_Brush ());
-            }
-
+            assert (start);
             count = 0;
             state = 2UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 2UL:
         {
-          assert (start);
-          count = 0;
-          state = 2UL;
-          // Fall through.
-        }
-      }
-      case 2UL:
-      {
-        if (n == "position" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "position" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->position_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->position_parser_;
 
-            if (this->position_parser_)
-              this->position_parser_->pre ();
+              if (this->position_parser_)
+                this->position_parser_->pre ();
+            }
+            else
+            {
+              if (this->position_parser_)
+              {
+                this->position (this->position_parser_->post_Point ());
+              }
+
+              count = 0;
+              state = 3UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->position_parser_)
-            {
-              this->position (this->position_parser_->post_Point ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "position",
+                ns, n);
             count = 0;
             state = 3UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 3UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "position",
-              ns, n);
-          count = 0;
-          state = 3UL;
-          // Fall through.
-        }
-      }
-      case 3UL:
-      {
-        if (n == "z-value" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "z-value" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->z_value_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->z_value_parser_;
 
-            if (this->z_value_parser_)
-              this->z_value_parser_->pre ();
+              if (this->z_value_parser_)
+                this->z_value_parser_->pre ();
+            }
+            else
+            {
+              if (this->z_value_parser_)
+              {
+                this->z_value (this->z_value_parser_->post_double ());
+              }
+
+              count = 0;
+              state = 4UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->z_value_parser_)
-            {
-              this->z_value (this->z_value_parser_->post_double ());
-            }
-
+            assert (start);
             count = 0;
             state = 4UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 4UL:
         {
-          assert (start);
-          count = 0;
-          state = 4UL;
-          // Fall through.
-        }
-      }
-      case 4UL:
-      {
-        if (n == "rotation" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "rotation" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->rotation_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->rotation_parser_;
 
-            if (this->rotation_parser_)
-              this->rotation_parser_->pre ();
+              if (this->rotation_parser_)
+                this->rotation_parser_->pre ();
+            }
+            else
+            {
+              if (this->rotation_parser_)
+              {
+                this->rotation (this->rotation_parser_->post_Angle ());
+              }
+
+              count = 0;
+              state = 5UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->rotation_parser_)
-            {
-              this->rotation (this->rotation_parser_->post_Angle ());
-            }
-
+            assert (start);
             count = 0;
             state = 5UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 5UL:
         {
-          assert (start);
-          count = 0;
-          state = 5UL;
-          // Fall through.
-        }
-      }
-      case 5UL:
-      {
-        if (n == "opacity" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "opacity" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->opacity_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->opacity_parser_;
 
-            if (this->opacity_parser_)
-              this->opacity_parser_->pre ();
+              if (this->opacity_parser_)
+                this->opacity_parser_->pre ();
+            }
+            else
+            {
+              if (this->opacity_parser_)
+              {
+                this->opacity (this->opacity_parser_->post_Opacity ());
+              }
+
+              count = 0;
+              state = 6UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->opacity_parser_)
-            {
-              this->opacity (this->opacity_parser_->post_Opacity ());
-            }
-
+            assert (start);
             count = 0;
             state = 6UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 6UL:
         {
-          assert (start);
-          count = 0;
-          state = 6UL;
-          // Fall through.
-        }
-      }
-      case 6UL:
-      {
-        if (n == "locked" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "locked" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->locked_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->locked_parser_;
 
-            if (this->locked_parser_)
-              this->locked_parser_->pre ();
+              if (this->locked_parser_)
+                this->locked_parser_->pre ();
+            }
+            else
+            {
+              if (this->locked_parser_)
+              {
+                this->locked (this->locked_parser_->post_boolean ());
+              }
+
+              count = 0;
+              state = 7UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->locked_parser_)
-            {
-              this->locked (this->locked_parser_->post_boolean ());
-            }
-
+            assert (start);
             count = 0;
             state = 7UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 7UL:
         {
-          assert (start);
-          count = 0;
-          state = 7UL;
-          // Fall through.
-        }
-      }
-      case 7UL:
-      {
-        if (n == "x-mirrored" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "x-mirrored" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->x_mirrored_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->x_mirrored_parser_;
 
-            if (this->x_mirrored_parser_)
-              this->x_mirrored_parser_->pre ();
+              if (this->x_mirrored_parser_)
+                this->x_mirrored_parser_->pre ();
+            }
+            else
+            {
+              if (this->x_mirrored_parser_)
+              {
+                this->x_mirrored (this->x_mirrored_parser_->post_boolean ());
+              }
+
+              count = 0;
+              state = 8UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->x_mirrored_parser_)
-            {
-              this->x_mirrored (this->x_mirrored_parser_->post_boolean ());
-            }
-
+            assert (start);
             count = 0;
             state = 8UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 8UL:
         {
-          assert (start);
-          count = 0;
-          state = 8UL;
-          // Fall through.
-        }
-      }
-      case 8UL:
-      {
-        if (n == "visible" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "y-mirrored" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->visible_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->y_mirrored_parser_;
 
-            if (this->visible_parser_)
-              this->visible_parser_->pre ();
+              if (this->y_mirrored_parser_)
+                this->y_mirrored_parser_->pre ();
+            }
+            else
+            {
+              if (this->y_mirrored_parser_)
+              {
+                this->y_mirrored (this->y_mirrored_parser_->post_boolean ());
+              }
+
+              count = 0;
+              state = 9UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->visible_parser_)
+            assert (start);
+            count = 0;
+            state = 9UL;
+            // Fall through.
+          }
+        }
+        case 9UL:
+        {
+          if (n == "visible" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
             {
-              this->visible (this->visible_parser_->post_boolean ());
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->visible_parser_;
+
+              if (this->visible_parser_)
+                this->visible_parser_->pre ();
+            }
+            else
+            {
+              if (this->visible_parser_)
+              {
+                this->visible (this->visible_parser_->post_boolean ());
+              }
+
+              count = 0;
+              state = ~0UL;
             }
 
+            break;
+          }
+          else
+          {
+            assert (start);
             count = 0;
             state = ~0UL;
+            // Fall through.
           }
-
+        }
+        case ~0UL:
           break;
-        }
-        else
-        {
-          assert (start);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
       }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for Circle_pskel.
-  //
-  bool Circle_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xdl::Item_pskel::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
     }
 
-    while (vd->func != 0)
+    // Element validation and dispatch functions for Circle_pskel.
+    //
+    bool Circle_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
     {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+      XSD_UNUSED (t);
 
-      vd = vs.data + (vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
 
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
+      if (vd->func == 0 && vd->state == 0)
       {
-        unsigned long s = ~0UL;
+        if (this->::xdl::symbol::Item_pskel::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
 
-        if (n == "center" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
 
-        if (s != ~0UL)
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
         {
-          vd->count++;
-          vd->state = ~0UL;
+          unsigned long s = ~0UL;
 
-          vd = vs.data + vs.size++;
-          vd->func = &Circle_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
+          if (n == "center" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
 
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Circle_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "center",
+                ns, n);
+            return false;
+          }
         }
         else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "center",
-              ns, n);
           return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
-
-  bool Circle_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xdl::Item_pskel::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Circle_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-
-    ::xdl::Item_pskel::_pre_e_validate ();
-  }
-
-  void Circle_pskel::
-  _post_e_validate ()
-  {
-    ::xdl::Item_pskel::_post_e_validate ();
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    bool Circle_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
-    }
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "center");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Circle_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
-    {
-      case 0UL:
+      if (vd.func == 0 && vd.state == 0)
       {
-        if (n == "center" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
-
-            if (this->center_parser_)
-              this->center_parser_->pre ();
-          }
-          else
-          {
-            if (this->center_parser_)
-            {
-              this->center (this->center_parser_->post_Point ());
-            }
-
-            count = 0;
-            state = 1UL;
-          }
-
-          break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "center",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "radius" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->radius_parser_;
-
-            if (this->radius_parser_)
-              this->radius_parser_->pre ();
-          }
-          else
-          {
-            if (this->radius_parser_)
-            {
-              this->radius (this->radius_parser_->post_NonNegativeDouble ());
-            }
-
-            count = 0;
-            state = ~0UL;
-          }
-
-          break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "radius",
-              ns, n);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
-      }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for CircularArc_pskel.
-  //
-  bool CircularArc_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xdl::Item_pskel::_start_element_impl (ns, n, t))
+        if (!::xdl::symbol::Item_pskel::_end_element_impl (ns, n))
+          assert (false);
         return true;
-      else
-        vd->state = 1;
-    }
-
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
-
-      vd = vs.data + (vs.size - 1);
-
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
-      {
-        unsigned long s = ~0UL;
-
-        if (n == "center" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
-
-        if (s != ~0UL)
-        {
-          vd->count++;
-          vd->state = ~0UL;
-
-          vd = vs.data + vs.size++;
-          vd->func = &CircularArc_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
-
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-        }
-        else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "center",
-              ns, n);
-          return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
 
-  bool CircularArc_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
+      if (vd.state == ~0UL)
+        vs.size--;
 
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xdl::Item_pskel::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void CircularArc_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-
-    ::xdl::Item_pskel::_pre_e_validate ();
-  }
-
-  void CircularArc_pskel::
-  _post_e_validate ()
-  {
-    ::xdl::Item_pskel::_post_e_validate ();
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    void Circle_pskel::
+    _pre_e_validate ()
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+
+      ::xdl::symbol::Item_pskel::_pre_e_validate ();
     }
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "center");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void CircularArc_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
+    void Circle_pskel::
+    _post_e_validate ()
     {
-      case 0UL:
-      {
-        if (n == "center" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
+      ::xdl::symbol::Item_pskel::_post_e_validate ();
 
-            if (this->center_parser_)
-              this->center_parser_->pre ();
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "center");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Circle_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "center" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
+
+              if (this->center_parser_)
+                this->center_parser_->pre ();
+            }
+            else
+            {
+              if (this->center_parser_)
+              {
+                this->center (this->center_parser_->post_Point ());
+              }
+
+              count = 0;
+              state = 1UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->center_parser_)
-            {
-              this->center (this->center_parser_->post_Point ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "center",
+                ns, n);
             count = 0;
             state = 1UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 1UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "center",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "radius" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "radius" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->radius_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->radius_parser_;
 
-            if (this->radius_parser_)
-              this->radius_parser_->pre ();
+              if (this->radius_parser_)
+                this->radius_parser_->pre ();
+            }
+            else
+            {
+              if (this->radius_parser_)
+              {
+                this->radius (this->radius_parser_->post_NonNegativeDouble ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->radius_parser_)
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "radius",
+                ns, n);
+            count = 0;
+            state = ~0UL;
+            // Fall through.
+          }
+        }
+        case ~0UL:
+          break;
+      }
+    }
+
+    // Element validation and dispatch functions for CircularArc_pskel.
+    //
+    bool CircularArc_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
+    {
+      XSD_UNUSED (t);
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      if (vd->func == 0 && vd->state == 0)
+      {
+        if (this->::xdl::symbol::Item_pskel::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
+
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
+        {
+          unsigned long s = ~0UL;
+
+          if (n == "center" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
+
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &CircularArc_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "center",
+                ns, n);
+            return false;
+          }
+        }
+        else
+          return false;
+      }
+
+      return true;
+    }
+
+    bool CircularArc_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xdl::symbol::Item_pskel::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
+    }
+
+    void CircularArc_pskel::
+    _pre_e_validate ()
+    {
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+
+      ::xdl::symbol::Item_pskel::_pre_e_validate ();
+    }
+
+    void CircularArc_pskel::
+    _post_e_validate ()
+    {
+      ::xdl::symbol::Item_pskel::_post_e_validate ();
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "center");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void CircularArc_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "center" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
             {
-              this->radius (this->radius_parser_->post_NonNegativeDouble ());
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
+
+              if (this->center_parser_)
+                this->center_parser_->pre ();
+            }
+            else
+            {
+              if (this->center_parser_)
+              {
+                this->center (this->center_parser_->post_Point ());
+              }
+
+              count = 0;
+              state = 1UL;
             }
 
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "center",
+                ns, n);
+            count = 0;
+            state = 1UL;
+            // Fall through.
+          }
+        }
+        case 1UL:
+        {
+          if (n == "radius" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->radius_parser_;
+
+              if (this->radius_parser_)
+                this->radius_parser_->pre ();
+            }
+            else
+            {
+              if (this->radius_parser_)
+              {
+                this->radius (this->radius_parser_->post_NonNegativeDouble ());
+              }
+
+              count = 0;
+              state = 2UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "radius",
+                ns, n);
             count = 0;
             state = 2UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 2UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "radius",
-              ns, n);
-          count = 0;
-          state = 2UL;
-          // Fall through.
-        }
-      }
-      case 2UL:
-      {
-        if (n == "start-angle" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "start-angle" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->start_angle_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->start_angle_parser_;
 
-            if (this->start_angle_parser_)
-              this->start_angle_parser_->pre ();
+              if (this->start_angle_parser_)
+                this->start_angle_parser_->pre ();
+            }
+            else
+            {
+              if (this->start_angle_parser_)
+              {
+                this->start_angle (this->start_angle_parser_->post_Angle ());
+              }
+
+              count = 0;
+              state = 3UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->start_angle_parser_)
-            {
-              this->start_angle (this->start_angle_parser_->post_Angle ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "start-angle",
+                ns, n);
             count = 0;
             state = 3UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 3UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "start-angle",
-              ns, n);
-          count = 0;
-          state = 3UL;
-          // Fall through.
-        }
-      }
-      case 3UL:
-      {
-        if (n == "span-angle" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "span-angle" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->span_angle_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->span_angle_parser_;
 
-            if (this->span_angle_parser_)
-              this->span_angle_parser_->pre ();
+              if (this->span_angle_parser_)
+                this->span_angle_parser_->pre ();
+            }
+            else
+            {
+              if (this->span_angle_parser_)
+              {
+                this->span_angle (this->span_angle_parser_->post_Angle ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->span_angle_parser_)
-            {
-              this->span_angle (this->span_angle_parser_->post_Angle ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "span-angle",
+                ns, n);
             count = 0;
             state = ~0UL;
+            // Fall through.
           }
-
+        }
+        case ~0UL:
           break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "span-angle",
-              ns, n);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
       }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for Ellipse_pskel.
-  //
-  bool Ellipse_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xdl::Item_pskel::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
     }
 
-    while (vd->func != 0)
+    // Element validation and dispatch functions for Ellipse_pskel.
+    //
+    bool Ellipse_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
     {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+      XSD_UNUSED (t);
 
-      vd = vs.data + (vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
 
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
+      if (vd->func == 0 && vd->state == 0)
       {
-        unsigned long s = ~0UL;
+        if (this->::xdl::symbol::Item_pskel::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
 
-        if (n == "center" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
 
-        if (s != ~0UL)
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
         {
-          vd->count++;
-          vd->state = ~0UL;
+          unsigned long s = ~0UL;
 
-          vd = vs.data + vs.size++;
-          vd->func = &Ellipse_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
+          if (n == "center" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
 
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Ellipse_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "center",
+                ns, n);
+            return false;
+          }
         }
         else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "center",
-              ns, n);
           return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
-
-  bool Ellipse_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xdl::Item_pskel::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Ellipse_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-
-    ::xdl::Item_pskel::_pre_e_validate ();
-  }
-
-  void Ellipse_pskel::
-  _post_e_validate ()
-  {
-    ::xdl::Item_pskel::_post_e_validate ();
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    bool Ellipse_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
-    }
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "center");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Ellipse_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
-    {
-      case 0UL:
+      if (vd.func == 0 && vd.state == 0)
       {
-        if (n == "center" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
-
-            if (this->center_parser_)
-              this->center_parser_->pre ();
-          }
-          else
-          {
-            if (this->center_parser_)
-            {
-              this->center (this->center_parser_->post_Point ());
-            }
-
-            count = 0;
-            state = 1UL;
-          }
-
-          break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "center",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "x-radius" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->x_radius_parser_;
-
-            if (this->x_radius_parser_)
-              this->x_radius_parser_->pre ();
-          }
-          else
-          {
-            if (this->x_radius_parser_)
-            {
-              this->x_radius (this->x_radius_parser_->post_NonNegativeDouble ());
-            }
-
-            count = 0;
-            state = 2UL;
-          }
-
-          break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "x-radius",
-              ns, n);
-          count = 0;
-          state = 2UL;
-          // Fall through.
-        }
-      }
-      case 2UL:
-      {
-        if (n == "y-radius" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->y_radius_parser_;
-
-            if (this->y_radius_parser_)
-              this->y_radius_parser_->pre ();
-          }
-          else
-          {
-            if (this->y_radius_parser_)
-            {
-              this->y_radius (this->y_radius_parser_->post_NonNegativeDouble ());
-            }
-
-            count = 0;
-            state = ~0UL;
-          }
-
-          break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "y-radius",
-              ns, n);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
-      }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for EllipticalArc_pskel.
-  //
-  bool EllipticalArc_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xdl::Item_pskel::_start_element_impl (ns, n, t))
+        if (!::xdl::symbol::Item_pskel::_end_element_impl (ns, n))
+          assert (false);
         return true;
-      else
-        vd->state = 1;
-    }
-
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
-
-      vd = vs.data + (vs.size - 1);
-
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
-      {
-        unsigned long s = ~0UL;
-
-        if (n == "center" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
-
-        if (s != ~0UL)
-        {
-          vd->count++;
-          vd->state = ~0UL;
-
-          vd = vs.data + vs.size++;
-          vd->func = &EllipticalArc_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
-
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-        }
-        else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "center",
-              ns, n);
-          return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
 
-  bool EllipticalArc_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
+      if (vd.state == ~0UL)
+        vs.size--;
 
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xdl::Item_pskel::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void EllipticalArc_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-
-    ::xdl::Item_pskel::_pre_e_validate ();
-  }
-
-  void EllipticalArc_pskel::
-  _post_e_validate ()
-  {
-    ::xdl::Item_pskel::_post_e_validate ();
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    void Ellipse_pskel::
+    _pre_e_validate ()
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+
+      ::xdl::symbol::Item_pskel::_pre_e_validate ();
     }
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "center");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void EllipticalArc_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
+    void Ellipse_pskel::
+    _post_e_validate ()
     {
-      case 0UL:
-      {
-        if (n == "center" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
+      ::xdl::symbol::Item_pskel::_post_e_validate ();
 
-            if (this->center_parser_)
-              this->center_parser_->pre ();
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "center");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Ellipse_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "center" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
+
+              if (this->center_parser_)
+                this->center_parser_->pre ();
+            }
+            else
+            {
+              if (this->center_parser_)
+              {
+                this->center (this->center_parser_->post_Point ());
+              }
+
+              count = 0;
+              state = 1UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->center_parser_)
-            {
-              this->center (this->center_parser_->post_Point ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "center",
+                ns, n);
             count = 0;
             state = 1UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 1UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "center",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "x-radius" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "x-radius" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->x_radius_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->x_radius_parser_;
 
-            if (this->x_radius_parser_)
-              this->x_radius_parser_->pre ();
+              if (this->x_radius_parser_)
+                this->x_radius_parser_->pre ();
+            }
+            else
+            {
+              if (this->x_radius_parser_)
+              {
+                this->x_radius (this->x_radius_parser_->post_NonNegativeDouble ());
+              }
+
+              count = 0;
+              state = 2UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->x_radius_parser_)
-            {
-              this->x_radius (this->x_radius_parser_->post_NonNegativeDouble ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "x-radius",
+                ns, n);
             count = 0;
             state = 2UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 2UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "x-radius",
-              ns, n);
-          count = 0;
-          state = 2UL;
-          // Fall through.
-        }
-      }
-      case 2UL:
-      {
-        if (n == "y-radius" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "y-radius" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->y_radius_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->y_radius_parser_;
 
-            if (this->y_radius_parser_)
-              this->y_radius_parser_->pre ();
+              if (this->y_radius_parser_)
+                this->y_radius_parser_->pre ();
+            }
+            else
+            {
+              if (this->y_radius_parser_)
+              {
+                this->y_radius (this->y_radius_parser_->post_NonNegativeDouble ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->y_radius_parser_)
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "y-radius",
+                ns, n);
+            count = 0;
+            state = ~0UL;
+            // Fall through.
+          }
+        }
+        case ~0UL:
+          break;
+      }
+    }
+
+    // Element validation and dispatch functions for EllipticalArc_pskel.
+    //
+    bool EllipticalArc_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
+    {
+      XSD_UNUSED (t);
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      if (vd->func == 0 && vd->state == 0)
+      {
+        if (this->::xdl::symbol::Item_pskel::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
+
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
+        {
+          unsigned long s = ~0UL;
+
+          if (n == "center" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
+
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &EllipticalArc_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "center",
+                ns, n);
+            return false;
+          }
+        }
+        else
+          return false;
+      }
+
+      return true;
+    }
+
+    bool EllipticalArc_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xdl::symbol::Item_pskel::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
+    }
+
+    void EllipticalArc_pskel::
+    _pre_e_validate ()
+    {
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+
+      ::xdl::symbol::Item_pskel::_pre_e_validate ();
+    }
+
+    void EllipticalArc_pskel::
+    _post_e_validate ()
+    {
+      ::xdl::symbol::Item_pskel::_post_e_validate ();
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "center");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void EllipticalArc_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "center" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
             {
-              this->y_radius (this->y_radius_parser_->post_NonNegativeDouble ());
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
+
+              if (this->center_parser_)
+                this->center_parser_->pre ();
+            }
+            else
+            {
+              if (this->center_parser_)
+              {
+                this->center (this->center_parser_->post_Point ());
+              }
+
+              count = 0;
+              state = 1UL;
             }
 
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "center",
+                ns, n);
+            count = 0;
+            state = 1UL;
+            // Fall through.
+          }
+        }
+        case 1UL:
+        {
+          if (n == "x-radius" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->x_radius_parser_;
+
+              if (this->x_radius_parser_)
+                this->x_radius_parser_->pre ();
+            }
+            else
+            {
+              if (this->x_radius_parser_)
+              {
+                this->x_radius (this->x_radius_parser_->post_NonNegativeDouble ());
+              }
+
+              count = 0;
+              state = 2UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "x-radius",
+                ns, n);
+            count = 0;
+            state = 2UL;
+            // Fall through.
+          }
+        }
+        case 2UL:
+        {
+          if (n == "y-radius" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->y_radius_parser_;
+
+              if (this->y_radius_parser_)
+                this->y_radius_parser_->pre ();
+            }
+            else
+            {
+              if (this->y_radius_parser_)
+              {
+                this->y_radius (this->y_radius_parser_->post_NonNegativeDouble ());
+              }
+
+              count = 0;
+              state = 3UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "y-radius",
+                ns, n);
             count = 0;
             state = 3UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 3UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "y-radius",
-              ns, n);
-          count = 0;
-          state = 3UL;
-          // Fall through.
-        }
-      }
-      case 3UL:
-      {
-        if (n == "start-angle" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "start-angle" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->start_angle_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->start_angle_parser_;
 
-            if (this->start_angle_parser_)
-              this->start_angle_parser_->pre ();
+              if (this->start_angle_parser_)
+                this->start_angle_parser_->pre ();
+            }
+            else
+            {
+              if (this->start_angle_parser_)
+              {
+                this->start_angle (this->start_angle_parser_->post_Angle ());
+              }
+
+              count = 0;
+              state = 4UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->start_angle_parser_)
-            {
-              this->start_angle (this->start_angle_parser_->post_Angle ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "start-angle",
+                ns, n);
             count = 0;
             state = 4UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 4UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "start-angle",
-              ns, n);
-          count = 0;
-          state = 4UL;
-          // Fall through.
-        }
-      }
-      case 4UL:
-      {
-        if (n == "span-angle" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "span-angle" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->span_angle_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->span_angle_parser_;
 
-            if (this->span_angle_parser_)
-              this->span_angle_parser_->pre ();
+              if (this->span_angle_parser_)
+                this->span_angle_parser_->pre ();
+            }
+            else
+            {
+              if (this->span_angle_parser_)
+              {
+                this->span_angle (this->span_angle_parser_->post_Angle ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->span_angle_parser_)
-            {
-              this->span_angle (this->span_angle_parser_->post_Angle ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "span-angle",
+                ns, n);
             count = 0;
             state = ~0UL;
+            // Fall through.
           }
-
+        }
+        case ~0UL:
           break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "span-angle",
-              ns, n);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
       }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for Rectangle_pskel.
-  //
-  bool Rectangle_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xdl::Item_pskel::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
     }
 
-    while (vd->func != 0)
+    // Element validation and dispatch functions for Rectangle_pskel.
+    //
+    bool Rectangle_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
     {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+      XSD_UNUSED (t);
 
-      vd = vs.data + (vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
 
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
+      if (vd->func == 0 && vd->state == 0)
       {
-        unsigned long s = ~0UL;
+        if (this->::xdl::symbol::Item_pskel::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
 
-        if (n == "top-left" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
 
-        if (s != ~0UL)
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
         {
-          vd->count++;
-          vd->state = ~0UL;
+          unsigned long s = ~0UL;
 
-          vd = vs.data + vs.size++;
-          vd->func = &Rectangle_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
+          if (n == "top-left" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
 
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Rectangle_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "top-left",
+                ns, n);
+            return false;
+          }
         }
         else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "top-left",
-              ns, n);
           return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
-
-  bool Rectangle_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xdl::Item_pskel::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Rectangle_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-
-    ::xdl::Item_pskel::_pre_e_validate ();
-  }
-
-  void Rectangle_pskel::
-  _post_e_validate ()
-  {
-    ::xdl::Item_pskel::_post_e_validate ();
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    bool Rectangle_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xdl::symbol::Item_pskel::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
     }
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "top-left");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Rectangle_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
+    void Rectangle_pskel::
+    _pre_e_validate ()
     {
-      case 0UL:
-      {
-        if (n == "top-left" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->top_left_parser_;
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
 
-            if (this->top_left_parser_)
-              this->top_left_parser_->pre ();
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+
+      ::xdl::symbol::Item_pskel::_pre_e_validate ();
+    }
+
+    void Rectangle_pskel::
+    _post_e_validate ()
+    {
+      ::xdl::symbol::Item_pskel::_post_e_validate ();
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "top-left");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Rectangle_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "top-left" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->top_left_parser_;
+
+              if (this->top_left_parser_)
+                this->top_left_parser_->pre ();
+            }
+            else
+            {
+              if (this->top_left_parser_)
+              {
+                this->top_left (this->top_left_parser_->post_Point ());
+              }
+
+              count = 0;
+              state = 1UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->top_left_parser_)
-            {
-              this->top_left (this->top_left_parser_->post_Point ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "top-left",
+                ns, n);
             count = 0;
             state = 1UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 1UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "top-left",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "bottom-right" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "bottom-right" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->bottom_right_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->bottom_right_parser_;
 
-            if (this->bottom_right_parser_)
-              this->bottom_right_parser_->pre ();
+              if (this->bottom_right_parser_)
+                this->bottom_right_parser_->pre ();
+            }
+            else
+            {
+              if (this->bottom_right_parser_)
+              {
+                this->bottom_right (this->bottom_right_parser_->post_Point ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->bottom_right_parser_)
-            {
-              this->bottom_right (this->bottom_right_parser_->post_Point ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "bottom-right",
+                ns, n);
             count = 0;
             state = ~0UL;
+            // Fall through.
           }
-
+        }
+        case ~0UL:
           break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "bottom-right",
-              ns, n);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
       }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for Polyline_pskel.
-  //
-  bool Polyline_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xdl::Item_pskel::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
     }
 
-    while (vd->func != 0)
+    // Element validation and dispatch functions for Polyline_pskel.
+    //
+    bool Polyline_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
     {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+      XSD_UNUSED (t);
 
-      vd = vs.data + (vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
 
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
+      if (vd->func == 0 && vd->state == 0)
       {
-        unsigned long s = ~0UL;
+        if (this->::xdl::symbol::Item_pskel::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
 
-        if (n == "vertices" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
 
-        if (s != ~0UL)
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
         {
-          vd->count++;
-          vd->state = ~0UL;
+          unsigned long s = ~0UL;
 
-          vd = vs.data + vs.size++;
-          vd->func = &Polyline_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
+          if (n == "vertices" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
 
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Polyline_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "vertices",
+                ns, n);
+            return false;
+          }
         }
         else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "vertices",
-              ns, n);
           return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
-
-  bool Polyline_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xdl::Item_pskel::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Polyline_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-
-    ::xdl::Item_pskel::_pre_e_validate ();
-  }
-
-  void Polyline_pskel::
-  _post_e_validate ()
-  {
-    ::xdl::Item_pskel::_post_e_validate ();
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    bool Polyline_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
-    }
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "vertices");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Polyline_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
-    {
-      case 0UL:
+      if (vd.func == 0 && vd.state == 0)
       {
-        if (n == "vertices" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->vertices_parser_;
-
-            if (this->vertices_parser_)
-              this->vertices_parser_->pre ();
-          }
-          else
-          {
-            if (this->vertices_parser_)
-            {
-              this->vertices (this->vertices_parser_->post_PointList ());
-            }
-
-            count = 0;
-            state = ~0UL;
-          }
-
-          break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "vertices",
-              ns, n);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
-      }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for Polygon_pskel.
-  //
-  bool Polygon_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xdl::Item_pskel::_start_element_impl (ns, n, t))
+        if (!::xdl::symbol::Item_pskel::_end_element_impl (ns, n))
+          assert (false);
         return true;
-      else
-        vd->state = 1;
-    }
-
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
-
-      vd = vs.data + (vs.size - 1);
-
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
-      {
-        unsigned long s = ~0UL;
-
-        if (n == "vertices" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
-
-        if (s != ~0UL)
-        {
-          vd->count++;
-          vd->state = ~0UL;
-
-          vd = vs.data + vs.size++;
-          vd->func = &Polygon_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
-
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-        }
-        else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "vertices",
-              ns, n);
-          return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
 
-  bool Polygon_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
+      if (vd.state == ~0UL)
+        vs.size--;
 
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xdl::Item_pskel::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Polygon_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-
-    ::xdl::Item_pskel::_pre_e_validate ();
-  }
-
-  void Polygon_pskel::
-  _post_e_validate ()
-  {
-    ::xdl::Item_pskel::_post_e_validate ();
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    void Polyline_pskel::
+    _pre_e_validate ()
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+
+      ::xdl::symbol::Item_pskel::_pre_e_validate ();
     }
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "vertices");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Polygon_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
+    void Polyline_pskel::
+    _post_e_validate ()
     {
-      case 0UL:
-      {
-        if (n == "vertices" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->vertices_parser_;
+      ::xdl::symbol::Item_pskel::_post_e_validate ();
 
-            if (this->vertices_parser_)
-              this->vertices_parser_->pre ();
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "vertices");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Polyline_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "vertices" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->vertices_parser_;
+
+              if (this->vertices_parser_)
+                this->vertices_parser_->pre ();
+            }
+            else
+            {
+              if (this->vertices_parser_)
+              {
+                this->vertices (this->vertices_parser_->post_PointList ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->vertices_parser_)
-            {
-              this->vertices (this->vertices_parser_->post_PointList ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "vertices",
+                ns, n);
             count = 0;
             state = ~0UL;
+            // Fall through.
           }
-
+        }
+        case ~0UL:
           break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "vertices",
-              ns, n);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
       }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for Pin_pskel.
-  //
-  bool Pin_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xdl::Item_pskel::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
     }
 
-    while (vd->func != 0)
+    // Element validation and dispatch functions for Polygon_pskel.
+    //
+    bool Polygon_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
     {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+      XSD_UNUSED (t);
 
-      vd = vs.data + (vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
 
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
+      if (vd->func == 0 && vd->state == 0)
       {
-        unsigned long s = ~0UL;
+        if (this->::xdl::symbol::Item_pskel::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
 
-        if (n == "designator" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
 
-        if (s != ~0UL)
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
         {
-          vd->count++;
-          vd->state = ~0UL;
+          unsigned long s = ~0UL;
 
-          vd = vs.data + vs.size++;
-          vd->func = &Pin_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
+          if (n == "vertices" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
 
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Polygon_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "vertices",
+                ns, n);
+            return false;
+          }
         }
         else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "designator",
-              ns, n);
           return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
-
-  bool Pin_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xdl::Item_pskel::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Pin_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-
-    ::xdl::Item_pskel::_pre_e_validate ();
-  }
-
-  void Pin_pskel::
-  _post_e_validate ()
-  {
-    ::xdl::Item_pskel::_post_e_validate ();
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    bool Polygon_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xdl::symbol::Item_pskel::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
     }
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "designator");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Pin_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
+    void Polygon_pskel::
+    _pre_e_validate ()
     {
-      case 0UL:
-      {
-        if (n == "designator" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->designator_parser_;
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
 
-            if (this->designator_parser_)
-              this->designator_parser_->pre ();
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+
+      ::xdl::symbol::Item_pskel::_pre_e_validate ();
+    }
+
+    void Polygon_pskel::
+    _post_e_validate ()
+    {
+      ::xdl::symbol::Item_pskel::_post_e_validate ();
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "vertices");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Polygon_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "vertices" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->vertices_parser_;
+
+              if (this->vertices_parser_)
+                this->vertices_parser_->pre ();
+            }
+            else
+            {
+              if (this->vertices_parser_)
+              {
+                this->vertices (this->vertices_parser_->post_PointList ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->designator_parser_)
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "vertices",
+                ns, n);
+            count = 0;
+            state = ~0UL;
+            // Fall through.
+          }
+        }
+        case ~0UL:
+          break;
+      }
+    }
+
+    // Element validation and dispatch functions for Pin_pskel.
+    //
+    bool Pin_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
+    {
+      XSD_UNUSED (t);
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      if (vd->func == 0 && vd->state == 0)
+      {
+        if (this->::xdl::symbol::Item_pskel::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
+
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
+        {
+          unsigned long s = ~0UL;
+
+          if (n == "designator" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
+
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Pin_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "designator",
+                ns, n);
+            return false;
+          }
+        }
+        else
+          return false;
+      }
+
+      return true;
+    }
+
+    bool Pin_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xdl::symbol::Item_pskel::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
+    }
+
+    void Pin_pskel::
+    _pre_e_validate ()
+    {
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+
+      ::xdl::symbol::Item_pskel::_pre_e_validate ();
+    }
+
+    void Pin_pskel::
+    _post_e_validate ()
+    {
+      ::xdl::symbol::Item_pskel::_post_e_validate ();
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "designator");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Pin_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "designator" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
             {
-              this->designator (this->designator_parser_->post_string ());
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->designator_parser_;
+
+              if (this->designator_parser_)
+                this->designator_parser_->pre ();
+            }
+            else
+            {
+              if (this->designator_parser_)
+              {
+                this->designator (this->designator_parser_->post_string ());
+              }
+
+              count = 0;
+              state = 1UL;
             }
 
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "designator",
+                ns, n);
             count = 0;
             state = 1UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 1UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "designator",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "label" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "label" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->label_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->label_parser_;
 
-            if (this->label_parser_)
-              this->label_parser_->pre ();
+              if (this->label_parser_)
+                this->label_parser_->pre ();
+            }
+            else
+            {
+              if (this->label_parser_)
+              {
+                this->label (this->label_parser_->post_string ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->label_parser_)
-            {
-              this->label (this->label_parser_->post_string ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "label",
+                ns, n);
             count = 0;
             state = ~0UL;
+            // Fall through.
           }
-
+        }
+        case ~0UL:
           break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "label",
-              ns, n);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
       }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for ItemGroup_pskel.
-  //
-  bool ItemGroup_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xdl::Item_pskel::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
     }
 
-    while (vd->func != 0)
+    // Element validation and dispatch functions for ItemGroup_pskel.
+    //
+    bool ItemGroup_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
     {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+      XSD_UNUSED (t);
 
-      vd = vs.data + (vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
 
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
+      if (vd->func == 0 && vd->state == 0)
       {
-        unsigned long s = ~0UL;
+        if (this->::xdl::symbol::Item_pskel::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
 
-        if (n == "children" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
 
-        if (s != ~0UL)
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
         {
-          vd->count++;
-          vd->state = ~0UL;
+          unsigned long s = ~0UL;
 
-          vd = vs.data + vs.size++;
-          vd->func = &ItemGroup_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
+          if (n == "children" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
 
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &ItemGroup_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "children",
+                ns, n);
+            return false;
+          }
         }
         else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "children",
-              ns, n);
           return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
-
-  bool ItemGroup_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xdl::Item_pskel::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void ItemGroup_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-
-    ::xdl::Item_pskel::_pre_e_validate ();
-  }
-
-  void ItemGroup_pskel::
-  _post_e_validate ()
-  {
-    ::xdl::Item_pskel::_post_e_validate ();
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    bool ItemGroup_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
-    }
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "children");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void ItemGroup_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
-    {
-      case 0UL:
+      if (vd.func == 0 && vd.state == 0)
       {
-        if (n == "children" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->children_parser_;
-
-            if (this->children_parser_)
-              this->children_parser_->pre ();
-          }
-          else
-          {
-            if (this->children_parser_)
-            {
-              this->children (this->children_parser_->post_ItemList ());
-            }
-
-            count = 0;
-            state = ~0UL;
-          }
-
-          break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "children",
-              ns, n);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
-      }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for Label_pskel.
-  //
-  bool Label_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xdl::Item_pskel::_start_element_impl (ns, n, t))
+        if (!::xdl::symbol::Item_pskel::_end_element_impl (ns, n))
+          assert (false);
         return true;
-      else
-        vd->state = 1;
-    }
-
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
-
-      vd = vs.data + (vs.size - 1);
-
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
-      {
-        unsigned long s = ~0UL;
-
-        if (n == "text" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
-
-        if (s != ~0UL)
-        {
-          vd->count++;
-          vd->state = ~0UL;
-
-          vd = vs.data + vs.size++;
-          vd->func = &Label_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
-
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-        }
-        else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "text",
-              ns, n);
-          return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
 
-  bool Label_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
+      if (vd.state == ~0UL)
+        vs.size--;
 
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xdl::Item_pskel::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Label_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-
-    ::xdl::Item_pskel::_pre_e_validate ();
-  }
-
-  void Label_pskel::
-  _post_e_validate ()
-  {
-    ::xdl::Item_pskel::_post_e_validate ();
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    void ItemGroup_pskel::
+    _pre_e_validate ()
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+
+      ::xdl::symbol::Item_pskel::_pre_e_validate ();
     }
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "text");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Label_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
+    void ItemGroup_pskel::
+    _post_e_validate ()
     {
-      case 0UL:
-      {
-        if (n == "text" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->text_parser_;
+      ::xdl::symbol::Item_pskel::_post_e_validate ();
 
-            if (this->text_parser_)
-              this->text_parser_->pre ();
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "children");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void ItemGroup_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "children" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->children_parser_;
+
+              if (this->children_parser_)
+                this->children_parser_->pre ();
+            }
+            else
+            {
+              if (this->children_parser_)
+              {
+                this->children (this->children_parser_->post_ItemList ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->text_parser_)
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "children",
+                ns, n);
+            count = 0;
+            state = ~0UL;
+            // Fall through.
+          }
+        }
+        case ~0UL:
+          break;
+      }
+    }
+
+    // Element validation and dispatch functions for Label_pskel.
+    //
+    bool Label_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
+    {
+      XSD_UNUSED (t);
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      if (vd->func == 0 && vd->state == 0)
+      {
+        if (this->::xdl::symbol::Item_pskel::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
+
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
+        {
+          unsigned long s = ~0UL;
+
+          if (n == "text" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
+
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Label_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "text",
+                ns, n);
+            return false;
+          }
+        }
+        else
+          return false;
+      }
+
+      return true;
+    }
+
+    bool Label_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xdl::symbol::Item_pskel::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
+    }
+
+    void Label_pskel::
+    _pre_e_validate ()
+    {
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+
+      ::xdl::symbol::Item_pskel::_pre_e_validate ();
+    }
+
+    void Label_pskel::
+    _post_e_validate ()
+    {
+      ::xdl::symbol::Item_pskel::_post_e_validate ();
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "text");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Label_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "text" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
             {
-              this->text (this->text_parser_->post_string ());
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->text_parser_;
+
+              if (this->text_parser_)
+                this->text_parser_->pre ();
+            }
+            else
+            {
+              if (this->text_parser_)
+              {
+                this->text (this->text_parser_->post_string ());
+              }
+
+              count = 0;
+              state = 1UL;
             }
 
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "text",
+                ns, n);
             count = 0;
             state = 1UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 1UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "text",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "font" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "font" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->font_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->font_parser_;
 
-            if (this->font_parser_)
-              this->font_parser_->pre ();
+              if (this->font_parser_)
+                this->font_parser_->pre ();
+            }
+            else
+            {
+              if (this->font_parser_)
+              {
+                this->font (this->font_parser_->post_Font ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->font_parser_)
-            {
-              this->font (this->font_parser_->post_Font ());
-            }
-
+            assert (start);
             count = 0;
             state = ~0UL;
+            // Fall through.
           }
-
+        }
+        case ~0UL:
           break;
-        }
-        else
-        {
-          assert (start);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
       }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for Point_pskel.
-  //
-  bool Point_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
     }
 
-    while (vd->func != 0)
+    // Element validation and dispatch functions for Point_pskel.
+    //
+    bool Point_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
     {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+      XSD_UNUSED (t);
 
-      vd = vs.data + (vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
 
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
+      if (vd->func == 0 && vd->state == 0)
       {
-        unsigned long s = ~0UL;
+        if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
 
-        if (n == "x" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
 
-        if (s != ~0UL)
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
         {
-          vd->count++;
-          vd->state = ~0UL;
+          unsigned long s = ~0UL;
 
-          vd = vs.data + vs.size++;
-          vd->func = &Point_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
+          if (n == "x" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
 
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Point_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "x",
+                ns, n);
+            return false;
+          }
         }
         else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "x",
-              ns, n);
           return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
-
-  bool Point_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xml_schema::complex_content::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Point_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-  }
-
-  void Point_pskel::
-  _post_e_validate ()
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    bool Point_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xml_schema::complex_content::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
     }
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "x");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Point_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
+    void Point_pskel::
+    _pre_e_validate ()
     {
-      case 0UL:
-      {
-        if (n == "x" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->x_parser_;
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
 
-            if (this->x_parser_)
-              this->x_parser_->pre ();
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+    }
+
+    void Point_pskel::
+    _post_e_validate ()
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "x");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Point_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "x" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->x_parser_;
+
+              if (this->x_parser_)
+                this->x_parser_->pre ();
+            }
+            else
+            {
+              if (this->x_parser_)
+              {
+                this->x (this->x_parser_->post_double ());
+              }
+
+              count = 0;
+              state = 1UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->x_parser_)
-            {
-              this->x (this->x_parser_->post_double ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "x",
+                ns, n);
             count = 0;
             state = 1UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 1UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "x",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "y" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "y" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->y_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->y_parser_;
 
-            if (this->y_parser_)
-              this->y_parser_->pre ();
+              if (this->y_parser_)
+                this->y_parser_->pre ();
+            }
+            else
+            {
+              if (this->y_parser_)
+              {
+                this->y (this->y_parser_->post_double ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->y_parser_)
-            {
-              this->y (this->y_parser_->post_double ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "y",
+                ns, n);
             count = 0;
             state = ~0UL;
+            // Fall through.
           }
-
+        }
+        case ~0UL:
           break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "y",
-              ns, n);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
       }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for PointList_pskel.
-  //
-  bool PointList_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
     }
 
-    while (vd->func != 0)
+    // Element validation and dispatch functions for PointList_pskel.
+    //
+    bool PointList_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
     {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+      XSD_UNUSED (t);
 
-      vd = vs.data + (vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
 
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
+      if (vd->func == 0 && vd->state == 0)
       {
-        unsigned long s = ~0UL;
-
-        if (n == "point" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
-
-        if (s != ~0UL)
-        {
-          vd->count++;
-          vd->state = ~0UL;
-
-          vd = vs.data + vs.size++;
-          vd->func = &PointList_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
-
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-        }
+        if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
+          return true;
         else
-        {
-          return false;
-        }
+          vd->state = 1;
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
-
-  bool PointList_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xml_schema::complex_content::_end_element_impl (ns, n))
-        assert (false);
-      return true;
-    }
-
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void PointList_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-  }
-
-  void PointList_pskel::
-  _post_e_validate ()
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
-    }
-
-
-    this->v_state_stack_.pop ();
-  }
-
-  void PointList_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
-    {
-      case 0UL:
+      while (vd->func != 0)
       {
-        if (n == "point" &&
-            ns == "http://www.leda.org/xdl")
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
         {
-          if (start)
+          unsigned long s = ~0UL;
+
+          if (n == "point" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
+
+          if (s != ~0UL)
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->point_parser_;
+            vd->count++;
+            vd->state = ~0UL;
 
-            if (this->point_parser_)
-              this->point_parser_->pre ();
+            vd = vs.data + vs.size++;
+            vd->func = &PointList_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
           }
           else
           {
-            if (this->point_parser_)
-            {
-              this->point (this->point_parser_->post_Point ());
-            }
-
-            count++;
+            return false;
           }
-
-          break;
         }
         else
-        {
-          assert (start);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
-      }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for Pen_pskel.
-  //
-  bool Pen_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
-    }
-
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
-
-      vd = vs.data + (vs.size - 1);
-
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
-      {
-        unsigned long s = ~0UL;
-
-        if (n == "width" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
-
-        if (s != ~0UL)
-        {
-          vd->count++;
-          vd->state = ~0UL;
-
-          vd = vs.data + vs.size++;
-          vd->func = &Pen_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
-
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-        }
-        else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "width",
-              ns, n);
           return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
-
-  bool Pen_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xml_schema::complex_content::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Pen_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-  }
-
-  void Pen_pskel::
-  _post_e_validate ()
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    bool PointList_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xml_schema::complex_content::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
     }
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "width");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Pen_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
+    void PointList_pskel::
+    _pre_e_validate ()
     {
-      case 0UL:
-      {
-        if (n == "width" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->width_parser_;
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
 
-            if (this->width_parser_)
-              this->width_parser_->pre ();
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+    }
+
+    void PointList_pskel::
+    _post_e_validate ()
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+
+      this->v_state_stack_.pop ();
+    }
+
+    void PointList_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "point" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->point_parser_;
+
+              if (this->point_parser_)
+                this->point_parser_->pre ();
+            }
+            else
+            {
+              if (this->point_parser_)
+              {
+                this->point (this->point_parser_->post_Point ());
+              }
+
+              count++;
+            }
+
+            break;
           }
           else
           {
-            if (this->width_parser_)
+            assert (start);
+            count = 0;
+            state = ~0UL;
+            // Fall through.
+          }
+        }
+        case ~0UL:
+          break;
+      }
+    }
+
+    // Element validation and dispatch functions for Pen_pskel.
+    //
+    bool Pen_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
+    {
+      XSD_UNUSED (t);
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      if (vd->func == 0 && vd->state == 0)
+      {
+        if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
+
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
+        {
+          unsigned long s = ~0UL;
+
+          if (n == "width" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
+
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Pen_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "width",
+                ns, n);
+            return false;
+          }
+        }
+        else
+          return false;
+      }
+
+      return true;
+    }
+
+    bool Pen_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xml_schema::complex_content::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
+    }
+
+    void Pen_pskel::
+    _pre_e_validate ()
+    {
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+    }
+
+    void Pen_pskel::
+    _post_e_validate ()
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "width");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Pen_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "width" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
             {
-              this->width (this->width_parser_->post_NonNegativeDouble ());
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->width_parser_;
+
+              if (this->width_parser_)
+                this->width_parser_->pre ();
+            }
+            else
+            {
+              if (this->width_parser_)
+              {
+                this->width (this->width_parser_->post_NonNegativeDouble ());
+              }
+
+              count = 0;
+              state = 1UL;
             }
 
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "width",
+                ns, n);
             count = 0;
             state = 1UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 1UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "width",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "color" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "color" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->color_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->color_parser_;
 
-            if (this->color_parser_)
-              this->color_parser_->pre ();
+              if (this->color_parser_)
+                this->color_parser_->pre ();
+            }
+            else
+            {
+              if (this->color_parser_)
+              {
+                this->color (this->color_parser_->post_Color ());
+              }
+
+              count = 0;
+              state = 2UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->color_parser_)
-            {
-              this->color (this->color_parser_->post_Color ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "color",
+                ns, n);
             count = 0;
             state = 2UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 2UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "color",
-              ns, n);
-          count = 0;
-          state = 2UL;
-          // Fall through.
-        }
-      }
-      case 2UL:
-      {
-        if (n == "style" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "style" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->style_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->style_parser_;
 
-            if (this->style_parser_)
-              this->style_parser_->pre ();
+              if (this->style_parser_)
+                this->style_parser_->pre ();
+            }
+            else
+            {
+              if (this->style_parser_)
+              {
+                this->style (this->style_parser_->post_PenStyle ());
+              }
+
+              count = 0;
+              state = 3UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->style_parser_)
-            {
-              this->style (this->style_parser_->post_PenStyle ());
-            }
-
+            assert (start);
             count = 0;
             state = 3UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 3UL:
         {
-          assert (start);
-          count = 0;
-          state = 3UL;
-          // Fall through.
-        }
-      }
-      case 3UL:
-      {
-        if (n == "cap-style" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "cap-style" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->cap_style_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->cap_style_parser_;
 
-            if (this->cap_style_parser_)
-              this->cap_style_parser_->pre ();
+              if (this->cap_style_parser_)
+                this->cap_style_parser_->pre ();
+            }
+            else
+            {
+              if (this->cap_style_parser_)
+              {
+                this->cap_style (this->cap_style_parser_->post_PenCapStyle ());
+              }
+
+              count = 0;
+              state = 4UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->cap_style_parser_)
-            {
-              this->cap_style (this->cap_style_parser_->post_PenCapStyle ());
-            }
-
+            assert (start);
             count = 0;
             state = 4UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 4UL:
         {
-          assert (start);
-          count = 0;
-          state = 4UL;
-          // Fall through.
-        }
-      }
-      case 4UL:
-      {
-        if (n == "join-style" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "join-style" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->join_style_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->join_style_parser_;
 
-            if (this->join_style_parser_)
-              this->join_style_parser_->pre ();
+              if (this->join_style_parser_)
+                this->join_style_parser_->pre ();
+            }
+            else
+            {
+              if (this->join_style_parser_)
+              {
+                this->join_style (this->join_style_parser_->post_PenJoinStyle ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->join_style_parser_)
-            {
-              this->join_style (this->join_style_parser_->post_PenJoinStyle ());
-            }
-
+            assert (start);
             count = 0;
             state = ~0UL;
+            // Fall through.
           }
-
+        }
+        case ~0UL:
           break;
-        }
-        else
-        {
-          assert (start);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
       }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for Brush_pskel.
-  //
-  bool Brush_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
-        return true;
-      else
-        vd->state = 1;
     }
 
-    while (vd->func != 0)
+    // Element validation and dispatch functions for Brush_pskel.
+    //
+    bool Brush_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
     {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+      XSD_UNUSED (t);
 
-      vd = vs.data + (vs.size - 1);
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
 
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
+      if (vd->func == 0 && vd->state == 0)
       {
-        unsigned long s = ~0UL;
+        if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
 
-        if (n == "color" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
 
-        if (s != ~0UL)
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
         {
-          vd->count++;
-          vd->state = ~0UL;
+          unsigned long s = ~0UL;
 
-          vd = vs.data + vs.size++;
-          vd->func = &Brush_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
+          if (n == "color" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
 
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Brush_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "color",
+                ns, n);
+            return false;
+          }
         }
         else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "color",
-              ns, n);
           return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
-
-  bool Brush_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
-
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xml_schema::complex_content::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Brush_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-  }
-
-  void Brush_pskel::
-  _post_e_validate ()
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    bool Brush_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
-    }
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "color");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Brush_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
-    {
-      case 0UL:
+      if (vd.func == 0 && vd.state == 0)
       {
-        if (n == "color" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->color_parser_;
-
-            if (this->color_parser_)
-              this->color_parser_->pre ();
-          }
-          else
-          {
-            if (this->color_parser_)
-            {
-              this->color (this->color_parser_->post_Color ());
-            }
-
-            count = 0;
-            state = 1UL;
-          }
-
-          break;
-        }
-        else
-        {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "color",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "style" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->style_parser_;
-
-            if (this->style_parser_)
-              this->style_parser_->pre ();
-          }
-          else
-          {
-            if (this->style_parser_)
-            {
-              this->style (this->style_parser_->post_BrushStyle ());
-            }
-
-            count = 0;
-            state = ~0UL;
-          }
-
-          break;
-        }
-        else
-        {
-          assert (start);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
-      }
-      case ~0UL:
-        break;
-    }
-  }
-
-  // Element validation and dispatch functions for Font_pskel.
-  //
-  bool Font_pskel::
-  _start_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n,
-                       const ::xml_schema::ro_string* t)
-  {
-    XSD_UNUSED (t);
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    if (vd->func == 0 && vd->state == 0)
-    {
-      if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
+        if (!::xml_schema::complex_content::_end_element_impl (ns, n))
+          assert (false);
         return true;
-      else
-        vd->state = 1;
-    }
-
-    while (vd->func != 0)
-    {
-      (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
-
-      vd = vs.data + (vs.size - 1);
-
-      if (vd->state == ~0UL)
-        vd = vs.data + (--vs.size - 1);
-      else
-        break;
-    }
-
-    if (vd->func == 0)
-    {
-      if (vd->state != ~0UL)
-      {
-        unsigned long s = ~0UL;
-
-        if (n == "family" &&
-            ns == "http://www.leda.org/xdl")
-          s = 0UL;
-
-        if (s != ~0UL)
-        {
-          vd->count++;
-          vd->state = ~0UL;
-
-          vd = vs.data + vs.size++;
-          vd->func = &Font_pskel::sequence_0;
-          vd->state = s;
-          vd->count = 0;
-
-          this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-        }
-        else
-        {
-          if (vd->count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "family",
-              ns, n);
-          return false;
-        }
       }
-      else
-        return false;
-    }
 
-    return true;
-  }
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
 
-  bool Font_pskel::
-  _end_element_impl (const ::xml_schema::ro_string& ns,
-                     const ::xml_schema::ro_string& n)
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size - 1];
+      if (vd.state == ~0UL)
+        vs.size--;
 
-    if (vd.func == 0 && vd.state == 0)
-    {
-      if (!::xml_schema::complex_content::_end_element_impl (ns, n))
-        assert (false);
       return true;
     }
 
-    assert (vd.func != 0);
-    (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-    if (vd.state == ~0UL)
-      vs.size--;
-
-    return true;
-  }
-
-  void Font_pskel::
-  _pre_e_validate ()
-  {
-    this->v_state_stack_.push ();
-    static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_& vd = vs.data[vs.size++];
-
-    vd.func = 0;
-    vd.state = 0;
-    vd.count = 0;
-  }
-
-  void Font_pskel::
-  _post_e_validate ()
-  {
-    v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-    v_state_descr_* vd = vs.data + (vs.size - 1);
-
-    ::xml_schema::ro_string empty;
-    while (vd->func != 0)
+    void Brush_pskel::
+    _pre_e_validate ()
     {
-      (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-      assert (vd->state == ~0UL);
-      vd = vs.data + (--vs.size - 1);
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
     }
 
-    if (vd->count < 1UL)
-      this->_expected_element (
-        "http://www.leda.org/xdl", "family");
-
-    this->v_state_stack_.pop ();
-  }
-
-  void Font_pskel::
-  sequence_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start)
-  {
-    XSD_UNUSED (t);
-
-    switch (state)
+    void Brush_pskel::
+    _post_e_validate ()
     {
-      case 0UL:
-      {
-        if (n == "family" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
-          {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->family_parser_;
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
 
-            if (this->family_parser_)
-              this->family_parser_->pre ();
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "color");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Brush_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "color" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->color_parser_;
+
+              if (this->color_parser_)
+                this->color_parser_->pre ();
+            }
+            else
+            {
+              if (this->color_parser_)
+              {
+                this->color (this->color_parser_->post_Color ());
+              }
+
+              count = 0;
+              state = 1UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->family_parser_)
-            {
-              this->family (this->family_parser_->post_string ());
-            }
-
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "color",
+                ns, n);
             count = 0;
             state = 1UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 1UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "family",
-              ns, n);
-          count = 0;
-          state = 1UL;
-          // Fall through.
-        }
-      }
-      case 1UL:
-      {
-        if (n == "size" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "style" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->size_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->style_parser_;
 
-            if (this->size_parser_)
-              this->size_parser_->pre ();
+              if (this->style_parser_)
+                this->style_parser_->pre ();
+            }
+            else
+            {
+              if (this->style_parser_)
+              {
+                this->style (this->style_parser_->post_BrushStyle ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->size_parser_)
+            assert (start);
+            count = 0;
+            state = ~0UL;
+            // Fall through.
+          }
+        }
+        case ~0UL:
+          break;
+      }
+    }
+
+    // Element validation and dispatch functions for Font_pskel.
+    //
+    bool Font_pskel::
+    _start_element_impl (const ::xml_schema::ro_string& ns,
+                         const ::xml_schema::ro_string& n,
+                         const ::xml_schema::ro_string* t)
+    {
+      XSD_UNUSED (t);
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      if (vd->func == 0 && vd->state == 0)
+      {
+        if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
+          return true;
+        else
+          vd->state = 1;
+      }
+
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
+
+        vd = vs.data + (vs.size - 1);
+
+        if (vd->state == ~0UL)
+          vd = vs.data + (--vs.size - 1);
+        else
+          break;
+      }
+
+      if (vd->func == 0)
+      {
+        if (vd->state != ~0UL)
+        {
+          unsigned long s = ~0UL;
+
+          if (n == "family" &&
+              ns == "http://www.leda.org/xdl")
+            s = 0UL;
+
+          if (s != ~0UL)
+          {
+            vd->count++;
+            vd->state = ~0UL;
+
+            vd = vs.data + vs.size++;
+            vd->func = &Font_pskel::sequence_0;
+            vd->state = s;
+            vd->count = 0;
+
+            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
+          }
+          else
+          {
+            if (vd->count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "family",
+                ns, n);
+            return false;
+          }
+        }
+        else
+          return false;
+      }
+
+      return true;
+    }
+
+    bool Font_pskel::
+    _end_element_impl (const ::xml_schema::ro_string& ns,
+                       const ::xml_schema::ro_string& n)
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size - 1];
+
+      if (vd.func == 0 && vd.state == 0)
+      {
+        if (!::xml_schema::complex_content::_end_element_impl (ns, n))
+          assert (false);
+        return true;
+      }
+
+      assert (vd.func != 0);
+      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
+
+      if (vd.state == ~0UL)
+        vs.size--;
+
+      return true;
+    }
+
+    void Font_pskel::
+    _pre_e_validate ()
+    {
+      this->v_state_stack_.push ();
+      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
+
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_& vd = vs.data[vs.size++];
+
+      vd.func = 0;
+      vd.state = 0;
+      vd.count = 0;
+    }
+
+    void Font_pskel::
+    _post_e_validate ()
+    {
+      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
+      v_state_descr_* vd = vs.data + (vs.size - 1);
+
+      ::xml_schema::ro_string empty;
+      while (vd->func != 0)
+      {
+        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
+        assert (vd->state == ~0UL);
+        vd = vs.data + (--vs.size - 1);
+      }
+
+      if (vd->count < 1UL)
+        this->_expected_element (
+          "http://www.leda.org/xdl", "family");
+
+      this->v_state_stack_.pop ();
+    }
+
+    void Font_pskel::
+    sequence_0 (unsigned long& state,
+                unsigned long& count,
+                const ::xml_schema::ro_string& ns,
+                const ::xml_schema::ro_string& n,
+                const ::xml_schema::ro_string* t,
+                bool start)
+    {
+      XSD_UNUSED (t);
+
+      switch (state)
+      {
+        case 0UL:
+        {
+          if (n == "family" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
             {
-              this->size (this->size_parser_->post_non_negative_integer ());
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->family_parser_;
+
+              if (this->family_parser_)
+                this->family_parser_->pre ();
+            }
+            else
+            {
+              if (this->family_parser_)
+              {
+                this->family (this->family_parser_->post_string ());
+              }
+
+              count = 0;
+              state = 1UL;
             }
 
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "family",
+                ns, n);
+            count = 0;
+            state = 1UL;
+            // Fall through.
+          }
+        }
+        case 1UL:
+        {
+          if (n == "size" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->size_parser_;
+
+              if (this->size_parser_)
+                this->size_parser_->pre ();
+            }
+            else
+            {
+              if (this->size_parser_)
+              {
+                this->size (this->size_parser_->post_non_negative_integer ());
+              }
+
+              count = 0;
+              state = 2UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            if (count < 1UL)
+              this->_expected_element (
+                "http://www.leda.org/xdl", "size",
+                ns, n);
             count = 0;
             state = 2UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 2UL:
         {
-          assert (start);
-          if (count < 1UL)
-            this->_expected_element (
-              "http://www.leda.org/xdl", "size",
-              ns, n);
-          count = 0;
-          state = 2UL;
-          // Fall through.
-        }
-      }
-      case 2UL:
-      {
-        if (n == "bold" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "bold" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->bold_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->bold_parser_;
 
-            if (this->bold_parser_)
-              this->bold_parser_->pre ();
+              if (this->bold_parser_)
+                this->bold_parser_->pre ();
+            }
+            else
+            {
+              if (this->bold_parser_)
+              {
+                this->bold (this->bold_parser_->post_boolean ());
+              }
+
+              count = 0;
+              state = 3UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->bold_parser_)
-            {
-              this->bold (this->bold_parser_->post_boolean ());
-            }
-
+            assert (start);
             count = 0;
             state = 3UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 3UL:
         {
-          assert (start);
-          count = 0;
-          state = 3UL;
-          // Fall through.
-        }
-      }
-      case 3UL:
-      {
-        if (n == "italic" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "italic" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->italic_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->italic_parser_;
 
-            if (this->italic_parser_)
-              this->italic_parser_->pre ();
+              if (this->italic_parser_)
+                this->italic_parser_->pre ();
+            }
+            else
+            {
+              if (this->italic_parser_)
+              {
+                this->italic (this->italic_parser_->post_boolean ());
+              }
+
+              count = 0;
+              state = 4UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->italic_parser_)
-            {
-              this->italic (this->italic_parser_->post_boolean ());
-            }
-
+            assert (start);
             count = 0;
             state = 4UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 4UL:
         {
-          assert (start);
-          count = 0;
-          state = 4UL;
-          // Fall through.
-        }
-      }
-      case 4UL:
-      {
-        if (n == "underline" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "underline" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->underline_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->underline_parser_;
 
-            if (this->underline_parser_)
-              this->underline_parser_->pre ();
+              if (this->underline_parser_)
+                this->underline_parser_->pre ();
+            }
+            else
+            {
+              if (this->underline_parser_)
+              {
+                this->underline (this->underline_parser_->post_boolean ());
+              }
+
+              count = 0;
+              state = 5UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->underline_parser_)
-            {
-              this->underline (this->underline_parser_->post_boolean ());
-            }
-
+            assert (start);
             count = 0;
             state = 5UL;
+            // Fall through.
           }
-
-          break;
         }
-        else
+        case 5UL:
         {
-          assert (start);
-          count = 0;
-          state = 5UL;
-          // Fall through.
-        }
-      }
-      case 5UL:
-      {
-        if (n == "strikeout" &&
-            ns == "http://www.leda.org/xdl")
-        {
-          if (start)
+          if (n == "strikeout" &&
+              ns == "http://www.leda.org/xdl")
           {
-            this->::xml_schema::complex_content::context_.top ().parser_ = this->strikeout_parser_;
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->strikeout_parser_;
 
-            if (this->strikeout_parser_)
-              this->strikeout_parser_->pre ();
+              if (this->strikeout_parser_)
+                this->strikeout_parser_->pre ();
+            }
+            else
+            {
+              if (this->strikeout_parser_)
+              {
+                this->strikeout (this->strikeout_parser_->post_boolean ());
+              }
+
+              count = 0;
+              state = ~0UL;
+            }
+
+            break;
           }
           else
           {
-            if (this->strikeout_parser_)
-            {
-              this->strikeout (this->strikeout_parser_->post_boolean ());
-            }
-
+            assert (start);
             count = 0;
             state = ~0UL;
+            // Fall through.
           }
-
+        }
+        case ~0UL:
           break;
-        }
-        else
-        {
-          assert (start);
-          count = 0;
-          state = ~0UL;
-          // Fall through.
-        }
       }
-      case ~0UL:
-        break;
     }
   }
 }
 
 namespace xdl
 {
+  namespace symbol
+  {
+  }
 }
 
 namespace xdl
 {
+  namespace symbol
+  {
+  }
 }
 
 #include <xsd/cxx/post.hxx>

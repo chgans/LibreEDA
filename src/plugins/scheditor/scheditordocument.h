@@ -7,6 +7,8 @@
 #include <QList>
 #include <QUndoStack>
 
+namespace xdl { namespace symbol { class Symbol; } }
+
 class SchItem;
 class SchScene;
 class SchCommand;
@@ -35,6 +37,7 @@ signals:
 public slots:
 
 private:
+    xdl::symbol::Symbol *m_xdlSymbol;
     SchScene *m_scene;
     QUndoStack *m_commandStack;
     QList<SchItem *> m_items;

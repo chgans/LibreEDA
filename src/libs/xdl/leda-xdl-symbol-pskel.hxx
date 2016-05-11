@@ -55,32 +55,35 @@
 //
 namespace xdl
 {
-  class Symbol_pskel;
-  class ItemList_pskel;
-  class Item_pskel;
-  class Circle_pskel;
-  class CircularArc_pskel;
-  class Ellipse_pskel;
-  class EllipticalArc_pskel;
-  class Rectangle_pskel;
-  class Polyline_pskel;
-  class Polygon_pskel;
-  class Pin_pskel;
-  class ItemGroup_pskel;
-  class Label_pskel;
-  class Point_pskel;
-  class PointList_pskel;
-  class Pen_pskel;
-  class Brush_pskel;
-  class PenStyle_pskel;
-  class PenCapStyle_pskel;
-  class PenJoinStyle_pskel;
-  class BrushStyle_pskel;
-  class Color_pskel;
-  class Angle_pskel;
-  class Opacity_pskel;
-  class NonNegativeDouble_pskel;
-  class Font_pskel;
+  namespace symbol
+  {
+    class Symbol_pskel;
+    class ItemList_pskel;
+    class Item_pskel;
+    class Circle_pskel;
+    class CircularArc_pskel;
+    class Ellipse_pskel;
+    class EllipticalArc_pskel;
+    class Rectangle_pskel;
+    class Polyline_pskel;
+    class Polygon_pskel;
+    class Pin_pskel;
+    class ItemGroup_pskel;
+    class Label_pskel;
+    class Point_pskel;
+    class PointList_pskel;
+    class Pen_pskel;
+    class Brush_pskel;
+    class PenStyle_pskel;
+    class PenCapStyle_pskel;
+    class PenJoinStyle_pskel;
+    class BrushStyle_pskel;
+    class Color_pskel;
+    class Angle_pskel;
+    class Opacity_pskel;
+    class NonNegativeDouble_pskel;
+    class Font_pskel;
+  }
 }
 
 
@@ -110,8 +113,7 @@ namespace xdl
 #include <QFont>
 #include <QColor>
 #include <QBrush>
-#include "symbolitem.h"
-#include "symboldocument.h"
+#include "symbol.h"
 
 namespace xml_schema
 {
@@ -298,1965 +300,1986 @@ namespace xml_schema
 
 namespace xdl
 {
-  class Symbol_pskel: public ::xml_schema::complex_content
+  namespace symbol
   {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    name (const ::std::string&);
-
-    virtual void
-    label (const ::std::string&);
-
-    virtual void
-    drawing (const QList<xdl::symbol::Item*>&);
-
-    virtual xdl::symbol::Document*
-    post_Symbol () = 0;
-
-    // Parser construction API.
-    //
-    void
-    name_parser (::xml_schema::string_pskel&);
-
-    void
-    label_parser (::xml_schema::string_pskel&);
-
-    void
-    drawing_parser (::xdl::ItemList_pskel&);
-
-    void
-    parsers (::xml_schema::string_pskel& /* name */,
-             ::xml_schema::string_pskel& /* label */,
-             ::xdl::ItemList_pskel& /* drawing */);
-
-    // Constructor.
-    //
-    Symbol_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xml_schema::string_pskel* name_parser_;
-    ::xml_schema::string_pskel* label_parser_;
-    ::xdl::ItemList_pskel* drawing_parser_;
-
-    protected:
-    struct v_state_descr_
+    class Symbol_pskel: public ::xml_schema::complex_content
     {
-      void (::xdl::Symbol_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      name (const ::std::string&);
+
+      virtual void
+      label (const ::std::string&);
+
+      virtual void
+      drawing (const QList<Item*>&);
+
+      virtual Symbol*
+      post_Symbol () = 0;
+
+      // Parser construction API.
+      //
+      void
+      name_parser (::xml_schema::string_pskel&);
+
+      void
+      label_parser (::xml_schema::string_pskel&);
+
+      void
+      drawing_parser (::xdl::symbol::ItemList_pskel&);
+
+      void
+      parsers (::xml_schema::string_pskel& /* name */,
+               ::xml_schema::string_pskel& /* label */,
+               ::xdl::symbol::ItemList_pskel& /* drawing */);
+
+      // Constructor.
+      //
+      Symbol_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xml_schema::string_pskel* name_parser_;
+      ::xml_schema::string_pskel* label_parser_;
+      ::xdl::symbol::ItemList_pskel* drawing_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Symbol_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    struct v_state_
+    class ItemList_pskel: public ::xml_schema::complex_content
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
-    };
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
+      virtual void
+      polyline (PolylineItem*);
 
-    virtual void
-    _pre_e_validate ();
+      virtual void
+      polygon (PolygonItem*);
 
-    virtual void
-    _post_e_validate ();
+      virtual void
+      rectangle (RectangleItem*);
 
-    void
-    sequence_0 (unsigned long& state,
+      virtual void
+      circle (CircleItem*);
+
+      virtual void
+      circular_arc (CircularArcItem*);
+
+      virtual void
+      ellipse (EllipseItem*);
+
+      virtual void
+      elliptical_arc (EllipticalArcItem*);
+
+      virtual void
+      label (LabelItem*);
+
+      virtual void
+      pin (PinItem*);
+
+      virtual void
+      group (ItemGroup*);
+
+      virtual QList<Item*>
+      post_ItemList () = 0;
+
+      // Parser construction API.
+      //
+      void
+      polyline_parser (::xdl::symbol::Polyline_pskel&);
+
+      void
+      polygon_parser (::xdl::symbol::Polygon_pskel&);
+
+      void
+      rectangle_parser (::xdl::symbol::Rectangle_pskel&);
+
+      void
+      circle_parser (::xdl::symbol::Circle_pskel&);
+
+      void
+      circular_arc_parser (::xdl::symbol::CircularArc_pskel&);
+
+      void
+      ellipse_parser (::xdl::symbol::Ellipse_pskel&);
+
+      void
+      elliptical_arc_parser (::xdl::symbol::EllipticalArc_pskel&);
+
+      void
+      label_parser (::xdl::symbol::Label_pskel&);
+
+      void
+      pin_parser (::xdl::symbol::Pin_pskel&);
+
+      void
+      group_parser (::xdl::symbol::ItemGroup_pskel&);
+
+      void
+      parsers (::xdl::symbol::Polyline_pskel& /* polyline */,
+               ::xdl::symbol::Polygon_pskel& /* polygon */,
+               ::xdl::symbol::Rectangle_pskel& /* rectangle */,
+               ::xdl::symbol::Circle_pskel& /* circle */,
+               ::xdl::symbol::CircularArc_pskel& /* circular-arc */,
+               ::xdl::symbol::Ellipse_pskel& /* ellipse */,
+               ::xdl::symbol::EllipticalArc_pskel& /* elliptical-arc */,
+               ::xdl::symbol::Label_pskel& /* label */,
+               ::xdl::symbol::Pin_pskel& /* pin */,
+               ::xdl::symbol::ItemGroup_pskel& /* group */);
+
+      // Constructor.
+      //
+      ItemList_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::Polyline_pskel* polyline_parser_;
+      ::xdl::symbol::Polygon_pskel* polygon_parser_;
+      ::xdl::symbol::Rectangle_pskel* rectangle_parser_;
+      ::xdl::symbol::Circle_pskel* circle_parser_;
+      ::xdl::symbol::CircularArc_pskel* circular_arc_parser_;
+      ::xdl::symbol::Ellipse_pskel* ellipse_parser_;
+      ::xdl::symbol::EllipticalArc_pskel* elliptical_arc_parser_;
+      ::xdl::symbol::Label_pskel* label_parser_;
+      ::xdl::symbol::Pin_pskel* pin_parser_;
+      ::xdl::symbol::ItemGroup_pskel* group_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::ItemList_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[3UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
+
+      void
+      choice_0 (unsigned long& state,
                 unsigned long& count,
                 const ::xml_schema::ro_string& ns,
                 const ::xml_schema::ro_string& n,
                 const ::xml_schema::ro_string* t,
                 bool start);
-  };
-
-  class ItemList_pskel: public ::xml_schema::complex_content
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    polyline (xdl::symbol::PolylineItem*);
-
-    virtual void
-    polygon (xdl::symbol::PolygonItem*);
-
-    virtual void
-    rectangle (xdl::symbol::RectangleItem*);
-
-    virtual void
-    circle (xdl::symbol::CircleItem*);
-
-    virtual void
-    circular_arc (xdl::symbol::CircularArcItem*);
-
-    virtual void
-    ellipse (xdl::symbol::EllipseItem*);
-
-    virtual void
-    elliptical_arc (xdl::symbol::EllipticalArcItem*);
-
-    virtual void
-    label (xdl::symbol::LabelItem*);
-
-    virtual void
-    pin (xdl::symbol::PinItem*);
-
-    virtual void
-    group (xdl::symbol::ItemGroup*);
-
-    virtual QList<xdl::symbol::Item*>
-    post_ItemList () = 0;
-
-    // Parser construction API.
-    //
-    void
-    polyline_parser (::xdl::Polyline_pskel&);
-
-    void
-    polygon_parser (::xdl::Polygon_pskel&);
-
-    void
-    rectangle_parser (::xdl::Rectangle_pskel&);
-
-    void
-    circle_parser (::xdl::Circle_pskel&);
-
-    void
-    circular_arc_parser (::xdl::CircularArc_pskel&);
-
-    void
-    ellipse_parser (::xdl::Ellipse_pskel&);
-
-    void
-    elliptical_arc_parser (::xdl::EllipticalArc_pskel&);
-
-    void
-    label_parser (::xdl::Label_pskel&);
-
-    void
-    pin_parser (::xdl::Pin_pskel&);
-
-    void
-    group_parser (::xdl::ItemGroup_pskel&);
-
-    void
-    parsers (::xdl::Polyline_pskel& /* polyline */,
-             ::xdl::Polygon_pskel& /* polygon */,
-             ::xdl::Rectangle_pskel& /* rectangle */,
-             ::xdl::Circle_pskel& /* circle */,
-             ::xdl::CircularArc_pskel& /* circular-arc */,
-             ::xdl::Ellipse_pskel& /* ellipse */,
-             ::xdl::EllipticalArc_pskel& /* elliptical-arc */,
-             ::xdl::Label_pskel& /* label */,
-             ::xdl::Pin_pskel& /* pin */,
-             ::xdl::ItemGroup_pskel& /* group */);
-
-    // Constructor.
-    //
-    ItemList_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::Polyline_pskel* polyline_parser_;
-    ::xdl::Polygon_pskel* polygon_parser_;
-    ::xdl::Rectangle_pskel* rectangle_parser_;
-    ::xdl::Circle_pskel* circle_parser_;
-    ::xdl::CircularArc_pskel* circular_arc_parser_;
-    ::xdl::Ellipse_pskel* ellipse_parser_;
-    ::xdl::EllipticalArc_pskel* elliptical_arc_parser_;
-    ::xdl::Label_pskel* label_parser_;
-    ::xdl::Pin_pskel* pin_parser_;
-    ::xdl::ItemGroup_pskel* group_parser_;
-
-    protected:
-    struct v_state_descr_
-    {
-      void (::xdl::ItemList_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
     };
 
-    struct v_state_
+    class Item_pskel: public ::xml_schema::complex_content
     {
-      v_state_descr_ data[3UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      pen (const QPen&);
+
+      virtual void
+      brush (const QBrush&);
+
+      virtual void
+      position (const QPointF&);
+
+      virtual void
+      z_value (double);
+
+      virtual void
+      rotation (const qreal&);
+
+      virtual void
+      opacity (const qreal&);
+
+      virtual void
+      locked (bool);
+
+      virtual void
+      x_mirrored (bool);
+
+      virtual void
+      y_mirrored (bool);
+
+      virtual void
+      visible (bool);
+
+      virtual void
+      post_Item ();
+
+      // Parser construction API.
+      //
+      void
+      pen_parser (::xdl::symbol::Pen_pskel&);
+
+      void
+      brush_parser (::xdl::symbol::Brush_pskel&);
+
+      void
+      position_parser (::xdl::symbol::Point_pskel&);
+
+      void
+      z_value_parser (::xml_schema::double_pskel&);
+
+      void
+      rotation_parser (::xdl::symbol::Angle_pskel&);
+
+      void
+      opacity_parser (::xdl::symbol::Opacity_pskel&);
+
+      void
+      locked_parser (::xml_schema::boolean_pskel&);
+
+      void
+      x_mirrored_parser (::xml_schema::boolean_pskel&);
+
+      void
+      y_mirrored_parser (::xml_schema::boolean_pskel&);
+
+      void
+      visible_parser (::xml_schema::boolean_pskel&);
+
+      void
+      parsers (::xdl::symbol::Pen_pskel& /* pen */,
+               ::xdl::symbol::Brush_pskel& /* brush */,
+               ::xdl::symbol::Point_pskel& /* position */,
+               ::xml_schema::double_pskel& /* z-value */,
+               ::xdl::symbol::Angle_pskel& /* rotation */,
+               ::xdl::symbol::Opacity_pskel& /* opacity */,
+               ::xml_schema::boolean_pskel& /* locked */,
+               ::xml_schema::boolean_pskel& /* x-mirrored */,
+               ::xml_schema::boolean_pskel& /* y-mirrored */,
+               ::xml_schema::boolean_pskel& /* visible */);
+
+      // Constructor.
+      //
+      Item_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::Pen_pskel* pen_parser_;
+      ::xdl::symbol::Brush_pskel* brush_parser_;
+      ::xdl::symbol::Point_pskel* position_parser_;
+      ::xml_schema::double_pskel* z_value_parser_;
+      ::xdl::symbol::Angle_pskel* rotation_parser_;
+      ::xdl::symbol::Opacity_pskel* opacity_parser_;
+      ::xml_schema::boolean_pskel* locked_parser_;
+      ::xml_schema::boolean_pskel* x_mirrored_parser_;
+      ::xml_schema::boolean_pskel* y_mirrored_parser_;
+      ::xml_schema::boolean_pskel* visible_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Item_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-
-    void
-    choice_0 (unsigned long& state,
-              unsigned long& count,
-              const ::xml_schema::ro_string& ns,
-              const ::xml_schema::ro_string& n,
-              const ::xml_schema::ro_string* t,
-              bool start);
-  };
-
-  class Item_pskel: public ::xml_schema::complex_content
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    pen (const QPen&);
-
-    virtual void
-    brush (const QBrush&);
-
-    virtual void
-    position (const QPointF&);
-
-    virtual void
-    z_value (double);
-
-    virtual void
-    rotation (const qreal&);
-
-    virtual void
-    opacity (const qreal&);
-
-    virtual void
-    locked (bool);
-
-    virtual void
-    x_mirrored (bool);
-
-    virtual void
-    visible (bool);
-
-    virtual void
-    post_Item ();
-
-    // Parser construction API.
-    //
-    void
-    pen_parser (::xdl::Pen_pskel&);
-
-    void
-    brush_parser (::xdl::Brush_pskel&);
-
-    void
-    position_parser (::xdl::Point_pskel&);
-
-    void
-    z_value_parser (::xml_schema::double_pskel&);
-
-    void
-    rotation_parser (::xdl::Angle_pskel&);
-
-    void
-    opacity_parser (::xdl::Opacity_pskel&);
-
-    void
-    locked_parser (::xml_schema::boolean_pskel&);
-
-    void
-    x_mirrored_parser (::xml_schema::boolean_pskel&);
-
-    void
-    visible_parser (::xml_schema::boolean_pskel&);
-
-    void
-    parsers (::xdl::Pen_pskel& /* pen */,
-             ::xdl::Brush_pskel& /* brush */,
-             ::xdl::Point_pskel& /* position */,
-             ::xml_schema::double_pskel& /* z-value */,
-             ::xdl::Angle_pskel& /* rotation */,
-             ::xdl::Opacity_pskel& /* opacity */,
-             ::xml_schema::boolean_pskel& /* locked */,
-             ::xml_schema::boolean_pskel& /* x-mirrored */,
-             ::xml_schema::boolean_pskel& /* visible */);
-
-    // Constructor.
-    //
-    Item_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::Pen_pskel* pen_parser_;
-    ::xdl::Brush_pskel* brush_parser_;
-    ::xdl::Point_pskel* position_parser_;
-    ::xml_schema::double_pskel* z_value_parser_;
-    ::xdl::Angle_pskel* rotation_parser_;
-    ::xdl::Opacity_pskel* opacity_parser_;
-    ::xml_schema::boolean_pskel* locked_parser_;
-    ::xml_schema::boolean_pskel* x_mirrored_parser_;
-    ::xml_schema::boolean_pskel* visible_parser_;
-
-    protected:
-    struct v_state_descr_
+    class Circle_pskel: public virtual ::xdl::symbol::Item_pskel
     {
-      void (::xdl::Item_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      center (const QPointF&);
+
+      virtual void
+      radius (const qreal&);
+
+      virtual CircleItem*
+      post_Circle () = 0;
+
+      // Parser construction API.
+      //
+      void
+      center_parser (::xdl::symbol::Point_pskel&);
+
+      void
+      radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
+
+      void
+      parsers (::xdl::symbol::Pen_pskel& /* pen */,
+               ::xdl::symbol::Brush_pskel& /* brush */,
+               ::xdl::symbol::Point_pskel& /* position */,
+               ::xml_schema::double_pskel& /* z-value */,
+               ::xdl::symbol::Angle_pskel& /* rotation */,
+               ::xdl::symbol::Opacity_pskel& /* opacity */,
+               ::xml_schema::boolean_pskel& /* locked */,
+               ::xml_schema::boolean_pskel& /* x-mirrored */,
+               ::xml_schema::boolean_pskel& /* y-mirrored */,
+               ::xml_schema::boolean_pskel& /* visible */,
+               ::xdl::symbol::Point_pskel& /* center */,
+               ::xdl::symbol::NonNegativeDouble_pskel& /* radius */);
+
+      // Constructor.
+      //
+      Circle_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::Point_pskel* center_parser_;
+      ::xdl::symbol::NonNegativeDouble_pskel* radius_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Circle_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    struct v_state_
+    class CircularArc_pskel: public virtual ::xdl::symbol::Item_pskel
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      center (const QPointF&);
+
+      virtual void
+      radius (const qreal&);
+
+      virtual void
+      start_angle (const qreal&);
+
+      virtual void
+      span_angle (const qreal&);
+
+      virtual CircularArcItem*
+      post_CircularArc () = 0;
+
+      // Parser construction API.
+      //
+      void
+      center_parser (::xdl::symbol::Point_pskel&);
+
+      void
+      radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
+
+      void
+      start_angle_parser (::xdl::symbol::Angle_pskel&);
+
+      void
+      span_angle_parser (::xdl::symbol::Angle_pskel&);
+
+      void
+      parsers (::xdl::symbol::Pen_pskel& /* pen */,
+               ::xdl::symbol::Brush_pskel& /* brush */,
+               ::xdl::symbol::Point_pskel& /* position */,
+               ::xml_schema::double_pskel& /* z-value */,
+               ::xdl::symbol::Angle_pskel& /* rotation */,
+               ::xdl::symbol::Opacity_pskel& /* opacity */,
+               ::xml_schema::boolean_pskel& /* locked */,
+               ::xml_schema::boolean_pskel& /* x-mirrored */,
+               ::xml_schema::boolean_pskel& /* y-mirrored */,
+               ::xml_schema::boolean_pskel& /* visible */,
+               ::xdl::symbol::Point_pskel& /* center */,
+               ::xdl::symbol::NonNegativeDouble_pskel& /* radius */,
+               ::xdl::symbol::Angle_pskel& /* start-angle */,
+               ::xdl::symbol::Angle_pskel& /* span-angle */);
+
+      // Constructor.
+      //
+      CircularArc_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::Point_pskel* center_parser_;
+      ::xdl::symbol::NonNegativeDouble_pskel* radius_parser_;
+      ::xdl::symbol::Angle_pskel* start_angle_parser_;
+      ::xdl::symbol::Angle_pskel* span_angle_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::CircularArc_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class Circle_pskel: public virtual ::xdl::Item_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    center (const QPointF&);
-
-    virtual void
-    radius (const qreal&);
-
-    virtual xdl::symbol::CircleItem*
-    post_Circle () = 0;
-
-    // Parser construction API.
-    //
-    void
-    center_parser (::xdl::Point_pskel&);
-
-    void
-    radius_parser (::xdl::NonNegativeDouble_pskel&);
-
-    void
-    parsers (::xdl::Pen_pskel& /* pen */,
-             ::xdl::Brush_pskel& /* brush */,
-             ::xdl::Point_pskel& /* position */,
-             ::xml_schema::double_pskel& /* z-value */,
-             ::xdl::Angle_pskel& /* rotation */,
-             ::xdl::Opacity_pskel& /* opacity */,
-             ::xml_schema::boolean_pskel& /* locked */,
-             ::xml_schema::boolean_pskel& /* x-mirrored */,
-             ::xml_schema::boolean_pskel& /* visible */,
-             ::xdl::Point_pskel& /* center */,
-             ::xdl::NonNegativeDouble_pskel& /* radius */);
-
-    // Constructor.
-    //
-    Circle_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::Point_pskel* center_parser_;
-    ::xdl::NonNegativeDouble_pskel* radius_parser_;
-
-    protected:
-    struct v_state_descr_
+    class Ellipse_pskel: public virtual ::xdl::symbol::Item_pskel
     {
-      void (::xdl::Circle_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      center (const QPointF&);
+
+      virtual void
+      x_radius (const qreal&);
+
+      virtual void
+      y_radius (const qreal&);
+
+      virtual EllipseItem*
+      post_Ellipse () = 0;
+
+      // Parser construction API.
+      //
+      void
+      center_parser (::xdl::symbol::Point_pskel&);
+
+      void
+      x_radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
+
+      void
+      y_radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
+
+      void
+      parsers (::xdl::symbol::Pen_pskel& /* pen */,
+               ::xdl::symbol::Brush_pskel& /* brush */,
+               ::xdl::symbol::Point_pskel& /* position */,
+               ::xml_schema::double_pskel& /* z-value */,
+               ::xdl::symbol::Angle_pskel& /* rotation */,
+               ::xdl::symbol::Opacity_pskel& /* opacity */,
+               ::xml_schema::boolean_pskel& /* locked */,
+               ::xml_schema::boolean_pskel& /* x-mirrored */,
+               ::xml_schema::boolean_pskel& /* y-mirrored */,
+               ::xml_schema::boolean_pskel& /* visible */,
+               ::xdl::symbol::Point_pskel& /* center */,
+               ::xdl::symbol::NonNegativeDouble_pskel& /* x-radius */,
+               ::xdl::symbol::NonNegativeDouble_pskel& /* y-radius */);
+
+      // Constructor.
+      //
+      Ellipse_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::Point_pskel* center_parser_;
+      ::xdl::symbol::NonNegativeDouble_pskel* x_radius_parser_;
+      ::xdl::symbol::NonNegativeDouble_pskel* y_radius_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Ellipse_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    struct v_state_
+    class EllipticalArc_pskel: public virtual ::xdl::symbol::Item_pskel
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      center (const QPointF&);
+
+      virtual void
+      x_radius (const qreal&);
+
+      virtual void
+      y_radius (const qreal&);
+
+      virtual void
+      start_angle (const qreal&);
+
+      virtual void
+      span_angle (const qreal&);
+
+      virtual EllipticalArcItem*
+      post_EllipticalArc () = 0;
+
+      // Parser construction API.
+      //
+      void
+      center_parser (::xdl::symbol::Point_pskel&);
+
+      void
+      x_radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
+
+      void
+      y_radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
+
+      void
+      start_angle_parser (::xdl::symbol::Angle_pskel&);
+
+      void
+      span_angle_parser (::xdl::symbol::Angle_pskel&);
+
+      void
+      parsers (::xdl::symbol::Pen_pskel& /* pen */,
+               ::xdl::symbol::Brush_pskel& /* brush */,
+               ::xdl::symbol::Point_pskel& /* position */,
+               ::xml_schema::double_pskel& /* z-value */,
+               ::xdl::symbol::Angle_pskel& /* rotation */,
+               ::xdl::symbol::Opacity_pskel& /* opacity */,
+               ::xml_schema::boolean_pskel& /* locked */,
+               ::xml_schema::boolean_pskel& /* x-mirrored */,
+               ::xml_schema::boolean_pskel& /* y-mirrored */,
+               ::xml_schema::boolean_pskel& /* visible */,
+               ::xdl::symbol::Point_pskel& /* center */,
+               ::xdl::symbol::NonNegativeDouble_pskel& /* x-radius */,
+               ::xdl::symbol::NonNegativeDouble_pskel& /* y-radius */,
+               ::xdl::symbol::Angle_pskel& /* start-angle */,
+               ::xdl::symbol::Angle_pskel& /* span-angle */);
+
+      // Constructor.
+      //
+      EllipticalArc_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::Point_pskel* center_parser_;
+      ::xdl::symbol::NonNegativeDouble_pskel* x_radius_parser_;
+      ::xdl::symbol::NonNegativeDouble_pskel* y_radius_parser_;
+      ::xdl::symbol::Angle_pskel* start_angle_parser_;
+      ::xdl::symbol::Angle_pskel* span_angle_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::EllipticalArc_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class CircularArc_pskel: public virtual ::xdl::Item_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    center (const QPointF&);
-
-    virtual void
-    radius (const qreal&);
-
-    virtual void
-    start_angle (const qreal&);
-
-    virtual void
-    span_angle (const qreal&);
-
-    virtual xdl::symbol::CircularArcItem*
-    post_CircularArc () = 0;
-
-    // Parser construction API.
-    //
-    void
-    center_parser (::xdl::Point_pskel&);
-
-    void
-    radius_parser (::xdl::NonNegativeDouble_pskel&);
-
-    void
-    start_angle_parser (::xdl::Angle_pskel&);
-
-    void
-    span_angle_parser (::xdl::Angle_pskel&);
-
-    void
-    parsers (::xdl::Pen_pskel& /* pen */,
-             ::xdl::Brush_pskel& /* brush */,
-             ::xdl::Point_pskel& /* position */,
-             ::xml_schema::double_pskel& /* z-value */,
-             ::xdl::Angle_pskel& /* rotation */,
-             ::xdl::Opacity_pskel& /* opacity */,
-             ::xml_schema::boolean_pskel& /* locked */,
-             ::xml_schema::boolean_pskel& /* x-mirrored */,
-             ::xml_schema::boolean_pskel& /* visible */,
-             ::xdl::Point_pskel& /* center */,
-             ::xdl::NonNegativeDouble_pskel& /* radius */,
-             ::xdl::Angle_pskel& /* start-angle */,
-             ::xdl::Angle_pskel& /* span-angle */);
-
-    // Constructor.
-    //
-    CircularArc_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::Point_pskel* center_parser_;
-    ::xdl::NonNegativeDouble_pskel* radius_parser_;
-    ::xdl::Angle_pskel* start_angle_parser_;
-    ::xdl::Angle_pskel* span_angle_parser_;
-
-    protected:
-    struct v_state_descr_
+    class Rectangle_pskel: public virtual ::xdl::symbol::Item_pskel
     {
-      void (::xdl::CircularArc_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      top_left (const QPointF&);
+
+      virtual void
+      bottom_right (const QPointF&);
+
+      virtual RectangleItem*
+      post_Rectangle () = 0;
+
+      // Parser construction API.
+      //
+      void
+      top_left_parser (::xdl::symbol::Point_pskel&);
+
+      void
+      bottom_right_parser (::xdl::symbol::Point_pskel&);
+
+      void
+      parsers (::xdl::symbol::Pen_pskel& /* pen */,
+               ::xdl::symbol::Brush_pskel& /* brush */,
+               ::xdl::symbol::Point_pskel& /* position */,
+               ::xml_schema::double_pskel& /* z-value */,
+               ::xdl::symbol::Angle_pskel& /* rotation */,
+               ::xdl::symbol::Opacity_pskel& /* opacity */,
+               ::xml_schema::boolean_pskel& /* locked */,
+               ::xml_schema::boolean_pskel& /* x-mirrored */,
+               ::xml_schema::boolean_pskel& /* y-mirrored */,
+               ::xml_schema::boolean_pskel& /* visible */,
+               ::xdl::symbol::Point_pskel& /* top-left */,
+               ::xdl::symbol::Point_pskel& /* bottom-right */);
+
+      // Constructor.
+      //
+      Rectangle_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::Point_pskel* top_left_parser_;
+      ::xdl::symbol::Point_pskel* bottom_right_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Rectangle_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    struct v_state_
+    class Polyline_pskel: public virtual ::xdl::symbol::Item_pskel
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      vertices (const QList<QPointF>&);
+
+      virtual PolylineItem*
+      post_Polyline () = 0;
+
+      // Parser construction API.
+      //
+      void
+      vertices_parser (::xdl::symbol::PointList_pskel&);
+
+      void
+      parsers (::xdl::symbol::Pen_pskel& /* pen */,
+               ::xdl::symbol::Brush_pskel& /* brush */,
+               ::xdl::symbol::Point_pskel& /* position */,
+               ::xml_schema::double_pskel& /* z-value */,
+               ::xdl::symbol::Angle_pskel& /* rotation */,
+               ::xdl::symbol::Opacity_pskel& /* opacity */,
+               ::xml_schema::boolean_pskel& /* locked */,
+               ::xml_schema::boolean_pskel& /* x-mirrored */,
+               ::xml_schema::boolean_pskel& /* y-mirrored */,
+               ::xml_schema::boolean_pskel& /* visible */,
+               ::xdl::symbol::PointList_pskel& /* vertices */);
+
+      // Constructor.
+      //
+      Polyline_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::PointList_pskel* vertices_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Polyline_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class Ellipse_pskel: public virtual ::xdl::Item_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    center (const QPointF&);
-
-    virtual void
-    x_radius (const qreal&);
-
-    virtual void
-    y_radius (const qreal&);
-
-    virtual xdl::symbol::EllipseItem*
-    post_Ellipse () = 0;
-
-    // Parser construction API.
-    //
-    void
-    center_parser (::xdl::Point_pskel&);
-
-    void
-    x_radius_parser (::xdl::NonNegativeDouble_pskel&);
-
-    void
-    y_radius_parser (::xdl::NonNegativeDouble_pskel&);
-
-    void
-    parsers (::xdl::Pen_pskel& /* pen */,
-             ::xdl::Brush_pskel& /* brush */,
-             ::xdl::Point_pskel& /* position */,
-             ::xml_schema::double_pskel& /* z-value */,
-             ::xdl::Angle_pskel& /* rotation */,
-             ::xdl::Opacity_pskel& /* opacity */,
-             ::xml_schema::boolean_pskel& /* locked */,
-             ::xml_schema::boolean_pskel& /* x-mirrored */,
-             ::xml_schema::boolean_pskel& /* visible */,
-             ::xdl::Point_pskel& /* center */,
-             ::xdl::NonNegativeDouble_pskel& /* x-radius */,
-             ::xdl::NonNegativeDouble_pskel& /* y-radius */);
-
-    // Constructor.
-    //
-    Ellipse_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::Point_pskel* center_parser_;
-    ::xdl::NonNegativeDouble_pskel* x_radius_parser_;
-    ::xdl::NonNegativeDouble_pskel* y_radius_parser_;
-
-    protected:
-    struct v_state_descr_
+    class Polygon_pskel: public virtual ::xdl::symbol::Item_pskel
     {
-      void (::xdl::Ellipse_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      vertices (const QList<QPointF>&);
+
+      virtual PolygonItem*
+      post_Polygon () = 0;
+
+      // Parser construction API.
+      //
+      void
+      vertices_parser (::xdl::symbol::PointList_pskel&);
+
+      void
+      parsers (::xdl::symbol::Pen_pskel& /* pen */,
+               ::xdl::symbol::Brush_pskel& /* brush */,
+               ::xdl::symbol::Point_pskel& /* position */,
+               ::xml_schema::double_pskel& /* z-value */,
+               ::xdl::symbol::Angle_pskel& /* rotation */,
+               ::xdl::symbol::Opacity_pskel& /* opacity */,
+               ::xml_schema::boolean_pskel& /* locked */,
+               ::xml_schema::boolean_pskel& /* x-mirrored */,
+               ::xml_schema::boolean_pskel& /* y-mirrored */,
+               ::xml_schema::boolean_pskel& /* visible */,
+               ::xdl::symbol::PointList_pskel& /* vertices */);
+
+      // Constructor.
+      //
+      Polygon_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::PointList_pskel* vertices_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Polygon_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    struct v_state_
+    class Pin_pskel: public virtual ::xdl::symbol::Item_pskel
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      designator (const ::std::string&);
+
+      virtual void
+      label (const ::std::string&);
+
+      virtual PinItem*
+      post_Pin () = 0;
+
+      // Parser construction API.
+      //
+      void
+      designator_parser (::xml_schema::string_pskel&);
+
+      void
+      label_parser (::xml_schema::string_pskel&);
+
+      void
+      parsers (::xdl::symbol::Pen_pskel& /* pen */,
+               ::xdl::symbol::Brush_pskel& /* brush */,
+               ::xdl::symbol::Point_pskel& /* position */,
+               ::xml_schema::double_pskel& /* z-value */,
+               ::xdl::symbol::Angle_pskel& /* rotation */,
+               ::xdl::symbol::Opacity_pskel& /* opacity */,
+               ::xml_schema::boolean_pskel& /* locked */,
+               ::xml_schema::boolean_pskel& /* x-mirrored */,
+               ::xml_schema::boolean_pskel& /* y-mirrored */,
+               ::xml_schema::boolean_pskel& /* visible */,
+               ::xml_schema::string_pskel& /* designator */,
+               ::xml_schema::string_pskel& /* label */);
+
+      // Constructor.
+      //
+      Pin_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xml_schema::string_pskel* designator_parser_;
+      ::xml_schema::string_pskel* label_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Pin_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class EllipticalArc_pskel: public virtual ::xdl::Item_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    center (const QPointF&);
-
-    virtual void
-    x_radius (const qreal&);
-
-    virtual void
-    y_radius (const qreal&);
-
-    virtual void
-    start_angle (const qreal&);
-
-    virtual void
-    span_angle (const qreal&);
-
-    virtual xdl::symbol::EllipticalArcItem*
-    post_EllipticalArc () = 0;
-
-    // Parser construction API.
-    //
-    void
-    center_parser (::xdl::Point_pskel&);
-
-    void
-    x_radius_parser (::xdl::NonNegativeDouble_pskel&);
-
-    void
-    y_radius_parser (::xdl::NonNegativeDouble_pskel&);
-
-    void
-    start_angle_parser (::xdl::Angle_pskel&);
-
-    void
-    span_angle_parser (::xdl::Angle_pskel&);
-
-    void
-    parsers (::xdl::Pen_pskel& /* pen */,
-             ::xdl::Brush_pskel& /* brush */,
-             ::xdl::Point_pskel& /* position */,
-             ::xml_schema::double_pskel& /* z-value */,
-             ::xdl::Angle_pskel& /* rotation */,
-             ::xdl::Opacity_pskel& /* opacity */,
-             ::xml_schema::boolean_pskel& /* locked */,
-             ::xml_schema::boolean_pskel& /* x-mirrored */,
-             ::xml_schema::boolean_pskel& /* visible */,
-             ::xdl::Point_pskel& /* center */,
-             ::xdl::NonNegativeDouble_pskel& /* x-radius */,
-             ::xdl::NonNegativeDouble_pskel& /* y-radius */,
-             ::xdl::Angle_pskel& /* start-angle */,
-             ::xdl::Angle_pskel& /* span-angle */);
-
-    // Constructor.
-    //
-    EllipticalArc_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::Point_pskel* center_parser_;
-    ::xdl::NonNegativeDouble_pskel* x_radius_parser_;
-    ::xdl::NonNegativeDouble_pskel* y_radius_parser_;
-    ::xdl::Angle_pskel* start_angle_parser_;
-    ::xdl::Angle_pskel* span_angle_parser_;
-
-    protected:
-    struct v_state_descr_
+    class ItemGroup_pskel: public virtual ::xdl::symbol::Item_pskel
     {
-      void (::xdl::EllipticalArc_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      children (const QList<Item*>&);
+
+      virtual ItemGroup*
+      post_ItemGroup () = 0;
+
+      // Parser construction API.
+      //
+      void
+      children_parser (::xdl::symbol::ItemList_pskel&);
+
+      void
+      parsers (::xdl::symbol::Pen_pskel& /* pen */,
+               ::xdl::symbol::Brush_pskel& /* brush */,
+               ::xdl::symbol::Point_pskel& /* position */,
+               ::xml_schema::double_pskel& /* z-value */,
+               ::xdl::symbol::Angle_pskel& /* rotation */,
+               ::xdl::symbol::Opacity_pskel& /* opacity */,
+               ::xml_schema::boolean_pskel& /* locked */,
+               ::xml_schema::boolean_pskel& /* x-mirrored */,
+               ::xml_schema::boolean_pskel& /* y-mirrored */,
+               ::xml_schema::boolean_pskel& /* visible */,
+               ::xdl::symbol::ItemList_pskel& /* children */);
+
+      // Constructor.
+      //
+      ItemGroup_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::ItemList_pskel* children_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::ItemGroup_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    struct v_state_
+    class Label_pskel: public virtual ::xdl::symbol::Item_pskel
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      text (const ::std::string&);
+
+      virtual void
+      font (const QFont&);
+
+      virtual LabelItem*
+      post_Label () = 0;
+
+      // Parser construction API.
+      //
+      void
+      text_parser (::xml_schema::string_pskel&);
+
+      void
+      font_parser (::xdl::symbol::Font_pskel&);
+
+      void
+      parsers (::xdl::symbol::Pen_pskel& /* pen */,
+               ::xdl::symbol::Brush_pskel& /* brush */,
+               ::xdl::symbol::Point_pskel& /* position */,
+               ::xml_schema::double_pskel& /* z-value */,
+               ::xdl::symbol::Angle_pskel& /* rotation */,
+               ::xdl::symbol::Opacity_pskel& /* opacity */,
+               ::xml_schema::boolean_pskel& /* locked */,
+               ::xml_schema::boolean_pskel& /* x-mirrored */,
+               ::xml_schema::boolean_pskel& /* y-mirrored */,
+               ::xml_schema::boolean_pskel& /* visible */,
+               ::xml_schema::string_pskel& /* text */,
+               ::xdl::symbol::Font_pskel& /* font */);
+
+      // Constructor.
+      //
+      Label_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xml_schema::string_pskel* text_parser_;
+      ::xdl::symbol::Font_pskel* font_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Label_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class Rectangle_pskel: public virtual ::xdl::Item_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    top_left (const QPointF&);
-
-    virtual void
-    bottom_right (const QPointF&);
-
-    virtual xdl::symbol::RectangleItem*
-    post_Rectangle () = 0;
-
-    // Parser construction API.
-    //
-    void
-    top_left_parser (::xdl::Point_pskel&);
-
-    void
-    bottom_right_parser (::xdl::Point_pskel&);
-
-    void
-    parsers (::xdl::Pen_pskel& /* pen */,
-             ::xdl::Brush_pskel& /* brush */,
-             ::xdl::Point_pskel& /* position */,
-             ::xml_schema::double_pskel& /* z-value */,
-             ::xdl::Angle_pskel& /* rotation */,
-             ::xdl::Opacity_pskel& /* opacity */,
-             ::xml_schema::boolean_pskel& /* locked */,
-             ::xml_schema::boolean_pskel& /* x-mirrored */,
-             ::xml_schema::boolean_pskel& /* visible */,
-             ::xdl::Point_pskel& /* top-left */,
-             ::xdl::Point_pskel& /* bottom-right */);
-
-    // Constructor.
-    //
-    Rectangle_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::Point_pskel* top_left_parser_;
-    ::xdl::Point_pskel* bottom_right_parser_;
-
-    protected:
-    struct v_state_descr_
+    class Point_pskel: public ::xml_schema::complex_content
     {
-      void (::xdl::Rectangle_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      x (double);
+
+      virtual void
+      y (double);
+
+      virtual QPointF
+      post_Point () = 0;
+
+      // Parser construction API.
+      //
+      void
+      x_parser (::xml_schema::double_pskel&);
+
+      void
+      y_parser (::xml_schema::double_pskel&);
+
+      void
+      parsers (::xml_schema::double_pskel& /* x */,
+               ::xml_schema::double_pskel& /* y */);
+
+      // Constructor.
+      //
+      Point_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xml_schema::double_pskel* x_parser_;
+      ::xml_schema::double_pskel* y_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Point_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    struct v_state_
+    class PointList_pskel: public ::xml_schema::complex_content
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      point (const QPointF&);
+
+      virtual QList<QPointF>
+      post_PointList () = 0;
+
+      // Parser construction API.
+      //
+      void
+      point_parser (::xdl::symbol::Point_pskel&);
+
+      void
+      parsers (::xdl::symbol::Point_pskel& /* point */);
+
+      // Constructor.
+      //
+      PointList_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::Point_pskel* point_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::PointList_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class Polyline_pskel: public virtual ::xdl::Item_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    vertices (const QList<QPointF>&);
-
-    virtual xdl::symbol::PolylineItem*
-    post_Polyline () = 0;
-
-    // Parser construction API.
-    //
-    void
-    vertices_parser (::xdl::PointList_pskel&);
-
-    void
-    parsers (::xdl::Pen_pskel& /* pen */,
-             ::xdl::Brush_pskel& /* brush */,
-             ::xdl::Point_pskel& /* position */,
-             ::xml_schema::double_pskel& /* z-value */,
-             ::xdl::Angle_pskel& /* rotation */,
-             ::xdl::Opacity_pskel& /* opacity */,
-             ::xml_schema::boolean_pskel& /* locked */,
-             ::xml_schema::boolean_pskel& /* x-mirrored */,
-             ::xml_schema::boolean_pskel& /* visible */,
-             ::xdl::PointList_pskel& /* vertices */);
-
-    // Constructor.
-    //
-    Polyline_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::PointList_pskel* vertices_parser_;
-
-    protected:
-    struct v_state_descr_
+    class Pen_pskel: public ::xml_schema::complex_content
     {
-      void (::xdl::Polyline_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      width (const qreal&);
+
+      virtual void
+      color (const QColor&);
+
+      virtual void
+      style (const Qt::PenStyle&);
+
+      virtual void
+      cap_style (const Qt::PenCapStyle&);
+
+      virtual void
+      join_style (const Qt::PenJoinStyle&);
+
+      virtual QPen
+      post_Pen () = 0;
+
+      // Parser construction API.
+      //
+      void
+      width_parser (::xdl::symbol::NonNegativeDouble_pskel&);
+
+      void
+      color_parser (::xdl::symbol::Color_pskel&);
+
+      void
+      style_parser (::xdl::symbol::PenStyle_pskel&);
+
+      void
+      cap_style_parser (::xdl::symbol::PenCapStyle_pskel&);
+
+      void
+      join_style_parser (::xdl::symbol::PenJoinStyle_pskel&);
+
+      void
+      parsers (::xdl::symbol::NonNegativeDouble_pskel& /* width */,
+               ::xdl::symbol::Color_pskel& /* color */,
+               ::xdl::symbol::PenStyle_pskel& /* style */,
+               ::xdl::symbol::PenCapStyle_pskel& /* cap-style */,
+               ::xdl::symbol::PenJoinStyle_pskel& /* join-style */);
+
+      // Constructor.
+      //
+      Pen_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::NonNegativeDouble_pskel* width_parser_;
+      ::xdl::symbol::Color_pskel* color_parser_;
+      ::xdl::symbol::PenStyle_pskel* style_parser_;
+      ::xdl::symbol::PenCapStyle_pskel* cap_style_parser_;
+      ::xdl::symbol::PenJoinStyle_pskel* join_style_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Pen_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    struct v_state_
+    class Brush_pskel: public ::xml_schema::complex_content
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      color (const QColor&);
+
+      virtual void
+      style (const Qt::BrushStyle&);
+
+      virtual QBrush
+      post_Brush () = 0;
+
+      // Parser construction API.
+      //
+      void
+      color_parser (::xdl::symbol::Color_pskel&);
+
+      void
+      style_parser (::xdl::symbol::BrushStyle_pskel&);
+
+      void
+      parsers (::xdl::symbol::Color_pskel& /* color */,
+               ::xdl::symbol::BrushStyle_pskel& /* style */);
+
+      // Constructor.
+      //
+      Brush_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xdl::symbol::Color_pskel* color_parser_;
+      ::xdl::symbol::BrushStyle_pskel* style_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Brush_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class Polygon_pskel: public virtual ::xdl::Item_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    vertices (const QList<QPointF>&);
-
-    virtual xdl::symbol::PolygonItem*
-    post_Polygon () = 0;
-
-    // Parser construction API.
-    //
-    void
-    vertices_parser (::xdl::PointList_pskel&);
-
-    void
-    parsers (::xdl::Pen_pskel& /* pen */,
-             ::xdl::Brush_pskel& /* brush */,
-             ::xdl::Point_pskel& /* position */,
-             ::xml_schema::double_pskel& /* z-value */,
-             ::xdl::Angle_pskel& /* rotation */,
-             ::xdl::Opacity_pskel& /* opacity */,
-             ::xml_schema::boolean_pskel& /* locked */,
-             ::xml_schema::boolean_pskel& /* x-mirrored */,
-             ::xml_schema::boolean_pskel& /* visible */,
-             ::xdl::PointList_pskel& /* vertices */);
-
-    // Constructor.
-    //
-    Polygon_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::PointList_pskel* vertices_parser_;
-
-    protected:
-    struct v_state_descr_
+    class PenStyle_pskel: public virtual ::xml_schema::string_pskel
     {
-      void (::xdl::Polygon_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual Qt::PenStyle
+      post_PenStyle () = 0;
     };
 
-    struct v_state_
+    class PenCapStyle_pskel: public virtual ::xml_schema::string_pskel
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual Qt::PenCapStyle
+      post_PenCapStyle () = 0;
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class Pin_pskel: public virtual ::xdl::Item_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    designator (const ::std::string&);
-
-    virtual void
-    label (const ::std::string&);
-
-    virtual xdl::symbol::PinItem*
-    post_Pin () = 0;
-
-    // Parser construction API.
-    //
-    void
-    designator_parser (::xml_schema::string_pskel&);
-
-    void
-    label_parser (::xml_schema::string_pskel&);
-
-    void
-    parsers (::xdl::Pen_pskel& /* pen */,
-             ::xdl::Brush_pskel& /* brush */,
-             ::xdl::Point_pskel& /* position */,
-             ::xml_schema::double_pskel& /* z-value */,
-             ::xdl::Angle_pskel& /* rotation */,
-             ::xdl::Opacity_pskel& /* opacity */,
-             ::xml_schema::boolean_pskel& /* locked */,
-             ::xml_schema::boolean_pskel& /* x-mirrored */,
-             ::xml_schema::boolean_pskel& /* visible */,
-             ::xml_schema::string_pskel& /* designator */,
-             ::xml_schema::string_pskel& /* label */);
-
-    // Constructor.
-    //
-    Pin_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xml_schema::string_pskel* designator_parser_;
-    ::xml_schema::string_pskel* label_parser_;
-
-    protected:
-    struct v_state_descr_
+    class PenJoinStyle_pskel: public virtual ::xml_schema::string_pskel
     {
-      void (::xdl::Pin_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual Qt::PenJoinStyle
+      post_PenJoinStyle () = 0;
     };
 
-    struct v_state_
+    class BrushStyle_pskel: public virtual ::xml_schema::string_pskel
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual Qt::BrushStyle
+      post_BrushStyle () = 0;
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class ItemGroup_pskel: public virtual ::xdl::Item_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    children (const QList<xdl::symbol::Item*>&);
-
-    virtual xdl::symbol::ItemGroup*
-    post_ItemGroup () = 0;
-
-    // Parser construction API.
-    //
-    void
-    children_parser (::xdl::ItemList_pskel&);
-
-    void
-    parsers (::xdl::Pen_pskel& /* pen */,
-             ::xdl::Brush_pskel& /* brush */,
-             ::xdl::Point_pskel& /* position */,
-             ::xml_schema::double_pskel& /* z-value */,
-             ::xdl::Angle_pskel& /* rotation */,
-             ::xdl::Opacity_pskel& /* opacity */,
-             ::xml_schema::boolean_pskel& /* locked */,
-             ::xml_schema::boolean_pskel& /* x-mirrored */,
-             ::xml_schema::boolean_pskel& /* visible */,
-             ::xdl::ItemList_pskel& /* children */);
-
-    // Constructor.
-    //
-    ItemGroup_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::ItemList_pskel* children_parser_;
-
-    protected:
-    struct v_state_descr_
+    class Color_pskel: public virtual ::xml_schema::string_pskel
     {
-      void (::xdl::ItemGroup_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual QColor
+      post_Color () = 0;
     };
 
-    struct v_state_
+    class Angle_pskel: public virtual ::xml_schema::double_pskel
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual qreal
+      post_Angle () = 0;
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class Label_pskel: public virtual ::xdl::Item_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    text (const ::std::string&);
-
-    virtual void
-    font (const QFont&);
-
-    virtual xdl::symbol::LabelItem*
-    post_Label () = 0;
-
-    // Parser construction API.
-    //
-    void
-    text_parser (::xml_schema::string_pskel&);
-
-    void
-    font_parser (::xdl::Font_pskel&);
-
-    void
-    parsers (::xdl::Pen_pskel& /* pen */,
-             ::xdl::Brush_pskel& /* brush */,
-             ::xdl::Point_pskel& /* position */,
-             ::xml_schema::double_pskel& /* z-value */,
-             ::xdl::Angle_pskel& /* rotation */,
-             ::xdl::Opacity_pskel& /* opacity */,
-             ::xml_schema::boolean_pskel& /* locked */,
-             ::xml_schema::boolean_pskel& /* x-mirrored */,
-             ::xml_schema::boolean_pskel& /* visible */,
-             ::xml_schema::string_pskel& /* text */,
-             ::xdl::Font_pskel& /* font */);
-
-    // Constructor.
-    //
-    Label_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xml_schema::string_pskel* text_parser_;
-    ::xdl::Font_pskel* font_parser_;
-
-    protected:
-    struct v_state_descr_
+    class Opacity_pskel: public virtual ::xml_schema::double_pskel
     {
-      void (::xdl::Label_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual qreal
+      post_Opacity () = 0;
     };
 
-    struct v_state_
+    class NonNegativeDouble_pskel: public virtual ::xml_schema::double_pskel
     {
-      v_state_descr_ data[2UL];
-      unsigned long size;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual qreal
+      post_NonNegativeDouble () = 0;
     };
 
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class Point_pskel: public ::xml_schema::complex_content
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    x (double);
-
-    virtual void
-    y (double);
-
-    virtual QPointF
-    post_Point () = 0;
-
-    // Parser construction API.
-    //
-    void
-    x_parser (::xml_schema::double_pskel&);
-
-    void
-    y_parser (::xml_schema::double_pskel&);
-
-    void
-    parsers (::xml_schema::double_pskel& /* x */,
-             ::xml_schema::double_pskel& /* y */);
-
-    // Constructor.
-    //
-    Point_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xml_schema::double_pskel* x_parser_;
-    ::xml_schema::double_pskel* y_parser_;
-
-    protected:
-    struct v_state_descr_
+    class Font_pskel: public ::xml_schema::complex_content
     {
-      void (::xdl::Point_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
+      public:
+      // Parser callbacks. Override them in your implementation.
+      //
+      // virtual void
+      // pre ();
+
+      virtual void
+      family (const ::std::string&);
+
+      virtual void
+      size (unsigned long long);
+
+      virtual void
+      bold (bool);
+
+      virtual void
+      italic (bool);
+
+      virtual void
+      underline (bool);
+
+      virtual void
+      strikeout (bool);
+
+      virtual QFont
+      post_Font () = 0;
+
+      // Parser construction API.
+      //
+      void
+      family_parser (::xml_schema::string_pskel&);
+
+      void
+      size_parser (::xml_schema::non_negative_integer_pskel&);
+
+      void
+      bold_parser (::xml_schema::boolean_pskel&);
+
+      void
+      italic_parser (::xml_schema::boolean_pskel&);
+
+      void
+      underline_parser (::xml_schema::boolean_pskel&);
+
+      void
+      strikeout_parser (::xml_schema::boolean_pskel&);
+
+      void
+      parsers (::xml_schema::string_pskel& /* family */,
+               ::xml_schema::non_negative_integer_pskel& /* size */,
+               ::xml_schema::boolean_pskel& /* bold */,
+               ::xml_schema::boolean_pskel& /* italic */,
+               ::xml_schema::boolean_pskel& /* underline */,
+               ::xml_schema::boolean_pskel& /* strikeout */);
+
+      // Constructor.
+      //
+      Font_pskel ();
+
+      // Implementation.
+      //
+      protected:
+      virtual bool
+      _start_element_impl (const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string&,
+                           const ::xml_schema::ro_string*);
+
+      virtual bool
+      _end_element_impl (const ::xml_schema::ro_string&,
+                         const ::xml_schema::ro_string&);
+
+      protected:
+      ::xml_schema::string_pskel* family_parser_;
+      ::xml_schema::non_negative_integer_pskel* size_parser_;
+      ::xml_schema::boolean_pskel* bold_parser_;
+      ::xml_schema::boolean_pskel* italic_parser_;
+      ::xml_schema::boolean_pskel* underline_parser_;
+      ::xml_schema::boolean_pskel* strikeout_parser_;
+
+      protected:
+      struct v_state_descr_
+      {
+        void (::xdl::symbol::Font_pskel::*func) (
+          unsigned long&,
+          unsigned long&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string&,
+          const ::xml_schema::ro_string*,
+          bool);
+        unsigned long state;
+        unsigned long count;
+      };
+
+      struct v_state_
+      {
+        v_state_descr_ data[2UL];
+        unsigned long size;
+      };
+
+      v_state_ v_state_first_;
+      ::xsd::cxx::parser::pod_stack v_state_stack_;
+
+      virtual void
+      _pre_e_validate ();
+
+      virtual void
+      _post_e_validate ();
+
+      void
+      sequence_0 (unsigned long& state,
+                  unsigned long& count,
+                  const ::xml_schema::ro_string& ns,
+                  const ::xml_schema::ro_string& n,
+                  const ::xml_schema::ro_string* t,
+                  bool start);
     };
-
-    struct v_state_
-    {
-      v_state_descr_ data[2UL];
-      unsigned long size;
-    };
-
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class PointList_pskel: public ::xml_schema::complex_content
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    point (const QPointF&);
-
-    virtual QList<QPointF>
-    post_PointList () = 0;
-
-    // Parser construction API.
-    //
-    void
-    point_parser (::xdl::Point_pskel&);
-
-    void
-    parsers (::xdl::Point_pskel& /* point */);
-
-    // Constructor.
-    //
-    PointList_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::Point_pskel* point_parser_;
-
-    protected:
-    struct v_state_descr_
-    {
-      void (::xdl::PointList_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
-    };
-
-    struct v_state_
-    {
-      v_state_descr_ data[2UL];
-      unsigned long size;
-    };
-
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class Pen_pskel: public ::xml_schema::complex_content
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    width (const qreal&);
-
-    virtual void
-    color (const QColor&);
-
-    virtual void
-    style (const Qt::PenStyle&);
-
-    virtual void
-    cap_style (const Qt::PenCapStyle&);
-
-    virtual void
-    join_style (const Qt::PenJoinStyle&);
-
-    virtual QPen
-    post_Pen () = 0;
-
-    // Parser construction API.
-    //
-    void
-    width_parser (::xdl::NonNegativeDouble_pskel&);
-
-    void
-    color_parser (::xdl::Color_pskel&);
-
-    void
-    style_parser (::xdl::PenStyle_pskel&);
-
-    void
-    cap_style_parser (::xdl::PenCapStyle_pskel&);
-
-    void
-    join_style_parser (::xdl::PenJoinStyle_pskel&);
-
-    void
-    parsers (::xdl::NonNegativeDouble_pskel& /* width */,
-             ::xdl::Color_pskel& /* color */,
-             ::xdl::PenStyle_pskel& /* style */,
-             ::xdl::PenCapStyle_pskel& /* cap-style */,
-             ::xdl::PenJoinStyle_pskel& /* join-style */);
-
-    // Constructor.
-    //
-    Pen_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::NonNegativeDouble_pskel* width_parser_;
-    ::xdl::Color_pskel* color_parser_;
-    ::xdl::PenStyle_pskel* style_parser_;
-    ::xdl::PenCapStyle_pskel* cap_style_parser_;
-    ::xdl::PenJoinStyle_pskel* join_style_parser_;
-
-    protected:
-    struct v_state_descr_
-    {
-      void (::xdl::Pen_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
-    };
-
-    struct v_state_
-    {
-      v_state_descr_ data[2UL];
-      unsigned long size;
-    };
-
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class Brush_pskel: public ::xml_schema::complex_content
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    color (const QColor&);
-
-    virtual void
-    style (const Qt::BrushStyle&);
-
-    virtual QBrush
-    post_Brush () = 0;
-
-    // Parser construction API.
-    //
-    void
-    color_parser (::xdl::Color_pskel&);
-
-    void
-    style_parser (::xdl::BrushStyle_pskel&);
-
-    void
-    parsers (::xdl::Color_pskel& /* color */,
-             ::xdl::BrushStyle_pskel& /* style */);
-
-    // Constructor.
-    //
-    Brush_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xdl::Color_pskel* color_parser_;
-    ::xdl::BrushStyle_pskel* style_parser_;
-
-    protected:
-    struct v_state_descr_
-    {
-      void (::xdl::Brush_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
-    };
-
-    struct v_state_
-    {
-      v_state_descr_ data[2UL];
-      unsigned long size;
-    };
-
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
-
-  class PenStyle_pskel: public virtual ::xml_schema::string_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual Qt::PenStyle
-    post_PenStyle () = 0;
-  };
-
-  class PenCapStyle_pskel: public virtual ::xml_schema::string_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual Qt::PenCapStyle
-    post_PenCapStyle () = 0;
-  };
-
-  class PenJoinStyle_pskel: public virtual ::xml_schema::string_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual Qt::PenJoinStyle
-    post_PenJoinStyle () = 0;
-  };
-
-  class BrushStyle_pskel: public virtual ::xml_schema::string_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual Qt::BrushStyle
-    post_BrushStyle () = 0;
-  };
-
-  class Color_pskel: public virtual ::xml_schema::string_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual QColor
-    post_Color () = 0;
-  };
-
-  class Angle_pskel: public virtual ::xml_schema::double_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual qreal
-    post_Angle () = 0;
-  };
-
-  class Opacity_pskel: public virtual ::xml_schema::double_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual qreal
-    post_Opacity () = 0;
-  };
-
-  class NonNegativeDouble_pskel: public virtual ::xml_schema::double_pskel
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual qreal
-    post_NonNegativeDouble () = 0;
-  };
-
-  class Font_pskel: public ::xml_schema::complex_content
-  {
-    public:
-    // Parser callbacks. Override them in your implementation.
-    //
-    // virtual void
-    // pre ();
-
-    virtual void
-    family (const ::std::string&);
-
-    virtual void
-    size (unsigned long long);
-
-    virtual void
-    bold (bool);
-
-    virtual void
-    italic (bool);
-
-    virtual void
-    underline (bool);
-
-    virtual void
-    strikeout (bool);
-
-    virtual QFont
-    post_Font () = 0;
-
-    // Parser construction API.
-    //
-    void
-    family_parser (::xml_schema::string_pskel&);
-
-    void
-    size_parser (::xml_schema::non_negative_integer_pskel&);
-
-    void
-    bold_parser (::xml_schema::boolean_pskel&);
-
-    void
-    italic_parser (::xml_schema::boolean_pskel&);
-
-    void
-    underline_parser (::xml_schema::boolean_pskel&);
-
-    void
-    strikeout_parser (::xml_schema::boolean_pskel&);
-
-    void
-    parsers (::xml_schema::string_pskel& /* family */,
-             ::xml_schema::non_negative_integer_pskel& /* size */,
-             ::xml_schema::boolean_pskel& /* bold */,
-             ::xml_schema::boolean_pskel& /* italic */,
-             ::xml_schema::boolean_pskel& /* underline */,
-             ::xml_schema::boolean_pskel& /* strikeout */);
-
-    // Constructor.
-    //
-    Font_pskel ();
-
-    // Implementation.
-    //
-    protected:
-    virtual bool
-    _start_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string*);
-
-    virtual bool
-    _end_element_impl (const ::xml_schema::ro_string&,
-                       const ::xml_schema::ro_string&);
-
-    protected:
-    ::xml_schema::string_pskel* family_parser_;
-    ::xml_schema::non_negative_integer_pskel* size_parser_;
-    ::xml_schema::boolean_pskel* bold_parser_;
-    ::xml_schema::boolean_pskel* italic_parser_;
-    ::xml_schema::boolean_pskel* underline_parser_;
-    ::xml_schema::boolean_pskel* strikeout_parser_;
-
-    protected:
-    struct v_state_descr_
-    {
-      void (::xdl::Font_pskel::*func) (
-        unsigned long&,
-        unsigned long&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string&,
-        const ::xml_schema::ro_string*,
-        bool);
-      unsigned long state;
-      unsigned long count;
-    };
-
-    struct v_state_
-    {
-      v_state_descr_ data[2UL];
-      unsigned long size;
-    };
-
-    v_state_ v_state_first_;
-    ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-    virtual void
-    _pre_e_validate ();
-
-    virtual void
-    _post_e_validate ();
-
-    void
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start);
-  };
+  }
 }
 
 #include <xsd/cxx/post.hxx>
