@@ -56,6 +56,11 @@ private:
     void addArrangeTools();
     QToolBar *m_arrangeToolBar = nullptr;
 
+    void addDockWidgets();
+
+    void addView();
+    void addScene();
+
     // IEditor interface
 public:
     bool open(QString *errorString, const QString &fileName);

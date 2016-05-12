@@ -33,34 +33,10 @@
 SchEditor::SchEditor(QObject *parent) :
     IEditor(parent)
 {
-
-    m_scene = new SchScene(this);
-    m_scene->setSceneRect(0, 0, 297, 210);
-    m_view = new SchView();
-    m_view->setScene(m_scene);
-    m_view->fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
+    addScene();
+    addView();
     setWidget(m_view);
-
-    m_taskDockWidget = new TaskDockWidget();
-    m_propertyEditorDockWidget = new PropertyEditorDockWidget();
-#if 1
-    connect(m_scene, &SchScene::selectionChanged,
-            this, [this]() {
-        QList<QObject *> objects;
-        foreach (QObject *object, m_scene->selectedObjects()) {
-            objects.append(object);
-        }
-        m_propertyEditorDockWidget->setObjects(objects);
-    });
-#else
-    connect(m_scene, &SchScene::selectionChanged,
-            this, [this]() {
-        if (m_scene->selectedObjects().count())
-            m_propertyEditorDockWidget->setItem(m_scene->selectedObjects().first());
-        else
-            m_propertyEditorDockWidget->setItem(nullptr);
-    });
-#endif
+    addDockWidgets();
     addArrangeTools();
     addInteractiveTools();
     addSnapTools();
@@ -69,15 +45,33 @@ SchEditor::SchEditor(QObject *parent) :
 
 SchEditor::~SchEditor()
 {
-    qDeleteAll(m_arrangeToolBar->actions());
-    qDeleteAll(m_interactiveToolsToolBar->actions());
-    qDeleteAll(m_snapToolBar->actions());
     qDeleteAll(m_pathPointToolBar->actions());
+    qDeleteAll(m_snapToolBar->actions());
+    qDeleteAll(m_interactiveToolsToolBar->actions());
+    qDeleteAll(m_arrangeToolBar->actions());
+    delete m_propertyEditorDockWidget;
+    delete m_taskDockWidget;
+    delete m_view;
+    delete m_scene;
     delete m_document;
+}
+
+void SchEditor::addView()
+{
+    m_view = new SchView();
+    m_view->setScene(m_scene);
+    m_view->fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
+}
+
+void SchEditor::addScene()
+{
+    m_scene = new SchScene(this);
+    m_scene->setSceneRect(0, 0, 297, 210);
 }
 
 void SchEditor::loadSettings()
 {
+    /* TODO: dispatch loadSettings to scene, view and tools */
     SchEditorSettings settings;
     settings.load(Core::settings());
 
@@ -158,9 +152,9 @@ bool SchEditor::open(QString *errorString, const QString &fileName)
     bool result = m_document->load(errorString, m_document->filePath());
     if (!result)
         return false;
-    foreach (SchItem *item, m_document->items()) {
-        m_scene->addItem(item);
-    }
+//    foreach (SchItem *item, m_document->items()) {
+//        m_scene->addItem(item);
+//    }
     return true;
 }
 
@@ -339,3 +333,26 @@ void SchEditor::addArrangeTools()
     m_arrangeToolBar = new QToolBar();
 }
 
+void SchEditor::addDockWidgets()
+{
+    m_taskDockWidget = new TaskDockWidget();
+    m_propertyEditorDockWidget = new PropertyEditorDockWidget();
+#if 1
+    connect(m_scene, &SchScene::selectionChanged,
+            this, [this]() {
+        QList<QObject *> objects;
+        foreach (QObject *object, m_scene->selectedObjects()) {
+            objects.append(object);
+        }
+        m_propertyEditorDockWidget->setObjects(objects);
+    });
+#else
+    connect(m_scene, &SchScene::selectionChanged,
+            this, [this]() {
+        if (m_scene->selectedObjects().count())
+            m_propertyEditorDockWidget->setItem(m_scene->selectedObjects().first());
+        else
+            m_propertyEditorDockWidget->setItem(nullptr);
+    });
+#endif
+}
