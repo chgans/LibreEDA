@@ -68,7 +68,6 @@ QString PcbEditor::displayName() const
     return m_document->displayName();
 }
 
-
 void PcbEditor::activate(QMainWindow *mainWindow)
 {
     pcbWidget()->activate(mainWindow);

@@ -3,7 +3,6 @@
 
 #include "core/editormanager/ieditor.h"
 
-
 class QMainWindow;
 class QActionGroup;
 class QToolBar;
