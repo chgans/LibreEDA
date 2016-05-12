@@ -116,8 +116,6 @@ LedaPlugin {
         "scheditorfactory.h",
         "scheditorplugin.cpp",
         "scheditorplugin.h",
-        "scheditorwidget.cpp",
-        "scheditorwidget.h",
         "schscene.cpp",
         "schscene.h",
         "schview.cpp",

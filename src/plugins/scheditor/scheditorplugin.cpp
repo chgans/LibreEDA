@@ -5,7 +5,7 @@
 SchEditorPlugin::SchEditorPlugin(QObject *parent):
     IPlugin(parent)
 {
-
+    Q_INIT_RESOURCE(scheditor);
 }
 
 SchEditorPlugin::~SchEditorPlugin()
