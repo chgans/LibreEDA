@@ -10,6 +10,8 @@ LedaPlugin {
     Depends { name: "Xdl" }
 
     files: [
+        "command/placeitemcommand.cpp",
+        "command/placeitemcommand.h",
         "dock/taskdockwidget.cpp",
         "dock/taskdockwidget.h",
         "dock/propertyeditordockwidget.cpp",
