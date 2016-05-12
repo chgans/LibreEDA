@@ -23,10 +23,6 @@ public:
 
     bool load(QString *errorString, const QString &fileName);
 
-    // Page template
-    QSizeF pageSize() const;
-    void setPageSize(const QSizeF &size);
-
     QList<SchItem *> items(Qt::SortOrder order = Qt::DescendingOrder) const;
 
     void executeCommand(SchCommand *command);

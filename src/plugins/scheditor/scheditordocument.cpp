@@ -46,16 +46,6 @@ bool SchEditorDocument::load(QString *errorString, const QString &fileName)
     return true;
 }
 
-QSizeF SchEditorDocument::pageSize() const
-{
-    return m_scene->sceneRect().size();
-}
-
-void SchEditorDocument::setPageSize(const QSizeF &size)
-{
-    m_scene->setSceneRect(QRectF(QPointF(0, 0), size));
-}
-
 QList<SchItem *> SchEditorDocument::items(Qt::SortOrder order) const
 {
     Q_UNUSED(order);
