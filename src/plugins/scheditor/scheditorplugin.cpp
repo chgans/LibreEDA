@@ -18,13 +18,13 @@ bool SchEditorPlugin::initialize(const QStringList &arguments, QString *errorStr
     Q_UNUSED(arguments);
     Q_UNUSED(errorString);
 
-    auto editorFactory = new SchEditorFactory(this);
-    auto settingsPage = new SchSettingsPage(this);
-    connect(settingsPage, &SchSettingsPage::settingsChanged,
-            editorFactory, &SchEditorFactory::loadSettings);
+    m_editorFactory = new SchEditorFactory(this);
+    m_settingsPage = new SchSettingsPage(this);
+    connect(m_settingsPage, &SchSettingsPage::settingsChanged,
+            this, &SchEditorPlugin::applySettings);
 
-    addObject(editorFactory);
-    addObject(settingsPage);
+    addObject(m_editorFactory);
+    addObject(m_settingsPage);
 
     return true;
 }
@@ -37,5 +37,10 @@ void SchEditorPlugin::extensionsInitialized()
 void SchEditorPlugin::shutdown()
 {
 
+}
+
+void SchEditorPlugin::applySettings()
+{
+    m_editorFactory->applySettings();
 }
 

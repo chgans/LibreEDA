@@ -69,77 +69,17 @@ void SchEditor::addScene()
     m_scene->setSceneRect(0, 0, 297, 210);
 }
 
-void SchEditor::loadSettings()
+void SchEditor::applySettings(const SchEditorSettings &settings)
 {
-    /* TODO: dispatch loadSettings to scene, view and tools */
-    SchEditorSettings settings;
-    settings.load(Core::settings());
-
-    m_view->setPaletteMode(settings.colorScheme);
-    m_view->setRulerEnabled(settings.rulerEnabled);
-    m_view->setGridEnabled(settings.gridEnabled);
-    m_view->setMinimalGridSize(int(settings.minimalGridSize)); // FIXME: int vs uint
-    m_view->setGridCoarseMultiplier(int(settings.coarseGridMultiplier));
-    if (settings.solidCoarseGridLinesEnabled)
+    m_scene->applySettings(settings);
+    m_view->applySettings(settings);
+    for (auto tool: m_interactiveTools)
     {
-        m_view->setGridCoarseLineStyle(Qt::SolidLine);
+        tool->applySettings(settings);
     }
-    else
-    {
-        m_view->setGridCoarseLineStyle(Qt::DotLine);
-    }
-    if (settings.solidFineGridLinesEnabled)
-    {
-        m_view->setGridFineLineStyle(Qt::SolidLine);
-    }
-    else
-    {
-        m_view->setGridFineLineStyle(Qt::DotLine);
-    }
-
-    if (!settings.scrollBarsEnabled)
-    {
-        m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    }
-    else if (settings.scrollBarsAsNeededEnabled)
-    {
-        m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-        m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    }
-    else
-    {
-        m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-        m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    }
-    if (!settings.cursorCrosshairEnabled)
-    {
-        m_view->setMouseCursor(SchView::NoMouseCursor);
-    }
-    else if (settings.largeCursorCrosshairEnabled)
-    {
-        m_view->setMouseCursor(SchView::LargeMouseCursor);
-    }
-    else
-    {
-        m_view->setMouseCursor(SchView::SmallMouseCursor);
-    }
-    if (!settings.originCrosshairEnabled)
-    {
-        m_view->setOriginMark(SchView::NoOriginMark);
-    }
-    else if (settings.largeOriginCrosshairEnabled)
-    {
-        m_view->setOriginMark(SchView::LargeOriginMark);
-    }
-    else
-    {
-        m_view->setOriginMark(SchView::SmallOriginMark);
-    }
-    m_view->setRenderHint(QPainter::Antialiasing, settings.antiAliasingEnabled);
-    m_view->setRenderHint(QPainter::TextAntialiasing, settings.antiAliasingEnabled);
-    m_view->setRenderHint(QPainter::HighQualityAntialiasing, settings.antiAliasingEnabled);
-    m_view->setHardwareAccelerationEnabled(settings.hardwareAccelerationEnabled);
+    // TODO: other tools
+    // TODO: snap manager
+    // TODO: dock widgets
 }
 
 

@@ -15,6 +15,7 @@ class AbstractGraphicsInteractiveTool;
 class TaskDockWidget;
 class PropertyEditorDockWidget;
 class SnapManager;
+class SchEditorSettings;
 
 class SchEditor : public IEditor
 {
@@ -31,7 +32,7 @@ private:
 signals:
 
 public slots:
-    void loadSettings();
+    void applySettings(const SchEditorSettings &settings);
 
 private:
     SchEditorDocument *m_document = nullptr;

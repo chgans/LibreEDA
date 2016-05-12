@@ -13,6 +13,7 @@ class GraphicsViewRuler;
 class Palette;
 class GraphicsCartesianGrid;
 class GraphicsGrid;
+class SchEditorSettings;
 
 class SchView : public QGraphicsView
 {
@@ -95,7 +96,8 @@ public:
     void setOriginMark(OriginMark mark);
     OriginMark originMark() const;
 
-private:
+public slots:
+    void applySettings(const SchEditorSettings &settings);
 
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect);

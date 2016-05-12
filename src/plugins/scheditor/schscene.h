@@ -4,6 +4,7 @@
 #include <QGraphicsScene>
 
 class SchItem;
+class SchEditorSettings;
 
 class SchScene : public QGraphicsScene
 {
@@ -14,6 +15,9 @@ public:
     ~SchScene();
 
     QList<SchItem *> selectedObjects();
+
+public slots:
+    void applySettings(const SchEditorSettings &settings);
 
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect);

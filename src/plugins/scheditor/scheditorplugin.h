@@ -3,6 +3,8 @@
 
 #include "core/extension/iplugin.h"
 
+class SchEditorFactory;
+class SchSettingsPage;
 class SchEditorPlugin : public IPlugin
 {
     Q_OBJECT
@@ -15,6 +17,13 @@ public:
     bool initialize(const QStringList &arguments, QString *errorString);
     void extensionsInitialized();
     void shutdown();
+
+public slots:
+    void applySettings();
+
+private:
+    SchEditorFactory *m_editorFactory;
+    SchSettingsPage *m_settingsPage;
 };
 
 #endif // SCHEDITORPLUGIN_H

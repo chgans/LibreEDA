@@ -23,6 +23,11 @@ QList<SchItem *> SchScene::selectedObjects()
     return objects;
 }
 
+void SchScene::applySettings(const SchEditorSettings &settings)
+{
+    Q_UNUSED(settings);
+}
+
 // TBD: remove this, SchView take care of drawing sceneRect() background
 void SchScene::drawBackground(QPainter *painter, const QRectF &rect)
 {

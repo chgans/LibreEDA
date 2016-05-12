@@ -57,4 +57,7 @@ void SchTool::cancel()
 
 }
 
-
+void SchTool::applySettings(const SchEditorSettings &settings)
+{
+    Q_UNUSED(settings);
+}

@@ -6,6 +6,7 @@
 
 class SchView;
 class SchScene;
+class SchEditorSettings;
 
 class QWidget;
 class QAction;
@@ -42,6 +43,7 @@ signals:
 
 public slots:
     virtual void cancel();
+    virtual void applySettings(const SchEditorSettings &settings);
 
 private:
     SchView *m_view;

@@ -6,6 +6,7 @@
 #include "palette.h"
 #include "snap/positionsnapper.h"
 #include "widget/graphicsviewruler.h"
+#include "scheditorsettings.h"
 
 #include <QOpenGLWidget>
 #include <QMouseEvent>
@@ -614,6 +615,76 @@ void SchView::setOriginMark(SchView::OriginMark mark)
 SchView::OriginMark SchView::originMark() const
 {
     return m_originMark;
+}
+
+void SchView::applySettings(const SchEditorSettings &settings)
+{
+    setPaletteMode(settings.colorScheme);
+    setRulerEnabled(settings.rulerEnabled);
+    setGridEnabled(settings.gridEnabled);
+    setMinimalGridSize(int(settings.minimalGridSize)); // FIXME: int vs uint
+    setGridCoarseMultiplier(int(settings.coarseGridMultiplier));
+    if (settings.solidCoarseGridLinesEnabled)
+    {
+        setGridCoarseLineStyle(Qt::SolidLine);
+    }
+    else
+    {
+        setGridCoarseLineStyle(Qt::DotLine);
+    }
+    if (settings.solidFineGridLinesEnabled)
+    {
+        setGridFineLineStyle(Qt::SolidLine);
+    }
+    else
+    {
+        setGridFineLineStyle(Qt::DotLine);
+    }
+
+    if (!settings.scrollBarsEnabled)
+    {
+        setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    }
+    else if (settings.scrollBarsAsNeededEnabled)
+    {
+        setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    }
+    else
+    {
+        setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    }
+    if (!settings.cursorCrosshairEnabled)
+    {
+        setMouseCursor(NoMouseCursor);
+    }
+    else if (settings.largeCursorCrosshairEnabled)
+    {
+        setMouseCursor(LargeMouseCursor);
+    }
+    else
+    {
+        setMouseCursor(SmallMouseCursor);
+    }
+    if (!settings.originCrosshairEnabled)
+    {
+        setOriginMark(NoOriginMark);
+    }
+    else if (settings.largeOriginCrosshairEnabled)
+    {
+        setOriginMark(LargeOriginMark);
+    }
+    else
+    {
+        setOriginMark(SmallOriginMark);
+    }
+    setRenderHint(QPainter::Antialiasing, settings.antiAliasingEnabled);
+    setRenderHint(QPainter::TextAntialiasing, settings.antiAliasingEnabled);
+    setRenderHint(QPainter::HighQualityAntialiasing, settings.antiAliasingEnabled);
+    setHardwareAccelerationEnabled(settings.hardwareAccelerationEnabled);
+
 }
 
 void SchView::startPanView(QMouseEvent *event)

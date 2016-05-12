@@ -14,7 +14,7 @@ public:
 signals:
 
 public slots:
-    void loadSettings();
+    void applySettings();
 
 private:
     QList<SchEditor *> m_editors;
