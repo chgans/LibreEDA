@@ -1,5 +1,5 @@
 {
-    "Name" : "Scematic Editor",
+    "Name" : "Schematic Editor",
     "Version" : "$$LEDA_VERSION",
     "CompatVersion" : "$$LEDA_COMPAT_VERSION",
     "Experimental" : true,
