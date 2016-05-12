@@ -263,12 +263,3 @@ void SchEditorWidget::addArrangeTools()
     m_arrangeToolBar = new QToolBar();
 }
 
-void SchEditorWidget::keyPressEvent(QKeyEvent *event)
-{
-    Q_UNUSED(event);
-}
-
-void SchEditorWidget::keyReleaseEvent(QKeyEvent *event)
-{
-    Q_UNUSED(event)
-}
