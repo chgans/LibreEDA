@@ -9,8 +9,6 @@ LedaLibrary {
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets"] }
 
     files: [
-        "abstracteditor.cpp",
-        "abstracteditor.h",
         "constants.h",
         "core.cpp",
         "core.h",

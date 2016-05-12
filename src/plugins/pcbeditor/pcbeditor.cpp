@@ -44,12 +44,12 @@ IDocument *PcbEditor::document() const
 
 void PcbEditor::saveState(QSettings *settings) const
 {
-    pcbWidget()->writeSettings(*settings);
+    Q_UNUSED(settings);
 }
 
 bool PcbEditor::restoreState(QSettings *settings)
 {
-    pcbWidget()->readSettings(*settings);
+    Q_UNUSED(settings);
     return true;
 }
 

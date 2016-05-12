@@ -1,7 +1,7 @@
 #ifndef PCBEDITORWIDGET_H
 #define PCBEDITORWIDGET_H
 
-#include "core/abstracteditor.h"
+#include <QWidget>
 
 class QMainWindow;
 class QAction;
@@ -16,7 +16,7 @@ class PcbPaletteManager;
 class DesignLayerManager;
 class InsightDockWidget;
 
-class PcbEditorWidget : public AbstractEditor
+class PcbEditorWidget: public QWidget
 {
     Q_OBJECT
 public:
@@ -29,11 +29,6 @@ public:
 
     void activate(QMainWindow *window);
     void desactivate(QMainWindow *window);
-
-    void readSettings(QSettings &settings);
-    void writeSettings(QSettings &settings);
-
-    QString type() const;
 
 signals:
 

@@ -26,7 +26,7 @@
 #include <QDebug>
 
 PcbEditorWidget::PcbEditorWidget(QWidget *parent) :
-    AbstractEditor(parent)
+    QWidget(parent)
 {
     m_paletteManager = PcbPaletteManager::instance();
     m_layerManager = DesignLayerManager::instance();
@@ -139,21 +139,6 @@ void PcbEditorWidget::desactivate(QMainWindow *window)
     window->removeAction(m_cycleDisplayLayerMode);
 
     window->removeDockWidget(m_insightDockWidget);
-}
-
-void PcbEditorWidget::readSettings(QSettings &settings)
-{
-    Q_UNUSED(settings);
-}
-
-void PcbEditorWidget::writeSettings(QSettings &settings)
-{
-    Q_UNUSED(settings);
-}
-
-QString PcbEditorWidget::type() const
-{
-    return "pcbeditor";
 }
 
 void PcbEditorWidget::wheelEvent(QWheelEvent *event)
