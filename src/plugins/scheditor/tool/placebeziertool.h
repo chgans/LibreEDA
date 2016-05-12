@@ -1,36 +1,33 @@
-#ifndef GRAPHICSLINETOOL_H
-#define GRAPHICSLINETOOL_H
+#ifndef PLACEBEZIERTOOL_H
+#define PLACEBEZIERTOOL_H
 
-#include "tool/abstractgraphicsinserttool.h"
+#include "tool/placementtool.h"
 
-class GraphicsLineItem;
+#include <QPointF>
+
+class GraphicsBezierItem;
 class PenSettingsWidget;
+class BrushSettingsWidget;
 
-class GraphicsLineTool : public AbstractGraphicsInsertTool
+class PlaceBezierTool : public PlacementTool
 {
     Q_OBJECT
 
 public:
-    explicit GraphicsLineTool(QObject *parent = nullptr);
+    explicit PlaceBezierTool(QObject *parent = nullptr);
+    ~PlaceBezierTool();
 
 private:
-    GraphicsLineItem *m_item;
+    GraphicsBezierItem *m_item;
     PenSettingsWidget *m_penSettingsWidget;
-
-private:
-    void setP1(const QPointF &pos);
-    void setP2(const QPointF &pos);
+    BrushSettingsWidget *m_brushSettingsWidget;
 
     // GraphicsTool interface
 public:
     virtual void activate(const QAction *which);
     virtual void desactivate(const QAction *which);
 
-    // GraphicsTool interface
-public slots:
-    virtual void cancel();
-
-    // AbstractGraphicsInsertTool interface
+    // PlacementTool interface
 public:
     SchItem *beginInsert(const QPointF &pos);
     void addPoint(int idx, const QPointF &pos);
@@ -41,4 +38,4 @@ public:
     void cancelInsert();
 };
 
-#endif // GRAPHICSLINETOOL_H
+#endif // PLACEBEZIERTOOL_H

@@ -1,12 +1,12 @@
-#include "tool/graphicsarctool.h"
+#include "tool/placearctool.h"
 #include "item/graphicsarcitem.h"
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
 
 #include <QAction>
 
-GraphicsArcTool::GraphicsArcTool(QObject *parent):
-    AbstractGraphicsInsertTool(parent)
+PlaceArcTool::PlaceArcTool(QObject *parent):
+    PlacementTool(parent)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicsarctool.svg"),
                            "Place an arc", nullptr);
@@ -34,22 +34,22 @@ GraphicsArcTool::GraphicsArcTool(QObject *parent):
     setOptionWidgets(widgets);
 }
 
-GraphicsArcTool::~GraphicsArcTool()
+PlaceArcTool::~PlaceArcTool()
 {
 
 }
 
-void GraphicsArcTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void GraphicsArcTool::desactivate(const QAction *which)
+void PlaceArcTool::activate(const QAction *which)
 {
     Q_UNUSED(which);
 }
 
-SchItem *GraphicsArcTool::beginInsert(const QPointF &pos)
+void PlaceArcTool::desactivate(const QAction *which)
+{
+    Q_UNUSED(which);
+}
+
+SchItem *PlaceArcTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsArcItem();
     m_item->setPos(pos);
@@ -58,12 +58,12 @@ SchItem *GraphicsArcTool::beginInsert(const QPointF &pos)
     return m_item;
 }
 
-void GraphicsArcTool::addPoint(int idx, const QPointF &pos)
+void PlaceArcTool::addPoint(int idx, const QPointF &pos)
 {
     movePoint(idx, pos);
 }
 
-void GraphicsArcTool::freezePoint(int idx, const QPointF &pos)
+void PlaceArcTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
 
@@ -73,7 +73,7 @@ void GraphicsArcTool::freezePoint(int idx, const QPointF &pos)
     resetTool();
 }
 
-bool GraphicsArcTool::removePoint(int idx, const QPointF &pos)
+bool PlaceArcTool::removePoint(int idx, const QPointF &pos)
 {
     int handleId;
     switch (idx) {
@@ -100,7 +100,7 @@ bool GraphicsArcTool::removePoint(int idx, const QPointF &pos)
     return true; // Keep going
 }
 
-void GraphicsArcTool::movePoint(int idx, const QPointF &pos)
+void PlaceArcTool::movePoint(int idx, const QPointF &pos)
 {
     QPointF p = m_item->mapFromScene(pos);
     switch (idx) {
@@ -127,12 +127,12 @@ void GraphicsArcTool::movePoint(int idx, const QPointF &pos)
     }
 }
 
-void GraphicsArcTool::endInsert(const QPointF &pos)
+void PlaceArcTool::endInsert(const QPointF &pos)
 {
     Q_UNUSED(pos);
 }
 
-void GraphicsArcTool::cancelInsert()
+void PlaceArcTool::cancelInsert()
 {
 
 }

@@ -1,12 +1,12 @@
-#include "tool/graphicsellipsetool.h"
+#include "tool/placeellipsetool.h"
 #include "item/graphicsellipseitem.h"
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
 
 #include <QAction>
 
-GraphicsEllipseTool::GraphicsEllipseTool(QObject *parent):
-    AbstractGraphicsInsertTool(parent)
+PlaceEllipseTool::PlaceEllipseTool(QObject *parent):
+    PlacementTool(parent)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicsellipsetool.svg"),
                            "Place an ellipse", nullptr);
@@ -34,22 +34,22 @@ GraphicsEllipseTool::GraphicsEllipseTool(QObject *parent):
     setOptionWidgets(widgets);
 }
 
-GraphicsEllipseTool::~GraphicsEllipseTool()
+PlaceEllipseTool::~PlaceEllipseTool()
 {
 
 }
 
-void GraphicsEllipseTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void GraphicsEllipseTool::desactivate(const QAction *which)
+void PlaceEllipseTool::activate(const QAction *which)
 {
     Q_UNUSED(which);
 }
 
-SchItem *GraphicsEllipseTool::beginInsert(const QPointF &pos)
+void PlaceEllipseTool::desactivate(const QAction *which)
+{
+    Q_UNUSED(which);
+}
+
+SchItem *PlaceEllipseTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsEllipseItem();
     m_item->setPos(pos);
@@ -58,7 +58,7 @@ SchItem *GraphicsEllipseTool::beginInsert(const QPointF &pos)
     return m_item;
 }
 
-void GraphicsEllipseTool::addPoint(int idx, const QPointF &pos)
+void PlaceEllipseTool::addPoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx < 3);
 
@@ -77,7 +77,7 @@ void GraphicsEllipseTool::addPoint(int idx, const QPointF &pos)
         m_item->setYRadius(qAbs(itemPos.y()));
 }
 
-void GraphicsEllipseTool::freezePoint(int idx, const QPointF &pos)
+void PlaceEllipseTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     Q_ASSERT(idx < 3);
@@ -89,7 +89,7 @@ void GraphicsEllipseTool::freezePoint(int idx, const QPointF &pos)
     resetTool();
 }
 
-bool GraphicsEllipseTool::removePoint(int idx, const QPointF &pos)
+bool PlaceEllipseTool::removePoint(int idx, const QPointF &pos)
 {
     if (idx == 2) {
         QPointF itemPos = m_item->mapFromScene(pos);
@@ -100,7 +100,7 @@ bool GraphicsEllipseTool::removePoint(int idx, const QPointF &pos)
         return false; // Remove and delete ellipse
 }
 
-void GraphicsEllipseTool::movePoint(int idx, const QPointF &pos)
+void PlaceEllipseTool::movePoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx < 3);
 
@@ -121,11 +121,11 @@ void GraphicsEllipseTool::movePoint(int idx, const QPointF &pos)
     }
 }
 
-void GraphicsEllipseTool::endInsert(const QPointF &pos)
+void PlaceEllipseTool::endInsert(const QPointF &pos)
 {
     Q_UNUSED(pos);
 }
 
-void GraphicsEllipseTool::cancelInsert()
+void PlaceEllipseTool::cancelInsert()
 {
 }

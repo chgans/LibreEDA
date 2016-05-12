@@ -36,7 +36,7 @@
 //   Qt::SizeAllCursor
 
 GraphicsSelectTool::GraphicsSelectTool(QObject *parent):
-    AbstractGraphicsInteractiveTool(parent),
+    InteractiveTool(parent),
     m_state(HintState),
     m_operation(DragSelect),
     m_mousePressPosition(QPoint(0, 0)),

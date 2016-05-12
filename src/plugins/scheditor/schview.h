@@ -5,7 +5,7 @@
 #include "palette.h"
 
 class SchScene;
-class AbstractGraphicsInteractiveTool;
+class InteractiveTool;
 class SchItem;
 class AbstractGraphicsHandle;
 class SnapManager;
@@ -43,8 +43,8 @@ public:
     SchScene *scene() const;
     void setScene(SchScene *scene);
 
-    AbstractGraphicsInteractiveTool *tool();
-    void setTool(AbstractGraphicsInteractiveTool *tool);
+    InteractiveTool *tool();
+    void setTool(InteractiveTool *tool);
 
     SchItem *objectAt(const QPointF &pos) const;
     AbstractGraphicsHandle *handleAt(const QPointF &pos) const;
@@ -129,7 +129,7 @@ private:
     void updateRulerCursorPositions();
     void updateRulerCursorRanges();
 
-    AbstractGraphicsInteractiveTool *m_tool;
+    InteractiveTool *m_tool;
     QPointF m_mousePosition;
     bool m_mousePositionChanged;
     void updateMousePos();

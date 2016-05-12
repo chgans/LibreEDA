@@ -1,5 +1,5 @@
-#ifndef ABSTRACTGRAPHICSINTERACTIVETOOL_H
-#define ABSTRACTGRAPHICSINTERACTIVETOOL_H
+#ifndef INTERACTIVETOOL_H
+#define INTERACTIVETOOL_H
 
 #include "tool/schtool.h"
 
@@ -12,13 +12,13 @@ class QWidget;
 
 class SchItem;
 
-class AbstractGraphicsInteractiveTool: public SchTool
+class InteractiveTool: public SchTool
 {
     Q_OBJECT
 
 public:
-    explicit AbstractGraphicsInteractiveTool(QObject *parent = nullptr);
-    ~AbstractGraphicsInteractiveTool();
+    explicit InteractiveTool(QObject *parent = nullptr);
+    ~InteractiveTool();
 
     QWidget *optionWidget();
     void setOptionWidget(QWidget *widget);
@@ -46,4 +46,4 @@ protected:
     QList<SchItem *> createPhantomItems(const QList<SchItem *> &items);
 };
 
-#endif // ABSTRACTGRAPHICSINTERACTIVETOOL_H
+#endif // INTERACTIVETOOL_H

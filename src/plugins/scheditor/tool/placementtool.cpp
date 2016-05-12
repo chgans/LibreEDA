@@ -1,4 +1,4 @@
-#include "tool/abstractgraphicsinserttool.h"
+#include "tool/placementtool.h"
 
 #include "item/schitem.h"
 #include "schscene.h"
@@ -12,44 +12,44 @@
 
 #include <QDialog>
 
-AbstractGraphicsInsertTool::AbstractGraphicsInsertTool(QObject *parent):
-    AbstractGraphicsInteractiveTool(parent)
+PlacementTool::PlacementTool(QObject *parent):
+    InteractiveTool(parent)
 {
     resetTool();
 }
 
-AbstractGraphicsInsertTool::~AbstractGraphicsInsertTool()
+PlacementTool::~PlacementTool()
 {
 
 }
 
 // TODO: tools work in scene coordinates, the view have to do the mapping
-QPointF AbstractGraphicsInsertTool::mapToScene(const QPoint &pos)
+QPointF PlacementTool::mapToScene(const QPoint &pos)
 {
     return view()->mapToScene(pos);
 }
 
-QPointF AbstractGraphicsInsertTool::mapFromScene(const QPointF &pos)
+QPointF PlacementTool::mapFromScene(const QPointF &pos)
 {
     return view()->mapFromScene(pos);
 }
 
 
-QPointF AbstractGraphicsInsertTool::mapToItem(const QPoint &pos)
+QPointF PlacementTool::mapToItem(const QPoint &pos)
 {
     if (m_item == nullptr)
         return QPointF();
     return m_item->mapFromScene(mapToScene(pos));
 }
 
-QPointF AbstractGraphicsInsertTool::mapFromItem(const QPointF &pos)
+QPointF PlacementTool::mapFromItem(const QPointF &pos)
 {
     if (m_item == nullptr)
         return QPointF();
     return m_item->mapToScene(mapFromScene(pos));
 }
 
-void AbstractGraphicsInsertTool::resetTool()
+void PlacementTool::resetTool()
 {
     m_item = nullptr;
     m_addPointOnMouseMove = false;
@@ -57,7 +57,7 @@ void AbstractGraphicsInsertTool::resetTool()
     m_index = -1;
 }
 
-void AbstractGraphicsInsertTool::goBack()
+void PlacementTool::goBack()
 {
     if (m_index >= 0) {
         if (removePoint(m_index, m_movePos)) {
@@ -75,7 +75,7 @@ void AbstractGraphicsInsertTool::goBack()
     }
 }
 
-void AbstractGraphicsInsertTool::mousePressEvent(QMouseEvent *event)
+void PlacementTool::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton) {
         return;
@@ -93,7 +93,7 @@ void AbstractGraphicsInsertTool::mousePressEvent(QMouseEvent *event)
     event->accept();
 }
 
-void AbstractGraphicsInsertTool::mouseMoveEvent(QMouseEvent *event)
+void PlacementTool::mouseMoveEvent(QMouseEvent *event)
 {
     if (!m_isActive || m_index < 0)
         return;
@@ -116,7 +116,7 @@ void AbstractGraphicsInsertTool::mouseMoveEvent(QMouseEvent *event)
     addPoint(m_index, m_movePos);
 }
 
-void AbstractGraphicsInsertTool::mouseReleaseEvent(QMouseEvent *event)
+void PlacementTool::mouseReleaseEvent(QMouseEvent *event)
 {
     if (!m_isActive)
         return;
@@ -137,7 +137,7 @@ void AbstractGraphicsInsertTool::mouseReleaseEvent(QMouseEvent *event)
     m_addPointOnMouseMove = true;
 }
 
-void AbstractGraphicsInsertTool::mouseDoubleClickEvent(QMouseEvent *event)
+void PlacementTool::mouseDoubleClickEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
 
@@ -147,25 +147,25 @@ void AbstractGraphicsInsertTool::mouseDoubleClickEvent(QMouseEvent *event)
     endInsert(m_pressPos);
 }
 
-void AbstractGraphicsInsertTool::activate(const QAction *which, SchView *view)
+void PlacementTool::activate(const QAction *which, SchView *view)
 {
     Q_UNUSED(which);
     Q_UNUSED(view);
 }
 
-void AbstractGraphicsInsertTool::desactivate(const QAction *which, SchView *view)
+void PlacementTool::desactivate(const QAction *which, SchView *view)
 {
     Q_UNUSED(which);
     Q_UNUSED(view);
 }
 
 
-void AbstractGraphicsInsertTool::keyPressEvent(QKeyEvent *event)
+void PlacementTool::keyPressEvent(QKeyEvent *event)
 {
     Q_UNUSED(event);
 }
 
-void AbstractGraphicsInsertTool::keyReleaseEvent(QKeyEvent *event)
+void PlacementTool::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
         goBack();

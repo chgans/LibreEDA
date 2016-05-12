@@ -1,7 +1,7 @@
-#ifndef ABSTRACTGRAPHICSINSERTTOOL_H
-#define ABSTRACTGRAPHICSINSERTTOOL_H
+#ifndef PLACEMENTTOOL_H
+#define PLACEMENTTOOL_H
 
-#include "tool/abstractgraphicsinteractivetool.h"
+#include "tool/interactivetool.h"
 
 #include <QPointF>
 #include <QString>
@@ -14,13 +14,13 @@ class QAction;
 // Use template whith GraphicsXyzItem, or use GraphicsObject base class
 // Should work as well for single point (either a "Point" object, or a fixed shape/size object)
 // addPoint return a GraphicsHandle, movePoint has a default impl.
-class AbstractGraphicsInsertTool : public AbstractGraphicsInteractiveTool
+class PlacementTool : public InteractiveTool
 {
     Q_OBJECT
 
 public:
-    explicit AbstractGraphicsInsertTool(QObject *parent = nullptr);
-    ~AbstractGraphicsInsertTool();
+    explicit PlacementTool(QObject *parent = nullptr);
+    ~PlacementTool();
 
     // Typ. mouse clicked, idx == 0
     virtual SchItem *beginInsert(const QPointF &pos) = 0;
@@ -59,7 +59,7 @@ private:
     bool m_isActive;
     SchItem *m_item;
 
-    // AbstractGraphicsInteractiveTool interface
+    // InteractiveTool interface
 public:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
@@ -72,10 +72,10 @@ public:
     void desactivate(const QAction *which, SchView *view);
 
 
-    // AbstractGraphicsInteractiveTool interface
+    // InteractiveTool interface
 public:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
 };
 
-#endif // ABSTRACTGRAPHICSINSERTTOOL_H
+#endif // PLACEMENTTOOL_H

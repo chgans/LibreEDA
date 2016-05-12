@@ -5,15 +5,15 @@
 #include "item/schitem.h"
 #include "scheditorsettings.h"
 
-#include "tool/graphicsbeziertool.h"
+#include "tool/placebeziertool.h"
 #include "tool/graphicsselecttool.h"
-#include "tool/graphicslinetool.h"
-#include "tool/graphicsrecttool.h"
-#include "tool/graphicscircletool.h"
-#include "tool/graphicsellipsetool.h"
-#include "tool/graphicspolygontool.h"
-#include "tool/graphicswiretool.h"
-#include "tool/graphicsarctool.h"
+#include "tool/placepolylinetool.h"
+#include "tool/placerectangletool.h"
+#include "tool/placecircletool.h"
+#include "tool/placeellipsetool.h"
+#include "tool/placepolygontool.h"
+#include "tool/placewiretool.h"
+#include "tool/placearctool.h"
 
 #include "snap/positionsnapper.h"
 
@@ -182,14 +182,14 @@ void SchEditor::addInteractiveTools()
     m_interactiveToolsToolBar = new QToolBar();
 
     addInteractiveTool(new GraphicsSelectTool(this));
-    addInteractiveTool(new GraphicsLineTool(this));
+    addInteractiveTool(new PlacePolyineTool(this));
     //addInteractiveTool(new GraphicsWireTool(this));
-    addInteractiveTool(new GraphicsRectTool(this));
-    addInteractiveTool(new GraphicsPolygonTool(this));
-    addInteractiveTool(new GraphicsCircleTool(this));
-    addInteractiveTool(new GraphicsArcTool(this));
-    addInteractiveTool(new GraphicsEllipseTool(this));
-    addInteractiveTool(new GraphicsBezierTool(this));
+    addInteractiveTool(new PlaceRectangleTool(this));
+    addInteractiveTool(new PlacePolygonTool(this));
+    addInteractiveTool(new PlaceCircleTool(this));
+    addInteractiveTool(new PlaceArcTool(this));
+    addInteractiveTool(new PlaceEllipseTool(this));
+    addInteractiveTool(new PlaceBezierTool(this));
 
 #if 0
     QAction *action;
@@ -211,14 +211,14 @@ void SchEditor::addInteractiveTools()
     //  - regular polygon, arbitrary polygon and "advanced" shape
 }
 
-void SchEditor::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
+void SchEditor::addInteractiveTool(InteractiveTool *tool)
 {
 
     bool firstTool = m_interactiveTools.count() == 0;
     bool firstAction = m_interactiveToolsActionGroup->actions().count() == 0;
     QAction *action = tool->action();
     action->setCheckable(true);
-    action->setData(QVariant::fromValue<AbstractGraphicsInteractiveTool *>(tool));
+    action->setData(QVariant::fromValue<InteractiveTool *>(tool));
     m_interactiveToolsActionGroup->addAction(action);
     m_interactiveToolsToolBar->addAction(action);
 
@@ -226,7 +226,7 @@ void SchEditor::addInteractiveTool(AbstractGraphicsInteractiveTool *tool)
     if (firstAction) {
         connect(m_interactiveToolsActionGroup, &QActionGroup::triggered,
                 this, [this](QAction *action) {
-            AbstractGraphicsInteractiveTool *tool = action->data().value<AbstractGraphicsInteractiveTool*>();
+            InteractiveTool *tool = action->data().value<InteractiveTool*>();
             // tool->activate(); Do this here or in view?
             m_view->setTool(tool);
             m_taskDockWidget->setTool(tool);

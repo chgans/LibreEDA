@@ -1,4 +1,4 @@
-#include "tool/graphicswiretool.h"
+#include "tool/placewiretool.h"
 #include "item/graphicswireitem.h"
 
 #include "utils/widgets/pensettingswidget.h"
@@ -7,8 +7,8 @@
 
 #include <QAction>
 
-GraphicsWireTool::GraphicsWireTool(QObject *parent):
-    AbstractGraphicsInsertTool(parent),
+PlaceWireTool::PlaceWireTool(QObject *parent):
+    PlacementTool(parent),
     m_item(nullptr)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicspolylinetool.svg"), // TODO: rename to wire
@@ -30,21 +30,21 @@ GraphicsWireTool::GraphicsWireTool(QObject *parent):
     setOptionWidgets(widgets);
 }
 
-GraphicsWireTool::~GraphicsWireTool()
+PlaceWireTool::~PlaceWireTool()
 {
 }
 
-void GraphicsWireTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void GraphicsWireTool::desactivate(const QAction *which)
+void PlaceWireTool::activate(const QAction *which)
 {
     Q_UNUSED(which);
 }
 
-SchItem *GraphicsWireTool::beginInsert(const QPointF &pos)
+void PlaceWireTool::desactivate(const QAction *which)
+{
+    Q_UNUSED(which);
+}
+
+SchItem *PlaceWireTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsWireItem();
     m_item->setPos(pos);
@@ -52,19 +52,19 @@ SchItem *GraphicsWireTool::beginInsert(const QPointF &pos)
     return m_item;
 }
 
-void GraphicsWireTool::addPoint(int idx, const QPointF &pos)
+void PlaceWireTool::addPoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(idx);
     m_item->addPoint(m_item->mapFromScene(pos));
 }
 
-void GraphicsWireTool::freezePoint(int idx, const QPointF &pos)
+void PlaceWireTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     Q_UNUSED(idx);
 }
 
-bool GraphicsWireTool::removePoint(int idx, const QPointF &pos)
+bool PlaceWireTool::removePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     QList<QPointF> points = m_item->points();
@@ -80,12 +80,12 @@ bool GraphicsWireTool::removePoint(int idx, const QPointF &pos)
     }
 }
 
-void GraphicsWireTool::movePoint(int idx, const QPointF &pos)
+void PlaceWireTool::movePoint(int idx, const QPointF &pos)
 {
     m_item->movePoint(idx, m_item->mapFromScene(pos));
 }
 
-void GraphicsWireTool::endInsert(const QPointF &pos)
+void PlaceWireTool::endInsert(const QPointF &pos)
 {
     Q_UNUSED(pos);
     emit objectInserted(m_item);
@@ -93,6 +93,6 @@ void GraphicsWireTool::endInsert(const QPointF &pos)
     resetTool();
 }
 
-void GraphicsWireTool::cancelInsert()
+void PlaceWireTool::cancelInsert()
 {
 }

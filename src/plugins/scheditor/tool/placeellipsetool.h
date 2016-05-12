@@ -1,7 +1,7 @@
-#ifndef GRAPHICSELLIPSETOOL_H
-#define GRAPHICSELLIPSETOOL_H
+#ifndef PLACEELLIPSETOOL_H
+#define PLACEELLIPSETOOL_H
 
-#include "tool/abstractgraphicsinserttool.h"
+#include "tool/placementtool.h"
 
 class GraphicsEllipseItem;
 class PenSettingsWidget;
@@ -9,13 +9,13 @@ class BrushSettingsWidget;
 
 class QAction;
 
-class GraphicsEllipseTool : public AbstractGraphicsInsertTool
+class PlaceEllipseTool : public PlacementTool
 {
     Q_OBJECT
 
 public:
-    explicit GraphicsEllipseTool(QObject *parent = nullptr);
-    ~GraphicsEllipseTool();
+    explicit PlaceEllipseTool(QObject *parent = nullptr);
+    ~PlaceEllipseTool();
 
 private:
     GraphicsEllipseItem *m_item;
@@ -27,7 +27,7 @@ public:
     virtual void activate(const QAction *which);
     virtual void desactivate(const QAction *which);
 
-    // AbstractGraphicsInsertTool interface
+    // PlacementTool interface
 public:
     virtual SchItem *beginInsert(const QPointF &pos);
     virtual void addPoint(int idx, const QPointF &pos);
@@ -38,4 +38,4 @@ public:
     virtual void cancelInsert();
 };
 
-#endif // GRAPHICSELLIPSETOOL_H
+#endif // PLACEELLIPSETOOL_H

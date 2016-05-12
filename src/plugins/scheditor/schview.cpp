@@ -1,7 +1,7 @@
 #include "schview.h"
 #include "schscene.h"
 #include "item/schitem.h"
-#include "tool/abstractgraphicsinteractivetool.h"
+#include "tool/interactivetool.h"
 #include "grid/graphicscartesiangrid.h"
 #include "palette.h"
 #include "snap/positionsnapper.h"
@@ -79,12 +79,12 @@ void SchView::setScene(SchScene *scene)
     applyPalette();
 }
 
-AbstractGraphicsInteractiveTool *SchView::tool()
+InteractiveTool *SchView::tool()
 {
     return m_tool;
 }
 
-void SchView::setTool(AbstractGraphicsInteractiveTool *tool)
+void SchView::setTool(InteractiveTool *tool)
 {
     if (m_tool) {
         m_tool->desactivate(m_tool->action(), this);

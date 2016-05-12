@@ -1,12 +1,12 @@
-#include "tool/graphicscircletool.h"
+#include "tool/placecircletool.h"
 #include "item/graphicscircleitem.h"
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
 
 #include <QAction>
 
-GraphicsCircleTool::GraphicsCircleTool(QObject *parent):
-    AbstractGraphicsInsertTool(parent)
+PlaceCircleTool::PlaceCircleTool(QObject *parent):
+    PlacementTool(parent)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicscircletool.svg"),
                                   "Place a circle", nullptr);
@@ -34,21 +34,21 @@ GraphicsCircleTool::GraphicsCircleTool(QObject *parent):
     setOptionWidgets(widgets);
 }
 
-GraphicsCircleTool::~GraphicsCircleTool()
+PlaceCircleTool::~PlaceCircleTool()
 {
 }
 
-void GraphicsCircleTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void GraphicsCircleTool::desactivate(const QAction *which)
+void PlaceCircleTool::activate(const QAction *which)
 {
     Q_UNUSED(which);
 }
 
-SchItem *GraphicsCircleTool::beginInsert(const QPointF &pos)
+void PlaceCircleTool::desactivate(const QAction *which)
+{
+    Q_UNUSED(which);
+}
+
+SchItem *PlaceCircleTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsCircleItem();
     m_item->setPos(pos);
@@ -57,7 +57,7 @@ SchItem *GraphicsCircleTool::beginInsert(const QPointF &pos)
     return m_item;
 }
 
-void GraphicsCircleTool::addPoint(int idx, const QPointF &pos)
+void PlaceCircleTool::addPoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx < 2);
 
@@ -68,7 +68,7 @@ void GraphicsCircleTool::addPoint(int idx, const QPointF &pos)
     m_item->setRadius(qAbs(itemPos.x()));
 }
 
-void GraphicsCircleTool::freezePoint(int idx, const QPointF &pos)
+void PlaceCircleTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     Q_ASSERT(idx < 2);
@@ -80,14 +80,14 @@ void GraphicsCircleTool::freezePoint(int idx, const QPointF &pos)
     resetTool();
 }
 
-bool GraphicsCircleTool::removePoint(int idx, const QPointF &pos)
+bool PlaceCircleTool::removePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     Q_UNUSED(idx);
     return false; // Remove and delete circles
 }
 
-void GraphicsCircleTool::movePoint(int idx, const QPointF &pos)
+void PlaceCircleTool::movePoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx == 1);
 
@@ -95,11 +95,11 @@ void GraphicsCircleTool::movePoint(int idx, const QPointF &pos)
      m_item->setRadius(vector.length());
 }
 
-void GraphicsCircleTool::endInsert(const QPointF &pos)
+void PlaceCircleTool::endInsert(const QPointF &pos)
 {
     Q_UNUSED(pos);
 }
 
-void GraphicsCircleTool::cancelInsert()
+void PlaceCircleTool::cancelInsert()
 {
 }

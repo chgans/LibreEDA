@@ -1,33 +1,41 @@
-#ifndef GRAPHICSBEZIERTOOL_H
-#define GRAPHICSBEZIERTOOL_H
+#ifndef PLACERECTANGLETOOL_H
+#define PLACERECTANGLETOOL_H
 
-#include "tool/abstractgraphicsinserttool.h"
+#include "tool/placementtool.h"
+#include <QRectF>
 
-#include <QPointF>
-
-class GraphicsBezierItem;
+class GraphicsRectItem;
 class PenSettingsWidget;
 class BrushSettingsWidget;
 
-class GraphicsBezierTool : public AbstractGraphicsInsertTool
+class PlaceRectangleTool : public PlacementTool
 {
     Q_OBJECT
 
 public:
-    explicit GraphicsBezierTool(QObject *parent = nullptr);
-    ~GraphicsBezierTool();
+    explicit PlaceRectangleTool(QObject *parent = nullptr);
+    ~PlaceRectangleTool();
+
+protected:
+    void setP1(const QPointF &pos);
+    void setP2(const QPointF &pos);
 
 private:
-    GraphicsBezierItem *m_item;
+    GraphicsRectItem *m_item;
     PenSettingsWidget *m_penSettingsWidget;
     BrushSettingsWidget *m_brushSettingsWidget;
+    QRectF m_rect;
 
     // GraphicsTool interface
 public:
     virtual void activate(const QAction *which);
     virtual void desactivate(const QAction *which);
 
-    // AbstractGraphicsInsertTool interface
+    // GraphicsTool interface
+public slots:
+    virtual void cancel();
+
+    // PlacementTool interface
 public:
     SchItem *beginInsert(const QPointF &pos);
     void addPoint(int idx, const QPointF &pos);
@@ -38,4 +46,4 @@ public:
     void cancelInsert();
 };
 
-#endif // GRAPHICSBEZIERTOOL_H
+#endif // PLACERECTANGLETOOL_H

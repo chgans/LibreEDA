@@ -1,7 +1,7 @@
 #ifndef GRAPHICSSELECTTOOL_H
 #define GRAPHICSSELECTTOOL_H
 
-#include "tool/abstractgraphicsinteractivetool.h"
+#include "tool/interactivetool.h"
 
 #include <QPoint>
 
@@ -10,7 +10,7 @@ class AbstractGraphicsHandle;
 
 class QRubberBand;
 
-class GraphicsSelectTool : public AbstractGraphicsInteractiveTool
+class GraphicsSelectTool : public InteractiveTool
 {
     Q_OBJECT
 

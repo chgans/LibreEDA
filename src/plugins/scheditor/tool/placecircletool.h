@@ -1,24 +1,22 @@
-#ifndef GRAPHICSPOLYGONTOOL_H
-#define GRAPHICSPOLYGONTOOL_H
+#ifndef PLACECIRCLETOOL_H
+#define PLACECIRCLETOOL_H
 
-#include "tool/abstractgraphicsinserttool.h"
+#include "tool/placementtool.h"
 
-class GraphicsPolygonItem;
+class GraphicsCircleItem;
 class PenSettingsWidget;
 class BrushSettingsWidget;
 
-class QAction;
-
-class GraphicsPolygonTool : public AbstractGraphicsInsertTool
+class PlaceCircleTool : public PlacementTool
 {
     Q_OBJECT
 
 public:
-    explicit GraphicsPolygonTool(QObject *parent = nullptr);
-    ~GraphicsPolygonTool();
+    explicit PlaceCircleTool(QObject *parent = nullptr);
+    ~PlaceCircleTool();
 
 private:
-    GraphicsPolygonItem *m_item;
+    GraphicsCircleItem *m_item;
     PenSettingsWidget *m_penSettingsWidget;
     BrushSettingsWidget *m_brushSettingsWidget;
 
@@ -27,7 +25,7 @@ public:
     virtual void activate(const QAction *which);
     virtual void desactivate(const QAction *which);
 
-    // AbstractGraphicsInsertTool interface
+    // PlacementTool interface
 public:
     virtual SchItem *beginInsert(const QPointF &pos);
     virtual void addPoint(int idx, const QPointF &pos);
@@ -38,4 +36,4 @@ public:
     virtual void cancelInsert();
 };
 
-#endif // GRAPHICSPOLYGONTOOL_H
+#endif // PLACECIRCLETOOL_H

@@ -1,4 +1,4 @@
-#include "tool/abstractgraphicsinteractivetool.h"
+#include "tool/interactivetool.h"
 #include "dock/taskdockwidget.h"
 #include "widget/taskeditwidget.h"
 #include "widget/taskoptionwidget.h"
@@ -15,7 +15,7 @@ TaskDockWidget::TaskDockWidget(QWidget *parent) :
     setWidget(widget);
 }
 
-void TaskDockWidget::setTool(AbstractGraphicsInteractiveTool *tool)
+void TaskDockWidget::setTool(InteractiveTool *tool)
 {
     foreach (QWidget *oldWidget, m_widgets) {
         widget()->layout()->removeWidget(oldWidget);

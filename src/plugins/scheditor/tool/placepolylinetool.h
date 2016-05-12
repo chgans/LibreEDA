@@ -1,30 +1,25 @@
-#ifndef GRAPHICSRECTTOOL_H
-#define GRAPHICSRECTTOOL_H
+#ifndef PLACEPOLYLINETOOL_H
+#define PLACEPOLYLINETOOL_H
 
-#include "tool/abstractgraphicsinserttool.h"
-#include <QRectF>
+#include "tool/placementtool.h"
 
-class GraphicsRectItem;
+class GraphicsLineItem;
 class PenSettingsWidget;
-class BrushSettingsWidget;
 
-class GraphicsRectTool : public AbstractGraphicsInsertTool
+class PlacePolyineTool : public PlacementTool
 {
     Q_OBJECT
 
 public:
-    explicit GraphicsRectTool(QObject *parent = nullptr);
-    ~GraphicsRectTool();
-
-protected:
-    void setP1(const QPointF &pos);
-    void setP2(const QPointF &pos);
+    explicit PlacePolyineTool(QObject *parent = nullptr);
 
 private:
-    GraphicsRectItem *m_item;
+    GraphicsLineItem *m_item;
     PenSettingsWidget *m_penSettingsWidget;
-    BrushSettingsWidget *m_brushSettingsWidget;
-    QRectF m_rect;
+
+private:
+    void setP1(const QPointF &pos);
+    void setP2(const QPointF &pos);
 
     // GraphicsTool interface
 public:
@@ -35,7 +30,7 @@ public:
 public slots:
     virtual void cancel();
 
-    // AbstractGraphicsInsertTool interface
+    // PlacementTool interface
 public:
     SchItem *beginInsert(const QPointF &pos);
     void addPoint(int idx, const QPointF &pos);
@@ -46,4 +41,4 @@ public:
     void cancelInsert();
 };
 
-#endif // GRAPHICSRECTTOOL_H
+#endif // PLACEPOLYLINETOOL_H

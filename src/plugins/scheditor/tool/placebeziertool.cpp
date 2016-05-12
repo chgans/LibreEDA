@@ -1,12 +1,12 @@
-#include "tool/graphicsbeziertool.h"
+#include "tool/placebeziertool.h"
 #include "item/graphicsbezieritem.h"
 #include "utils/widgets/pensettingswidget.h"
 #include "handle/abstractgraphicshandle.h"
 
 #include <QAction>
 
-GraphicsBezierTool::GraphicsBezierTool(QObject *parent):
-    AbstractGraphicsInsertTool(parent),
+PlaceBezierTool::PlaceBezierTool(QObject *parent):
+    PlacementTool(parent),
     m_item(nullptr)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicsbeziertool.svg"),
@@ -28,22 +28,22 @@ GraphicsBezierTool::GraphicsBezierTool(QObject *parent):
     setOptionWidgets(widgets);
 }
 
-GraphicsBezierTool::~GraphicsBezierTool()
+PlaceBezierTool::~PlaceBezierTool()
 {
 
 }
 
-void GraphicsBezierTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void GraphicsBezierTool::desactivate(const QAction *which)
+void PlaceBezierTool::activate(const QAction *which)
 {
     Q_UNUSED(which);
 }
 
-SchItem *GraphicsBezierTool::beginInsert(const QPointF &pos)
+void PlaceBezierTool::desactivate(const QAction *which)
+{
+    Q_UNUSED(which);
+}
+
+SchItem *PlaceBezierTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsBezierItem();
     m_item->setPos(pos);
@@ -51,19 +51,19 @@ SchItem *GraphicsBezierTool::beginInsert(const QPointF &pos)
     return m_item;
 }
 
-void GraphicsBezierTool::addPoint(int idx, const QPointF &pos)
+void PlaceBezierTool::addPoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(idx);
     m_item->addPoint(m_item->mapFromScene(pos));
 }
 
-void GraphicsBezierTool::freezePoint(int idx, const QPointF &pos)
+void PlaceBezierTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     Q_UNUSED(idx);
 }
 
-bool GraphicsBezierTool::removePoint(int idx, const QPointF &pos)
+bool PlaceBezierTool::removePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     QPointF oldPos = m_item->pointAt(idx);
@@ -78,12 +78,12 @@ bool GraphicsBezierTool::removePoint(int idx, const QPointF &pos)
     return false;
 }
 
-void GraphicsBezierTool::movePoint(int idx, const QPointF &pos)
+void PlaceBezierTool::movePoint(int idx, const QPointF &pos)
 {
     m_item->movePoint(idx, m_item->mapFromScene(pos));
 }
 
-void GraphicsBezierTool::endInsert(const QPointF &pos)
+void PlaceBezierTool::endInsert(const QPointF &pos)
 {
     Q_UNUSED(pos);
     emit objectInserted(m_item);
@@ -91,7 +91,7 @@ void GraphicsBezierTool::endInsert(const QPointF &pos)
     resetTool();
 }
 
-void GraphicsBezierTool::cancelInsert()
+void PlaceBezierTool::cancelInsert()
 {
 
 }

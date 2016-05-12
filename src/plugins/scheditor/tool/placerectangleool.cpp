@@ -1,4 +1,4 @@
-#include "tool/graphicsrecttool.h"
+#include "tool/placerectangletool.h"
 #include "item/graphicsrectitem.h"
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
@@ -6,8 +6,8 @@
 
 #include <QAction>
 
-GraphicsRectTool::GraphicsRectTool(QObject *parent):
-    AbstractGraphicsInsertTool(parent), m_item(nullptr)
+PlaceRectangleTool::PlaceRectangleTool(QObject *parent):
+    PlacementTool(parent), m_item(nullptr)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicsrecttool.svg"),
                            "Place a rectangle", nullptr);
@@ -35,16 +35,16 @@ GraphicsRectTool::GraphicsRectTool(QObject *parent):
     setOptionWidgets(widgets);
 }
 
-GraphicsRectTool::~GraphicsRectTool()
+PlaceRectangleTool::~PlaceRectangleTool()
 {
 
 }
 
-void GraphicsRectTool::cancel()
+void PlaceRectangleTool::cancel()
 {
 }
 
-SchItem *GraphicsRectTool::beginInsert(const QPointF &pos)
+SchItem *PlaceRectangleTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsRectItem();
     m_item->setPos(pos);
@@ -54,7 +54,7 @@ SchItem *GraphicsRectTool::beginInsert(const QPointF &pos)
     return m_item;
 }
 
-void GraphicsRectTool::addPoint(int idx, const QPointF &pos)
+void PlaceRectangleTool::addPoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx < 2);
 
@@ -66,7 +66,7 @@ void GraphicsRectTool::addPoint(int idx, const QPointF &pos)
     }
 }
 
-void GraphicsRectTool::freezePoint(int idx, const QPointF &pos)
+void PlaceRectangleTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     Q_ASSERT(idx < 2);
@@ -78,14 +78,14 @@ void GraphicsRectTool::freezePoint(int idx, const QPointF &pos)
     resetTool();
 }
 
-bool GraphicsRectTool::removePoint(int idx, const QPointF &pos)
+bool PlaceRectangleTool::removePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     Q_UNUSED(idx);
     return false; // will remove and delete rect
 }
 
-void GraphicsRectTool::movePoint(int idx, const QPointF &pos)
+void PlaceRectangleTool::movePoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx < 2);
 
@@ -97,36 +97,36 @@ void GraphicsRectTool::movePoint(int idx, const QPointF &pos)
     }
 }
 
-void GraphicsRectTool::endInsert(const QPointF &pos)
+void PlaceRectangleTool::endInsert(const QPointF &pos)
 {
     Q_UNUSED(pos);
 }
 
-void GraphicsRectTool::cancelInsert()
+void PlaceRectangleTool::cancelInsert()
 {
 
 }
 
-void GraphicsRectTool::setP1(const QPointF &pos)
+void PlaceRectangleTool::setP1(const QPointF &pos)
 {
     m_rect.setTopLeft(pos);
     m_rect.setBottomRight(pos);
     m_item->setRect(m_rect);
 }
 
-void GraphicsRectTool::setP2(const QPointF &pos)
+void PlaceRectangleTool::setP2(const QPointF &pos)
 {
     m_rect.setBottomRight(pos);
     m_item->setRect(m_rect.normalized());
 }
 
 
-void GraphicsRectTool::activate(const QAction *which)
+void PlaceRectangleTool::activate(const QAction *which)
 {
     Q_UNUSED(which);
 }
 
-void GraphicsRectTool::desactivate(const QAction *which)
+void PlaceRectangleTool::desactivate(const QAction *which)
 {
     Q_UNUSED(which);
 }

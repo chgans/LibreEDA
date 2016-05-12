@@ -1,14 +1,14 @@
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
-#include "tool/graphicspolygontool.h"
+#include "tool/placepolygontool.h"
 #include "item/graphicspolygonitem.h"
 
 #include <QPolygonF>
 
 #include <QAction>
 
-GraphicsPolygonTool::GraphicsPolygonTool(QObject *parent):
-    AbstractGraphicsInsertTool(parent),
+PlacePolygonTool::PlacePolygonTool(QObject *parent):
+    PlacementTool(parent),
     m_item(nullptr)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicspolygontool.svg"),
@@ -37,22 +37,22 @@ GraphicsPolygonTool::GraphicsPolygonTool(QObject *parent):
     setOptionWidgets(widgets);
 }
 
-GraphicsPolygonTool::~GraphicsPolygonTool()
+PlacePolygonTool::~PlacePolygonTool()
 {
 
 }
 
-void GraphicsPolygonTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void GraphicsPolygonTool::desactivate(const QAction *which)
+void PlacePolygonTool::activate(const QAction *which)
 {
     Q_UNUSED(which);
 }
 
-SchItem *GraphicsPolygonTool::beginInsert(const QPointF &pos)
+void PlacePolygonTool::desactivate(const QAction *which)
+{
+    Q_UNUSED(which);
+}
+
+SchItem *PlacePolygonTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsPolygonItem();
     m_item->setPos(pos);
@@ -61,7 +61,7 @@ SchItem *GraphicsPolygonTool::beginInsert(const QPointF &pos)
     return m_item;
 }
 
-void GraphicsPolygonTool::addPoint(int idx, const QPointF &pos)
+void PlacePolygonTool::addPoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(idx);
     Q_UNUSED(pos);
@@ -69,13 +69,13 @@ void GraphicsPolygonTool::addPoint(int idx, const QPointF &pos)
     m_item->addPoint(itemPos);
 }
 
-void GraphicsPolygonTool::freezePoint(int idx, const QPointF &pos)
+void PlacePolygonTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     Q_UNUSED(idx);
 }
 
-bool GraphicsPolygonTool::removePoint(int idx, const QPointF &pos)
+bool PlacePolygonTool::removePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     QPolygonF poly = m_item->polygon();
@@ -90,13 +90,13 @@ bool GraphicsPolygonTool::removePoint(int idx, const QPointF &pos)
         return false; // Remove and delete polygon
 }
 
-void GraphicsPolygonTool::movePoint(int idx, const QPointF &pos)
+void PlacePolygonTool::movePoint(int idx, const QPointF &pos)
 {
     QPointF itemPos = m_item->mapFromScene(pos);
     m_item->movePoint(idx, itemPos);
 }
 
-void GraphicsPolygonTool::endInsert(const QPointF &pos)
+void PlacePolygonTool::endInsert(const QPointF &pos)
 {
     Q_UNUSED(pos);
     emit objectInserted(m_item);
@@ -104,6 +104,6 @@ void GraphicsPolygonTool::endInsert(const QPointF &pos)
     resetTool();
 }
 
-void GraphicsPolygonTool::cancelInsert()
+void PlacePolygonTool::cancelInsert()
 {
 }

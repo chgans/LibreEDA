@@ -11,7 +11,7 @@ class QComboBox;
 class SchEditorDocument;
 class SchView;
 class SchScene;
-class AbstractGraphicsInteractiveTool;
+class InteractiveTool;
 class TaskDockWidget;
 class PropertyEditorDockWidget;
 class SnapManager;
@@ -42,9 +42,9 @@ private:
     PropertyEditorDockWidget *m_propertyEditorDockWidget = nullptr;
 
     void addInteractiveTools();
-    void addInteractiveTool(AbstractGraphicsInteractiveTool *tool);
+    void addInteractiveTool(InteractiveTool *tool);
     QActionGroup *m_interactiveToolsActionGroup = nullptr;
-    QList<AbstractGraphicsInteractiveTool *> m_interactiveTools;
+    QList<InteractiveTool *> m_interactiveTools;
     QToolBar *m_interactiveToolsToolBar = nullptr;
 
     SnapManager *m_snapManager = nullptr;

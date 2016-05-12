@@ -1,4 +1,4 @@
-#include "tool/abstractgraphicsinteractivetool.h"
+#include "tool/interactivetool.h"
 
 #include "schscene.h"
 #include "schview.h"
@@ -8,83 +8,83 @@
 #include <QKeyEvent>
 #include <QGraphicsColorizeEffect>
 
-AbstractGraphicsInteractiveTool::AbstractGraphicsInteractiveTool(QObject *parent):
+InteractiveTool::InteractiveTool(QObject *parent):
     SchTool(parent)
 {
 
 }
 
-AbstractGraphicsInteractiveTool::~AbstractGraphicsInteractiveTool()
+InteractiveTool::~InteractiveTool()
 {
 
 }
 
-QWidget *AbstractGraphicsInteractiveTool::optionWidget()
+QWidget *InteractiveTool::optionWidget()
 {
     return m_optionWidget;
 }
 
-void AbstractGraphicsInteractiveTool::setOptionWidget(QWidget *widget)
+void InteractiveTool::setOptionWidget(QWidget *widget)
 {
     m_optionWidget = widget;
 }
 
-QWidget *AbstractGraphicsInteractiveTool::taskWidget()
+QWidget *InteractiveTool::taskWidget()
 {
     return m_taskWidget;
 }
 
-void AbstractGraphicsInteractiveTool::setOperationWidget(QWidget *widget)
+void InteractiveTool::setOperationWidget(QWidget *widget)
 {
     m_taskWidget = widget;
 }
 
-QList<QWidget *> AbstractGraphicsInteractiveTool::optionWidgets()
+QList<QWidget *> InteractiveTool::optionWidgets()
 {
     return m_optionWidgets;
 }
 
-void AbstractGraphicsInteractiveTool::setOptionWidgets(QList<QWidget *> widgets)
+void InteractiveTool::setOptionWidgets(QList<QWidget *> widgets)
 {
     m_optionWidgets = widgets;
 }
 
-void AbstractGraphicsInteractiveTool::mousePressEvent(QMouseEvent *event)
+void InteractiveTool::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
 }
 
-void AbstractGraphicsInteractiveTool::mouseMoveEvent(QMouseEvent *event)
+void InteractiveTool::mouseMoveEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
 }
 
-void AbstractGraphicsInteractiveTool::mouseReleaseEvent(QMouseEvent *event)
+void InteractiveTool::mouseReleaseEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
 }
 
-void AbstractGraphicsInteractiveTool::mouseDoubleClickEvent(QMouseEvent *event)
+void InteractiveTool::mouseDoubleClickEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
 }
 
-void AbstractGraphicsInteractiveTool::keyPressEvent(QKeyEvent *event)
+void InteractiveTool::keyPressEvent(QKeyEvent *event)
 {
     Q_UNUSED(event);
 }
 
-void AbstractGraphicsInteractiveTool::keyReleaseEvent(QKeyEvent *event)
+void InteractiveTool::keyReleaseEvent(QKeyEvent *event)
 {
     Q_UNUSED(event);
 }
 
-void AbstractGraphicsInteractiveTool::wheelEvent(QWheelEvent *event)
+void InteractiveTool::wheelEvent(QWheelEvent *event)
 {
     Q_UNUSED(event);
 }
 
-SchItem *AbstractGraphicsInteractiveTool::createPhantomItem(SchItem *item)
+SchItem *InteractiveTool::createPhantomItem(SchItem *item)
 {
     SchItem *phantomItem = item->clone();
     // Pity we cannot mix effects, drop shadow is nice while moving/clonig
@@ -100,7 +100,7 @@ SchItem *AbstractGraphicsInteractiveTool::createPhantomItem(SchItem *item)
     return phantomItem;
 }
 
-QList<SchItem *> AbstractGraphicsInteractiveTool::createPhantomItems(const QList<SchItem *> &items)
+QList<SchItem *> InteractiveTool::createPhantomItems(const QList<SchItem *> &items)
 {
     QList<SchItem *> phantomItems;
     foreach (SchItem *item, items) {

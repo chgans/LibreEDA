@@ -1,33 +1,32 @@
-#ifndef GRAPHICSARCTOOL_H
-#define GRAPHICSARCTOOL_H
+#ifndef PLACEWIRETOOL_H
+#define PLACEWIRETOOL_H
 
-#include "tool/abstractgraphicsinserttool.h"
+#include "tool/placementtool.h"
 
-class GraphicsArcItem;
 class PenSettingsWidget;
-class BrushSettingsWidget;
-
+class WireOperationWidget;
+class GraphicsWireItem;
 class QAction;
+class QLineEdit;
 
-class GraphicsArcTool : public AbstractGraphicsInsertTool
+class PlaceWireTool : public PlacementTool
 {
     Q_OBJECT
 
 public:
-    explicit GraphicsArcTool(QObject *parent = nullptr);
-    ~GraphicsArcTool();
+    explicit PlaceWireTool(QObject *parent = nullptr);
+    ~PlaceWireTool();
 
 private:
-    GraphicsArcItem *m_item;
+    GraphicsWireItem *m_item;
     PenSettingsWidget *m_penSettingsWidget;
-    BrushSettingsWidget *m_brushSettingsWidget;
 
     // GraphicsTool interface
 public:
     virtual void activate(const QAction *which);
     virtual void desactivate(const QAction *which);
 
-    // AbstractGraphicsInsertTool interface
+    // PlacementTool interface
 public:
     virtual SchItem *beginInsert(const QPointF &pos);
     virtual void addPoint(int idx, const QPointF &pos);
@@ -38,4 +37,4 @@ public:
     virtual void cancelInsert();
 };
 
-#endif // GRAPHICSARCTOOL_H
+#endif // PLACEWIRETOOL_H

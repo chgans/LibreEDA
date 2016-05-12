@@ -5,7 +5,7 @@
 
 class CoordinateWidget;
 class QPushButton;
-class GraphicsWireTool;
+class PlaceWireTool;
 
 class WireOperationWidget : public QWidget
 {
@@ -13,7 +13,7 @@ class WireOperationWidget : public QWidget
 public:
     explicit WireOperationWidget(QWidget *parent = nullptr);
 
-    void setTool(GraphicsWireTool *tool);
+    void setTool(PlaceWireTool *tool);
 
 signals:
     void addPointRequested(const QPointF &point);
@@ -25,7 +25,7 @@ public slots:
     void setCurrentLocation(const QPointF &pos);
 
 private:
-    GraphicsWireTool *m_tool;
+    PlaceWireTool *m_tool;
     CoordinateWidget *m_coordinateWidget;
     QPushButton *m_undoButton;
     QPushButton *m_finishButton;

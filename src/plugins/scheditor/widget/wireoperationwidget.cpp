@@ -1,6 +1,6 @@
 #include "widget/wireoperationwidget.h"
 #include "widget/coordinatewidget.h"
-#include "tool/graphicswiretool.h"
+#include "tool/placewiretool.h"
 #include "handle/abstractgraphicshandle.h"
 
 #include <QDebug>
@@ -39,7 +39,7 @@ WireOperationWidget::WireOperationWidget(QWidget *parent) :
 }
 
 // FIXME: let the tool connect to us instead!
-void WireOperationWidget::setTool(GraphicsWireTool *tool)
+void WireOperationWidget::setTool(PlaceWireTool *tool)
 {
     if (m_tool != nullptr) {
         m_tool->disconnect(this);
