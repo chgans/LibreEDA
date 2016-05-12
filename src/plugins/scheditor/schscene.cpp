@@ -28,14 +28,3 @@ void SchScene::applySettings(const SchEditorSettings &settings)
     Q_UNUSED(settings);
 }
 
-// TBD: remove this, SchView take care of drawing sceneRect() background
-void SchScene::drawBackground(QPainter *painter, const QRectF &rect)
-{
-    Q_UNUSED(rect);
-    // FIXME: Get access to the view's palette
-    //painter->setPen(QPen(gpalette::Content1, 0));
-    painter->setPen(Qt::NoPen);
-    painter->setBrush(backgroundBrush());
-    painter->drawRect(sceneRect());
-}
-

@@ -18,10 +18,6 @@ public:
 
 public slots:
     void applySettings(const SchEditorSettings &settings);
-
-protected:
-    void drawBackground(QPainter *painter, const QRectF &rect);
-
 };
 
 #endif // GRAPHICSSCENE_H
