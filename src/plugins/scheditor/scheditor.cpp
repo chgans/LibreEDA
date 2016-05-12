@@ -152,9 +152,46 @@ bool SchEditor::open(QString *errorString, const QString &fileName)
     bool result = m_document->load(errorString, m_document->filePath());
     if (!result)
         return false;
-//    foreach (SchItem *item, m_document->items()) {
-//        m_scene->addItem(item);
-//    }
+    for (quint64 id: m_document->drawingItemIdList())
+    {
+        switch (m_document->drawingItem(id)->type())
+        {
+            case xdl::symbol::Item::Rectangle:
+                break;
+            case xdl::symbol::Item::Circle:
+            {
+                auto item = reinterpret_cast<const xdl::symbol::CircleItem*>(m_document->drawingItem(id));
+                QRectF rect(0, 0, 2*item->radius, 2*item->radius);
+                rect.moveCenter(item->center);
+                auto graphicsItem = m_scene->addEllipse(rect);
+                graphicsItem->setPos(item->position);
+                break;
+            }
+            case xdl::symbol::Item::CircularArc:
+                break;
+            case xdl::symbol::Item::Ellipse:
+            {
+                auto item = reinterpret_cast<const xdl::symbol::EllipseItem*>(m_document->drawingItem(id));
+                QRectF rect(0, 0, 2*item->xRadius, 2*item->yRadius);
+                rect.moveCenter(item->center);
+                auto graphicsItem = m_scene->addEllipse(rect);
+                graphicsItem->setPos(item->position);
+                break;
+            }
+            case xdl::symbol::Item::EllipticalArc:
+                break;
+            case xdl::symbol::Item::Polyline:
+                break;
+            case xdl::symbol::Item::Polygon:
+                break;
+            case xdl::symbol::Item::Label:
+                break;
+            case xdl::symbol::Item::Pin:
+                break;
+            case xdl::symbol::Item::Group:
+                break;
+        }
+    }
     return true;
 }
 

@@ -22,13 +22,29 @@ SchEditorDocument::SchEditorDocument(QObject *parent) :
 bool SchEditorDocument::load(QString *errorString, const QString &fileName)
 {
     xdl::symbol::Reader reader;
-    m_xdlSymbol = reader.read(fileName);
-
-    if (m_xdlSymbol == nullptr)
+    auto symbol = reader.read(fileName); // FIXME: leak/ownership
+    if (symbol == nullptr)
     {
         *errorString = reader.errorString();
         return false;
     }
+
+    m_symbolName = symbol->name;
+    m_symbolLabel = symbol->description;
+    quint64 idx = 0;
+    for (auto item: symbol->drawingItems)
+    {
+        m_drawingItemMap.insert(idx++, item);
+    }
+
+    auto circle = new xdl::symbol::CircleItem;
+    circle->radius = 50;
+    m_drawingItemMap.insert(idx++, circle);
+    auto ellipse = new xdl::symbol::EllipseItem;
+    ellipse->xRadius = 50;
+    ellipse->yRadius = 100;
+    ellipse->position = QPointF(100, 100);
+    m_drawingItemMap.insert(idx++, ellipse);
 
     return true;
 }
@@ -44,11 +60,28 @@ QUndoStack *SchEditorDocument::undoStack()
     return m_commandStack;
 }
 
+const xdl::symbol::Item *SchEditorDocument::drawingItem(quint64 id) const
+{
+    if (!m_drawingItemMap.contains(id))
+    {
+        return nullptr;
+    }
+    return m_drawingItemMap.value(id);
+}
+
+QList<quint64> SchEditorDocument::drawingItemIdList() const
+{
+    return m_drawingItemMap.keys();
+}
 
 bool SchEditorDocument::save(QString *errorString, const QString &fileName)
 {
     xdl::symbol::Writer writer;
-    if (!writer.write(fileName, m_xdlSymbol))
+    xdl::symbol::Symbol symbol;
+    symbol.name = m_symbolName;
+    symbol.description = m_symbolLabel;
+    symbol.drawingItems = m_drawingItemMap.values();
+    if (!writer.write(fileName, &symbol))
     {
         *errorString = writer.errorString();
         return false;
