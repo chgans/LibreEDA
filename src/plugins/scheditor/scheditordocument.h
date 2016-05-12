@@ -3,16 +3,9 @@
 
 #include "core/editormanager/idocument.h"
 
-#include <QSizeF>
-#include <QList>
-#include <QUndoStack>
-
 namespace xdl { namespace symbol { class Symbol; } }
 
-class SchItem;
-class SchScene;
 class SchCommand;
-
 class QUndoStack;
 
 class SchEditorDocument : public IDocument
@@ -23,20 +16,20 @@ public:
 
     bool load(QString *errorString, const QString &fileName);
 
-    QList<SchItem *> items(Qt::SortOrder order = Qt::DescendingOrder) const;
-
-    void executeCommand(SchCommand *command);
     QUndoStack *undoStack();
 
 signals:
+    void itemAdded();
+    void itemRemoved();
+    void itemChanged();
 
 public slots:
+    void executeCommand(SchCommand *command);
+
 
 private:
     xdl::symbol::Symbol *m_xdlSymbol;
-    SchScene *m_scene;
     QUndoStack *m_commandStack;
-    QList<SchItem *> m_items;
 
     // IDocument interface
 public:

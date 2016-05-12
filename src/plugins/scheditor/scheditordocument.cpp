@@ -1,22 +1,10 @@
 #include "scheditordocument.h"
-#include "schscene.h"
-
-#include "item/schitem.h"
-#include "item/graphicsbezieritem.h"
-#include "item/graphicscircleitem.h"
-#include "item/graphicsellipseitem.h"
-#include "item/graphicslineitem.h"
-#include "item/graphicspolygonitem.h"
-#include "item/graphicsrectitem.h"
-#include "item/graphicswireitem.h"
-#include "item/graphicsbezieritem.h"
 
 #include "xdl/symbol.h"
 #include "xdl/symbolwriter.h"
 #include "xdl/symbolreader.h"
 
 #include <QFile>
-#include <QJsonParseError>
 #include <QUndoStack>
 #include <QLoggingCategory>
 
@@ -26,7 +14,6 @@ Q_LOGGING_CATEGORY(Log, "leda.sch.document")
 
 SchEditorDocument::SchEditorDocument(QObject *parent) :
     IDocument(parent),
-    m_scene(new SchScene(this)),
     m_commandStack(new QUndoStack(this))
 {
     setModified(true);
@@ -44,12 +31,6 @@ bool SchEditorDocument::load(QString *errorString, const QString &fileName)
     }
 
     return true;
-}
-
-QList<SchItem *> SchEditorDocument::items(Qt::SortOrder order) const
-{
-    Q_UNUSED(order);
-    return QList<SchItem *>(); // m_scene->items(order);
 }
 
 void SchEditorDocument::executeCommand(SchCommand *command)
@@ -77,12 +58,5 @@ bool SchEditorDocument::save(QString *errorString, const QString &fileName)
 
 void SchEditorDocument::render(QPainter *painter)
 {
-    if (m_scene == nullptr)
-    {
-        return;
-    }
-
-    qCDebug(Log) << QString("Scene rect:") << m_scene->sceneRect()
-                 << QString("Painter rect:") << painter->viewport();
-    m_scene->render(painter);
+    Q_UNUSED(painter);
 }
