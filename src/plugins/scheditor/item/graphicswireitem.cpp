@@ -1,11 +1,8 @@
 #include "item/graphicswireitem.h"
 #include "handle/abstractgraphicshandle.h"
 #include "schscene.h"
-#include "core/json.h"
 
 #include <QGraphicsPathItem>
-
-const QString GraphicsWireItem::J_POINTS = QStringLiteral("points");
 
 GraphicsWireItem::GraphicsWireItem(SchItem *parent):
     SchItem(parent)
@@ -52,27 +49,6 @@ SchItem *GraphicsWireItem::clone()
     return item;
 }
 
-bool GraphicsWireItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
-{
-    if (!SchItem::fromJson(errorString, jsonObject))
-        return false;
-    if (!jsonObject.contains(J_POINTS)) {
-        *errorString = "Wire item: missing point list";
-        return false;
-    }
-    QList<QPointF> points;
-    if (!Json::toPointList(errorString, jsonObject.value(J_POINTS), points))
-        return false;
-    setPoints(points);
-    return true;
-}
-
-void GraphicsWireItem::toJson(QJsonObject &jsonObject) const
-{
-    SchItem::toJson(jsonObject);
-    jsonObject.insert(J_POINTS, Json::fromPointList(points()));
-}
-
 QList<QPointF> GraphicsWireItem::points() const
 {
     QList<QPointF> result;
@@ -82,7 +58,6 @@ QList<QPointF> GraphicsWireItem::points() const
     }
     return result;
 }
-
 
 void GraphicsWireItem::addPoint(const QPointF &pos)
 {

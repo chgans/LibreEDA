@@ -28,7 +28,6 @@ signals:
     void polygonChanged(QPolygonF polygon);
 
 private:
-    static const QString J_POINTS;
     Qt::FillRule m_fillRule;
     QPolygonF m_polygon;
     void handleToPolygon();
@@ -43,8 +42,6 @@ public:
     // SchItem interface
 public:
     virtual SchItem *clone();
-    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
-    virtual void toJson(QJsonObject &jsonObject) const;
 
 //    //virtual QList<QPointF> hotSpots() const;
 //    virtual QList<QPointF> endPoints() const;

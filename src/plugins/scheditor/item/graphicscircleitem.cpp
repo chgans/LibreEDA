@@ -1,5 +1,4 @@
 #include "item/graphicscircleitem.h"
-#include "core/json.h"
 
 #include <QStyleOptionGraphicsItem>
 
@@ -50,30 +49,6 @@ void GraphicsCircleItem::itemNotification(IGraphicsObservableItem *item)
     AbstractGraphicsHandle *handle = static_cast<AbstractGraphicsHandle *>(item);
 
     setRadius(qAbs(handle->pos().x()));
-}
-
-bool GraphicsCircleItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
-{
-    if (!SchItem::fromJson(errorString, jsonObject))
-        return false;
-    if (!SchItem::fromJson(errorString, jsonObject))
-        return false;
-    if (!jsonObject.contains("radius")) {
-        *errorString = "Circle item: missing radius";
-        return false;
-    }
-    qreal radius;
-    if (!Json::toReal(errorString, jsonObject.value("radius"), radius)) {
-        return false;
-    }
-    setRadius(radius);
-    return true;
-}
-
-void GraphicsCircleItem::toJson(QJsonObject &jsonObject) const
-{
-    SchItem::toJson(jsonObject);
-    jsonObject.insert("radius", Json::fromReal(radius()));
 }
 
 QList<QPointF> GraphicsCircleItem::endPoints() const

@@ -1,6 +1,5 @@
 #include "item/graphicsrectitem.h"
 #include "handle/abstractgraphicshandle.h"
-#include "core/json.h"
 
 #include <QBrush>
 #include <QPen>
@@ -11,8 +10,6 @@
 // TODO: Like Inkscape, if one round handle is in the corner, but not the other,
 //       then use same roundness for both
 // FIXME: Roundness handles are missplaced when the rect is not normal
-
-const QString GraphicsRectItem::J_POINTS = QStringLiteral("points");
 
 GraphicsRectItem::GraphicsRectItem(SchItem *parent):
     SchItem(parent), m_rect(QRectF(0, 0, 0, 0)),
@@ -165,27 +162,6 @@ void GraphicsRectItem::itemNotification(IGraphicsObservableItem *item)
         return;
     }
     setRect(rect);
-}
-
-bool GraphicsRectItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
-{
-    if (!SchItem::fromJson(errorString, jsonObject))
-        return false;
-    if (!jsonObject.contains(J_POINTS)) {
-        *errorString = "Rectangle item: missing points";
-        return false;
-    }
-    QRectF rect;
-    if (!Json::toRect(errorString, jsonObject.value(J_POINTS), rect))
-        return false;
-    setRect(rect);
-    return true;
-}
-
-void GraphicsRectItem::toJson(QJsonObject &jsonObject) const
-{
-    SchItem::toJson(jsonObject);
-    jsonObject.insert(J_POINTS, Json::fromRect(rect()));
 }
 
 QList<QPointF> GraphicsRectItem::endPoints() const

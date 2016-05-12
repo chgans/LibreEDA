@@ -79,8 +79,6 @@ public:
     // SchItem interface
 public:
     virtual SchItem *clone();
-    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
-    virtual void toJson(QJsonObject &jsonObject) const;
 
     // QGraphicsItem interface
 protected:

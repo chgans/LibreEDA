@@ -2,16 +2,8 @@
 #include "handle/abstractgraphicshandle.h"
 #include "handle/graphicsregularhandle.h"
 #include "handle/graphicsbezierhandle.h"
-#include "core/json.h"
 
 #include <QGraphicsTransform>
-
-const QString SchItem::J_POSITION = QStringLiteral("position");
-const QString SchItem::J_ROTATION = QStringLiteral("rotation");
-const QString SchItem::J_ZVALUE = QStringLiteral("z-value");
-const QString SchItem::J_LOCKED = QStringLiteral("locked");
-const QString SchItem::J_PEN = QStringLiteral("pen");
-const QString SchItem::J_BRUSH = QStringLiteral("brush");
 
 SchItem::SchItem(SchItem *parent):
     QGraphicsObject(parent)
@@ -112,33 +104,6 @@ bool SchItem::isXMirrored() const
 bool SchItem::isYMirrored() const
 {
     return m_isYMirrored;
-}
-
-bool SchItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
-{
-    QPointF pos;
-    if (!Json::toPoint(errorString, jsonObject.value(J_POSITION), pos))
-        return false;
-    qreal rot = 0;
-    if (jsonObject.contains(J_ROTATION) && !Json::toReal(errorString, jsonObject.value(J_ROTATION), rot))
-        return false;
-    QPen pen;
-    if (!Json::toPen(errorString, jsonObject.value(J_PEN), pen))
-        return false;
-    QBrush brush;
-    if (!Json::toBrush(errorString, jsonObject.value(J_BRUSH), brush))
-        return false;
-    setPos(pos);
-    setRotation(rot);
-    setPen(pen);
-    setBrush(brush);
-    return true;
-}
-
-void SchItem::toJson(QJsonObject &jsonObject) const
-{
-    jsonObject.insert(J_POSITION, Json::fromPoint(pos()));
-    jsonObject.insert(J_ROTATION, QJsonValue(rotation()));
 }
 
 // Return a list of hot spots in item's coordinate

@@ -1,5 +1,4 @@
 #include "item/graphicsellipseitem.h"
-#include "core/json.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <qmath.h>
@@ -111,32 +110,6 @@ SchItem *GraphicsEllipseItem::clone()
     item->setYRadius(yRadius());
     SchItem::cloneTo(item);
     return item;
-}
-
-bool GraphicsEllipseItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
-{
-    if (!SchItem::fromJson(errorString, jsonObject))
-        return false;
-    if (!jsonObject.contains("x-radius") || !jsonObject.contains("y-radius")) {
-        *errorString = "Ellipse item: missing X and/or Y radius";
-        return false;
-    }
-    qreal xradius;
-    if (!Json::toReal(errorString, jsonObject.value("x-radius"), xradius))
-        return false;
-    qreal yradius;
-    if (!Json::toReal(errorString, jsonObject.value("y-radius"), yradius))
-        return false;
-    setXRadius(xradius);
-    setYRadius(yradius);
-    return true;
-}
-
-void GraphicsEllipseItem::toJson(QJsonObject &jsonObject) const
-{
-    SchItem::toJson(jsonObject);
-    jsonObject.insert("x-radius", Json::fromReal(xRadius()));
-    jsonObject.insert("y-radius", Json::fromReal(yRadius()));
 }
 
 QList<QPointF> GraphicsEllipseItem::endPoints() const

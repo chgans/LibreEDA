@@ -5,7 +5,6 @@
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
-#include <QJsonObject>
 
 #include <QLoggingCategory>
 Q_DECLARE_LOGGING_CATEGORY(GraphicsBezierItemLog)
@@ -377,18 +376,6 @@ SchItem *GraphicsBezierItem::clone()
         item->addPoint(point);
     }
     return item;
-}
-
-bool GraphicsBezierItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
-{
-    Q_UNUSED(errorString);
-    Q_UNUSED(jsonObject);
-    return true;
-}
-
-void GraphicsBezierItem::toJson(QJsonObject &jsonObject) const
-{
-    Q_UNUSED(jsonObject);
 }
 
 void GraphicsBezierItem::itemNotification(IGraphicsObservableItem *item)

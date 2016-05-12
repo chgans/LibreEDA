@@ -45,9 +45,6 @@ public:
     bool isXMirrored() const;
     bool isYMirrored() const;
 
-    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
-    virtual void toJson(QJsonObject &jsonObject) const;
-
     virtual QList<QPointF> hotSpots() const;
     virtual QList<QPointF> endPoints() const;
     virtual QList<QPointF> midPoints() const;
@@ -91,13 +88,6 @@ protected:
     void updateMirroringTransform();
 
 private:
-    static const QString J_POSITION;
-    static const QString J_ZVALUE;
-    static const QString J_ROTATION;
-    static const QString J_LOCKED;
-    static const QString J_PEN;
-    static const QString J_BRUSH;
-
     void addAbstractHandle(AbstractGraphicsHandle *handle);
 
 };

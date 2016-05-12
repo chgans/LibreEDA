@@ -1,7 +1,4 @@
 #include "item/graphicspolygonitem.h"
-#include "core/json.h"
-
-const QString GraphicsPolygonItem::J_POINTS = QStringLiteral("points");
 
 GraphicsPolygonItem::GraphicsPolygonItem(SchItem *parent):
     SchItem(parent),
@@ -128,28 +125,6 @@ SchItem *GraphicsPolygonItem::clone()
     SchItem::cloneTo(item);
     return item;
 }
-
-bool GraphicsPolygonItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
-{
-    if (!SchItem::fromJson(errorString, jsonObject))
-        return false;
-    if (!jsonObject.contains(J_POINTS)) {
-        *errorString = "Rectangle item: missing points";
-        return false;
-    }
-    QPolygonF poly;
-    if (!Json::toPolygon(errorString, jsonObject.value(J_POINTS), poly))
-        return false;
-    setPolygon(poly);
-    return true;
-}
-
-void GraphicsPolygonItem::toJson(QJsonObject &jsonObject) const
-{
-    SchItem::toJson(jsonObject);
-    jsonObject.insert(J_POINTS, Json::fromPolygon(polygon()));
-}
-
 
 QVariant GraphicsPolygonItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {

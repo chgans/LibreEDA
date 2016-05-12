@@ -33,8 +33,6 @@ private:
 public:
     virtual SchItem *clone();
     void itemNotification(IGraphicsObservableItem *item);
-    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
-    virtual void toJson(QJsonObject &jsonObject) const;
 
     //virtual QList<QPointF> hotSpots() const;
     virtual QList<QPointF> endPoints() const;

@@ -1,5 +1,4 @@
 #include "item/graphicsarcitem.h"
-#include "core/json.h"
 
 #include <qmath.h>
 #include <QStyleOptionGraphicsItem>
@@ -220,50 +219,6 @@ SchItem *GraphicsArcItem::clone()
     item->setSpanAngle(m_spanAngle);
     SchItem::cloneTo(item);
     return item;
-}
-
-// TODO: use J_* static const
-bool GraphicsArcItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
-{
-    if (!SchItem::fromJson(errorString, jsonObject))
-        return false;
-
-    if (!jsonObject.contains("xRadius") || !jsonObject.contains("yRadius")) {
-        *errorString = "Arc item: missing X and/or Y radius";
-        return false;
-    }
-    qreal xradius;
-    if (!Json::toReal(errorString, jsonObject.value("xRadius"), xradius))
-        return false;
-    qreal yradius;
-    if (!Json::toReal(errorString, jsonObject.value("yRadius"), yradius))
-        return false;
-
-    if (!jsonObject.contains("startAngle") || !jsonObject.contains("spanAngle")) {
-        *errorString = "Arc item: missing start/span angle";
-        return false;
-    }
-    int start;
-    if (!Json::toInt(errorString, jsonObject.value("startAngle"), start))
-        return false;
-    int span;
-    if (!Json::toInt(errorString, jsonObject.value("stopAngle"), span))
-        return false;
-
-    setXRadius(xradius);
-    setYRadius(yradius);
-    setStartAngle(start);
-    setSpanAngle(span);
-    return true;
-}
-
-void GraphicsArcItem::toJson(QJsonObject &jsonObject) const
-{
-    SchItem::toJson(jsonObject);
-    jsonObject.insert("xRadius", Json::fromReal(m_xRadius));
-    jsonObject.insert("yRadius", Json::fromReal(m_yRadius));
-    jsonObject.insert("startAngle", Json::fromReal(m_startAngle));
-    jsonObject.insert("stopAngle", Json::fromReal(m_spanAngle));
 }
 
 QList<QPointF> GraphicsArcItem::endPoints() const

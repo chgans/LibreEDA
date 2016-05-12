@@ -30,15 +30,11 @@ signals:
     void lineChanged();
 
 private:
-    static const QString J_POINTS;
-
     QLineF m_line;
 
     // SchItem interface
 public:
     SchItem *clone();
-    virtual bool fromJson(QString *errorString, const QJsonObject &jsonObject);
-    virtual void toJson(QJsonObject &jsonObject) const;
 
     //virtual QList<QPointF> hotSpots() const;
     virtual QList<QPointF> endPoints() const;
