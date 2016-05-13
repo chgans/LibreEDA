@@ -458,14 +458,21 @@ QPainterPath SnapManager::decoration() const
 bool SnapManager::snap(QPointF mousePos, qreal maxDistance)
 {
     m_winnerStrategy = nullptr;
-    int minDistance = INT_MAX;
-    for (SnapStrategy *strategy: m_strategies) {
-        if (strategy->isEnabled() && strategy->snap(mousePos, maxDistance)) {
-            int distance = (strategy->snappedPosition() - mousePos).manhattanLength();
-            if (distance < minDistance) {
-                m_winnerStrategy = strategy;
-                minDistance = distance;
-            }
+    qreal minDistance = std::numeric_limits<qreal>::max();
+    for (SnapStrategy *strategy: m_strategies)
+    {
+        if (!strategy->isEnabled())
+        {
+            continue;
+        }
+        if (!strategy->snap(mousePos, maxDistance))
+        {
+            continue;
+        }
+        qreal distance = (strategy->snappedPosition() - mousePos).manhattanLength();
+        if (distance < minDistance) {
+            m_winnerStrategy = strategy;
+            minDistance = distance;
         }
     }
     return m_winnerStrategy != nullptr;
