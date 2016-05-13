@@ -13,7 +13,7 @@ class TaskDockWidget : public DockWidget
     Q_OBJECT
 
 public:
-    explicit TaskDockWidget(QWidget *parent = nullptr);
+    explicit TaskDockWidget(QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
 signals:
 
@@ -25,7 +25,7 @@ private:
 
     // DockWidget interface
 public slots:
-    void applySettings(const SchSettings &settings);
+    void applySettings(const SchEditorSettings &settings);
 };
 
 #endif // TASKDOCKWIDGET_H

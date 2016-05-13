@@ -19,7 +19,7 @@
 
 #include "dock/taskdockwidget.h"
 #include "dock/propertyeditordockwidget.h"
-
+#include "dock/undodockwidget.h"
 
 #include "core/core.h"
 
@@ -133,6 +133,7 @@ bool SchEditor::open(QString *errorString, const QString &fileName)
                 break;
         }
     }
+    m_undoDockWidget->setStack(m_document->undoStack());
     return true;
 }
 
@@ -161,14 +162,19 @@ void SchEditor::activate(QMainWindow *win)
     m_arrangeToolBar->show();
     win->addToolBar(m_pathPointToolBar);
     m_pathPointToolBar->show();
-    win->addDockWidget(Qt::LeftDockWidgetArea, m_taskDockWidget);
-    m_taskDockWidget->show();
     win->addDockWidget(Qt::RightDockWidgetArea, m_propertyEditorDockWidget);
     m_propertyEditorDockWidget->show();
+    win->addDockWidget(Qt::RightDockWidgetArea, m_taskDockWidget);
+    m_taskDockWidget->show();
+    win->addDockWidget(Qt::RightDockWidgetArea, m_undoDockWidget);
+    m_undoDockWidget->show();
+    win->tabifyDockWidget(m_propertyEditorDockWidget, m_taskDockWidget);
+    win->tabifyDockWidget(m_taskDockWidget, m_undoDockWidget);
 }
 
 void SchEditor::desactivate(QMainWindow *win)
 {
+    win->removeDockWidget(m_undoDockWidget);
     win->removeDockWidget(m_propertyEditorDockWidget);
     win->removeDockWidget(m_taskDockWidget);
     win->removeToolBar(m_arrangeToolBar);
@@ -315,6 +321,8 @@ void SchEditor::addDockWidgets()
 {
     m_taskDockWidget = new TaskDockWidget();
     m_propertyEditorDockWidget = new PropertyEditorDockWidget();
+    m_undoDockWidget = new UndoDockWidget();
+
 #if 1
     connect(m_scene, &SchScene::selectionChanged,
             this, [this]() {

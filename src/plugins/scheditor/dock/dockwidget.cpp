@@ -1,11 +1,12 @@
 #include "dockwidget.h"
 
-DockWidget::DockWidget()
+DockWidget::DockWidget(QWidget *parent, Qt::WindowFlags flags):
+    QDockWidget(parent, flags)
 {
 
 }
 
-void DockWidget::applySettings(const SchSettings &settings)
+void DockWidget::applySettings(const SchEditorSettings &settings)
 {
     Q_UNUSED(settings);
 }

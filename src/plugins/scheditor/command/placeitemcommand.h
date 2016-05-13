@@ -159,7 +159,6 @@ public:
     QList<QPointF> vertices; // position is always first point?
 };
 
-
 class PlacePolygonCommand: public PlaceItemCommand
 {
 public:
@@ -170,8 +169,6 @@ public:
 
     QList<QPointF> vertices; // position is always first point?
 };
-
-
 
 class PlaceLabelCommand: public PlaceItemCommand
 {

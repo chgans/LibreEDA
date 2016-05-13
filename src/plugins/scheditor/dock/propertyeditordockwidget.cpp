@@ -6,9 +6,10 @@
 #include <QVBoxLayout>
 #include <QMap>
 
-PropertyEditorDockWidget::PropertyEditorDockWidget():
-    QDockWidget("Property editor")
+PropertyEditorDockWidget::PropertyEditorDockWidget(QWidget *parent, Qt::WindowFlags flags):
+    DockWidget(parent, flags)
 {
+    setWindowTitle("Property editor");
     QWidget *widget = new QWidget;
     setWidget(widget);
     widget->setLayout(new QVBoxLayout);
@@ -62,7 +63,7 @@ void PropertyEditorDockWidget::updateEditor(int)
 }
 
 
-void PropertyEditorDockWidget::applySettings(const SchSettings &settings)
+void PropertyEditorDockWidget::applySettings(const SchEditorSettings &settings)
 {
     Q_UNUSED(settings);
 }

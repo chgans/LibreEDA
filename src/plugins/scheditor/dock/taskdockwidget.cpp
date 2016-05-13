@@ -6,9 +6,10 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
-TaskDockWidget::TaskDockWidget(QWidget *parent) :
-    QDockWidget("Task", parent)
+TaskDockWidget::TaskDockWidget(QWidget *parent, Qt::WindowFlags flags) :
+    DockWidget(parent, flags)
 {
+    setWindowTitle("Task");
     QWidget *widget = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout();
     widget->setLayout(layout);
@@ -28,7 +29,7 @@ void TaskDockWidget::setTool(InteractiveTool *tool)
     }
 }
 
-void TaskDockWidget::applySettings(const SchSettings &settings)
+void TaskDockWidget::applySettings(const SchEditorSettings &settings)
 {
     Q_UNUSED(settings);
 }

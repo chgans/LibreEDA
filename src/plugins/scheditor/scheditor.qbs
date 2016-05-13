@@ -18,6 +18,8 @@ LedaPlugin {
         "dock/taskdockwidget.h",
         "dock/propertyeditordockwidget.cpp",
         "dock/propertyeditordockwidget.h",
+        "dock/undodockwidget.cpp",
+        "dock/undodockwidget.h",
         "grid/graphicsgrid.cpp",
         "grid/graphicsgrid.h",
         "grid/graphicscartesiangrid.cpp",

@@ -13,12 +13,12 @@ class SchItem;
 class QStackedWidget;
 class QComboBox;
 
-class PropertyEditorDockWidget : public QDockWidget
+class PropertyEditorDockWidget : public DockWidget
 {
     Q_OBJECT
 
 public:
-    PropertyEditorDockWidget();
+    PropertyEditorDockWidget(QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
 signals:
 
@@ -34,6 +34,10 @@ private:
     QComboBox *m_objectComboBox;
     QMap<QString, QList<QObject *> > m_classNameToObjects;
     QList<QObject *> m_objects;
+
+    // DockWidget interface
+public slots:
+    void applySettings(const SchEditorSettings &settings);
 };
 
 #endif // PROPERTYEDITORDOCKWIDGET_H

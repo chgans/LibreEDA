@@ -3,15 +3,15 @@
 
 #include <QDockWidget>
 
-class SchSettings;
+class SchEditorSettings;
 
 class DockWidget : public QDockWidget
 {
 public:
-    DockWidget();
+    DockWidget(QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
 public slots:
-    void applySettings(const SchSettings &settings);
+    virtual void applySettings(const SchEditorSettings &settings);
 
 };
 

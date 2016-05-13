@@ -14,6 +14,7 @@ class SchScene;
 class InteractiveTool;
 class TaskDockWidget;
 class PropertyEditorDockWidget;
+class UndoDockWidget;
 class SnapManager;
 class SchEditorSettings;
 
@@ -36,10 +37,7 @@ public slots:
 
 private:
     SchEditorDocument *m_document = nullptr;
-    SchView *m_view = nullptr;
-    SchScene *m_scene = nullptr;
-    TaskDockWidget *m_taskDockWidget = nullptr;
-    PropertyEditorDockWidget *m_propertyEditorDockWidget = nullptr;
+    SnapManager *m_snapManager = nullptr;
 
     void addInteractiveTools();
     void addInteractiveTool(InteractiveTool *tool);
@@ -47,7 +45,6 @@ private:
     QList<InteractiveTool *> m_interactiveTools;
     QToolBar *m_interactiveToolsToolBar = nullptr;
 
-    SnapManager *m_snapManager = nullptr;
     void addSnapTools();
     QToolBar *m_snapToolBar = nullptr;
 
@@ -58,9 +55,15 @@ private:
     QToolBar *m_arrangeToolBar = nullptr;
 
     void addDockWidgets();
+    TaskDockWidget *m_taskDockWidget = nullptr;
+    PropertyEditorDockWidget *m_propertyEditorDockWidget = nullptr;
+    UndoDockWidget *m_undoDockWidget;
 
     void addView();
+    SchView *m_view = nullptr;
+
     void addScene();
+    SchScene *m_scene = nullptr;
 
     // IEditor interface
 public:
