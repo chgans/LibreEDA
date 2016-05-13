@@ -50,12 +50,18 @@ struct WriterPrivate
     void writeInt(const char *tag, int value);
     void writeDouble(const char *tag, qreal value);
 
-    QXmlStreamWriter *writer;
+    QXmlStreamWriter *xmlWriter;
 };
 
-Writer::Writer()
+Writer::Writer():
+    p(new WriterPrivate)
 {
-    p->writer = new QXmlStreamWriter();
+    p->xmlWriter = new QXmlStreamWriter();
+}
+
+Writer::~Writer()
+{
+    delete p;
 }
 
 bool Writer::write(const QString &filename, const Symbol *symbol)
@@ -65,12 +71,12 @@ bool Writer::write(const QString &filename, const Symbol *symbol)
         m_errorString = QString("\"%1\": %2").arg(filename).arg(file.errorString());
         return false;
     }
-    p->writer->setDevice(&file);
-    p->writer->setAutoFormatting(true);
-    p->writer->writeStartDocument("1.0");
-    p->writer->writeDefaultNamespace("http://www.leda.org/xdl");
+    p->xmlWriter->setDevice(&file);
+    p->xmlWriter->setAutoFormatting(true);
+    p->xmlWriter->writeStartDocument("1.0");
+    p->xmlWriter->writeDefaultNamespace("http://www.leda.org/xdl");
     p->writeSymbol(symbol);
-    p->writer->writeEndDocument();
+    p->xmlWriter->writeEndDocument();
     return true;
 }
 
@@ -81,11 +87,11 @@ QString Writer::errorString() const
 
 void WriterPrivate::writeSymbol(const Symbol *symbol)
 {
-    writer->writeStartElement("symbol");
-    writer->writeTextElement("name", symbol->name);
-    writer->writeTextElement("label", symbol->description);
+    xmlWriter->writeStartElement("symbol");
+    xmlWriter->writeTextElement("name", symbol->name);
+    xmlWriter->writeTextElement("label", symbol->description);
     writeItemList("drawing", symbol->drawingItems);
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writeItem(const Item *item)
@@ -127,103 +133,103 @@ void WriterPrivate::writeItem(const Item *item)
 
 void WriterPrivate::writeItemList(const char *listTag, const QList<Item *> &items)
 {
-    writer->writeStartElement(listTag);
+    xmlWriter->writeStartElement(listTag);
     foreach (Item *item, items) {
        writeItem(item);
     }
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writePolyline(const PolylineItem *item)
 {
-    writer->writeStartElement("polyline");
+    xmlWriter->writeStartElement("polyline");
     writeItemContent(item);
     writePointList("vertices", "point", item->vertices);
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writePolygon(const PolygonItem *item)
 {
-    writer->writeStartElement("polygon");
+    xmlWriter->writeStartElement("polygon");
     writeItemContent(item);
     writePointList("vertices", "point", item->vertices);
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writeRectangle(const RectangleItem *item)
 {
-    writer->writeStartElement("rectangle");
+    xmlWriter->writeStartElement("rectangle");
     writeItemContent(item);
     writePoint("top-left", item->topLeft);
     writePoint("bottom-right", item->bottomRight);
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writeCircle(const CircleItem *item)
 {
-    writer->writeStartElement("circle");
+    xmlWriter->writeStartElement("circle");
     writeItemContent(item);
     writePoint("center", item->center);
     writeDouble("radius", item->radius);
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writeCircularArc(const CircularArcItem *item)
 {
-    writer->writeStartElement("circular-arc");
+    xmlWriter->writeStartElement("circular-arc");
     writeItemContent(item);
     writePoint("center", item->center);
     writeDouble("radius", item->radius);
     writeDouble("start-angle", item->startAngle);
     writeDouble("span-angle", item->spanAngle);
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writeEllipse(const EllipseItem *item)
 {
-    writer->writeStartElement("ellipse");
+    xmlWriter->writeStartElement("ellipse");
     writeItemContent(item);
     writePoint("center", item->center);
     writeDouble("x-radius", item->xRadius);
     writeDouble("y-radius", item->yRadius);
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writeEllipticalArc(const EllipticalArcItem *item)
 {
-    writer->writeStartElement("elliptical-arc");
+    xmlWriter->writeStartElement("elliptical-arc");
     writeItemContent(item);
     writePoint("center", item->center);
     writeDouble("x-radius", item->xRadius);
     writeDouble("y-radius", item->yRadius);
     writeDouble("start-angle", item->startAngle);
     writeDouble("span-angle", item->spanAngle);
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writeLabel(const LabelItem *item)
 {
-    writer->writeStartElement("label");
+    xmlWriter->writeStartElement("label");
     writeItemContent(item);
     // FIXME
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writePin(const PinItem *item)
 {
-    writer->writeStartElement("pin");
+    xmlWriter->writeStartElement("pin");
     writeItemContent(item);
-    writer->writeTextElement("designator", item->designator->text); // FIXME
-    writer->writeTextElement("label", item->label->text); // FIXME
-    writer->writeEndElement();
+    xmlWriter->writeTextElement("designator", item->designator->text); // FIXME
+    xmlWriter->writeTextElement("label", item->label->text); // FIXME
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writeGroup(const ItemGroup *item)
 {
-    writer->writeStartElement("group");
+    xmlWriter->writeStartElement("group");
     writeItemContent(item);
     // writeItemList("children", item->childrenId);
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writeItemContent(const Item *item)
@@ -242,56 +248,56 @@ void WriterPrivate::writeItemContent(const Item *item)
 
 void WriterPrivate::writePen(const char *tag, const QPen &pen)
 {
-    writer->writeStartElement(tag);
+    xmlWriter->writeStartElement(tag);
     writeDouble("width", pen.width());
     writeColor("color", pen.color());
     writePenStyle("style", pen.style());
     writePenCapStyle("cap-style", pen.capStyle());
     writePenJoinStyle("join-style", pen.joinStyle());
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writeBrush(const char *tag, const QBrush &brush)
 {
-    writer->writeStartElement(tag);
+    xmlWriter->writeStartElement(tag);
     writeColor("color", brush.color());
     writeBrushStyle("style", brush.style());
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writePoint(const char *tag, const QPointF &point)
 {
-    writer->writeStartElement(tag);
+    xmlWriter->writeStartElement(tag);
     writeDouble("x", point.x());
     writeDouble("y", point.y());
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writePointList(const char *listTag, const char *pointTag, const QList<QPointF> &pointList)
 {
-    writer->writeStartElement(listTag);
+    xmlWriter->writeStartElement(listTag);
     foreach (const QPointF &pos, pointList)
         writePoint(pointTag, pos);
-    writer->writeEndElement();
+    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writeColor(const char *tag, const QColor &color)
 {
-    writer->writeTextElement(tag, color.name());
+    xmlWriter->writeTextElement(tag, color.name());
 }
 
 void WriterPrivate::writePenStyle(const char *tag, Qt::PenStyle style)
 {
     QString str;
     switch (style) {
-    case Qt::DashLine: str = "DashLine"; break;
-    case Qt::DotLine: str = "DotLine"; break;
-    case Qt::DashDotLine: str = "DashDotLine"; break;
-    case Qt::DashDotDotLine: str = "DashDotDotLine"; break;
-    case Qt::NoPen: str = "NoPen"; break;
-    default: str = "SolidLine";
+        case Qt::DashLine: str = "DashLine"; break;
+        case Qt::DotLine: str = "DotLine"; break;
+        case Qt::DashDotLine: str = "DashDotLine"; break;
+        case Qt::DashDotDotLine: str = "DashDotDotLine"; break;
+        case Qt::NoPen: str = "NoPen"; break;
+        default: str = "SolidLine";
     }
-    writer->writeTextElement(tag, str);
+    xmlWriter->writeTextElement(tag, str);
 }
 
 void WriterPrivate::writePenCapStyle(const char *tag, Qt::PenCapStyle style)
@@ -302,7 +308,7 @@ void WriterPrivate::writePenCapStyle(const char *tag, Qt::PenCapStyle style)
     case Qt::SquareCap: str = "Square"; break;
     default: str = "Round";
     }
-    writer->writeTextElement(tag, str);
+    xmlWriter->writeTextElement(tag, str);
 }
 
 void WriterPrivate::writePenJoinStyle(const char *tag, Qt::PenJoinStyle style)
@@ -313,7 +319,7 @@ void WriterPrivate::writePenJoinStyle(const char *tag, Qt::PenJoinStyle style)
     case Qt::BevelJoin: str = "Bevel"; break;
     default: str = "Round";
     }
-    writer->writeTextElement(tag, str);
+    xmlWriter->writeTextElement(tag, str);
 }
 
 void WriterPrivate::writeBrushStyle(const char *tag, Qt::BrushStyle style)
@@ -329,22 +335,22 @@ void WriterPrivate::writeBrushStyle(const char *tag, Qt::BrushStyle style)
     case Qt::DiagCrossPattern: str = "CrossDiagonal"; break;
     default: str = "NoBrush";
     }
-    writer->writeTextElement(tag, str);
+    xmlWriter->writeTextElement(tag, str);
 }
 
 void WriterPrivate::writeBoolean(const char *tag, bool value)
 {
-    writer->writeTextElement(tag, value ? "true" : "false");
+    xmlWriter->writeTextElement(tag, value ? "true" : "false");
 }
 
 void WriterPrivate::writeInt(const char *tag, int value)
 {
-    writer->writeTextElement(tag, QString("%1").arg(value));
+    xmlWriter->writeTextElement(tag, QString("%1").arg(value));
 }
 
 void WriterPrivate::writeDouble(const char *tag, qreal value)
 {
-    writer->writeTextElement(tag, QString("%1").arg(value, 0, 'E', 6));
+    xmlWriter->writeTextElement(tag, QString("%1").arg(value, 0, 'E', 6));
 }
 
 }}

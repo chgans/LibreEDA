@@ -12,6 +12,7 @@ class Writer
 {
 public:
     Writer();
+    ~Writer();
 
     bool write(const QString &filename, const Symbol *symbol);
     QString errorString() const;

@@ -17,7 +17,7 @@ xdl::symbol::Symbol::Symbol()
 
 xdl::symbol::Symbol::~Symbol()
 {
-    qDeleteAll(drawingItems);
+    //qDeleteAll(drawingItems); // We don't have ownership
 }
 
 xdl::symbol::RectangleItem::RectangleItem()
