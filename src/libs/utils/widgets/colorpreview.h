@@ -69,10 +69,10 @@ public:
     /// Get the comparison color
     QColor comparisonColor() const;
 
-    QSize sizeHint () const;
+    QSize sizeHint() const;
 
     void paint(QPainter &painter, QRect rect) const;
-    
+
 public slots:
     /// Set current color
     void setColor(const QColor &c);
@@ -95,7 +95,7 @@ protected:
 
 private:
     class Private;
-    Private * const p;
+    Private *const p;
 };
 
 #endif // COLOR_PREVIEW_HPP

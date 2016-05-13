@@ -39,7 +39,9 @@ const QString IDocument::filePath() const
 void IDocument::setFilePath(const QString &filePath)
 {
     if (filePath == m_filePath)
+    {
         return;
+    }
     QString old = m_filePath;
     m_filePath = filePath;
     emit filePathChanged(old, m_filePath);
@@ -53,7 +55,9 @@ QString IDocument::displayName() const
 void IDocument::setDisplayName(const QString &name)
 {
     if (name == m_displayName)
+    {
         return;
+    }
     m_displayName = name;
     emit displayNameChanged(m_displayName);
 }
@@ -66,7 +70,9 @@ bool IDocument::isModified() const
 void IDocument::setModified(bool modified)
 {
     if (modified == m_modified)
+    {
         return;
+    }
     m_modified = modified;
     emit modifiedChanged(m_modified);
 }

@@ -17,7 +17,7 @@ void SchEditorFactory::applySettings()
 {
     SchEditorSettings settings;
     settings.load(Core::settings());
-    for (auto editor: m_editors)
+    for (auto editor : m_editors)
     {
         editor->applySettings(settings);
     }
@@ -28,7 +28,8 @@ IEditor *SchEditorFactory::createEditor()
     auto editor = new SchEditor();
     m_editors.append(editor);
     connect(editor, &QObject::destroyed,
-            this, [this, editor](QObject *) {
+            this, [this, editor](QObject *)
+    {
         m_editors.removeOne(editor);
     });
     SchEditorSettings settings;

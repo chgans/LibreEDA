@@ -77,7 +77,7 @@ void SchEditor::applySettings(const SchEditorSettings &settings)
 {
     m_scene->applySettings(settings);
     m_view->applySettings(settings);
-    for (auto tool: m_interactiveTools)
+    for (auto tool : m_interactiveTools)
     {
         tool->applySettings(settings);
     }
@@ -100,7 +100,7 @@ bool SchEditor::open(QString *errorString, const QString &fileName)
         return false;
     }
 
-    for (quint64 id: m_document->drawingItemIdList())
+    for (quint64 id : m_document->drawingItemIdList())
     {
         m_scene->addDocumentItem(id, m_document->drawingItem(id));
     }
@@ -169,11 +169,11 @@ void SchEditor::addInteractiveTools()
     m_interactiveTools << m_selectTool;
 
     m_placementTools /*<< new PlacePolyineTool(this)*/
-                     << new PlaceRectangleTool(this)
-                     << new PlaceCircleTool(this)
-                     << new PlaceEllipseTool(this)
-                     << new PlacePolygonTool(this);
-    for (auto tool: m_placementTools)
+            << new PlaceRectangleTool(this)
+            << new PlaceCircleTool(this)
+            << new PlaceEllipseTool(this)
+            << new PlacePolygonTool(this);
+    for (auto tool : m_placementTools)
     {
         m_interactiveTools << tool;
         connect(tool, &SchTool::finished, // TODO: rename to differentiate with taskCompleted, canceled, ...
@@ -182,7 +182,7 @@ void SchEditor::addInteractiveTools()
 
     m_interactiveActionGroup = new QActionGroup(this);
     m_interactiveToolBar = new QToolBar();
-    for (auto tool: m_interactiveTools)
+    for (auto tool : m_interactiveTools)
     {
         QAction *action = tool->action();
         action->setCheckable(true);
@@ -190,7 +190,7 @@ void SchEditor::addInteractiveTools()
         m_interactiveActionGroup->addAction(action);
         m_interactiveToolBar->addAction(action);
         connect(tool, &SchTool::taskCompleted,
-                this, [this](UndoCommand *command)
+                this, [this](UndoCommand * command)
         {
             command->setDocument(m_document);
             m_undoStack->push(command);
@@ -199,9 +199,9 @@ void SchEditor::addInteractiveTools()
     m_selectTool->action()->setChecked(true);
 
     connect(m_interactiveActionGroup, &QActionGroup::triggered,
-            this, [this](QAction *action)
+            this, [this](QAction * action)
     {
-        InteractiveTool *tool = action->data().value<InteractiveTool*>();
+        InteractiveTool *tool = action->data().value<InteractiveTool *>();
         m_view->setTool(tool);
         m_taskDockWidget->setTool(tool);
     });
@@ -212,7 +212,7 @@ void SchEditor::addSnapTools()
     m_snapManager = m_view->snapManager(); //new SnapManager(m_view);
     m_snapToolBar = new QToolBar();
 
-    for (auto group: m_snapManager->groups())
+    for (auto group : m_snapManager->groups())
     {
         m_snapToolBar->addActions(m_snapManager->actions(group));
     }
@@ -238,9 +238,11 @@ void SchEditor::addDockWidgets()
     m_undoDockWidget = new UndoDockWidget();
 
     connect(m_scene, &SchScene::selectionChanged,
-            this, [this]() {
+            this, [this]()
+    {
         QList<QObject *> objects;
-        for (QObject *object: m_scene->selectedObjects()) {
+        for (QObject *object : m_scene->selectedObjects())
+        {
             objects.append(object);
         }
         m_propertyEditorDockWidget->setObjects(objects);

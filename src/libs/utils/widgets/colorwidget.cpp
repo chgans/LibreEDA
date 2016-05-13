@@ -55,8 +55,8 @@ public:
         QVBoxLayout *mainLayout = new QVBoxLayout;
         widget->setLayout(mainLayout);
 
-//        QVBoxLayout *leftLayout = new QVBoxLayout;
-//        mainLayout->addLayout(leftLayout);
+        //        QVBoxLayout *leftLayout = new QVBoxLayout;
+        //        mainLayout->addLayout(leftLayout);
 
         m_wheel = new ColorWheel();
         m_wheel->setWheelWidth(60);
@@ -140,7 +140,8 @@ public:
         rightLayout->setRowStretch(row, 10);
     }
 
-    void initSliderSpinBox(QGridLayout *layout, QSlider *slider, QSpinBox *spinbox, QLabel *label, int row)
+    void initSliderSpinBox(QGridLayout *layout, QSlider *slider, QSpinBox *spinbox, QLabel *label,
+                           int row)
     {
         slider->setMaximum(255);
         slider->setOrientation(Qt::Horizontal);
@@ -188,13 +189,13 @@ ColorWidget::ColorWidget(QWidget *parent) :
     //QPushButton *pickButton = p->m_buttonBox->addButton(tr("Pick"), QDialogButtonBox::ActionRole);
     //pickButton->setIcon(QIcon::fromTheme("color-picker"));
 
-    connect(p->m_wheel,&ColorWheel::displayFlagsChanged,
+    connect(p->m_wheel, &ColorWheel::displayFlagsChanged,
             this, &ColorWidget::wheelFlagsChanged);
 }
 
 QSize ColorWidget::sizeHint() const
 {
-    return QSize(400,0);
+    return QSize(400, 0);
 }
 
 ColorWheel::Display_Flags ColorWidget::wheelFlags() const
@@ -205,8 +206,10 @@ ColorWheel::Display_Flags ColorWidget::wheelFlags() const
 QColor ColorWidget::color() const
 {
     QColor col = p->m_wheel->color();
-    if(p->alpha_enabled)
+    if (p->alpha_enabled)
+    {
         col.setAlpha(p->m_alphaSlider->value());
+    }
     return col;
 }
 
@@ -282,40 +285,42 @@ void ColorWidget::update_widgets()
 {
     bool blocked = signalsBlocked();
     blockSignals(true);
-    for (QWidget* w: findChildren<QWidget*>())
+    for (QWidget *w : findChildren<QWidget *>())
+    {
         w->blockSignals(true);
+    }
 
     QColor col = color();
 
     p->m_redSlider->setValue(col.red());
     p->m_redSpinBox->setValue(p->m_redSlider->value());
-    p->m_redSlider->setFirstColor(QColor(0,col.green(),col.blue()));
-    p->m_redSlider->setLastColor(QColor(255,col.green(),col.blue()));
+    p->m_redSlider->setFirstColor(QColor(0, col.green(), col.blue()));
+    p->m_redSlider->setLastColor(QColor(255, col.green(), col.blue()));
 
     p->m_greenSlider->setValue(col.green());
     p->m_greenSpinBox->setValue(p->m_greenSlider->value());
-    p->m_greenSlider->setFirstColor(QColor(col.red(),0,col.blue()));
-    p->m_greenSlider->setLastColor(QColor(col.red(),255,col.blue()));
+    p->m_greenSlider->setFirstColor(QColor(col.red(), 0, col.blue()));
+    p->m_greenSlider->setLastColor(QColor(col.red(), 255, col.blue()));
 
     p->m_blueSlider->setValue(col.blue());
     p->m_blueSpinBox->setValue(p->m_blueSlider->value());
-    p->m_blueSlider->setFirstColor(QColor(col.red(),col.green(),0));
-    p->m_blueSlider->setLastColor(QColor(col.red(),col.green(),255));
+    p->m_blueSlider->setFirstColor(QColor(col.red(), col.green(), 0));
+    p->m_blueSlider->setLastColor(QColor(col.red(), col.green(), 255));
 
-    p->m_hueSlider->setValue(qRound(p->m_wheel->hue()*360.0));
+    p->m_hueSlider->setValue(qRound(p->m_wheel->hue() * 360.0));
     p->m_hueSlider->setColorSaturation(p->m_wheel->saturation());
     p->m_hueSlider->setColorValue(p->m_wheel->value());
     p->m_hueSpinBox->setValue(p->m_hueSlider->value());
 
-    p->m_saturationSlider->setValue(qRound(p->m_wheel->saturation()*255.0));
+    p->m_saturationSlider->setValue(qRound(p->m_wheel->saturation() * 255.0));
     p->m_saturationSpinBox->setValue(p->m_saturationSlider->value());
-    p->m_saturationSlider->setFirstColor(QColor::fromHsvF(p->m_wheel->hue(),0,p->m_wheel->value()));
-    p->m_saturationSlider->setLastColor(QColor::fromHsvF(p->m_wheel->hue(),1,p->m_wheel->value()));
+    p->m_saturationSlider->setFirstColor(QColor::fromHsvF(p->m_wheel->hue(), 0, p->m_wheel->value()));
+    p->m_saturationSlider->setLastColor(QColor::fromHsvF(p->m_wheel->hue(), 1, p->m_wheel->value()));
 
-    p->m_valueSlider->setValue(qRound(p->m_wheel->value()*255.0));
+    p->m_valueSlider->setValue(qRound(p->m_wheel->value() * 255.0));
     p->m_valueSpinBox->setValue(p->m_valueSlider->value());
-    p->m_valueSlider->setFirstColor(QColor::fromHsvF(p->m_wheel->hue(), p->m_wheel->saturation(),0));
-    p->m_valueSlider->setLastColor(QColor::fromHsvF(p->m_wheel->hue(), p->m_wheel->saturation(),1));
+    p->m_valueSlider->setFirstColor(QColor::fromHsvF(p->m_wheel->hue(), p->m_wheel->saturation(), 0));
+    p->m_valueSlider->setLastColor(QColor::fromHsvF(p->m_wheel->hue(), p->m_wheel->saturation(), 1));
 
 
     QColor apha_color = col;
@@ -331,36 +336,40 @@ void ColorWidget::update_widgets()
     p->m_preview->setColor(col);
 
     blockSignals(blocked);
-    for (QWidget* w: findChildren<QWidget*>())
+    for (QWidget *w : findChildren<QWidget *>())
+    {
         w->blockSignals(false);
+    }
 
     emit colorChanged(col);
 }
 
 void ColorWidget::set_hsv()
 {
-    if ( !signalsBlocked() )
+    if (!signalsBlocked())
     {
         p->m_wheel->setColor(QColor::fromHsv(
-                p->m_hueSlider->value(),
-                p->m_saturationSlider->value(),
-                p->m_valueSlider->value()
-            ));
+                                 p->m_hueSlider->value(),
+                                 p->m_saturationSlider->value(),
+                                 p->m_valueSlider->value()
+                             ));
         update_widgets();
     }
 }
 
 void ColorWidget::set_rgb()
 {
-    if ( !signalsBlocked() )
+    if (!signalsBlocked())
     {
         QColor col(
-                p->m_redSlider->value(),
-                p->m_greenSlider->value(),
-                p->m_blueSlider->value()
-            );
+            p->m_redSlider->value(),
+            p->m_greenSlider->value(),
+            p->m_blueSlider->value()
+        );
         if (col.saturation() == 0)
+        {
             col = QColor::fromHsv(p->m_hueSlider->value(), 0, col.value());
+        }
         p->m_wheel->setColor(col);
         update_widgets();
     }
@@ -388,37 +397,41 @@ void ColorWidget::update_hex()
     QString xs = p->m_hexEdit->text().trimmed();
     xs.remove('#');
 
-    if ( xs.isEmpty() )
+    if (xs.isEmpty())
+    {
         return;
+    }
 
-    if ( xs.indexOf(QRegExp("^[0-9a-fA-f]+$")) == -1 )
+    if (xs.indexOf(QRegExp("^[0-9a-fA-f]+$")) == -1)
     {
         QColor c(xs);
-        if ( c.isValid() )
+        if (c.isValid())
         {
             setColorInternal(c);
             return;
         }
     }
 
-    if ( xs.size() == 3 )
+    if (xs.size() == 3)
     {
-        p->m_redSlider->setValue(QString(2,xs[0]).toInt(0,16));
-        p->m_greenSlider->setValue(QString(2,xs[1]).toInt(0,16));
-        p->m_blueSlider->setValue(QString(2,xs[2]).toInt(0,16));
+        p->m_redSlider->setValue(QString(2, xs[0]).toInt(0, 16));
+        p->m_greenSlider->setValue(QString(2, xs[1]).toInt(0, 16));
+        p->m_blueSlider->setValue(QString(2, xs[2]).toInt(0, 16));
     }
     else
     {
-        if ( xs.size() < 6 )
+        if (xs.size() < 6)
         {
-            xs += QString(6-xs.size(),'0');
+            xs += QString(6 - xs.size(), '0');
         }
-        p->m_redSlider->setValue(xs.mid(0,2).toInt(0,16));
-        p->m_greenSlider->setValue(xs.mid(2,2).toInt(0,16));
-        p->m_blueSlider->setValue(xs.mid(4,2).toInt(0,16));
+        p->m_redSlider->setValue(xs.mid(0, 2).toInt(0, 16));
+        p->m_greenSlider->setValue(xs.mid(2, 2).toInt(0, 16));
+        p->m_blueSlider->setValue(xs.mid(4, 2).toInt(0, 16));
 
-        if ( xs.size() == 8 )
-            p->m_alphaSlider->setValue(xs.mid(6,2).toInt(0,16));
+        if (xs.size() == 8)
+        {
+            p->m_alphaSlider->setValue(xs.mid(6, 2).toInt(0, 16));
+        }
     }
 
     set_rgb();
@@ -453,23 +466,25 @@ void ColorWidget::update_hex()
 
 void ColorWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    if ( event->mimeData()->hasColor() ||
-         ( event->mimeData()->hasText() && QColor(event->mimeData()->text()).isValid() ) )
+    if (event->mimeData()->hasColor() ||
+            (event->mimeData()->hasText() && QColor(event->mimeData()->text()).isValid()))
+    {
         event->acceptProposedAction();
+    }
 }
 
 
 void ColorWidget::dropEvent(QDropEvent *event)
 {
-    if ( event->mimeData()->hasColor() )
+    if (event->mimeData()->hasColor())
     {
         setColorInternal(event->mimeData()->colorData().value<QColor>());
         event->accept();
     }
-    else if ( event->mimeData()->hasText() )
+    else if (event->mimeData()->hasText())
     {
         QColor col(event->mimeData()->text());
-        if ( col.isValid() )
+        if (col.isValid())
         {
             setColorInternal(col);
             event->accept();
@@ -491,7 +506,7 @@ QColor get_screen_color(const QPoint &global_pos)
     QImage img = screen->grabWindow(wid, global_pos.x(), global_pos.y(), 1, 1).toImage();
 #endif
 
-    return img.pixel(0,0);
+    return img.pixel(0, 0);
 }
 }
 

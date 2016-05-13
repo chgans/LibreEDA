@@ -14,7 +14,8 @@ class GraphicsLineItem : public SchItem
 
     // GraphicsLineItem
 public:
-    enum HandleId {
+    enum HandleId
+    {
         P1Handle = 0,
         P2Handle,
         NbHandles

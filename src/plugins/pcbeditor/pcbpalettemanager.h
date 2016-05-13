@@ -42,10 +42,10 @@ public slots:
 private:
     explicit PcbPaletteManager(QObject *parent = nullptr);
     static PcbPaletteManager *m_instance;
-    QList<PcbPalette*> m_palettes;
+    QList<PcbPalette *> m_palettes;
     QString m_systemPath;
     QString m_userPath;
-    QList<PcbPalette*> loadPalettes(const QString &path);
+    QList<PcbPalette *> loadPalettes(const QString &path);
 };
 
 #endif // PCBPALETTEMANAGER_H

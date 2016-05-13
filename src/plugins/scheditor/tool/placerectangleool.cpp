@@ -11,23 +11,29 @@ PlaceRectangleTool::PlaceRectangleTool(QObject *parent):
     PlacementTool(parent), m_item(nullptr)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicsrecttool.svg"),
-                           "Place a rectangle", nullptr);
+                                  "Place a rectangle", nullptr);
     action->setShortcut(QKeySequence("i,r"));
     setAction(action);
     setToolGroup("interactive-tools");
 
     m_penSettingsWidget = new PenSettingsWidget();
     connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
-            [this](const QPen &pen) {
+            [this](const QPen & pen)
+    {
         if (!m_item)
+        {
             return;
+        }
         m_item->setPen(pen);
     });
     m_brushSettingsWidget = new BrushSettingsWidget();
     connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
-            [this](const QBrush &brush) {
+            [this](const QBrush & brush)
+    {
         if (!m_item)
+        {
             return;
+        }
         m_item->setBrush(brush);
     });
 
@@ -61,8 +67,11 @@ void PlaceRectangleTool::addPoint(int idx, const QPointF &pos)
 
     QPointF itemPos = m_item->mapFromScene(pos);
     if (idx == 0)
+    {
         setP1(itemPos);
-    else {
+    }
+    else
+    {
         setP2(itemPos);
     }
 }
@@ -73,7 +82,9 @@ void PlaceRectangleTool::freezePoint(int idx, const QPointF &pos)
     Q_ASSERT(idx < 2);
 
     if (idx == 0)
+    {
         return;
+    }
 
     auto command = new PlaceRectangleCommand;
     command->position = m_item->pos();
@@ -104,8 +115,11 @@ void PlaceRectangleTool::movePoint(int idx, const QPointF &pos)
 
     QPointF itemPos = m_item->mapFromScene(pos);
     if (idx == 0)
+    {
         setP1(itemPos);
-    else {
+    }
+    else
+    {
         setP2(itemPos);
     }
 }

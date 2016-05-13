@@ -24,10 +24,11 @@ FileSystemNavigationWidget::FileSystemNavigationWidget(QWidget *parent):
     m_fileSystemModel = new QFileSystemModel(this);
     QDir::Filters filters = QDir::Dirs | QDir::NoDot
                             | QDir::Files | QDir::Drives
-                            | QDir::Readable| QDir::Writable
+                            | QDir::Readable | QDir::Writable
                             | QDir::Executable | QDir::Hidden;
-    m_fileSystemModel->setFilter(filters);m_dirView->setModel(m_fileSystemModel);
-    m_dirView->setIconSize(QSize(16,16));
+    m_fileSystemModel->setFilter(filters);
+    m_dirView->setModel(m_fileSystemModel);
+    m_dirView->setIconSize(QSize(16, 16));
     m_dirView->setFrameStyle(QFrame::NoFrame);
 
     connect(m_dirView, &QListView::activated,
@@ -47,7 +48,8 @@ bool FileSystemNavigationWidget::setCurrentDirectory(const QString &directory)
 
     QModelIndex oldRootIndex = m_dirView->rootIndex();
     QModelIndex newRootIndex = m_fileSystemModel->setRootPath(newDirectory);
-    if (!newRootIndex.isValid()) {
+    if (!newRootIndex.isValid())
+    {
         setCurrentTitle(QString(), QString());
         return false;
     }
@@ -55,7 +57,8 @@ bool FileSystemNavigationWidget::setCurrentDirectory(const QString &directory)
     const QDir current(QDir::cleanPath(newDirectory));
     setCurrentTitle(current.dirName(),
                     QDir::toNativeSeparators(current.absolutePath()));
-    if (oldRootIndex.parent() == newRootIndex) { // cdUp, so select the old directory
+    if (oldRootIndex.parent() == newRootIndex)   // cdUp, so select the old directory
+    {
         m_dirView->setCurrentIndex(oldRootIndex);
         m_dirView->scrollTo(oldRootIndex, QAbstractItemView::EnsureVisible);
     }
@@ -71,7 +74,9 @@ QString FileSystemNavigationWidget::currentDirectory() const
 void FileSystemNavigationWidget::setCurrentTitle(QString dirName, const QString &fullPath)
 {
     if (dirName.isEmpty())
+    {
         dirName = fullPath;
+    }
     m_title->setText(dirName);
     m_title->setToolTip(fullPath);
 }
@@ -81,8 +86,11 @@ void FileSystemNavigationWidget::openItem(const QModelIndex &index)
 {
     const QString fileName = m_fileSystemModel->fileName(index);
     if (fileName == QLatin1String("."))
+    {
         return;
-    if (fileName == QLatin1String("..")) {
+    }
+    if (fileName == QLatin1String(".."))
+    {
         // cd up: Special behaviour: The fileInfo of ".." is that of the parent directory.
         const QString parentPath = m_fileSystemModel->fileInfo(index).absoluteFilePath();
         setCurrentDirectory(parentPath);
@@ -90,10 +98,13 @@ void FileSystemNavigationWidget::openItem(const QModelIndex &index)
     }
 
     const QString path = m_fileSystemModel->filePath(index);
-    if (m_fileSystemModel->isDir(index)) {
+    if (m_fileSystemModel->isDir(index))
+    {
         const QFileInfo fi = m_fileSystemModel->fileInfo(index);
         if (!fi.isReadable() || !fi.isExecutable())
+        {
             return;
+        }
         // Change to directory
         setCurrentDirectory(path);
         return;

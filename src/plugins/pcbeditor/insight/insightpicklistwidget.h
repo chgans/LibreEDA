@@ -20,7 +20,7 @@ public:
     explicit InsightPickListWidget(QWidget *parent = nullptr);
     ~InsightPickListWidget();
 
-    void setPickList(QGraphicsScene *scene, QList<QGraphicsItem*> list);
+    void setPickList(QGraphicsScene *scene, QList<QGraphicsItem *> list);
 
 
     //void setMovable(bool movable);

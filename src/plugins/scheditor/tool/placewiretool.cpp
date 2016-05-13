@@ -11,17 +11,21 @@ PlaceWireTool::PlaceWireTool(QObject *parent):
     PlacementTool(parent),
     m_item(nullptr)
 {
-    QAction *action = new QAction(QIcon(":/icons/tool/graphicspolylinetool.svg"), // TODO: rename to wire
-                               "Place a wire", nullptr);;
+    QAction *action = new QAction(
+        QIcon(":/icons/tool/graphicspolylinetool.svg"), // TODO: rename to wire
+        "Place a wire", nullptr);;
     action->setShortcut(QKeySequence("i,w"));
     setAction(action);
     setToolGroup("interactive-tools");
 
     m_penSettingsWidget = new PenSettingsWidget();
     connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
-            [this](const QPen &pen) {
+            [this](const QPen & pen)
+    {
         if (!m_item)
+        {
             return;
+        }
         m_item->setPen(pen);
     });
 
@@ -60,12 +64,14 @@ bool PlaceWireTool::removePoint(int idx, const QPointF &pos)
     QList<QPointF> points = m_item->points();
     QPointF point = points[idx];
     points.removeAt(idx);
-    if (points.count() > 1) {
+    if (points.count() > 1)
+    {
         points[idx - 1] = point;
         m_item->setPoints(points);
         return true; // Keep going
     }
-    else {
+    else
+    {
         return false; // remove and delete wire
     }
 }

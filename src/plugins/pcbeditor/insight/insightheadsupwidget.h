@@ -26,11 +26,14 @@ class InsightHeadsUpWidget : public QWidget
     Q_PROPERTY(QBrush brush READ brush WRITE setBrush NOTIFY brushChanged)
 
     Q_PROPERTY(DisplayMode displayMode READ displayMode WRITE setDisplayMode NOTIFY displayModeChanged)
-    Q_PROPERTY(Items displayedItems READ displayedItems WRITE setDisplayedItems NOTIFY displayedItemsChanged)
-    Q_PROPERTY(Items displayedItemsHover READ displayedItemsHover WRITE setDisplayedItemsHover NOTIFY displayedItemsHoverChanged)
+    Q_PROPERTY(Items displayedItems READ displayedItems WRITE setDisplayedItems NOTIFY
+               displayedItemsChanged)
+    Q_PROPERTY(Items displayedItemsHover READ displayedItemsHover WRITE setDisplayedItemsHover NOTIFY
+               displayedItemsHoverChanged)
 
 public:
-    enum Item {
+    enum Item
+    {
         CursorLocation       = 0x00000001,
         LastClickDelta       = 0x00000002,
         CurrentLayer         = 0x00000004,
@@ -43,7 +46,8 @@ public:
     };
     Q_DECLARE_FLAGS(Items, Item)
 
-    enum DisplayMode {
+    enum DisplayMode
+    {
         HeadsUpMode,
         HoverMode
     };

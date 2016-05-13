@@ -31,9 +31,12 @@ PenSettingsWidget::PenSettingsWidget(QWidget *parent) :
     layout->addWidget(m_colorComboBox, 0, 0);
     m_pen.setColor(m_colorComboBox->currentData().value<QColor>());
     connect(m_colorComboBox, &PenColorComboBox::currentIndexChanged,
-            this, [this](QColor color) {
+            this, [this](QColor color)
+    {
         if (m_pen.color() == color)
+        {
             return;
+        }
         m_pen.setColor(color);
         emit penChanged(m_pen);
     });
@@ -54,9 +57,12 @@ PenSettingsWidget::PenSettingsWidget(QWidget *parent) :
     m_widthComboBox->setCurrentIndex(0.5);
     m_pen.setWidthF(0.5);
     connect(m_widthComboBox, &PenWidthComboBox::currentIndexChanged,
-            this, [this](qreal width) {
+            this, [this](qreal width)
+    {
         if (qFuzzyCompare(m_pen.widthF(), width))
+        {
             return;
+        }
         m_pen.setWidthF(width);
         emit penChanged(m_pen);
     });
@@ -72,9 +78,12 @@ PenSettingsWidget::PenSettingsWidget(QWidget *parent) :
     m_styleComboBox->setCurrentIndex(Qt::SolidLine);
     m_pen.setStyle(Qt::SolidLine);
     connect(m_styleComboBox, &PenStyleComboBox::currentIndexChanged,
-            this, [this](Qt::PenStyle style) {
+            this, [this](Qt::PenStyle style)
+    {
         if (m_pen.style() == style)
+        {
             return;
+        }
         m_pen.setStyle(style);
         emit penChanged(m_pen);
     });
@@ -87,9 +96,12 @@ PenSettingsWidget::PenSettingsWidget(QWidget *parent) :
     m_capStyleComboBox->setCurrentIndex(Qt::RoundCap);
     m_pen.setCapStyle(Qt::RoundCap);
     connect(m_capStyleComboBox, &PenCapStyleComboBox::currentIndexChanged,
-            this, [this](Qt::PenCapStyle style) {
+            this, [this](Qt::PenCapStyle style)
+    {
         if (m_pen.capStyle() == style)
+        {
             return;
+        }
         m_pen.setCapStyle(style);
         emit penChanged(m_pen);
     });
@@ -102,9 +114,12 @@ PenSettingsWidget::PenSettingsWidget(QWidget *parent) :
     m_joinStyleComboBox->setCurrentIndex(Qt::RoundJoin);
     m_pen.setJoinStyle(Qt::RoundJoin);
     connect(m_joinStyleComboBox, &PenJoinStyleComboBox::currentIndexChanged,
-            this, [this](Qt::PenJoinStyle style) {
+            this, [this](Qt::PenJoinStyle style)
+    {
         if (m_pen.joinStyle() == style)
+        {
             return;
+        }
         m_pen.setJoinStyle(style);
         emit penChanged(m_pen);
     });
@@ -122,7 +137,8 @@ QPen PenSettingsWidget::pen() const
 
 void PenSettingsWidget::setPen(const QPen &pen)
 {
-    if (m_pen != pen) {
+    if (m_pen != pen)
+    {
         m_pen = pen;
         m_colorComboBox->setCurrentIndex(m_pen.color());
         m_widthComboBox->setCurrentIndex(m_pen.widthF());

@@ -2,9 +2,9 @@
 #include "logmodel.h"
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
- #define ASSERT_TYPE(value) Q_ASSERT(value >= 0 && value < 5);
+#define ASSERT_TYPE(value) Q_ASSERT(value >= 0 && value < 5);
 #else
- #define ASSERT_TYPE(value) Q_ASSERT(value >= 0 && value < 4);
+#define ASSERT_TYPE(value) Q_ASSERT(value >= 0 && value < 4);
 #endif
 
 LogSortFilterProxyModel::LogSortFilterProxyModel(QObject *parent):
@@ -24,7 +24,8 @@ LogSortFilterProxyModel::~LogSortFilterProxyModel()
 
 }
 
-bool LogSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool LogSortFilterProxyModel::filterAcceptsRow(int source_row,
+                                               const QModelIndex &source_parent) const
 {
     LogModel *model = static_cast<LogModel *>(sourceModel());
     QModelIndex index = model->index(source_row, 0, source_parent);
@@ -33,14 +34,16 @@ bool LogSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex
     ASSERT_TYPE(type);
     QString category = msg->categoryName;
     return filterIncludesMessageType(type) &&
-            filterIncludesCategoryName(category) &&
-            QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
+           filterIncludesCategoryName(category) &&
+           QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
 }
 
 bool LogSortFilterProxyModel::filterIncludesCategoryName(const QString &categoryName) const
 {
     if (!m_category.contains(categoryName))
+    {
         return true;
+    }
     return m_category.value(categoryName);
 }
 
@@ -56,7 +59,8 @@ void LogSortFilterProxyModel::setFilterIncludesMessageType(QtMsgType messageType
     invalidateFilter();
 }
 
-void LogSortFilterProxyModel::setFilterIncludesCategoryName(const QString &categoryName, bool includes)
+void LogSortFilterProxyModel::setFilterIncludesCategoryName(const QString &categoryName,
+                                                            bool includes)
 {
     m_category[categoryName] = includes;
     invalidateFilter();

@@ -42,7 +42,9 @@ QString DocumentManager::m_defaultLocationForNewFiles;
 DocumentManager *DocumentManager::instance()
 {
     if (m_instance == nullptr)
+    {
         m_instance = new DocumentManager();
+    }
     return m_instance;
 }
 
@@ -52,21 +54,27 @@ DocumentManager *DocumentManager::instance()
 
 void DocumentManager::addDocuments(QList<IDocument *> documents)
 {
-    for (IDocument *document: documents)
+    for (IDocument *document : documents)
+    {
         addDocument(document);
+    }
 }
 
 void DocumentManager::addDocument(IDocument *document)
 {
     if (m_documents.contains(document))
+    {
         return;
+    }
     m_documents.append(document);
 }
 
 void DocumentManager::removeDocument(IDocument *document)
 {
     if (m_documents.contains(document))
+    {
         return;
+    }
     m_documents.removeAll(document);
 }
 
@@ -78,9 +86,12 @@ QList<IDocument *> DocumentManager::documents()
 QList<IDocument *> DocumentManager::modifiedDocuments()
 {
     QList<IDocument *> result;
-    for (IDocument *document: m_documents) {
+    for (IDocument *document : m_documents)
+    {
         if (document->isModified())
+        {
             result.append(document);
+        }
     }
     return result;
 }
@@ -89,7 +100,8 @@ bool DocumentManager::saveDocument(IDocument *document, const QString &fileName)
 {
     QString errorString;
     bool success = document->save(&errorString, fileName);
-    if (!success) {
+    if (!success)
+    {
         QMessageBox::critical(QApplication::activeWindow(), tr("File Error"),
                               tr("Error while saving file: %1").arg(errorString));
     }
@@ -102,20 +114,26 @@ bool DocumentManager::saveDocument(IDocument *document, const QString &fileName)
     \c QFileDialog::getOpenFileNames(). \a path specifies a path to open the
     dialog in, if empty then \c DocumentManager::fileDialogLastVisitedDirectory() is used.
 */
-QStringList DocumentManager::getOpenFileNames(const QString &filters, const QString &path, QString *selectedFilter)
+QStringList DocumentManager::getOpenFileNames(const QString &filters, const QString &path,
+                                              QString *selectedFilter)
 {
     QString dir = path;
-    if (dir.isEmpty()) {
+    if (dir.isEmpty())
+    {
         dir = fileDialogLastVisitedDirectory();
         if (dir.isEmpty())
+        {
             dir = "~";
+        }
     }
     const QStringList files = QFileDialog::getOpenFileNames(QApplication::activeWindow(),
                                                             tr("Open File(s)"),
                                                             path, filters,
                                                             selectedFilter);
     if (!files.isEmpty())
+    {
         setFileDialogLastVisitedDirectory(QFileInfo(files.front()).absolutePath());
+    }
     return files;
 }
 
@@ -149,7 +167,9 @@ bool DocumentManager::saveModifiedDocumentSilently(IDocument *document, bool *ca
 bool DocumentManager::closeDocument(IDocument *document)
 {
     if (!document->isModified())
+    {
         return true;
+    }
     QMessageBox::StandardButton answer;
     answer = QMessageBox::warning(QApplication::activeWindow(),
                                   "Save changes",
@@ -157,14 +177,21 @@ bool DocumentManager::closeDocument(IDocument *document)
                                   QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
                                   QMessageBox::Cancel);
     if (answer == QMessageBox::Discard)
+    {
         return true;
+    }
     if (answer == QMessageBox::Cancel)
+    {
         return false;
+    }
 
     QString errorString;
     if (document->save(&errorString, document->filePath()))
+    {
         return true;
-    QString errorMessage = QString("Error while saving %1: %2").arg(document->displayName()).arg(errorString);
+    }
+    QString errorMessage = QString("Error while saving %1: %2").arg(document->displayName()).arg(
+                               errorString);
     QMessageBox::critical(QApplication::activeWindow(),
                           "Save failed",
                           errorMessage,
@@ -179,7 +206,9 @@ bool DocumentManager::closeDocument(IDocument *document)
 void DocumentManager::addToRecentFiles(const QString &fileName/*, const QString &editorId*/)
 {
     if (m_recentFiles.contains(fileName) || m_recentFiles.count() > 20)
+    {
         return;
+    }
     m_recentFiles.append(fileName);
 }
 
@@ -237,7 +266,8 @@ void DocumentManager::saveSettings()
     settings.setValue(S_FILE_DIALOG_LAST_DIR, m_fileDialogLastVisitedDirectory);
     settings.setValue(S_DEF_LOC_NEW_FILES, m_defaultLocationForNewFiles);
     settings.beginWriteArray(S_RECENT_FILES, m_recentFiles.count());
-    for (int i = 0; i < m_recentFiles.count(); i++) {
+    for (int i = 0; i < m_recentFiles.count(); i++)
+    {
         settings.setValue(QString("%1").arg(i), m_recentFiles.at(i));
     }
     settings.endArray();
@@ -250,7 +280,8 @@ void DocumentManager::loadSettings()
     m_fileDialogLastVisitedDirectory = settings.value(S_FILE_DIALOG_LAST_DIR).toString();
     m_defaultLocationForNewFiles = settings.value(S_DEF_LOC_NEW_FILES).toString();
     int nb = settings.beginReadArray(S_RECENT_FILES);
-    for (int i = 0; i < nb; i++) {
+    for (int i = 0; i < nb; i++)
+    {
         m_recentFiles.append(settings.value(QString("%1").arg(i)).toString());
     }
 }

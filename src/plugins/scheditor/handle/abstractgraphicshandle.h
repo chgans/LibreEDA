@@ -13,7 +13,8 @@ class QStyleOptionGraphicsItem;
 class QPainter;
 class QWidget;
 
-enum GraphicsHandleRole {
+enum GraphicsHandleRole
+{
     MoveHandleRole = 0,
     VSizeHandleRole,
     HSizeHandleRole,
@@ -24,13 +25,15 @@ enum GraphicsHandleRole {
     MarkHandleRole
 };
 
-enum GraphicsHandleShape {
+enum GraphicsHandleShape
+{
     CircularHandleShape = 0,
     SquaredHandleShape,
     DiamondedHandleShape
 };
 
-enum GraphicsHandleBehaviour {
+enum GraphicsHandleBehaviour
+{
     NormalHandleBehaviour = 0,
     CornerHandleBehaviour,
     SmoothHandleBehaviour,

@@ -3,7 +3,8 @@
 
 #include <QString>
 
-namespace xdl { namespace symbol {
+namespace xdl {
+namespace symbol {
 
 class Symbol;
 struct ReaderPrivate;
@@ -21,6 +22,7 @@ private:
     QString m_errorString;
 };
 
-}}
+}
+}
 
 #endif // SYMBOLPARSER_H

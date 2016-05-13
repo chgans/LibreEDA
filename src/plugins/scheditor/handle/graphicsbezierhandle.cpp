@@ -62,15 +62,18 @@ GraphicsBezierHandle::GraphicsBezierHandle(SchItem *parent):
 GraphicsBezierHandle::~GraphicsBezierHandle()
 {
     // TODO: use map
-    if (m_nodeHandle) {
+    if (m_nodeHandle)
+    {
         removeObservedItem(m_nodeHandle);
         delete m_nodeHandle;
     }
-    if (m_control1Handle) {
+    if (m_control1Handle)
+    {
         removeObservedItem(m_control1Handle);
         delete m_control1Handle;
     }
-    if (m_control2Handle) {
+    if (m_control2Handle)
+    {
         removeObservedItem(m_control2Handle);
         delete m_control2Handle;
     }
@@ -83,18 +86,19 @@ QPointF GraphicsBezierHandle::pos(GraphicsBezierHandle::HandleType type) const
 
     // TODO: use map
     AbstractGraphicsHandle *handle;
-    switch (type) {
-    case NodeHandle:
-        handle = m_nodeHandle;
-        break;
-    case Control1Handle:
-        handle = m_control1Handle;
-        break;
-    case Control2Handle:
-        handle = m_control2Handle;
-        break;
-    default:
-        Q_ASSERT(false);
+    switch (type)
+    {
+        case NodeHandle:
+            handle = m_nodeHandle;
+            break;
+        case Control1Handle:
+            handle = m_control1Handle;
+            break;
+        case Control2Handle:
+            handle = m_control2Handle;
+            break;
+        default:
+            Q_ASSERT(false);
     }
 
     QPointF handlePos = handle->pos();
@@ -111,18 +115,19 @@ void GraphicsBezierHandle::setPos(GraphicsBezierHandle::HandleType type, const Q
 
     // TODO: use map
     AbstractGraphicsHandle *handle;
-    switch (type) {
-    case NodeHandle:
-        handle = m_nodeHandle;
-        break;
-    case Control1Handle:
-        handle = m_control1Handle;
-        break;
-    case Control2Handle:
-        handle = m_control2Handle;
-        break;
-    default:
-        Q_ASSERT(false);
+    switch (type)
+    {
+        case NodeHandle:
+            handle = m_nodeHandle;
+            break;
+        case Control1Handle:
+            handle = m_control1Handle;
+            break;
+        case Control2Handle:
+            handle = m_control2Handle;
+            break;
+        default:
+            Q_ASSERT(false);
     }
 
     QPointF parentPos = pos;
@@ -139,7 +144,9 @@ void GraphicsBezierHandle::setPos(GraphicsBezierHandle::HandleType type, const Q
 void GraphicsBezierHandle::setBehaviour(GraphicsHandleBehaviour behaviour)
 {
     if (m_behaviour == behaviour)
+    {
         return;
+    }
 
     m_behaviour = behaviour;
     updateEnabledHandles();
@@ -160,11 +167,13 @@ void GraphicsBezierHandle::enableHandle(GraphicsBezierHandle::HandleType type, b
     AbstractGraphicsHandle **handle = m_typeToHandle[type];
     Q_ASSERT(handle != nullptr);
 
-    if (set) {
+    if (set)
+    {
         m_handles |= type;
         (*handle)->setVisible(true);
     }
-    else {
+    else
+    {
         m_handles &= ~type;
         (*handle)->setVisible(false);
     }
@@ -178,7 +187,9 @@ bool GraphicsBezierHandle::isFirst() const
 void GraphicsBezierHandle::setFirst(bool first)
 {
     if (m_first == first)
+    {
         return;
+    }
 
     m_first = first;
     updateEnabledHandles();
@@ -192,7 +203,9 @@ bool GraphicsBezierHandle::isLast() const
 void GraphicsBezierHandle::setLast(bool last)
 {
     if (m_last == last)
+    {
         return;
+    }
 
     m_last = last;
     updateEnabledHandles();
@@ -206,22 +219,25 @@ bool GraphicsBezierHandle::isClosingPath() const
 void GraphicsBezierHandle::setClosingPath(bool closing)
 {
     if (m_closing == closing)
+    {
         return;
+    }
     m_closing = closing;
     updateEnabledHandles();
 }
 
 QString GraphicsBezierHandle::typeToString(GraphicsBezierHandle::HandleType type)
 {
-    switch (type) {
-    case NodeHandle:
-        return QString("Node");
-    case Control1Handle:
-        return QString("Ctl1");
-    case Control2Handle:
-        return QString("Ctl2");
-    default:
-        return QString("???");
+    switch (type)
+    {
+        case NodeHandle:
+            return QString("Node");
+        case Control1Handle:
+            return QString("Ctl1");
+        case Control2Handle:
+            return QString("Ctl2");
+        default:
+            return QString("???");
     }
 }
 
@@ -237,7 +253,8 @@ void GraphicsBezierHandle::updateEnabledHandles()
     enableHandle(Control2Handle, (isLast() && isClosingPath()) || !isLast());
 }
 
-void GraphicsBezierHandle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicsBezierHandle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                                 QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -245,12 +262,14 @@ void GraphicsBezierHandle::paint(QPainter *painter, const QStyleOptionGraphicsIt
 
     painter->setPen(QPen(QBrush(Qt::green), 0));
 
-    if (m_handles.testFlag(Control2Handle)) {
+    if (m_handles.testFlag(Control2Handle))
+    {
         QLineF line(nodePos(), control2Pos());
         painter->drawLine(line);
     }
 
-    if (m_handles.testFlag(Control1Handle)) {
+    if (m_handles.testFlag(Control1Handle))
+    {
         QLineF line(nodePos(), control1Pos());
         painter->drawLine(line);
     }
@@ -260,18 +279,22 @@ void GraphicsBezierHandle::paint(QPainter *painter, const QStyleOptionGraphicsIt
 
 void GraphicsBezierHandle::itemNotification(IGraphicsObservableItem *item)
 {
-    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle*>(item);
+    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle *>(item);
     Q_ASSERT(handle != nullptr);
-    if (handle == m_nodeHandle) {
+    if (handle == m_nodeHandle)
+    {
         Q_ASSERT(m_handles.testFlag(NodeHandle));
     }
-    else if (item == m_control1Handle) {
+    else if (item == m_control1Handle)
+    {
         Q_ASSERT(m_handles.testFlag(Control1Handle));
     }
-    else if (item == m_control2Handle) {
+    else if (item == m_control2Handle)
+    {
         Q_ASSERT(m_handles.testFlag(Control2Handle));
     }
-    else {
+    else
+    {
         Q_ASSERT(false);
     }
     blockItemNotification();

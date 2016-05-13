@@ -94,13 +94,13 @@ public:
      * Returns QColor() con empty gradient
      */
     QColor lastColor() const;
-    
+
 protected:
     void paintEvent(QPaintEvent *ev);
 
 private:
     class Private;
-    Private * const p;
+    Private *const p;
 };
 
 #endif // GRADIENT_SLIDER_HPP

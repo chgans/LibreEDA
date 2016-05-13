@@ -8,9 +8,10 @@
 SchItem::SchItem(SchItem *parent):
     QGraphicsObject(parent)
 {
-    setPen(QPen(QBrush(QColor::fromRgb(0x80, 0x00, 0x00)), 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    setPen(QPen(QBrush(QColor::fromRgb(0x80, 0x00, 0x00)), 0.5, Qt::SolidLine, Qt::RoundCap,
+                Qt::RoundJoin));
     setBrush(QBrush(QColor::fromRgb(0xff, 0xff, 0xb0)));
-    setFlags(QGraphicsItem::ItemIsSelectable|QGraphicsItem::ItemIsMovable);
+    setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
 }
 
 SchItem::~SchItem()
@@ -48,13 +49,19 @@ QPainterPath SchItem::shapeFromPath(const QPainterPath &path, const QPen &pen)
     const qreal penWidthZero = qreal(0.00000001);
 
     if (path == QPainterPath() || pen == Qt::NoPen)
+    {
         return path;
+    }
     QPainterPathStroker ps;
     ps.setCapStyle(pen.capStyle());
     if (pen.widthF() <= 0.0)
+    {
         ps.setWidth(penWidthZero);
+    }
     else
+    {
         ps.setWidth(pen.widthF());
+    }
     ps.setJoinStyle(pen.joinStyle());
     ps.setMiterLimit(pen.miterLimit());
     QPainterPath p = ps.createStroke(path);
@@ -110,7 +117,8 @@ bool SchItem::isYMirrored() const
 QList<QPointF> SchItem::hotSpots() const
 {
     QList<QPointF> points;
-    for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
+    for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+    {
         Q_ASSERT(handle->parentItem() == this);
         points.append(handle->pos());
     }
@@ -141,15 +149,19 @@ QList<QPointF> SchItem::nearestPoints(QPointF pos) const
 QList<QLineF> SchItem::axes() const
 {
     QList<QLineF> axes;
-    for (qreal angle = 0; angle < 360.0; angle+= 45)
+    for (qreal angle = 0; angle < 360.0; angle += 45)
+    {
         axes << QLineF::fromPolar(UINT_MAX, angle).translated(pos());
+    }
     return axes;
 }
 
 void SchItem::setPen(const QPen &pen)
 {
     if (m_pen == pen)
+    {
         return;
+    }
 
     m_pen = pen;
     prepareGeometryChange();
@@ -162,7 +174,9 @@ void SchItem::setPen(const QPen &pen)
 void SchItem::setBrush(const QBrush &brush)
 {
     if (m_brush == brush)
+    {
         return;
+    }
 
     m_brush = brush;
     update();
@@ -173,7 +187,9 @@ void SchItem::setBrush(const QBrush &brush)
 void SchItem::setXMirrored(bool mirrored)
 {
     if (m_isXMirrored == mirrored)
+    {
         return;
+    }
     m_isXMirrored = mirrored;
     updateMirroringTransform();
     emit xMirroredChanged();
@@ -182,13 +198,16 @@ void SchItem::setXMirrored(bool mirrored)
 void SchItem::setYMirrored(bool mirrored)
 {
     if (m_isYMirrored == mirrored)
+    {
         return;
+    }
     m_isYMirrored = mirrored;
     updateMirroringTransform();
     emit yMirroredChanged();
 }
 
-GraphicsRegularHandle *SchItem::addRegularHandle(int id, GraphicsHandleRole role, GraphicsHandleShape shape, const QPointF &pos)
+GraphicsRegularHandle *SchItem::addRegularHandle(int id, GraphicsHandleRole role,
+                                                 GraphicsHandleShape shape, const QPointF &pos)
 {
     GraphicsRegularHandle *handle = new GraphicsRegularHandle(this);
 
@@ -246,7 +265,8 @@ void SchItem::removeHandle(AbstractGraphicsHandle *handle)
 void SchItem::removeAllHandles()
 {
     blockItemNotification();
-    for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
+    for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+    {
         removeObservedItem(handle);
         handle->setParentItem(nullptr);
         delete handle;

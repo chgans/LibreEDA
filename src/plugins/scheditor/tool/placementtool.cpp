@@ -38,14 +38,18 @@ QPointF PlacementTool::mapFromScene(const QPointF &pos)
 QPointF PlacementTool::mapToItem(const QPoint &pos)
 {
     if (m_item == nullptr)
+    {
         return QPointF();
+    }
     return m_item->mapFromScene(mapToScene(pos));
 }
 
 QPointF PlacementTool::mapFromItem(const QPointF &pos)
 {
     if (m_item == nullptr)
+    {
         return QPointF();
+    }
     return m_item->mapToScene(mapFromScene(pos));
 }
 
@@ -59,36 +63,44 @@ void PlacementTool::resetTool()
 
 void PlacementTool::goBack()
 {
-    if (m_index >= 0) {
-        if (removePoint(m_index, m_movePos)) {
+    if (m_index >= 0)
+    {
+        if (removePoint(m_index, m_movePos))
+        {
             m_index--;
             // If hit here, then it means that the tool's removePoint forgot to return false
             Q_ASSERT(m_index >= 0);
         }
-        else {
+        else
+        {
             scene()->removeItem(m_item);
             resetTool();
         }
     }
-    else {
+    else
+    {
         emit finished();
     }
 }
 
 void PlacementTool::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() != Qt::LeftButton) {
+    if (event->button() != Qt::LeftButton)
+    {
         return;
     }
 
-    if (!m_isActive) {
+    if (!m_isActive)
+    {
         m_isActive = true;
     }
 
     m_pressPos = event->pos();
 
     if (m_index < 0)
+    {
         scene()->clearSelection();
+    }
 
     event->accept();
 }
@@ -96,11 +108,14 @@ void PlacementTool::mousePressEvent(QMouseEvent *event)
 void PlacementTool::mouseMoveEvent(QMouseEvent *event)
 {
     if (!m_isActive || m_index < 0)
+    {
         return;
+    }
 
     m_movePos = event->pos();
 
-    if (!m_addPointOnMouseMove) {
+    if (!m_addPointOnMouseMove)
+    {
         Q_ASSERT(m_index != 0);
         movePoint(m_index, m_movePos);
         return;
@@ -110,7 +125,9 @@ void PlacementTool::mouseMoveEvent(QMouseEvent *event)
 
     freezePoint(m_index, m_movePos);
     if (!m_isActive)
+    {
         return;
+    }
 
     m_index ++;
     addPoint(m_index, m_movePos);
@@ -119,13 +136,17 @@ void PlacementTool::mouseMoveEvent(QMouseEvent *event)
 void PlacementTool::mouseReleaseEvent(QMouseEvent *event)
 {
     if (!m_isActive)
-        return;
-
-    if (event->button() != Qt::LeftButton) {
+    {
         return;
     }
 
-    if (m_index < 0) {
+    if (event->button() != Qt::LeftButton)
+    {
+        return;
+    }
+
+    if (m_index < 0)
+    {
         scene()->clearSelection();
         m_item = beginInsert(m_pressPos);
         Q_ASSERT(m_item != nullptr);
@@ -142,7 +163,9 @@ void PlacementTool::mouseDoubleClickEvent(QMouseEvent *event)
     Q_UNUSED(event);
 
     if (!m_isActive)
+    {
         return;
+    }
 
     endInsert(m_pressPos);
 }
@@ -167,7 +190,8 @@ void PlacementTool::keyPressEvent(QKeyEvent *event)
 
 void PlacementTool::keyReleaseEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape) {
+    if (event->key() == Qt::Key_Escape)
+    {
         goBack();
         event->accept();
     }

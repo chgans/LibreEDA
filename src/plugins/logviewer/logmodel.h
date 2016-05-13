@@ -32,7 +32,7 @@ public slots:
     void clearMessages();
 
 private:
-    QList<LogMessage*> m_messages;
+    QList<LogMessage *> m_messages;
     QStringList m_messageTypeNames;
     QStringList m_messageTypeIconNames;
     QStringList m_categories;

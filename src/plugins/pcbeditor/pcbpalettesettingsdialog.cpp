@@ -34,7 +34,8 @@ PcbPaletteSettingsDialog::PcbPaletteSettingsDialog(QWidget *parent) :
 #if 0
     /* TODO: import of Altium theme.PCBSysColors files
        Altium use ABGR, Qt ARGB */
-    for (int i=0; i<128; ++i) {
+    for (int i = 0; i < 128; ++i)
+    {
         PcbPalette::ColorRole role = static_cast<PcbPalette::ColorRole>(i);
         QColor color = palette.color(role);
         int r = color.red();
@@ -55,33 +56,34 @@ PcbPaletteSettingsDialog::PcbPaletteSettingsDialog(QWidget *parent) :
     label = new QTableWidgetItem("Top Layer");
     label->setFlags(Qt::ItemIsEnabled);
     ui->signalTable->setItem(0, 0, label);
-    color = new QTableWidgetItem(*icon(palette.color(static_cast<PcbPalette::ColorRole>(0+1))), "");
+    color = new QTableWidgetItem(*icon(palette.color(static_cast<PcbPalette::ColorRole>(0 + 1))), "");
     color->setFlags(Qt::ItemIsEnabled);
     ui->signalTable->setItem(0, 1, color);
     show = new QTableWidgetItem("");
-    show->setFlags(Qt::ItemIsEnabled|Qt::ItemIsUserCheckable);
+    show->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     ui->signalTable->setItem(0, 2, show);
 
-    for (int i=1; i<31; ++i) {
+    for (int i = 1; i < 31; ++i)
+    {
         label = new QTableWidgetItem(QString("Mid-Layer %1").arg(i));
         label->setFlags(Qt::NoItemFlags);
         ui->signalTable->setItem(i, 0, label);
-        color = new QTableWidgetItem(*icon(palette.color(static_cast<PcbPalette::ColorRole>(i+1))), "");
+        color = new QTableWidgetItem(*icon(palette.color(static_cast<PcbPalette::ColorRole>(i + 1))), "");
         color->setFlags(Qt::ItemIsEnabled);
         ui->signalTable->setItem(i, 1, color);
         show = new QTableWidgetItem("");
-        show->setFlags(Qt::ItemIsEnabled|Qt::ItemIsUserCheckable);
+        show->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
         ui->signalTable->setItem(i, 2, show);
 
     }
     label = new QTableWidgetItem("Top Layer");
     label->setFlags(Qt::ItemIsEnabled);
     ui->signalTable->setItem(31, 0, label);
-    color = new QTableWidgetItem(*icon(palette.color(static_cast<PcbPalette::ColorRole>(31+1))), "");
+    color = new QTableWidgetItem(*icon(palette.color(static_cast<PcbPalette::ColorRole>(31 + 1))), "");
     color->setFlags(Qt::ItemIsEnabled);
     ui->signalTable->setItem(31, 1, color);
     show = new QTableWidgetItem("");
-    show->setFlags(Qt::ItemIsEnabled|Qt::ItemIsUserCheckable);
+    show->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
     ui->signalTable->setItem(31, 2, show);
 
 }

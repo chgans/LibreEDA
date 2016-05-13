@@ -49,7 +49,7 @@ public:
 
 private:
     class Private;
-    Private * const p;
+    Private *const p;
 };
 
 #endif // HUE_SLIDER_HPP

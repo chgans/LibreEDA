@@ -36,7 +36,7 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
     connect(m_ui->rulerCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
-       m_ui->graphicsView->setRulerEnabled(checked);
+        m_ui->graphicsView->setRulerEnabled(checked);
     });
 
     m_ui->gridCheckBox->setChecked(m_ui->graphicsView->gridEnabled());
@@ -104,32 +104,34 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
         m_ui->graphicsView->setGridCoarseMultiplier(value);
     });
 
-    m_ui->solidCoarseGridLinesCheckBox->setChecked(m_ui->graphicsView->gridCoarseLineStyle() == Qt::SolidLine);
+    m_ui->solidCoarseGridLinesCheckBox->setChecked(m_ui->graphicsView->gridCoarseLineStyle() ==
+                                                   Qt::SolidLine);
     connect(m_ui->solidCoarseGridLinesCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
-       if (checked)
-       {
-           m_ui->graphicsView->setGridCoarseLineStyle(Qt::SolidLine);
-       }
-       else
-       {
-           m_ui->graphicsView->setGridCoarseLineStyle(Qt::DotLine);
-       }
+        if (checked)
+        {
+            m_ui->graphicsView->setGridCoarseLineStyle(Qt::SolidLine);
+        }
+        else
+        {
+            m_ui->graphicsView->setGridCoarseLineStyle(Qt::DotLine);
+        }
     });
 
-    m_ui->solidFineGridLinesCheckBox->setChecked(m_ui->graphicsView->gridFineLineStyle() == Qt::SolidLine);
+    m_ui->solidFineGridLinesCheckBox->setChecked(m_ui->graphicsView->gridFineLineStyle() ==
+                                                 Qt::SolidLine);
     connect(m_ui->solidFineGridLinesCheckBox, &QCheckBox::toggled,
             this, [this](bool checked)
     {
-       if (checked)
-       {
-           m_ui->graphicsView->setGridFineLineStyle(Qt::SolidLine);
-       }
-       else
-       {
-           m_ui->graphicsView->setGridFineLineStyle(Qt::DotLine);
-       }
+        if (checked)
+        {
+            m_ui->graphicsView->setGridFineLineStyle(Qt::SolidLine);
+        }
+        else
+        {
+            m_ui->graphicsView->setGridFineLineStyle(Qt::DotLine);
+        }
     });
 
     connect(m_ui->antiAliasingCheckBox, &QCheckBox::toggled,
@@ -219,19 +221,20 @@ void SettingsWidget::updateViewScrollBars()
 
 void SettingsWidget::updateGuiScrollBars()
 {
-    switch (m_ui->graphicsView->horizontalScrollBarPolicy()) {
-    case Qt::ScrollBarAlwaysOff:
-        m_ui->scrollBarsCheckBox->setChecked(false);
-        m_ui->scrollBarsAsNeededCheckBox->setChecked(false);
-        break;
-    case Qt::ScrollBarAsNeeded:
-        m_ui->scrollBarsCheckBox->setChecked(true);
-        m_ui->scrollBarsAsNeededCheckBox->setChecked(true);
-        break;
-    case Qt::ScrollBarAlwaysOn:
-        m_ui->scrollBarsCheckBox->setChecked(true);
-        m_ui->scrollBarsAsNeededCheckBox->setChecked(false);
-        break;
+    switch (m_ui->graphicsView->horizontalScrollBarPolicy())
+    {
+        case Qt::ScrollBarAlwaysOff:
+            m_ui->scrollBarsCheckBox->setChecked(false);
+            m_ui->scrollBarsAsNeededCheckBox->setChecked(false);
+            break;
+        case Qt::ScrollBarAsNeeded:
+            m_ui->scrollBarsCheckBox->setChecked(true);
+            m_ui->scrollBarsAsNeededCheckBox->setChecked(true);
+            break;
+        case Qt::ScrollBarAlwaysOn:
+            m_ui->scrollBarsCheckBox->setChecked(true);
+            m_ui->scrollBarsAsNeededCheckBox->setChecked(false);
+            break;
     }
     m_ui->scrollBarsAsNeededCheckBox->setEnabled(m_ui->scrollBarsCheckBox->isChecked());
 }
@@ -248,23 +251,26 @@ void SettingsWidget::updateViewMouseCursor()
         m_ui->graphicsView->setMouseCursor(SchView::LargeMouseCursor);
     }
     else
+    {
         m_ui->graphicsView->setMouseCursor(SchView::SmallMouseCursor);
+    }
 }
 
 void SettingsWidget::updateGuiMouseCursor()
 {
-    switch (m_ui->graphicsView->mouseCursor()) {
-    case SchView::NoMouseCursor:
-        m_ui->cusorCrosshairCheckBox->setChecked(false);
-        m_ui->largeCursorCrosshairCheckBox->setChecked(false);
-        break;
-    case SchView::SmallMouseCursor:
-        m_ui->cusorCrosshairCheckBox->setChecked(true);
-        m_ui->largeCursorCrosshairCheckBox->setChecked(false);
-        break;
-    case SchView::LargeMouseCursor:
-        m_ui->cusorCrosshairCheckBox->setChecked(true);
-        m_ui->largeCursorCrosshairCheckBox->setChecked(true);
+    switch (m_ui->graphicsView->mouseCursor())
+    {
+        case SchView::NoMouseCursor:
+            m_ui->cusorCrosshairCheckBox->setChecked(false);
+            m_ui->largeCursorCrosshairCheckBox->setChecked(false);
+            break;
+        case SchView::SmallMouseCursor:
+            m_ui->cusorCrosshairCheckBox->setChecked(true);
+            m_ui->largeCursorCrosshairCheckBox->setChecked(false);
+            break;
+        case SchView::LargeMouseCursor:
+            m_ui->cusorCrosshairCheckBox->setChecked(true);
+            m_ui->largeCursorCrosshairCheckBox->setChecked(true);
     }
     m_ui->largeCursorCrosshairCheckBox->setEnabled(m_ui->cusorCrosshairCheckBox->isChecked());
 }
@@ -280,23 +286,26 @@ void SettingsWidget::updateViewOriginMark()
         m_ui->graphicsView->setOriginMark(SchView::LargeOriginMark);
     }
     else
+    {
         m_ui->graphicsView->setOriginMark(SchView::SmallOriginMark);
+    }
 }
 
 void SettingsWidget::updateGuiOriginMark()
 {
-    switch (m_ui->graphicsView->originMark()) {
-    case SchView::NoOriginMark:
-        m_ui->originCheckBox->setChecked(false);
-        m_ui->largeOriginAxisCheckBox->setChecked(false);
-        break;
-    case SchView::SmallOriginMark:
-        m_ui->originCheckBox->setChecked(true);
-        m_ui->largeOriginAxisCheckBox->setChecked(false);
-        break;
-    case SchView::LargeOriginMark:
-        m_ui->originCheckBox->setChecked(true);
-        m_ui->largeOriginAxisCheckBox->setChecked(true);
+    switch (m_ui->graphicsView->originMark())
+    {
+        case SchView::NoOriginMark:
+            m_ui->originCheckBox->setChecked(false);
+            m_ui->largeOriginAxisCheckBox->setChecked(false);
+            break;
+        case SchView::SmallOriginMark:
+            m_ui->originCheckBox->setChecked(true);
+            m_ui->largeOriginAxisCheckBox->setChecked(false);
+            break;
+        case SchView::LargeOriginMark:
+            m_ui->originCheckBox->setChecked(true);
+            m_ui->largeOriginAxisCheckBox->setChecked(true);
     }
     m_ui->largeOriginAxisCheckBox->setEnabled(m_ui->originCheckBox->isChecked());
 }

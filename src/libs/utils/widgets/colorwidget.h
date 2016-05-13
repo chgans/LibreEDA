@@ -34,7 +34,8 @@ class UTILS_EXPORT ColorWidget : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged DESIGNABLE true)
-    Q_PROPERTY(ColorWheel::Display_Flags wheelFlags READ wheelFlags WRITE setWheelFlags NOTIFY wheelFlagsChanged)
+    Q_PROPERTY(ColorWheel::Display_Flags wheelFlags READ wheelFlags WRITE setWheelFlags NOTIFY
+               wheelFlagsChanged)
 
 public:
     explicit ColorWidget(QWidget *parent = nullptr);
@@ -73,7 +74,7 @@ public slots:
      */
     void setColor(const QColor &c);
 
-	/**
+    /**
      * Set the current color and show the dialog
      */
     void showColor(const QColor &oldcolor);
@@ -110,13 +111,13 @@ private:
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent * event);
+    void dropEvent(QDropEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
 private:
     class Private;
-    Private * const p;
+    Private *const p;
 };
 
 #endif // COLORWIDGET_H

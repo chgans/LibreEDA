@@ -15,17 +15,20 @@ PenColorComboBox::PenColorComboBox(QWidget *parent):
 {
     connect(this,
             static_cast<void (PenColorComboBox::*)(int)>(&QComboBox::activated),
-            [this](int index) {
+            [this](int index)
+    {
         emit activated(itemData(index).value<QColor>());
     });
     connect(this,
             static_cast<void (PenColorComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            [=](int index) {
+            [ = ](int index)
+    {
         emit currentIndexChanged(itemData(index).value<QColor>());
     });
     connect(this,
             static_cast<void (PenColorComboBox::*)(int)>(&QComboBox::highlighted),
-            [=](int index) {
+            [ = ](int index)
+    {
         emit highlighted(itemData(index).value<QColor>());
     });
 
@@ -40,8 +43,10 @@ void PenColorComboBox::addItem(const QString &label, QColor color)
 
 void PenColorComboBox::setCurrentIndex(QColor color)
 {
-    for (int index = 0; index < count(); index++) {
-        if (itemData(index).value<QColor>() == color) {
+    for (int index = 0; index < count(); index++)
+    {
+        if (itemData(index).value<QColor>() == color)
+        {
             QComboBox::setCurrentIndex(index);
             return;
         }

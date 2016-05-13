@@ -23,7 +23,8 @@ bool PcbDocument::load(QString *errorString, const QString &fileName)
 {
     // Open document
     QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly)) {
+    if (!file.open(QIODevice::ReadOnly))
+    {
         *errorString = file.errorString();
         return false;
     }
@@ -31,19 +32,22 @@ bool PcbDocument::load(QString *errorString, const QString &fileName)
     // JSON doc parsing and validation
     QJsonParseError parseError;
     QJsonDocument doc = QJsonDocument::fromJson(file.readAll(), &parseError);
-    if (doc.isNull()) {
+    if (doc.isNull())
+    {
         *errorString = parseError.errorString();
         return false;
     }
     QJsonObject rootObject = doc.object();
-    if (rootObject.isEmpty()) {
+    if (rootObject.isEmpty())
+    {
         *errorString = QString("Document malformed: got an empty root object");
         return false;
     }
 
     // Doc type check
     QString docType = rootObject.value("leda-document-type").toString();
-    if (docType != "pcb") {
+    if (docType != "pcb")
+    {
         *errorString = QString("Unknown document type: \"%1\"").arg(docType);
         return false;
     }
@@ -52,33 +56,42 @@ bool PcbDocument::load(QString *errorString, const QString &fileName)
 
     // Parse board size
     jsonValue = rootObject.value("size");
-    if (jsonValue.isUndefined()) {
+    if (jsonValue.isUndefined())
+    {
         *errorString = QString("Malformed document: missing board size");
         return false;
     }
     QSizeF boardSize;
     if (!Json::toSize(errorString, jsonValue, boardSize))
+    {
         return false;
+    }
 
     // Parse layers
     jsonValue = rootObject.value("layers");
-    if (jsonValue.isUndefined()) {
+    if (jsonValue.isUndefined())
+    {
         *errorString = QString("Malformed document: missing layer list");
         return false;
     }
     QList<int> layers;
     if (!Json::toIntList(errorString, jsonValue, layers))
+    {
         return false;
+    }
 
     // Parse items
     jsonValue = rootObject.value("items");
-    if (!jsonValue.isArray()) {
+    if (!jsonValue.isArray())
+    {
         *errorString = QString("Malformed document: missing item list");
         return false;
     }
     QList<GraphicsItem *> items;
-    for (QJsonValue value: jsonValue.toArray()) {
-        if (!value.isObject()) {
+    for (QJsonValue value : jsonValue.toArray())
+    {
+        if (!value.isObject())
+        {
             *errorString = QString("Malformed document: bad item");
             return false;
         }
@@ -86,23 +99,28 @@ bool PcbDocument::load(QString *errorString, const QString &fileName)
         QJsonObject jsonObject = value.toObject();
         QString type = jsonObject.value("type").toString();
         GraphicsItem *item;
-        if (type == "rectangle") {
+        if (type == "rectangle")
+        {
             item = new GraphicsRect();
         }
-        else if (type == "polyline") {
+        else if (type == "polyline")
+        {
             item = new GraphicsLine();
         }
-        else if (type.isNull()){
+        else if (type.isNull())
+        {
             *errorString = QString("Malformed document: missing item type");
             qDeleteAll(items);
             return false;
         }
-        else {
+        else
+        {
             *errorString = QString("Malformed document: bad item type");
             qDeleteAll(items);
             return false;
         }
-        if (!item->fromJson(errorString, jsonObject)) {
+        if (!item->fromJson(errorString, jsonObject))
+        {
             qDeleteAll(items);
             return false;
         }

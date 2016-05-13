@@ -25,7 +25,9 @@ DesignLayerManager::~DesignLayerManager()
 DesignLayerManager *DesignLayerManager::instance()
 {
     if (m_instance == nullptr)
+    {
         m_instance = new DesignLayerManager();
+    }
 
     return m_instance;
 }
@@ -33,7 +35,9 @@ DesignLayerManager *DesignLayerManager::instance()
 void DesignLayerManager::setSystemPath(const QString &path)
 {
     if (path == m_systemPath)
+    {
         return;
+    }
     m_systemPath = path;
     emit systemPathChanged(m_systemPath);
 }
@@ -46,7 +50,9 @@ QString DesignLayerManager::systemPath() const
 void DesignLayerManager::setUserPath(const QString &path)
 {
     if (path == m_userPath)
+    {
         return;
+    }
     m_userPath = path;
     emit userPathChanged(m_userPath);
 }
@@ -60,20 +66,25 @@ void DesignLayerManager::loadLayerSets()
 {
     qDebug() << "Layerset manager: Loading layersets";
     m_sets.clear();
-    for (DesignLayerSet *set: m_sets)
+    for (DesignLayerSet *set : m_sets)
+    {
         emit layerSetRemoved(set);
+    }
     qDeleteAll(m_sets);
     m_sets << loadLayerSets(m_systemPath)
            << loadLayerSets(m_userPath);
-    for (DesignLayerSet *set: m_sets)
+    for (DesignLayerSet *set : m_sets)
+    {
         emit layerSetAdded(set);
+    }
     qDebug() << "Layerset manager: Loaded " << count() << "layersets";
 }
 
 QList<DesignLayerSet *> DesignLayerManager::loadLayerSets(const QString &path)
 {
     QDir dir(path);
-    if (path.isEmpty() || !dir.exists() || !dir.isReadable()) {
+    if (path.isEmpty() || !dir.exists() || !dir.isReadable())
+    {
         qWarning() << "Layerset manager: Skipping" << path << "=>" << dir.canonicalPath();
         return QList<DesignLayerSet *>();
     }
@@ -81,13 +92,16 @@ QList<DesignLayerSet *> DesignLayerManager::loadLayerSets(const QString &path)
     QStringList filters;
     filters << "*.LedaPcbLayerSet";
     QList<DesignLayerSet *> sets;
-    for (QFileInfo fileInfo: dir.entryInfoList(filters)) {
+    for (QFileInfo fileInfo : dir.entryInfoList(filters))
+    {
         DesignLayerSet *set = new DesignLayerSet;
         sets.append(set);
         QString id = fileInfo.baseName();
         QFile file(fileInfo.filePath());
         if (!file.open(QIODevice::ReadOnly))
+        {
             continue;
+        }
         file.close();
         QSettings settings(fileInfo.filePath(), QSettings::IniFormat);
         set->loadFromSettings(settings);
@@ -113,8 +127,10 @@ void DesignLayerManager::add(DesignLayerSet *set)
 
 void DesignLayerManager::add(QList<DesignLayerSet *> sets)
 {
-    for (DesignLayerSet *set: sets) {
-        if (!m_sets.contains(set)) {
+    for (DesignLayerSet *set : sets)
+    {
+        if (!m_sets.contains(set))
+        {
             m_sets.append(set);
             emit layerSetAdded(set);
         }
@@ -128,8 +144,10 @@ void DesignLayerManager::remove(DesignLayerSet *set)
 
 void DesignLayerManager::remove(QList<DesignLayerSet *> sets)
 {
-    for (DesignLayerSet *set: sets) {
-        if (m_sets.contains(set)) {
+    for (DesignLayerSet *set : sets)
+    {
+        if (m_sets.contains(set))
+        {
             m_sets.removeOne(set);
             emit layerSetRemoved(set);
         }

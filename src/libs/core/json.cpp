@@ -10,19 +10,21 @@
  * \brief Contains helper functions to convert objects to/from JSON.
  */
 
-namespace Json
-{
+namespace Json {
 
 bool toPoint(QString *errorString, const QJsonValue &jsonValue, QPointF &value)
 {
     QJsonArray array = jsonValue.toArray(); // returns an empty array is jsonValue is not an array
-    if (array.count() != 2) {
+    if (array.count() != 2)
+    {
         *errorString = "JSON value is not a point";
         return false;
     }
     qreal coords[2];
-    for (int i =0; i < 2; i++) {
-        if (!array.at(i).isDouble()) {
+    for (int i = 0; i < 2; i++)
+    {
+        if (!array.at(i).isDouble())
+        {
             *errorString = "JSON point is malformed";
             return false;
         }
@@ -35,16 +37,20 @@ bool toPoint(QString *errorString, const QJsonValue &jsonValue, QPointF &value)
 
 bool toPointList(QString *errorString, const QJsonValue &jsonValue, QList<QPointF> &value)
 {
-    if (!jsonValue.isArray()) {
+    if (!jsonValue.isArray())
+    {
         *errorString = "JSON value is not a list (of point)";
         return false;
     }
     QJsonArray array = jsonValue.toArray();
     QList<QPointF> list;
-    for (int i = 0; i < array.count(); i++) {
+    for (int i = 0; i < array.count(); i++)
+    {
         QPointF point;
         if (!toPoint(errorString, array.at(i), point))
+        {
             return false;
+        }
         list.append(point);
     }
     value = list;
@@ -55,8 +61,11 @@ bool toRect(QString *errorString, const QJsonValue &jsonValue, QRectF &value)
 {
     QList<QPointF> points;
     if (!toPointList(errorString, jsonValue, points))
+    {
         return false;
-    if (points.count() != 2) {
+    }
+    if (points.count() != 2)
+    {
         *errorString = "JSON value is not a rectangle";
         return false;
     }
@@ -70,7 +79,9 @@ bool toPolygon(QString *errorString, const QJsonValue &jsonValue, QPolygonF &val
 {
     QList<QPointF> points;
     if (!toPointList(errorString, jsonValue, points))
+    {
         return false;
+    }
     value = QPolygonF(points.toVector());
     return true;
 }
@@ -79,8 +90,11 @@ bool toLine(QString *errorString, const QJsonValue &jsonValue, QLineF &value)
 {
     QList<QPointF> points;
     if (!toPointList(errorString, jsonValue, points))
+    {
         return false;
-    if (points.count() != 2) {
+    }
+    if (points.count() != 2)
+    {
         *errorString = "JSON value is not a line";
         return false;
     }
@@ -93,7 +107,9 @@ bool toSize(QString *errorString, const QJsonValue &jsonValue, QSizeF &value)
 {
     QPointF point;
     if (!toPoint(errorString, jsonValue, point))
+    {
         return false;
+    }
     value.setWidth(point.x());
     value.setHeight(point.y());
     return true;
@@ -101,7 +117,8 @@ bool toSize(QString *errorString, const QJsonValue &jsonValue, QSizeF &value)
 
 bool toInt(QString *errorString, const QJsonValue &jsonValue, int &value)
 {
-    if (!jsonValue.isDouble()) {
+    if (!jsonValue.isDouble())
+    {
         *errorString = "JSON value is not an integer number";
         return false;
     }
@@ -111,16 +128,20 @@ bool toInt(QString *errorString, const QJsonValue &jsonValue, int &value)
 
 bool toIntList(QString *errorString, const QJsonValue &jsonValue, QList<int> &value)
 {
-    if (!jsonValue.isArray()) {
+    if (!jsonValue.isArray())
+    {
         *errorString = "JSON value is not a list (of integer number)";
         return false;
     }
     QJsonArray array = jsonValue.toArray();
     QList<int> list;
-    for (int i = 0; i < array.count(); i++) {
+    for (int i = 0; i < array.count(); i++)
+    {
         int number;
         if (!toInt(errorString, array.at(i), number))
+        {
             return false;
+        }
         list.append(number);
     }
     value = list;
@@ -129,7 +150,8 @@ bool toIntList(QString *errorString, const QJsonValue &jsonValue, QList<int> &va
 
 bool toBool(QString *errorString, const QJsonValue &jsonValue, bool &value)
 {
-    if (!jsonValue.isBool()) {
+    if (!jsonValue.isBool())
+    {
         *errorString = "JSON value is not a boolean";
         return false;
     }
@@ -139,7 +161,8 @@ bool toBool(QString *errorString, const QJsonValue &jsonValue, bool &value)
 
 bool toReal(QString *errorString, const QJsonValue &jsonValue, qreal &value)
 {
-    if (!jsonValue.isDouble()) {
+    if (!jsonValue.isDouble())
+    {
         *errorString = "JSON value is not a real number";
         return false;
     }
@@ -149,12 +172,14 @@ bool toReal(QString *errorString, const QJsonValue &jsonValue, qreal &value)
 
 bool toColor(QString *errorString, const QJsonValue &jsonValue, QColor &value)
 {
-    if (!jsonValue.isString()) {
+    if (!jsonValue.isString())
+    {
         *errorString = "JSON value is not a color string";
         return false;
     }
     QString name = jsonValue.toString();
-    if (!QColor::isValidColor(name)) {
+    if (!QColor::isValidColor(name))
+    {
         *errorString = "JSON value is not a valid color string";
         return false;
     }
@@ -164,17 +189,20 @@ bool toColor(QString *errorString, const QJsonValue &jsonValue, QColor &value)
 
 bool toPen(QString *errorString, const QJsonValue &jsonValue, QPen &value)
 {
-    if (!jsonValue.isObject()) {
+    if (!jsonValue.isObject())
+    {
         *errorString = "JSON value is not a pen object";
         return false;
     }
     QJsonObject jsonObject = jsonValue.toObject();
     qreal width;
-    if (!jsonObject.contains("width") || !toReal(errorString, jsonObject.value("width"), width)) {
+    if (!jsonObject.contains("width") || !toReal(errorString, jsonObject.value("width"), width))
+    {
         return false;
     }
     QColor color;
-    if (!jsonObject.contains("color") || !toColor(errorString, jsonObject.value("color"), color)) {
+    if (!jsonObject.contains("color") || !toColor(errorString, jsonObject.value("color"), color))
+    {
         return false;
     }
     value.setWidthF(width);
@@ -184,13 +212,15 @@ bool toPen(QString *errorString, const QJsonValue &jsonValue, QPen &value)
 
 bool toBrush(QString *errorString, const QJsonValue &jsonValue, QBrush &value)
 {
-    if (!jsonValue.isObject()) {
+    if (!jsonValue.isObject())
+    {
         *errorString = "JSON value is not a brush object";
         return false;
     }
     QJsonObject jsonObject = jsonValue.toObject();
     QColor color;
-    if (!jsonObject.contains("color") || !toColor(errorString, jsonObject.value("color"), color)) {
+    if (!jsonObject.contains("color") || !toColor(errorString, jsonObject.value("color"), color))
+    {
         return false;
     }
     value.setStyle(Qt::SolidPattern);
@@ -200,11 +230,13 @@ bool toBrush(QString *errorString, const QJsonValue &jsonValue, QBrush &value)
 
 bool toString(QString *errorString, const QJsonValue &jsonValue, QString &value)
 {
-    if (jsonValue.isUndefined()) {
+    if (jsonValue.isUndefined())
+    {
         *errorString = "JSON value is undefined";
         return false;
     }
-    if (!jsonValue.isString()) {
+    if (!jsonValue.isString())
+    {
         *errorString = "JSON value is not a string";
         return false;
     }
@@ -223,7 +255,8 @@ QJsonArray fromPoint(const QPointF &value)
 QJsonArray fromPointList(const QList<QPointF> &value)
 {
     QJsonArray jsonArray;
-    for (int i = 0; i < value.count(); i++) {
+    for (int i = 0; i < value.count(); i++)
+    {
         jsonArray.append(fromPoint(value.at(i)));
     }
     return jsonArray;

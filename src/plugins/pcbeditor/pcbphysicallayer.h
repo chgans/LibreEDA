@@ -38,11 +38,15 @@ public:
     PcbPhysicalLayer(const PcbPhysicalLayer &other);
     virtual ~PcbPhysicalLayer();
 
-    enum {
+    enum
+    {
         Type = 1,
         UserType = 65536
     };
-    virtual int type() const { return UserType; }
+    virtual int type() const
+    {
+        return UserType;
+    }
 
     QString name() const;
     void setName(const QString &name);
@@ -65,10 +69,14 @@ public:
     PcbPhysicalOverlayLayer();
     PcbPhysicalOverlayLayer(const PcbPhysicalOverlayLayer &other);
     ~PcbPhysicalOverlayLayer();
-    enum {
+    enum
+    {
         Type = 2
     };
-    int type() const { return Type; }
+    int type() const
+    {
+        return Type;
+    }
 };
 
 
@@ -78,10 +86,14 @@ public:
     PcbPhysicalConductorLayer();
     PcbPhysicalConductorLayer(const PcbPhysicalConductorLayer &other);
     ~PcbPhysicalConductorLayer();
-    enum {
+    enum
+    {
         Type = 3
     };
-    int type() const { return Type; }
+    int type() const
+    {
+        return Type;
+    }
 
     qreal pullBackDistance() const; // TBD: more a keep out shape
     void setPullBackDistance(const qreal &value);
@@ -97,10 +109,14 @@ public:
     PcbPhysicalDielectricLayer(const PcbPhysicalDielectricLayer &other);
     ~PcbPhysicalDielectricLayer();
 
-    enum {
+    enum
+    {
         Type = 4
     };
-    int type() const { return Type; }
+    int type() const
+    {
+        return Type;
+    }
 
     QString dielectricMaterial() const;
     void setDielectricMaterial(const QString &value);
@@ -124,10 +140,14 @@ public:
     PcbPhysicalSurfaceLayer();
     PcbPhysicalSurfaceLayer(const PcbPhysicalSurfaceLayer &other);
     ~PcbPhysicalSurfaceLayer();
-    enum {
+    enum
+    {
         Type = 3
     };
-    int type() const { return Type; }
+    int type() const
+    {
+        return Type;
+    }
 };
 
 // FIXME: use flags as well: IsPlane
@@ -139,15 +159,20 @@ public:
     PcbPhysicalSignalLayer(const PcbPhysicalSignalLayer &other);
     ~PcbPhysicalSignalLayer();
 
-    enum ComponentPolicy {
+    enum ComponentPolicy
+    {
         NoComponentAllowed,
         ComponentOnTop,
         ComponentOnBottom
     };
-    enum {
+    enum
+    {
         Type = 5
     };
-    int type() const { return Type; }
+    int type() const
+    {
+        return Type;
+    }
 
     ComponentPolicy componentPolicy() const;
     void setComponentPolicy(const ComponentPolicy &value);
@@ -163,10 +188,14 @@ public:
     PcbPhysicalPlaneLayer(const PcbPhysicalPlaneLayer &other);
     ~PcbPhysicalPlaneLayer();
 
-    enum {
+    enum
+    {
         Type = 6
     };
-    int type() const { return Type; }
+    int type() const
+    {
+        return Type;
+    }
 };
 
 #endif // PCBPHYSICALLAYER_H

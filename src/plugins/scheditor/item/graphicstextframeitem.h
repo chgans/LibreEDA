@@ -14,7 +14,8 @@ class GraphicsTextFrameItem: public SchItem
     Q_OBJECT
 
 public:
-    enum SizePolicy {
+    enum SizePolicy
+    {
         ResizeToContentPolicy = 0,
         FixedSizePolicy
     };

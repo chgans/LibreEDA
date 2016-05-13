@@ -29,7 +29,9 @@ int GraphicsItem::layer() const
 void GraphicsItem::setLayer(int layer)
 {
     if (m_layer == layer)
+    {
         return;
+    }
     prepareGeometryChange();
     m_layer = layer;
 }
@@ -43,7 +45,9 @@ bool GraphicsItem::isLocked() const
 void GraphicsItem::setLocked(bool locked)
 {
     if (locked == m_isLocked)
+    {
         return;
+    }
     m_isLocked = locked;
 }
 
@@ -53,14 +57,19 @@ LayoutView *GraphicsItem::paintedView(QWidget *paintedWidget) const
     return qobject_cast<LayoutView *>(paintedWidget);
 }
 
-bool GraphicsItem::shouldPaint(const QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *paintedWidget) const
+bool GraphicsItem::shouldPaint(const QPainter *painter, const QStyleOptionGraphicsItem *option,
+                               QWidget *paintedWidget) const
 {
     if (option->levelOfDetailFromTransform(painter->worldTransform()) < 0.1)
+    {
         return false;
+    }
     // TODO: remove check once all views inherit from AbstractLayoutView
     LayoutView *view = paintedView(paintedWidget);
     if (view != nullptr && !view->shouldPaintItem(this))
+    {
         return false;
+    }
     return true;
 }
 
@@ -69,7 +78,9 @@ QColor GraphicsItem::color(QWidget *paintedWidget) const
     // TODO: remove check once all views inherit from AbstractLayoutView
     LayoutView *view = paintedView(paintedWidget);
     if (view != nullptr)
+    {
         return paintedView(paintedWidget)->colorForItem(this);
+    }
     return Qt::red;
 }
 
@@ -77,16 +88,25 @@ bool GraphicsItem::fromJson(QString *errorString, const QJsonObject &jsonObject)
 {
     QPointF pos;
     if (!Json::toPoint(errorString, jsonObject.value(J_POSITION), pos))
+    {
         return false;
+    }
     int layer;
     if (!Json::toInt(errorString, jsonObject.value(J_LAYER), layer))
+    {
         return false;
+    }
     bool locked = false;
     if (jsonObject.contains(J_LOCKED) && !Json::toBool(errorString, jsonObject.value(J_LOCKED), locked))
+    {
         return false;
+    }
     qreal rot = 0;
-    if (jsonObject.contains(J_ROTATION) && !Json::toReal(errorString, jsonObject.value(J_ROTATION), rot))
+    if (jsonObject.contains(J_ROTATION)
+            && !Json::toReal(errorString, jsonObject.value(J_ROTATION), rot))
+    {
         return false;
+    }
     setPos(pos);
     setLayer(layer);
     setLocked(locked);

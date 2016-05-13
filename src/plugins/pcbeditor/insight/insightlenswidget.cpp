@@ -28,7 +28,7 @@ InsightLensWidget::InsightLensWidget(QWidget *parent) :
     layout()->addWidget(m_view);
 
     // Load default
-    setFrameStyle(Panel|Plain);
+    setFrameStyle(Panel | Plain);
     setLineWidth(5);
     setLensEnabled(false);
     setLensSize(QSize(300, 300));
@@ -43,14 +43,16 @@ void InsightLensWidget::setLensShape(LensShape shape)
 
     // Apply a mask in Round mode
     fixupPaintingArtifacts();
-    if (m_shape == RoundLens) {
+    if (m_shape == RoundLens)
+    {
         setMask(QRegion(rect(), QRegion::Ellipse));
         // The view needs a smaller one to allow for border drawing
         int w = lineWidth();
         QRect r = rect().adjusted(w, w, -w, -w).translated(-w, -w);
         m_view->setMask(QRegion(r, QRegion::Ellipse));
     }
-    else {
+    else
+    {
         m_view->clearMask();
         clearMask();
     }
@@ -59,9 +61,13 @@ void InsightLensWidget::setLensShape(LensShape shape)
 void InsightLensWidget::toggleLensShape()
 {
     if (m_shape == SquareLens)
+    {
         setLensShape(RoundLens);
+    }
     else
+    {
         setLensShape(SquareLens);
+    }
 }
 
 InsightLensWidget::LensShape InsightLensWidget::lensShape() const
@@ -111,24 +117,26 @@ bool InsightLensWidget::toggleMouseTracking()
 
 void InsightLensWidget::moveLensToMousePosition()
 {
-    if (m_buddyView && m_enabled && m_mouseTracking) {
+    if (m_buddyView && m_enabled && m_mouseTracking)
+    {
         // center widget at the mouse cursor position
         // (in the buddy view)
         QPoint pos = m_buddyView->mapFromGlobal(QCursor::pos());
-        pos -= QPoint(width()/2, height()/2);
+        pos -= QPoint(width() / 2, height() / 2);
         move(pos);
     }
 }
 
 void InsightLensWidget::moveLensContentToMousePosition()
 {
-    if (m_enabled && m_buddyView) {
+    if (m_enabled && m_buddyView)
+    {
         // Center our local view at the same scene position as the mouse
         // cursor is in the buddy view
         QPoint pos = m_buddyView->mapFromGlobal(QCursor::pos());
         QTransform t = m_buddyView->viewportTransform();
         pos = t.inverted().map(pos);
-        m_view->setTransform(t*m_zoomLevel/100.0);
+        m_view->setTransform(t * m_zoomLevel / 100.0);
         m_view->centerOn(pos);
     }
 }
@@ -155,7 +163,8 @@ bool InsightLensWidget::toggleLensEnabled()
 
 void InsightLensWidget::setBuddyView(QGraphicsView *view)
 {
-    if (m_buddyView) {
+    if (m_buddyView)
+    {
         m_buddyView->viewport()->removeEventFilter(this);
         m_buddyView->removeEventFilter(this);
     }
@@ -176,13 +185,15 @@ bool InsightLensWidget::eventFilter(QObject *watched, QEvent *event)
 {
 
     if (m_buddyView && (watched == m_buddyView->viewport() ||
-                       watched == m_buddyView)) {
+                        watched == m_buddyView))
+    {
         // Update ourself when something happens on the buddy view
         moveLensToMousePosition();
         moveLensContentToMousePosition();
         // Filter out wheel events if needed
-        if (event->type() == QEvent::Wheel) {
-            QWheelEvent *wev = static_cast<QWheelEvent*>(event);
+        if (event->type() == QEvent::Wheel)
+        {
+            QWheelEvent *wev = static_cast<QWheelEvent *>(event);
             return handleWheelEvent(wev);
         }
     }
@@ -191,14 +202,17 @@ bool InsightLensWidget::eventFilter(QObject *watched, QEvent *event)
 
 void InsightLensWidget::paintEvent(QPaintEvent *event)
 {
-    if (m_shape == RoundLens) {
+    if (m_shape == RoundLens)
+    {
         QPainter p(this);
         // The rect will be clipped by the mask()
         // Note: this is not the cause of the painting artifacts
         p.fillRect(rect(), palette().color(QPalette::Foreground));
     }
     else
+    {
         QFrame::paintEvent(event);
+    }
 }
 
 // Zoom in/out only if the event happens above us and has the right modifiers
@@ -207,17 +221,24 @@ bool InsightLensWidget::handleWheelEvent(QWheelEvent *event)
     QPoint pos = mapFromGlobal(event->globalPos());
     // Qt::AltModifier is never set, why?
     if (rect().contains(pos) &&
-            event->modifiers() & Qt::ShiftModifier) {
+            event->modifiers() & Qt::ShiftModifier)
+    {
         qreal factor;
         if (event->delta() > 0)
+        {
             factor = 1.2;
+        }
         else
+        {
             factor = 0.8;
+        }
         setLensZoomLevel(lensZoomLevel()*factor);
         return true;
     }
     else
+    {
         return false;
+    }
 }
 
 // Quick and dirty painting artifact fix:
@@ -229,6 +250,8 @@ void InsightLensWidget::fixupPaintingArtifacts()
     setVisible(false);
     repaint();
     if (m_enabled)
+    {
         setVisible(true);
+    }
 }
 

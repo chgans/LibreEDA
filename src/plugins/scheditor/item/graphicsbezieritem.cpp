@@ -45,18 +45,21 @@ int GraphicsBezierItem::addPoint(const QPointF &pos)
     GraphicsBezierHandle *newHandle = addBezierHandle(newId);
     newHandle->setNodePos(pos);
 
-    if (newId == 0) {
+    if (newId == 0)
+    {
         newHandle->setFirst(true);
         newHandle->setLast(true);
     }
     else if (!(qFuzzyCompare(m_px.last(), pos.x()) &&
-               qFuzzyCompare(m_py.last(), pos.y()))) {
+               qFuzzyCompare(m_py.last(), pos.y())))
+    {
         // Update the first/last status
         GraphicsBezierHandle *prevHandle = bezierHandleAt(newId - 1);
         prevHandle->setLast(false);
         newHandle->setLast(true);
     }
-    else {
+    else
+    {
         WARNING() << "Cannot add a point at same pos as current one";
         removeHandle(newHandle);
         return -1;
@@ -64,7 +67,8 @@ int GraphicsBezierItem::addPoint(const QPointF &pos)
 
     m_px.append(pos.x());
     m_py.append(pos.y());
-    if (!newHandle->isFirst()) {
+    if (!newHandle->isFirst())
+    {
         m_c2x.append(0);
         m_c2y.append(0);/*
     }
@@ -91,13 +95,14 @@ void GraphicsBezierItem::removePoint(int index)
     // Remove data points
     m_px.removeAt(index);
     m_py.removeAt(index);
-    if (index != 0) {
-        m_c2x.removeAt(index-1);
-        m_c2y.removeAt(index-1); /*
+    if (index != 0)
+    {
+        m_c2x.removeAt(index - 1);
+        m_c2y.removeAt(index - 1); /*
     }
     if (!handle->isLast()) {*/
-        m_c1x.removeAt(index-1);
-        m_c1y.removeAt(index-1);
+        m_c1x.removeAt(index - 1);
+        m_c1y.removeAt(index - 1);
     }
 
     // Remove handle
@@ -108,9 +113,13 @@ void GraphicsBezierItem::removePoint(int index)
 
     // Update first/last status: FIXME: now we use index in abstracthandle
     if (firstRemoved && handleCount() != 0)
+    {
         bezierHandleAt(handleCount() - 1)->setFirst(true);
+    }
     if (lastRemoved && handleCount() != 0)
+    {
         bezierHandleAt(handleCount() - 1)->setLast(true);
+    }
 
     // Update handles
     smoothBezier();
@@ -136,18 +145,21 @@ QPainterPath GraphicsBezierItem::copyPath(const QPainterPath &src, int first, in
 {
     QPainterPath dst;
     int i = first;
-    while (i <= (last*3)) {
-        if (i == 0) {
+    while (i <= (last * 3))
+    {
+        if (i == 0)
+        {
             QPainterPath::Element elt = src.elementAt(i);
             dst.moveTo(elt.x, elt.y);
             i++;
         }
-        else {
+        else
+        {
             QPainterPath::Element c1 = src.elementAt(i);
-            QPainterPath::Element c2 = src.elementAt(i+1);
-            QPainterPath::Element pt = src.elementAt(i+2);
+            QPainterPath::Element c2 = src.elementAt(i + 1);
+            QPainterPath::Element pt = src.elementAt(i + 2);
             dst.cubicTo(c1.x, c1.y, c2.x, c2.y, pt.x, pt.y);
-            i+= 3;
+            i += 3;
         }
     }
     return dst;
@@ -160,22 +172,26 @@ void GraphicsBezierItem::smoothBezier()
     // If the pointCount() hasn't change use moveElement
     m_path = QPainterPath();
     if (pointCount() == 0)
+    {
         return;
+    }
 
     setShapeDirty();
     setBoundingRectDirty();
 
-    if (pointCount() >= 2) {
+    if (pointCount() >= 2)
+    {
         computeBezierControlPoints(m_px, m_c1x, m_c2x);
         computeBezierControlPoints(m_py, m_c1y, m_c2y);
     }
 
     m_path.moveTo(m_px[0], m_py[0]);
-    for (int i = 1; i < m_px.size(); i++) {
-        qreal c1x = m_c1x[i-1];
-        qreal c1y = m_c1y[i-1];
-        qreal c2x = m_c2x[i-1];
-        qreal c2y = m_c2y[i-1];
+    for (int i = 1; i < m_px.size(); i++)
+    {
+        qreal c1x = m_c1x[i - 1];
+        qreal c1y = m_c1y[i - 1];
+        qreal c2x = m_c2x[i - 1];
+        qreal c2y = m_c2y[i - 1];
         qreal px  = m_px[i];
         qreal py  = m_py[i];
         m_path.cubicTo(c1x, c1y, c2x, c2y, px, py);
@@ -185,7 +201,8 @@ void GraphicsBezierItem::smoothBezier()
 }
 
 // https://www.particleincell.com/2012/bezier-splines/
-void GraphicsBezierItem::computeBezierControlPoints(const QVector<qreal> &p, QVector<qreal> &c1, QVector<qreal> &c2)
+void GraphicsBezierItem::computeBezierControlPoints(const QVector<qreal> &p, QVector<qreal> &c1,
+                                                    QVector<qreal> &c2)
 {
     int n = p.size() - 1;
     int i;
@@ -195,7 +212,7 @@ void GraphicsBezierItem::computeBezierControlPoints(const QVector<qreal> &p, QVe
     a[0] = 0;
     b[0] = 2;
     c[0] = 1;
-    r[0] = p[0] + 2*p[1];
+    r[0] = p[0] + 2 * p[1];
 
     /* internal segments */
     for (i = 1; i < n - 1; i++)
@@ -203,32 +220,36 @@ void GraphicsBezierItem::computeBezierControlPoints(const QVector<qreal> &p, QVe
         a[i] = 1;
         b[i] = 4;
         c[i] = 1;
-        r[i] = 4*p[i] + 2*p[i+1];
+        r[i] = 4 * p[i] + 2 * p[i + 1];
     }
 
     /* right segment */
-    a[n-1] = 2;
-    b[n-1] = 7;
-    c[n-1] = 0;
-    r[n-1] = 8*p[n-1] + p[n];
+    a[n - 1] = 2;
+    b[n - 1] = 7;
+    c[n - 1] = 0;
+    r[n - 1] = 8 * p[n - 1] + p[n];
 
     /* solves Ax=b with the Thomas algorithm (from Wikipedia) */
     for (i = 1; i < n; i++)
     {
-        qreal m = a[i] / b[i-1];
-        b[i] = b[i] - m*c[i-1];
-        r[i] = r[i] - m*r[i-1];
+        qreal m = a[i] / b[i - 1];
+        b[i] = b[i] - m * c[i - 1];
+        r[i] = r[i] - m * r[i - 1];
     }
 
     /* compute p1 */
-    c1[n-1] = r[n-1]/b[n-1];
-    for (i = n-2; i >= 0; --i)
-        c1[i] = (r[i] - c[i] * c1[i+1]) / b[i];
+    c1[n - 1] = r[n - 1] / b[n - 1];
+    for (i = n - 2; i >= 0; --i)
+    {
+        c1[i] = (r[i] - c[i] * c1[i + 1]) / b[i];
+    }
 
     /* compute p2 */
-    for (i = 0; i < n-1; i++)
-        c2[i] = 2*p[i+1] - c1[i+1];
-    c2[n-1] = 0.5*(p[n] + c1[n-1]);
+    for (i = 0; i < n - 1; i++)
+    {
+        c2[i] = 2 * p[i + 1] - c1[i + 1];
+    }
+    c2[n - 1] = 0.5 * (p[n] + c1[n - 1]);
 }
 
 //
@@ -237,12 +258,15 @@ void GraphicsBezierItem::bezierToHandles()
     Q_ASSERT(pointCount() == handleCount());
 
     if (pointCount() == 0)
+    {
         return;
+    }
 
     Q_ASSERT(bezierHandleAt(0)->isFirst());
     Q_ASSERT(bezierHandleAt(handleCount() - 1)->isLast());
 
-    for (int i = 0; i < pointCount(); i++) {
+    for (int i = 0; i < pointCount(); i++)
+    {
         bezierToHandle(i);
     }
 }
@@ -254,16 +278,22 @@ void GraphicsBezierItem::bezierToHandle(int idx)
     handle->setNodePos(m_px[idx], m_py[idx]);
 
     if (!handle->isFirst())
-        handle->setControl1Pos(m_c2x[idx-1], m_c2y[idx-1]);
+    {
+        handle->setControl1Pos(m_c2x[idx - 1], m_c2y[idx - 1]);
+    }
 
     if (!handle->isLast())
+    {
         handle->setControl2Pos(m_c1x[idx], m_c1y[idx]);
+    }
 }
 
 void GraphicsBezierItem::handlesToBezier()
 {
     for (int i = 0; i < pointCount(); i++)
+    {
         handleToBezier(i);
+    }
 }
 
 void GraphicsBezierItem::handleToBezier(int idx)
@@ -271,19 +301,23 @@ void GraphicsBezierItem::handleToBezier(int idx)
     Q_ASSERT(pointCount() == handleCount());
 
     if (pointCount() == 0)
+    {
         return;
+    }
 
     GraphicsBezierHandle *handle = bezierHandleAt(idx);
 
     m_px[idx] = handle->nodePos().x();
     m_py[idx] = handle->nodePos().y();
 
-    if (!handle->isFirst()) {
-        m_c2x[idx-1] = handle->control1Pos().x();
-        m_c2y[idx-1] = handle->control1Pos().y();
+    if (!handle->isFirst())
+    {
+        m_c2x[idx - 1] = handle->control1Pos().x();
+        m_c2y[idx - 1] = handle->control1Pos().y();
     }
 
-    if (!handle->isLast()) {
+    if (!handle->isLast())
+    {
         m_c1x[idx] = handle->control2Pos().x();
         m_c1y[idx] = handle->control2Pos().y();
     }
@@ -298,7 +332,8 @@ QPointF GraphicsBezierItem::pointAt(int idx) const
 QList<QPointF> GraphicsBezierItem::points() const
 {
     QList<QPointF> result;
-    for (int i = 0; i < pointCount(); i++) {
+    for (int i = 0; i < pointCount(); i++)
+    {
         result.append(pointAt(i));
     }
     return result;
@@ -317,7 +352,7 @@ void GraphicsBezierItem::setBoundingRectDirty()
 
 void GraphicsBezierItem::computeBoundingRect() const
 {
-    qreal extra = pen().widthF()/2.0;
+    qreal extra = pen().widthF() / 2.0;
     m_boundingRect = m_path.boundingRect().adjusted(-extra, -extra, +extra, +extra);
     m_boundingRectIsDirty = false;
 }
@@ -341,24 +376,31 @@ void GraphicsBezierItem::computeShape() const
 QRectF GraphicsBezierItem::boundingRect() const
 {
     if (m_boundingRectIsDirty)
+    {
         computeBoundingRect();
+    }
     return m_boundingRect;
 }
 
 QPainterPath GraphicsBezierItem::shape() const
 {
     if (m_shapeIsDirty)
+    {
         computeShape();
+    }
     return m_shape;
 }
 
-void GraphicsBezierItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicsBezierItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                               QWidget *widget)
 {
     Q_UNUSED(widget);
     // TBD: exposedRect seems to be always equal boudingRect()
     // http://thesmithfam.org/blog/2007/02/03/qt-improving-qgraphicsview-performance/
     if (!shape().intersects(option->exposedRect))
+    {
         return;
+    }
 
     // From same web page
     painter->setClipRect(option->exposedRect);
@@ -372,7 +414,8 @@ SchItem *GraphicsBezierItem::clone()
 {
     GraphicsBezierItem *item = new GraphicsBezierItem();
     SchItem::cloneTo(item);
-    for (const QPointF &point: points()) {
+    for (const QPointF &point : points())
+    {
         item->addPoint(point);
     }
     return item;
@@ -383,7 +426,8 @@ void GraphicsBezierItem::itemNotification(IGraphicsObservableItem *item)
     Q_UNUSED(item);
     blockItemNotification();
     handlesToBezier();
-    if (m_px.size() >= 2) {
+    if (m_px.size() >= 2)
+    {
         smoothBezier();
         bezierToHandles();
     }
@@ -391,10 +435,13 @@ void GraphicsBezierItem::itemNotification(IGraphicsObservableItem *item)
 }
 
 
-QVariant GraphicsBezierItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+QVariant GraphicsBezierItem::itemChange(QGraphicsItem::GraphicsItemChange change,
+                                        const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
+    if (change == QGraphicsItem::ItemSelectedHasChanged)
+    {
+        for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+        {
             handle->setVisible(isSelected());
         }
     }

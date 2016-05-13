@@ -56,19 +56,24 @@ void ColorProfileEditor::initialise()
     ui->profileTable->setRowCount(m_manager->palettes().count());
     ui->profileTable->setColumnCount(2);
     int i = 0;
-    for (const PcbPalette *palette: m_manager->palettes()) {
+    for (const PcbPalette *palette : m_manager->palettes())
+    {
         QString id = palette->name();
         QTableWidgetItem *nameItem = new QTableWidgetItem();
         nameItem->setText(id);
-        nameItem->setData(Qt::UserRole, QVariant::fromValue<const PcbPalette*>(palette));
+        nameItem->setData(Qt::UserRole, QVariant::fromValue<const PcbPalette *>(palette));
         if (!palette->isSystemPalette())
-            nameItem->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable|Qt::ItemIsEditable);
+        {
+            nameItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable);
+        }
         else
-            nameItem->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable);
+        {
+            nameItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+        }
         QTableWidgetItem *attItem = new QTableWidgetItem();
         attItem->setText(palette->isSystemPalette() ? "System" : "User");
-        attItem->setData(Qt::UserRole, QVariant::fromValue<const PcbPalette*>(palette));
-        attItem->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable);
+        attItem->setData(Qt::UserRole, QVariant::fromValue<const PcbPalette *>(palette));
+        attItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
         ui->profileTable->setItem(i, 0, nameItem);
         ui->profileTable->setItem(i, 1, attItem);
         i++;
@@ -85,8 +90,9 @@ void ColorProfileEditor::populateColorView()
 #if 0
     DesignLayerManager *manager = DesignLayerManager::instance();
     for (DesignLayer::Category category = DesignLayer::SignalCategory;
-         category <= DesignLayer::OtherCategory;
-         category = DesignLayer::Category(category + 1)) {
+            category <= DesignLayer::OtherCategory;
+            category = DesignLayer::Category(category + 1))
+    {
 
         QTreeWidgetItem *groupItem = new QTreeWidgetItem();
         groupItem->setText(0, manager->categoryName(category));
@@ -94,13 +100,14 @@ void ColorProfileEditor::populateColorView()
         groupItem->setData(0, Qt::UserRole,
                            QVariant::fromValue<DesignLayer::Category>(category));
 
-        for (DesignLayer *layer: manager->layersForCategory(category)) {
+        for (DesignLayer *layer : manager->layersForCategory(category))
+        {
             QTreeWidgetItem *colorItem =  new QTreeWidgetItem();
             PcbPalette::ColorRole role = PcbPalette::ColorRole(layer->index() + 1);
             QColor color = m_activeProfile->color(role);
             colorItem->setText(0, layer->defaultName());
             colorItem->setBackgroundColor(1, color);
-            colorItem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+            colorItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             colorItem->setData(0, Qt::DecorationRole,
                                icon(color));
             colorItem->setData(0, Qt::UserRole,
@@ -118,15 +125,20 @@ void ColorProfileEditor::populateColorView()
 void ColorProfileEditor::profileSelectionChanged()
 {
     if (ui->profileTable->selectedItems().count() == 0)
+    {
         return;
+    }
 
     QTableWidgetItem *item = ui->profileTable->selectedItems().first();
     const PcbPalette *profile = item->data(Qt::UserRole).value<const PcbPalette *>();
     if (m_activeProfile == profile)
+    {
         return;
+    }
     m_activeProfile = profile;
     ui->colorWidget->setVisible(false);
-    if (m_activeProfile) {
+    if (m_activeProfile)
+    {
         ui->colorWidget->setEnabled(!m_activeProfile->isSystemPalette());
         cleanColorView();
         populateColorView();
@@ -137,12 +149,16 @@ void ColorProfileEditor::profileSelectionChanged()
 void ColorProfileEditor::colorSelectionChanged()
 {
     if (ui->colorTree->selectedItems().count() == 0)
+    {
         return;
+    }
 
     QTreeWidgetItem *item = ui->colorTree->selectedItems().first();
     bool isColor = item->data(0, Qt::UserRole).canConvert<QColor>();
     ui->colorWidget->setVisible(isColor);
     qDebug() << item->text(0);
     if (isColor)
+    {
         ui->colorWidget->setColor(item->data(0, Qt::UserRole).value<QColor>());
+    }
 }

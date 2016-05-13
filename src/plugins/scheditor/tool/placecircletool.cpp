@@ -17,16 +17,22 @@ PlaceCircleTool::PlaceCircleTool(QObject *parent):
 
     m_penSettingsWidget = new PenSettingsWidget();
     connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
-            [this](const QPen &pen) {
+            [this](const QPen & pen)
+    {
         if (!m_item)
+        {
             return;
+        }
         m_item->setPen(pen);
     });
     m_brushSettingsWidget = new BrushSettingsWidget();
     connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
-            [this](const QBrush &brush) {
+            [this](const QBrush & brush)
+    {
         if (!m_item)
+        {
             return;
+        }
         m_item->setBrush(brush);
     });
 
@@ -52,8 +58,10 @@ void PlaceCircleTool::addPoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx < 2);
 
-    if ( idx == 0)
+    if (idx == 0)
+    {
         return;
+    }
 
     QPointF itemPos = m_item->mapFromScene(pos);
     m_item->setRadius(qAbs(itemPos.x()));
@@ -64,8 +72,10 @@ void PlaceCircleTool::freezePoint(int idx, const QPointF &pos)
     Q_UNUSED(pos);
     Q_ASSERT(idx < 2);
 
-    if ( idx == 0)
+    if (idx == 0)
+    {
         return;
+    }
 
     auto command = new PlaceCircleCommand;
     command->position = m_item->pos();
@@ -94,8 +104,8 @@ void PlaceCircleTool::movePoint(int idx, const QPointF &pos)
 {
     Q_ASSERT(idx == 1);
 
-     QLineF vector(m_item->pos(), pos);
-     m_item->setRadius(vector.length());
+    QLineF vector(m_item->pos(), pos);
+    m_item->setRadius(vector.length());
 }
 
 void PlaceCircleTool::endInsert(const QPointF &pos)

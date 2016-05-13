@@ -4,7 +4,8 @@
 #include <QPixmap>
 #include <QPainter>
 
-static QMap<Qt::PenStyle, QString> styleToText = {
+static QMap<Qt::PenStyle, QString> styleToText =
+{
     { Qt::NoPen, QString("None") },
     { Qt::SolidLine, QString("Solid") },
     { Qt::DashLine, QString("Dash") },
@@ -37,17 +38,20 @@ PenStyleComboBox::PenStyleComboBox(QWidget *parent) :
 {
     connect(this,
             static_cast<void (PenStyleComboBox::*)(int)>(&QComboBox::activated),
-            [this](int index) {
+            [this](int index)
+    {
         emit activated(itemData(index).value<Qt::PenStyle>());
     });
     connect(this,
             static_cast<void (PenStyleComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            [=](int index) {
+            [ = ](int index)
+    {
         emit currentIndexChanged(itemData(index).value<Qt::PenStyle>());
     });
     connect(this,
             static_cast<void (PenStyleComboBox::*)(int)>(&QComboBox::highlighted),
-            [=](int index) {
+            [ = ](int index)
+    {
         emit highlighted(itemData(index).value<Qt::PenStyle>());
     });
 }
@@ -60,8 +64,10 @@ void PenStyleComboBox::addItem(Qt::PenStyle style)
 
 void PenStyleComboBox::setCurrentIndex(Qt::PenStyle style)
 {
-    for (int index = 0; index < count(); index++) {
-        if (itemData(index).value<Qt::PenStyle>() == style) {
+    for (int index = 0; index < count(); index++)
+    {
+        if (itemData(index).value<Qt::PenStyle>() == style)
+        {
             QComboBox::setCurrentIndex(index);
             return;
         }

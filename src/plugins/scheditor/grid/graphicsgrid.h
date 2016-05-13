@@ -18,8 +18,14 @@ public:
     explicit GraphicsGrid(const GraphicsGrid &other);
     virtual ~GraphicsGrid();
 
-    QString label() const { return m_label; }
-    void setLabel(const QString &label) { m_label = label; }
+    QString label() const
+    {
+        return m_label;
+    }
+    void setLabel(const QString &label)
+    {
+        m_label = label;
+    }
 
     virtual QString typeName() const = 0;
     virtual QString typeId() const = 0; // FIXME: see Factory.typeId()
@@ -33,29 +39,77 @@ public:
 
     virtual QPointF snap(const QSizeF &pixelPerMm, QPointF point) const = 0;
 
-    int priority() const { return m_priority; }
-    void setPriority(int prio) { m_priority = prio; }
+    int priority() const
+    {
+        return m_priority;
+    }
+    void setPriority(int prio)
+    {
+        m_priority = prio;
+    }
 
-    QPointF origin() const { return m_origin; } // Why is this needed?
-    void setOrigin(QPointF p) { m_origin = p; }
+    QPointF origin() const
+    {
+        return m_origin;    // Why is this needed?
+    }
+    void setOrigin(QPointF p)
+    {
+        m_origin = p;
+    }
 
-    int minimalFeatureSize() const { return m_minimalFeatureSize; }
-    void setMinimalFeatureSize(int pixels) { m_minimalFeatureSize = pixels; }
+    int minimalFeatureSize() const
+    {
+        return m_minimalFeatureSize;
+    }
+    void setMinimalFeatureSize(int pixels)
+    {
+        m_minimalFeatureSize = pixels;
+    }
 
-    qreal coarseMultiplier() const { return m_coarseMultiplier; }
-    void setCoarseMultiplier(qreal m) { m_coarseMultiplier = m; }
+    qreal coarseMultiplier() const
+    {
+        return m_coarseMultiplier;
+    }
+    void setCoarseMultiplier(qreal m)
+    {
+        m_coarseMultiplier = m;
+    }
 
-    Qt::PenStyle fineLineStyle() const { return m_fineLineStyle; }
-    void setFineLineStyle(Qt::PenStyle style) { m_fineLineStyle = style; }
+    Qt::PenStyle fineLineStyle() const
+    {
+        return m_fineLineStyle;
+    }
+    void setFineLineStyle(Qt::PenStyle style)
+    {
+        m_fineLineStyle = style;
+    }
 
-    QColor fineLineColor() const { return m_fineLineColor; }
-    void setFineLineColor(QColor color) { m_fineLineColor = color; }
+    QColor fineLineColor() const
+    {
+        return m_fineLineColor;
+    }
+    void setFineLineColor(QColor color)
+    {
+        m_fineLineColor = color;
+    }
 
-    Qt::PenStyle coarseLineStyle() const { return m_coarseLineStyle; }
-    void setCoarseLineStyle(Qt::PenStyle style) { m_coarseLineStyle = style; }
+    Qt::PenStyle coarseLineStyle() const
+    {
+        return m_coarseLineStyle;
+    }
+    void setCoarseLineStyle(Qt::PenStyle style)
+    {
+        m_coarseLineStyle = style;
+    }
 
-    QColor coarseLineColor() const { return m_coarseLineColor; }
-    void setCoarseLineColor(QColor color) { m_coarseLineColor = color; }
+    QColor coarseLineColor() const
+    {
+        return m_coarseLineColor;
+    }
+    void setCoarseLineColor(QColor color)
+    {
+        m_coarseLineColor = color;
+    }
 
 private:
     QString m_label;

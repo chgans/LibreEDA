@@ -27,7 +27,8 @@ NavigationDockWidget::NavigationDockWidget(QWidget *parent):
 NavigationDockWidget::~NavigationDockWidget()
 {
     m_comboBox->disconnect(this);
-    while (m_comboBox->count()) {
+    while (m_comboBox->count())
+    {
         NavigationView *view = m_comboBox->itemData(0).value<NavigationView *>();
         m_comboBox->removeItem(0);
         delete view;
@@ -41,11 +42,13 @@ void NavigationDockWidget::setFactories(const QList<INavigationViewFactory *> &f
     m_factories = factories;
 
     // loadFactories()
-    for (INavigationViewFactory *factory: m_factories) {
+    for (INavigationViewFactory *factory : m_factories)
+    {
         m_comboBox->addItem(factory->displayName(),
                             QVariant::fromValue<NavigationView *>(factory->createView()));
     }
-    if (m_comboBox->count()) {
+    if (m_comboBox->count())
+    {
         int defaultIndex = 0;
         m_comboBox->setCurrentIndex(defaultIndex);
         activateNavigationView(defaultIndex);
@@ -69,7 +72,8 @@ void NavigationDockWidget::activateNavigationView(int index)
     m_toolBar->clear();
     QAction *action = m_toolBar->addWidget(m_comboBox);
     action->setVisible(true);
-    for (QWidget *widget: view->toolBarWidgets) {
+    for (QWidget *widget : view->toolBarWidgets)
+    {
         m_toolBar->addWidget(widget);
     }
     setWidget(view->widget);

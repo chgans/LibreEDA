@@ -13,23 +13,29 @@ PlacePolygonTool::PlacePolygonTool(QObject *parent):
     m_item(nullptr)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicspolygontool.svg"),
-                           "Place a polygon", nullptr);
+                                  "Place a polygon", nullptr);
     action->setShortcut(QKeySequence("i,p"));
     setAction(action);
     setToolGroup("interactive-tools");
 
     m_penSettingsWidget = new PenSettingsWidget();
     connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
-            [this](const QPen &pen) {
+            [this](const QPen & pen)
+    {
         if (!m_item)
+        {
             return;
+        }
         m_item->setPen(pen);
     });
     m_brushSettingsWidget = new BrushSettingsWidget();
     connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
-            [this](const QBrush &brush) {
+            [this](const QBrush & brush)
+    {
         if (!m_item)
+        {
             return;
+        }
         m_item->setBrush(brush);
     });
 
@@ -72,13 +78,16 @@ bool PlacePolygonTool::removePoint(int idx, const QPointF &pos)
     QPolygonF poly = m_item->polygon();
     QPointF point = poly[idx];
     poly.removeAt(idx);
-    if (poly.count() > 1) {
+    if (poly.count() > 1)
+    {
         poly[idx - 1] = point;
         m_item->setPolygon(poly);
         return true; // Keep going
     }
     else
-        return false; // Remove and delete polygon
+    {
+        return false;    // Remove and delete polygon
+    }
 }
 
 void PlacePolygonTool::movePoint(int idx, const QPointF &pos)

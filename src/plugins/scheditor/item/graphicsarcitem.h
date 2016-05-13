@@ -16,7 +16,8 @@ class GraphicsArcItem : public SchItem
     Q_PROPERTY(qreal spanAngle READ spanAngle WRITE setSpanAngle)
 
 public:
-    enum HandleId {
+    enum HandleId
+    {
         XRadiusHandle = 0,
         YRadiusHandle,
         StartAngleHandle,
@@ -25,7 +26,8 @@ public:
 
     explicit GraphicsArcItem(SchItem *parent = nullptr);
     explicit GraphicsArcItem(qreal xRadius, qreal yRadius, SchItem *parent = nullptr);
-    explicit GraphicsArcItem(qreal xRadius, qreal yRadius, int startAngle, int spanAngle, SchItem *parent = nullptr);
+    explicit GraphicsArcItem(qreal xRadius, qreal yRadius, int startAngle, int spanAngle,
+                             SchItem *parent = nullptr);
     ~GraphicsArcItem();
 
     qreal xRadius() const;

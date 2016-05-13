@@ -97,6 +97,8 @@ QString IEditor::displayName() const
 void IEditor::setDisplayName(const QString &displayName)
 {
     if (displayName == m_displayName)
+    {
         return;
+    }
     m_displayName = displayName;
 }

@@ -34,7 +34,8 @@ ObjectPropertyEditor::ObjectPropertyEditor(QWidget *parent):
     setFactoryForManager(m_penManager, m_penFactory);
     setFactoryForManager(m_penManager->subEnumManager(), m_penFactory->subEnumEditorFactory());
     setFactoryForManager(m_penManager->subColorManager(), m_penFactory->subColorEditorFactory());
-    setFactoryForManager(m_penManager->subColorManager()->subIntPropertyManager(), new QtSpinBoxFactory(this));
+    setFactoryForManager(m_penManager->subColorManager()->subIntPropertyManager(),
+                         new QtSpinBoxFactory(this));
     connect(m_penManager, &PenPropertyManager::valueChanged,
             this, &ObjectPropertyEditor::setObjectPropertyValue);
 
@@ -53,7 +54,9 @@ void ObjectPropertyEditor::setObjects(QList<QObject *> objects)
 
     m_object = objects.isEmpty() ? nullptr : objects.first();
     if (m_object == nullptr)
+    {
         return;
+    }
 
     m_populatingBrowser = true;
     populateBrowser(m_object, m_object->metaObject());
@@ -63,42 +66,55 @@ void ObjectPropertyEditor::setObjects(QList<QObject *> objects)
 void ObjectPropertyEditor::populateBrowser(QObject *object, const QMetaObject *metaObject)
 {
     if (!object || !metaObject)
+    {
         return;
+    }
 
     populateBrowser(object, metaObject->superClass());
     QtProperty *parentProperty = m_manager->addProperty(QtVariantPropertyManager::groupTypeId(),
                                                         metaObject->className());
-    for (int i=0; i<metaObject->propertyCount(); ++i) {
+    for (int i = 0; i < metaObject->propertyCount(); ++i)
+    {
         QMetaProperty metaProperty = metaObject->property(i);
-        if (metaProperty.enclosingMetaObject() != metaObject) {
+        if (metaProperty.enclosingMetaObject() != metaObject)
+        {
             continue; // ?!?
         }
-        if (!metaProperty.isReadable()) {
+        if (!metaProperty.isReadable())
+        {
             continue;
         }
-        if (!metaProperty.hasNotifySignal()) {
+        if (!metaProperty.hasNotifySignal())
+        {
             continue;
         }
         QtProperty *property;
-        if (metaProperty.isEnumType()) {
-            if (metaProperty.isFlagType()) {
+        if (metaProperty.isEnumType())
+        {
+            if (metaProperty.isFlagType())
+            {
                 property = m_manager->addProperty(QtVariantPropertyManager::flagTypeId());
             }
-            else {
+            else
+            {
                 property = m_manager->addProperty(QtVariantPropertyManager::enumTypeId());
                 QMetaEnum metaEnum = metaProperty.enumerator();
                 QStringList enumNames;
                 int enumValue = metaProperty.read(object).toInt();
                 int enumIndex = -1;
-                for (int i = 0; i < metaEnum.keyCount(); i++) {
+                for (int i = 0; i < metaEnum.keyCount(); i++)
+                {
                     if (enumValue == metaEnum.value(i))
+                    {
                         enumIndex = i;
+                    }
                     enumNames.append(QLatin1String(metaEnum.key(i)));
                 }
                 m_manager->setAttribute(property, QLatin1String("enumNames"), enumNames);
                 if (enumIndex == -1)
                 {
-                    qCWarning(LogPropEditor2) << QString("Enum index/value not found for value of %1").arg(property->propertyName());
+                    qCWarning(LogPropEditor2) << QString("Enum index/value not found for value of %1").arg(
+                                                  property->propertyName());
                 }
                 else
                 {
@@ -106,18 +122,21 @@ void ObjectPropertyEditor::populateBrowser(QObject *object, const QMetaObject *m
                 }
             }
         }
-        else if (metaProperty.type() == QVariant::Pen) {
+        else if (metaProperty.type() == QVariant::Pen)
+        {
             property = m_penManager->addProperty("Outline");
             m_penManager->setValue(property, metaProperty.read(object).value<QPen>());
         }
-        else {
+        else
+        {
             property = m_manager->addProperty(metaProperty.type(),
                                               metaProperty.name());
-            if (!property) {
+            if (!property)
+            {
                 qCWarning(LogPropEditor2) << QString("Cannot add property %1::%2 of type %3")
-                                             .arg(metaObject->className())
-                                             .arg(metaProperty.name())
-                                             .arg(metaProperty.typeName());
+                                          .arg(metaObject->className())
+                                          .arg(metaProperty.name())
+                                          .arg(metaProperty.typeName());
                 continue;
             }
             m_manager->setValue(property, object->property(metaProperty.name()));
@@ -127,7 +146,8 @@ void ObjectPropertyEditor::populateBrowser(QObject *object, const QMetaObject *m
         parentProperty->addSubProperty(property);
     }
     QtBrowserItem *item = addProperty(parentProperty);
-    for (QtBrowserItem *childItem: item->children()) {
+    for (QtBrowserItem *childItem : item->children())
+    {
         setExpanded(childItem, false);
     }
 }
@@ -135,20 +155,24 @@ void ObjectPropertyEditor::populateBrowser(QObject *object, const QMetaObject *m
 void ObjectPropertyEditor::setObjectPropertyValue(QtProperty *property, const QVariant &value)
 {
     if (m_populatingBrowser)
+    {
         return;
+    }
 
-    if (!m_propertyToMetaPropertyIndex.contains(property)) {
+    if (!m_propertyToMetaPropertyIndex.contains(property))
+    {
         qCWarning(LogPropEditor2) << "Unknown property";
         return;
     }
     int metaPropertyIndex = m_propertyToMetaPropertyIndex[property];
     QMetaProperty metaProperty = m_object->metaObject()->property(metaPropertyIndex);
     bool ok = metaProperty.write(m_object, value);
-    if (!ok) {
+    if (!ok)
+    {
         qCWarning(LogPropEditor2) << QString("Failed to set property %1::%2 (%3)")
-                                    .arg(m_object->metaObject()->className())
-                                    .arg(property->propertyName())
-                                    .arg(value.typeName());
+                                  .arg(m_object->metaObject()->className())
+                                  .arg(property->propertyName())
+                                  .arg(value.typeName());
     }
 }
 

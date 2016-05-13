@@ -21,7 +21,7 @@ public:
     explicit NavigationDockWidget(QWidget *parent = nullptr);
     ~NavigationDockWidget();
 
-    void setFactories(const QList<INavigationViewFactory*> &factories);
+    void setFactories(const QList<INavigationViewFactory *> &factories);
 
     void saveSettings(QSettings *settings);
     void restoreSettings(QSettings *settings);
@@ -30,7 +30,7 @@ private slots:
     void activateNavigationView(int index);
 
 private:
-    QList<INavigationViewFactory*> m_factories;
+    QList<INavigationViewFactory *> m_factories;
     QComboBox *m_comboBox;
     QToolBar *m_toolBar;
 };

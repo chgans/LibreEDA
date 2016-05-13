@@ -56,7 +56,7 @@ GradientSlider::GradientSlider(Qt::Orientation orientation, QWidget *parent) :
 
 GradientSlider::~GradientSlider()
 {
-	delete p;
+    delete p;
 }
 
 QBrush GradientSlider::background() const
@@ -98,12 +98,16 @@ void GradientSlider::setColors(const QVector<QColor> &colors)
     stops.reserve(colors.size());
 
     double c = colors.size() - 1;
-    if(c==0) {
+    if (c == 0)
+    {
         stops.append(QGradientStop(0, colors.at(0)));
 
-    } else {
-        for(int i=0;i<colors.size();++i) {
-            stops.append(QGradientStop(i/c, colors.at(i)));
+    }
+    else
+    {
+        for (int i = 0; i < colors.size(); ++i)
+        {
+            stops.append(QGradientStop(i / c, colors.at(i)));
         }
     }
     setColors(stops);
@@ -112,10 +116,14 @@ void GradientSlider::setColors(const QVector<QColor> &colors)
 void GradientSlider::setFirstColor(const QColor &c)
 {
     QGradientStops stops = p->gradient.stops();
-    if(stops.isEmpty())
+    if (stops.isEmpty())
+    {
         stops.push_back(QGradientStop(0.0, c));
+    }
     else
+    {
         stops.front().second = c;
+    }
     p->gradient.setStops(stops);
 
     update();
@@ -124,10 +132,14 @@ void GradientSlider::setFirstColor(const QColor &c)
 void GradientSlider::setLastColor(const QColor &c)
 {
     QGradientStops stops = p->gradient.stops();
-    if(stops.size()<2)
+    if (stops.size() < 2)
+    {
         stops.push_back(QGradientStop(1.0, c));
+    }
     else
+    {
         stops.back().second = c;
+    }
     p->gradient.setStops(stops);
     update();
 }
@@ -149,28 +161,34 @@ void GradientSlider::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
 
-    if(orientation() == Qt::Horizontal)
+    if (orientation() == Qt::Horizontal)
+    {
         p->gradient.setFinalStop(1, 0);
+    }
     else
+    {
         p->gradient.setFinalStop(0, 1);
+    }
 
     painter.setPen(Qt::NoPen);
     painter.setBrush(p->back);
-    painter.drawRect(1,1,geometry().width()-2,geometry().height()-2);
+    painter.drawRect(1, 1, geometry().width() - 2, geometry().height() - 2);
     painter.setBrush(p->gradient);
-    painter.drawRect(1,1,geometry().width()-2,geometry().height()-2);
+    painter.drawRect(1, 1, geometry().width() - 2, geometry().height() - 2);
 
-    paint_tl_border(painter,size(),palette().color(QPalette::Mid),0);
+    paint_tl_border(painter, size(), palette().color(QPalette::Mid), 0);
     /*paint_tl_border(painter,size(),palette().color(QPalette::Dark),1);
 
     paint_br_border(painter,size(),palette().color(QPalette::Light),1);*/
-    paint_br_border(painter,size(),palette().color(QPalette::Midlight),0);
+    paint_br_border(painter, size(), palette().color(QPalette::Midlight), 0);
 
     QStyleOptionSlider opt_slider;
     initStyleOption(&opt_slider);
     opt_slider.subControls = QStyle::SC_SliderHandle;
     if (isSliderDown())
+    {
         opt_slider.state |= QStyle::State_Sunken;
+    }
     style()->drawComplexControl(QStyle::CC_Slider, &opt_slider, &painter, this);
 
 

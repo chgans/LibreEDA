@@ -95,7 +95,7 @@ void SettingsDialog::createGui()
 
 void SettingsDialog::populateSettingsPages()
 {
-    for (auto page: PluginManager::getObjects<ISettingsPage>())
+    for (auto page : PluginManager::getObjects<ISettingsPage>())
     {
         const QString &categoryName = page->categoryName();
         if (!m_categoryNames.contains(categoryName))
@@ -122,7 +122,9 @@ void SettingsDialog::populateSettingsPages()
 
     m_currentPage = nullptr;
     if (m_categoryNames.isEmpty())
+    {
         return;
+    }
 
     m_categoryListWidget->setCurrentRow(0);
     auto listItem = m_categoryListWidget->item(0);
@@ -165,7 +167,7 @@ void SettingsDialog::restoreState()
     m_stackedLayout->setCurrentWidget(tabWidget);
 
     QString page = settings->value("page").toString();
-    for (int i=0; i<tabWidget->count(); i++)
+    for (int i = 0; i < tabWidget->count(); i++)
     {
         auto widget = tabWidget->widget(i);
         auto ipage = m_widgetToPage.value(widget);
@@ -188,11 +190,11 @@ void SettingsDialog::done(int code)
 
 void SettingsDialog::accept()
 {
-    for (ISettingsPage *page: m_visitedPages)
+    for (ISettingsPage *page : m_visitedPages)
     {
         page->apply();
     }
-    for (ISettingsPage *page: m_pages)
+    for (ISettingsPage *page : m_pages)
     {
         page->finish();
     }
@@ -201,7 +203,7 @@ void SettingsDialog::accept()
 
 void SettingsDialog::reject()
 {
-    for (ISettingsPage *page: m_pages)
+    for (ISettingsPage *page : m_pages)
     {
         page->finish();
     }
@@ -210,7 +212,7 @@ void SettingsDialog::reject()
 
 void SettingsDialog::apply()
 {
-    for (ISettingsPage *page: m_visitedPages)
+    for (ISettingsPage *page : m_visitedPages)
     {
         page->apply();
     }

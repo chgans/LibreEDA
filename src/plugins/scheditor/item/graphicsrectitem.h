@@ -20,7 +20,8 @@ class GraphicsRectItem : public SchItem
     Q_PROPERTY(QRectF rect READ rect WRITE setRect)
 
 public:
-    enum HandleId {
+    enum HandleId
+    {
         TopLeft = 0,
         BottomRight,
         Bottom,

@@ -8,7 +8,7 @@
 
 QIcon penWidthIcon(qreal width)
 {
-    QPixmap pixmap(16,16);
+    QPixmap pixmap(16, 16);
     QPainter painter;
     painter.begin(&pixmap);
     painter.fillRect(pixmap.rect(), Qt::white);
@@ -36,30 +36,44 @@ QStringList penWidthEnumNames()
 int penWidthToEnumIndex(const QPen &pen)
 {
     if (pen.widthF() > 1.0)
+    {
         return 3;
+    }
     if (pen.widthF() > 0.5)
+    {
         return 2;
+    }
     if (pen.widthF() > 0.0)
+    {
         return 1;
+    }
     return 0;
 }
 
 qreal enumIndexToPenWidth(int index)
 {
     if (index == 0)
+    {
         return 0.0;
+    }
     if (index == 1)
+    {
         return 0.5;
+    }
     if (index == 2)
+    {
         return 1.0;
+    }
     if (index == 3)
+    {
         return 2.0;
+    }
     return 2;
 }
 
 QIcon penStyleIcon(Qt::PenStyle style)
 {
-    QPixmap pixmap(16,16);
+    QPixmap pixmap(16, 16);
     QPainter painter;
     painter.begin(&pixmap);
     painter.fillRect(pixmap.rect(), Qt::white);
@@ -88,30 +102,44 @@ QStringList penStyleEnumNames()
 
 int penStyleToEnumIndex(const QPen &pen)
 {
-    switch (pen.style()) {
-    case Qt::SolidLine: return 0;
-    case Qt::DashLine: return 1;
-    case Qt::DotLine: return 2;
-    case Qt::DashDotLine: return 3;
-    case Qt::DashDotDotLine: return 4;
-    case Qt::NoPen: return 5;
-    default:
-        return 0;
+    switch (pen.style())
+    {
+        case Qt::SolidLine:
+            return 0;
+        case Qt::DashLine:
+            return 1;
+        case Qt::DotLine:
+            return 2;
+        case Qt::DashDotLine:
+            return 3;
+        case Qt::DashDotDotLine:
+            return 4;
+        case Qt::NoPen:
+            return 5;
+        default:
+            return 0;
     }
     return 0;
 }
 
 Qt::PenStyle enumIndexToPenStyle(int index)
 {
-    switch (index) {
-    case 0: return Qt::SolidLine;
-    case 1: return Qt::DashLine;
-    case 2: return Qt::DotLine;
-    case 3: return Qt::DashDotLine;
-    case 4: return Qt::DashDotDotLine;
-    case 5: return Qt::NoPen;
-    default:
-        return Qt::SolidLine;
+    switch (index)
+    {
+        case 0:
+            return Qt::SolidLine;
+        case 1:
+            return Qt::DashLine;
+        case 2:
+            return Qt::DotLine;
+        case 3:
+            return Qt::DashDotLine;
+        case 4:
+            return Qt::DashDotDotLine;
+        case 5:
+            return Qt::NoPen;
+        default:
+            return Qt::SolidLine;
     }
     return Qt::SolidLine;
 }
@@ -193,21 +221,24 @@ void PenPropertyManager::initializeProperty(QtProperty *property)
 void PenPropertyManager::uninitializeProperty(QtProperty *property)
 {
     QtProperty *styleProperty = m_penToStyleProperty[property];
-    if (styleProperty) {
+    if (styleProperty)
+    {
         m_styleToPenProperty.remove(styleProperty);
         delete styleProperty;
     }
     m_penToStyleProperty.remove(property);
 
     QtProperty *widthProperty = m_penToWidthProperty[property];
-    if (widthProperty) {
+    if (widthProperty)
+    {
         m_widthToPenProperty.remove(widthProperty);
         delete widthProperty;
     }
     m_penToWidthProperty.remove(property);
 
     QtProperty *colorProperty = m_penToColorProperty[property];
-    if (colorProperty) {
+    if (colorProperty)
+    {
         m_colorToPenProperty.remove(colorProperty);
         delete colorProperty;
     }
@@ -220,10 +251,15 @@ void PenPropertyManager::slotEnumChanged(QtProperty *property, int val)
 
     QtProperty *penProperty;
     if (m_styleToPenProperty.contains(property))
+    {
         penProperty = m_styleToPenProperty[property];
+    }
     else if (m_widthToPenProperty.contains(property))
+    {
         penProperty = m_widthToPenProperty[property];
-    else {
+    }
+    else
+    {
         qDebug() << "unknown property" << property->propertyName();
         return;
     }
@@ -238,8 +274,11 @@ void PenPropertyManager::slotColorChanged(QtProperty *property, const QColor &va
 
     QtProperty *penProperty;
     if (m_colorToPenProperty.contains(property))
+    {
         penProperty = m_colorToPenProperty[property];
-    else {
+    }
+    else
+    {
         qDebug() << "unknown property" << property->propertyName();
         return;
     }

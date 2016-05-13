@@ -29,7 +29,9 @@ QLineF GraphicsLine::line() const
 void GraphicsLine::setLine(const QLineF &line)
 {
     if (line == m_line)
+    {
         return;
+    }
     prepareGeometryChange();
     m_line = line;
 }
@@ -42,7 +44,9 @@ qreal GraphicsLine::width() const
 void GraphicsLine::setWidth(qreal width)
 {
     if (width == m_width)
+    {
         return;
+    }
     prepareGeometryChange();
     m_width = width;
 }
@@ -50,13 +54,19 @@ void GraphicsLine::setWidth(qreal width)
 bool GraphicsLine::fromJson(QString *errorString, const QJsonObject &jsonObject)
 {
     if (!GraphicsItem::fromJson(errorString, jsonObject))
+    {
         return false;
+    }
     QLineF line;
     if (!Json::toLine(errorString, jsonObject.value(J_LINE), line))
+    {
         return false;
+    }
     qreal width;
     if (!Json::toReal(errorString, jsonObject.value(J_WIDTH), width))
+    {
         return false;
+    }
     setLine(line);
     setWidth(width);
     return true;
@@ -87,7 +97,9 @@ QPainterPath GraphicsLine::shape() const
 void GraphicsLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     if (!shouldPaint(painter, option, widget))
+    {
         return;
+    }
     painter->setPen(QPen(QBrush(color(widget)), m_width, Qt::SolidLine, Qt::RoundCap));
     painter->drawLine(m_line);
 }

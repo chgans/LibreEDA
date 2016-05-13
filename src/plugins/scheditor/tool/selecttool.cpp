@@ -46,7 +46,7 @@ SelectTool::SelectTool(QObject *parent):
     m_rubberBand(new QRubberBand(QRubberBand::Rectangle))
 {
     QAction *action = new QAction(QIcon::fromTheme("edit-select"),
-                           "select", nullptr);
+                                  "select", nullptr);
     setAction(action);
     setToolGroup("interactive-tools");
     setOperationWidget(nullptr);
@@ -67,24 +67,33 @@ void SelectTool::updateCursor(QMouseEvent *event)
 {
     AbstractGraphicsHandle *handle = view()->handleUnderMouse();
     SchItem *object = view()->objectUnderMouse();
-    if (handle != nullptr) {
+    if (handle != nullptr)
+    {
         m_handle = handle;
         setOperation(MoveHandle);
     }
-    else if (object != nullptr && object->isEnabled()) {
+    else if (object != nullptr && object->isEnabled())
+    {
         if (event->modifiers().testFlag(Qt::ControlModifier))
+        {
             setOperation(CloneItem);
+        }
         else
+        {
             setOperation(MoveItem);
+        }
     }
     else
+    {
         setOperation(DragSelect);
+    }
 }
 
 void SelectTool::setOperation(SelectTool::Operation operation)
 {
     m_operation = operation;
-    switch (operation) {
+    switch (operation)
+    {
         case DragSelect:
         {
             view()->setCursor(Qt::ArrowCursor);
@@ -117,12 +126,14 @@ void SelectTool::cancel()
 
 void SelectTool::setView(SchView *other)
 {
-    if (view()) {
+    if (view())
+    {
         //destroyStateMachine();
         m_rubberBand->setParent(nullptr);
     }
     SchTool::setView(other);
-    if (other) {
+    if (other)
+    {
         //buildStateMachine();
         m_rubberBand->setParent(view()->viewport());
     }
@@ -131,9 +142,12 @@ void SelectTool::setView(SchView *other)
 void SelectTool::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton)
+    {
         return;
+    }
 
-    if (m_state == HintState) {
+    if (m_state == HintState)
+    {
         AbstractGraphicsHandle *handle = view()->handleUnderMouse();
         SchItem *object = view()->objectUnderMouse();
         m_mousePressPosition = event->pos();
@@ -142,8 +156,11 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
             case DragSelect:
             {
                 if (!event->modifiers().testFlag(Qt::ShiftModifier))
+                {
                     scene()->clearSelection();
-                m_rubberBand->setGeometry(view()->mapFromScene(QRect(m_mousePressPosition, m_mousePressPosition)).boundingRect());
+                }
+                m_rubberBand->setGeometry(view()->mapFromScene(QRect(m_mousePressPosition,
+                                                                     m_mousePressPosition)).boundingRect());
                 m_rubberBand->show();
                 break;
             }
@@ -151,10 +168,12 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
             case CloneItem:
             {
                 Q_ASSERT(object != nullptr);
-                if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+                if (event->modifiers().testFlag(Qt::ShiftModifier))
+                {
                     object->setSelected(!object->isSelected());
                 }
-                else if (!object->isSelected()) {
+                else if (!object->isSelected())
+                {
                     scene()->clearSelection();
                     object->setSelected(true);
                 }
@@ -178,10 +197,12 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
 // TODO: All these operation should be cancelable using 'Esc' key
 void SelectTool::mouseMoveEvent(QMouseEvent *event)
 {
-    if (m_state == HintState) {
+    if (m_state == HintState)
+    {
         updateCursor(event);
     }
-    else {
+    else
+    {
         switch (m_operation)
         {
             case DragSelect:
@@ -194,7 +215,8 @@ void SelectTool::mouseMoveEvent(QMouseEvent *event)
             {
                 QPointF mouseScenePosition = event->pos();
                 QLineF vector(m_lastMousePosition, mouseScenePosition);
-                for (int i = 0; i < m_items.count(); i++) {
+                for (int i = 0; i < m_items.count(); i++)
+                {
                     m_items[i]->moveBy(vector.dx(), vector.dy());
                 }
                 m_lastMousePosition = mouseScenePosition;
@@ -202,14 +224,16 @@ void SelectTool::mouseMoveEvent(QMouseEvent *event)
             }
             case CloneItem:
             {
-                if (m_phantomItems.count() == 0) {
+                if (m_phantomItems.count() == 0)
+                {
                     m_phantomItems = createPhantomItems(m_items);
                 }
                 Q_ASSERT(m_items.count() == m_phantomItems.count());
                 QRectF sceneShift = QRectF(m_mousePressPosition,
                                            event->pos());
                 sceneShift.moveTopLeft(QPointF(0, 0));
-                for (int i = 0; i < m_items.count(); i++) {
+                for (int i = 0; i < m_items.count(); i++)
+                {
                     QPointF itemPos = m_items[i]->pos() + sceneShift.bottomRight();
                     m_phantomItems[i]->setPos(itemPos);
                 }
@@ -231,7 +255,9 @@ void SelectTool::mouseMoveEvent(QMouseEvent *event)
 void SelectTool::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton)
+    {
         return;
+    }
 
     switch (m_operation)
     {
@@ -249,7 +275,7 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
             if (!delta.isNull())
             {
                 auto command = new MoveCommand;
-                for (auto sceneItem: m_items)
+                for (auto sceneItem : m_items)
                 {
                     command->itemIds << sceneItem->data(0).value<quint64>();
                     command->delta = delta;
@@ -262,7 +288,8 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
         }
         case CloneItem:
         {
-            for (int i = 0; i < m_items.count(); i++) {
+            for (int i = 0; i < m_items.count(); i++)
+            {
                 m_items[i]->setGraphicsEffect(nullptr);
                 m_phantomItems[i]->setGraphicsEffect(nullptr);
             }
@@ -283,12 +310,17 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
 
 void SelectTool::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Control) {
+    if (event->key() == Qt::Key_Control)
+    {
         if (m_operation == MoveItem && m_state == HintState)
+        {
             setOperation(CloneItem);
+        }
     }
-    else if (event->key() == Qt::Key_Delete) {
-        for (QGraphicsItem *item: scene()->selectedItems()) {
+    else if (event->key() == Qt::Key_Delete)
+    {
+        for (QGraphicsItem *item : scene()->selectedItems())
+        {
             scene()->removeItem(item);
             delete item;
         }
@@ -298,9 +330,12 @@ void SelectTool::keyPressEvent(QKeyEvent *event)
 
 void SelectTool::keyReleaseEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Control) {
+    if (event->key() == Qt::Key_Control)
+    {
         if (m_operation == CloneItem && m_state == HintState)
+        {
             setOperation(MoveItem);
+        }
     }
     event->accept();
 }

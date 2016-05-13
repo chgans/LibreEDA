@@ -19,11 +19,13 @@ public:
     ~SelectTool();
 
 private:
-    enum ToolState {
+    enum ToolState
+    {
         HintState,
         OperationState
     };
-    enum Operation {
+    enum Operation
+    {
         DragSelect,
         //ClickSelect,
         MoveItem,

@@ -40,7 +40,7 @@ signals:
     void editorCreated(IEditor *editor, const QString &fileName);
     void editorOpened(IEditor *editor);
     void editorAboutToClose(IEditor *editor);
-    void editorClosed(IEditor * editor);
+    void editorClosed(IEditor *editor);
 
 private:
     explicit EditorManager(QObject *parent = nullptr);

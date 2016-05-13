@@ -16,8 +16,10 @@ DetailView::DetailView(QWidget *parent) :
 
 void DetailView::setObservedView(QGraphicsView *view)
 {
-    if(m_observedView)
+    if (m_observedView)
+    {
         m_observedView->viewport()->removeEventFilter(this);
+    }
     view->viewport()->installEventFilter(this);
     m_observedView = view;
     setScene(m_observedView->scene());
@@ -32,11 +34,12 @@ void DetailView::resizeEvent(QResizeEvent *event)
 bool DetailView::eventFilter(QObject *obj, QEvent *ev)
 {
     if (m_observedView && obj == m_observedView->viewport() &&
-            ev->type() == QEvent::MouseMove) {
-        QMouseEvent *e = static_cast<QMouseEvent*>(ev);
+            ev->type() == QEvent::MouseMove)
+    {
+        QMouseEvent *e = static_cast<QMouseEvent *>(ev);
         QTransform t = m_observedView->viewportTransform();
         QPointF pos = t.inverted().map(e->pos());
-        setTransform(t*10);
+        setTransform(t * 10);
         centerOn(pos);
     }
     return QGraphicsView::eventFilter(obj, ev);

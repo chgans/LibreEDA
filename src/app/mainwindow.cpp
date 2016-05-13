@@ -79,36 +79,48 @@ void MainWindow::onOpenFileRequested()
     QString filter = QString("Libre EDA files (%1)").arg(EditorManager::supportedFileFilter());
     QStringList fileNames = DocumentManager::getOpenFileNames(filter, BASE_SAMPLE_DIR);
     if (fileNames.isEmpty())
+    {
         return;
+    }
     IEditor *editortoActivate = nullptr;
-    for (const QString &fileName: fileNames) {
+    for (const QString &fileName : fileNames)
+    {
         IEditor *editor = EditorManager::openEditor(fileName);
         if (editor != nullptr)
+        {
             editortoActivate = editor;
+        }
     }
     if (editortoActivate)
+    {
         m_editorView->setCurrentEditor(editortoActivate);
+    }
 }
 
 void MainWindow::onRecentFilesRequested()
 {
     m_recentFilesMenu->clear();
     if (DocumentManager::recentFiles().isEmpty())
+    {
         return;
+    }
     QAction *action;
-    for (const QString &file: DocumentManager::recentFiles()) {
+    for (const QString &file : DocumentManager::recentFiles())
+    {
         action = m_recentFilesMenu->addAction(file);
         connect(action, &QAction::triggered,
-                this, [this, file](bool) {
+                this, [this, file](bool)
+        {
             // TODO: don't bypass MainWindow logic: (see FSNavigator as well)
-           EditorManager::openEditor(file);
+            EditorManager::openEditor(file);
         });
     }
     m_recentFilesMenu->addSeparator();
     action = m_recentFilesMenu->addAction("&Clear");
     connect(action, &QAction::triggered,
-            this, [this](bool) {
-         DocumentManager::clearRecentFiles();
+            this, [this](bool)
+    {
+        DocumentManager::clearRecentFiles();
     });
 }
 
@@ -121,7 +133,9 @@ void MainWindow::onSaveCurrentFileRequested()
 void MainWindow::onSaveCurrentFileAsRequested()
 {
     if (m_editorView->editorCount() == 0)
+    {
         return;
+    }
     IDocument *document = m_editorView->currentEditor()->document();
     Q_ASSERT(document != nullptr);
 
@@ -168,7 +182,8 @@ void MainWindow::onPrintCurrentFileRequested()
 
     QPrinter printer;
     QPrintDialog printDialog(&printer, this);
-    if (printDialog.exec() == QDialog::Accepted) {
+    if (printDialog.exec() == QDialog::Accepted)
+    {
         QPainter painter(&printer);
         m_currentEditor->document()->render(&painter);
     }
@@ -189,10 +204,14 @@ void MainWindow::onEditorOpened(IEditor *editor)
 void MainWindow::onCurrentEditorChanged(IEditor *editor)
 {
     if (m_currentEditor)
+    {
         m_currentEditor->desactivate(this);
+    }
     m_currentEditor = editor;
     if (m_currentEditor)
+    {
         m_currentEditor->activate(this);
+    }
     updateEditorActions();
 }
 
@@ -203,7 +222,8 @@ void MainWindow::onEditorCloseRequested(IEditor *editor)
 
 void MainWindow::onEditorAboutToClose(IEditor *editor)
 {
-    if (editor == m_currentEditor) {
+    if (editor == m_currentEditor)
+    {
         m_currentEditor->desactivate(this);
         m_currentEditor = nullptr;
     }
@@ -218,7 +238,8 @@ void MainWindow::onSettingsDialogRequested()
 
 void MainWindow::updateEditorActions()
 {
-    if (m_currentEditor && m_currentEditor->document()) {
+    if (m_currentEditor && m_currentEditor->document())
+    {
         IDocument *document = m_currentEditor->document();
         QFileInfo fileInfo(document->filePath());
         QString fileName = fileInfo.fileName();
@@ -233,7 +254,8 @@ void MainWindow::updateEditorActions()
         m_closeAllExceptAction->setEnabled(true);
         m_closeAllAction->setEnabled(true);
     }
-    else {
+    else
+    {
         m_saveAction->setEnabled(false);
         m_saveAsAction->setEnabled(false);
         m_saveAllAction->setEnabled(false);

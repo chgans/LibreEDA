@@ -10,7 +10,8 @@ class GraphicsCircleItem : public SchItem
     Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusChanged)
 
 public:
-    enum HandleId {
+    enum HandleId
+    {
         RadiusHandle = 0,
         NbHandles
     };

@@ -72,7 +72,8 @@ protected:
 
     QMap<AbstractGraphicsHandle *, int> m_handleToId;
     QMap<int, AbstractGraphicsHandle *> m_idToHandle;
-    GraphicsRegularHandle *addRegularHandle(int id, GraphicsHandleRole role, GraphicsHandleShape shape, const QPointF &pos = QPointF(0, 0));
+    GraphicsRegularHandle *addRegularHandle(int id, GraphicsHandleRole role, GraphicsHandleShape shape,
+                                            const QPointF &pos = QPointF(0, 0));
     GraphicsBezierHandle *addBezierHandle(int id, const QPointF &pos = QPointF(0, 0));
     void removeHandle(int id);
     void removeHandle(AbstractGraphicsHandle *handle);

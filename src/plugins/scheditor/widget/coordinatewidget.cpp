@@ -20,9 +20,12 @@ CoordinateWidget::CoordinateWidget(QWidget *parent) :
     m_xSpinBox->setSuffix("  mm");
     layout->addRow(m_xLabel, m_xSpinBox);
     connect(m_xSpinBox, signalValueChanged,
-            [this](double value) {
+            [this](double value)
+    {
         if (m_point.x() == value)
+        {
             return;
+        }
         m_point.setX(value);
         emit coordinateChanged(XAxis, value);
     });
@@ -32,9 +35,12 @@ CoordinateWidget::CoordinateWidget(QWidget *parent) :
     m_ySpinBox->setSuffix("  mm");
     layout->addRow(m_yLabel, m_ySpinBox);
     connect(m_ySpinBox, signalValueChanged,
-            [this](double value) {
+            [this](double value)
+    {
         if (m_point.y() == value)
+        {
             return;
+        }
         m_point.setY(value);
         emit coordinateChanged(YAxis, value);
     });
@@ -71,19 +77,26 @@ void CoordinateWidget::focusOutEvent(QFocusEvent *event)
 bool CoordinateWidget::eventFilter(QObject *object, QEvent *event)
 {
     if ((object != m_xSpinBox && object != m_ySpinBox))
+    {
         return QWidget::eventFilter(object, event);
+    }
 
-    if (event->type() == QEvent::KeyPress) {
-        QKeyEvent *kevent = static_cast<QKeyEvent*>(event);
+    if (event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *kevent = static_cast<QKeyEvent *>(event);
         if (kevent->key() == Qt::Key_Enter ||
-                kevent->key() == Qt::Key_Return) {
+                kevent->key() == Qt::Key_Return)
+        {
             focusNextChild();
             if (object == m_ySpinBox)
+            {
                 emit coordinateEditingFinished();
+            }
             return true;
         }
     }
-    else if (event->type() == QEvent::ShortcutOverride) {
+    else if (event->type() == QEvent::ShortcutOverride)
+    {
         // Filter out shortcuts, it should'nt be a problem, since it is very unlikely
         // to have a digit or a decimal separator set as a shortcut.
         return true;

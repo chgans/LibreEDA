@@ -24,7 +24,7 @@ public slots:
     void removeDocumentItem(quint64 id);
 
 private:
-    QMap<quint64, SchItem*> m_itemMap;
+    QMap<quint64, SchItem *> m_itemMap;
 };
 
 #endif // GRAPHICSSCENE_H

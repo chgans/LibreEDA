@@ -41,36 +41,44 @@ WireOperationWidget::WireOperationWidget(QWidget *parent) :
 // FIXME: let the tool connect to us instead!
 void WireOperationWidget::setTool(PlaceWireTool *tool)
 {
-    if (m_tool != nullptr) {
+    if (m_tool != nullptr)
+    {
         m_tool->disconnect(this);
     }
 
     m_tool = tool;
 
-    if (m_tool != nullptr) {
+    if (m_tool != nullptr)
+    {
         connect(m_coordinateWidget, &CoordinateWidget::coordinateChanged,
-                [this](CoordinateWidget::Axis axis, qreal value) {
+                [this](CoordinateWidget::Axis axis, qreal value)
+        {
             qDebug() << "Changing axis value" << axis << value;
         });
         connect(m_coordinateWidget, &CoordinateWidget::coordinateEditingFinished,
-                [this]() {
+                [this]()
+        {
             qDebug() << "Adding point at" << m_coordinateWidget->coordinate();
             m_coordinateWidget->setFocus(Qt::TabFocusReason);
         });
         connect(m_undoButton, &QPushButton::pressed,
-                [this]() {
+                [this]()
+        {
             qDebug() << "Undoing";
         });
         connect(m_closeButton, &QPushButton::pressed,
-                [this]() {
+                [this]()
+        {
             qDebug() << "Closing";
         });
         connect(m_finishButton, &QPushButton::pressed,
-                [this]() {
+                [this]()
+        {
             qDebug() << "Finishing";
         });
         connect(m_wipeButton, &QPushButton::pressed,
-                [this]() {
+                [this]()
+        {
             qDebug() << "Wipping";
         });
     }

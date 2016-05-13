@@ -33,9 +33,12 @@ void ObjectPreview::drawItems(QPainter *painter,
                               QGraphicsItem *items[],
                               const QStyleOptionGraphicsItem options[])
 {
-    for (int i = 0; i < numItems; ++i) {
+    for (int i = 0; i < numItems; ++i)
+    {
         if (items[i] != m_object)
+        {
             continue;
+        }
         QGraphicsView::drawItems(painter, 1,
                                  &items[i], &options[i]);
         return;
@@ -45,7 +48,8 @@ void ObjectPreview::drawItems(QPainter *painter,
 void ObjectPreview::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
-    if (m_object) {
+    if (m_object)
+    {
         setObjectToPreview(m_object);
     }
 }

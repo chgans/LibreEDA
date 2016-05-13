@@ -1,8 +1,7 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
-namespace constants
-{
+namespace constants {
 
 
 }

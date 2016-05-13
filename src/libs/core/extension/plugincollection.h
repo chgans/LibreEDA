@@ -11,7 +11,7 @@ class PluginSpec;
 class CORE_EXPORT PluginCollection
 {
 public:
-    explicit PluginCollection(const QString& name);
+    explicit PluginCollection(const QString &name);
     ~PluginCollection();
 
     QString name() const;

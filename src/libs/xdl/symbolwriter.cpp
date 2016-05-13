@@ -6,7 +6,8 @@
 #include <QPen>
 #include <QBrush>
 
-namespace xdl { namespace symbol {
+namespace xdl {
+namespace symbol {
 
 
 struct WriterPrivate
@@ -67,7 +68,8 @@ Writer::~Writer()
 bool Writer::write(const QString &filename, const Symbol *symbol)
 {
     QFile file(filename);
-    if (!file.open(QFile::WriteOnly | QIODevice::Truncate)) {
+    if (!file.open(QFile::WriteOnly | QIODevice::Truncate))
+    {
         m_errorString = QString("\"%1\": %2").arg(filename).arg(file.errorString());
         return false;
     }
@@ -98,44 +100,45 @@ void WriterPrivate::writeItem(const Item *item)
 {
     switch (item->type())
     {
-    case Item::Rectangle:
-        writeRectangle(reinterpret_cast<const RectangleItem*>(item));
-        break;
-    case Item::Circle:
-        writeCircle(reinterpret_cast<const CircleItem*>(item));
-        break;
-    case Item::CircularArc:
-        writeCircularArc(reinterpret_cast<const CircularArcItem*>(item));
-        break;
-    case Item::Ellipse:
-        writeEllipse(reinterpret_cast<const EllipseItem*>(item));
-        break;
-    case Item::EllipticalArc:
-        writeEllipticalArc(reinterpret_cast<const EllipticalArcItem*>(item));
-        break;
-    case Item::Polyline:
-        writePolyline(reinterpret_cast<const PolylineItem*>(item));
-        break;
-    case Item::Polygon:
-        writePolygon(reinterpret_cast<const PolygonItem*>(item));
-        break;
-    case Item::Label:
-        writeLabel(reinterpret_cast<const LabelItem*>(item));
-        break;
-    case Item::Pin:
-        writePin(reinterpret_cast<const PinItem*>(item));
-        break;
-    case Item::Group:
-        writeGroup(reinterpret_cast<const ItemGroup*>(item));
-        break;
+        case Item::Rectangle:
+            writeRectangle(reinterpret_cast<const RectangleItem *>(item));
+            break;
+        case Item::Circle:
+            writeCircle(reinterpret_cast<const CircleItem *>(item));
+            break;
+        case Item::CircularArc:
+            writeCircularArc(reinterpret_cast<const CircularArcItem *>(item));
+            break;
+        case Item::Ellipse:
+            writeEllipse(reinterpret_cast<const EllipseItem *>(item));
+            break;
+        case Item::EllipticalArc:
+            writeEllipticalArc(reinterpret_cast<const EllipticalArcItem *>(item));
+            break;
+        case Item::Polyline:
+            writePolyline(reinterpret_cast<const PolylineItem *>(item));
+            break;
+        case Item::Polygon:
+            writePolygon(reinterpret_cast<const PolygonItem *>(item));
+            break;
+        case Item::Label:
+            writeLabel(reinterpret_cast<const LabelItem *>(item));
+            break;
+        case Item::Pin:
+            writePin(reinterpret_cast<const PinItem *>(item));
+            break;
+        case Item::Group:
+            writeGroup(reinterpret_cast<const ItemGroup *>(item));
+            break;
     }
 }
 
 void WriterPrivate::writeItemList(const char *listTag, const QList<Item *> &items)
 {
     xmlWriter->writeStartElement(listTag);
-    for (Item *item: items) {
-       writeItem(item);
+    for (Item *item : items)
+    {
+        writeItem(item);
     }
     xmlWriter->writeEndElement();
 }
@@ -273,11 +276,14 @@ void WriterPrivate::writePoint(const char *tag, const QPointF &point)
     xmlWriter->writeEndElement();
 }
 
-void WriterPrivate::writePointList(const char *listTag, const char *pointTag, const QList<QPointF> &pointList)
+void WriterPrivate::writePointList(const char *listTag, const char *pointTag,
+                                   const QList<QPointF> &pointList)
 {
     xmlWriter->writeStartElement(listTag);
-    for (const QPointF &pos: pointList)
+    for (const QPointF &pos : pointList)
+    {
         writePoint(pointTag, pos);
+    }
     xmlWriter->writeEndElement();
 }
 
@@ -289,13 +295,25 @@ void WriterPrivate::writeColor(const char *tag, const QColor &color)
 void WriterPrivate::writePenStyle(const char *tag, Qt::PenStyle style)
 {
     QString str;
-    switch (style) {
-        case Qt::DashLine: str = "DashLine"; break;
-        case Qt::DotLine: str = "DotLine"; break;
-        case Qt::DashDotLine: str = "DashDotLine"; break;
-        case Qt::DashDotDotLine: str = "DashDotDotLine"; break;
-        case Qt::NoPen: str = "NoPen"; break;
-        default: str = "SolidLine";
+    switch (style)
+    {
+        case Qt::DashLine:
+            str = "DashLine";
+            break;
+        case Qt::DotLine:
+            str = "DotLine";
+            break;
+        case Qt::DashDotLine:
+            str = "DashDotLine";
+            break;
+        case Qt::DashDotDotLine:
+            str = "DashDotDotLine";
+            break;
+        case Qt::NoPen:
+            str = "NoPen";
+            break;
+        default:
+            str = "SolidLine";
     }
     xmlWriter->writeTextElement(tag, str);
 }
@@ -303,10 +321,16 @@ void WriterPrivate::writePenStyle(const char *tag, Qt::PenStyle style)
 void WriterPrivate::writePenCapStyle(const char *tag, Qt::PenCapStyle style)
 {
     QString str;
-    switch (style) {
-    case Qt::FlatCap: str = "Flat"; break;
-    case Qt::SquareCap: str = "Square"; break;
-    default: str = "Round";
+    switch (style)
+    {
+        case Qt::FlatCap:
+            str = "Flat";
+            break;
+        case Qt::SquareCap:
+            str = "Square";
+            break;
+        default:
+            str = "Round";
     }
     xmlWriter->writeTextElement(tag, str);
 }
@@ -314,10 +338,16 @@ void WriterPrivate::writePenCapStyle(const char *tag, Qt::PenCapStyle style)
 void WriterPrivate::writePenJoinStyle(const char *tag, Qt::PenJoinStyle style)
 {
     QString str;
-    switch (style) {
-    case Qt::MiterJoin: str = "Miter"; break;
-    case Qt::BevelJoin: str = "Bevel"; break;
-    default: str = "Round";
+    switch (style)
+    {
+        case Qt::MiterJoin:
+            str = "Miter";
+            break;
+        case Qt::BevelJoin:
+            str = "Bevel";
+            break;
+        default:
+            str = "Round";
     }
     xmlWriter->writeTextElement(tag, str);
 }
@@ -325,15 +355,31 @@ void WriterPrivate::writePenJoinStyle(const char *tag, Qt::PenJoinStyle style)
 void WriterPrivate::writeBrushStyle(const char *tag, Qt::BrushStyle style)
 {
     QString str;
-    switch (style) {
-    case Qt::SolidPattern: str = "Solid"; break;
-    case Qt::HorPattern: str = "Horizontal"; break;
-    case Qt::VerPattern: str = "Vertical"; break;
-    case Qt::CrossPattern: str = "Cross"; break;
-    case Qt::BDiagPattern: str = "BDiagonal"; break;
-    case Qt::FDiagPattern: str = "FDiagonal"; break;
-    case Qt::DiagCrossPattern: str = "CrossDiagonal"; break;
-    default: str = "NoBrush";
+    switch (style)
+    {
+        case Qt::SolidPattern:
+            str = "Solid";
+            break;
+        case Qt::HorPattern:
+            str = "Horizontal";
+            break;
+        case Qt::VerPattern:
+            str = "Vertical";
+            break;
+        case Qt::CrossPattern:
+            str = "Cross";
+            break;
+        case Qt::BDiagPattern:
+            str = "BDiagonal";
+            break;
+        case Qt::FDiagPattern:
+            str = "FDiagonal";
+            break;
+        case Qt::DiagCrossPattern:
+            str = "CrossDiagonal";
+            break;
+        default:
+            str = "NoBrush";
     }
     xmlWriter->writeTextElement(tag, str);
 }
@@ -353,4 +399,5 @@ void WriterPrivate::writeDouble(const char *tag, qreal value)
     xmlWriter->writeTextElement(tag, QString("%1").arg(value, 0, 'E', 6));
 }
 
-}}
+}
+}

@@ -21,7 +21,9 @@ bool SimpleTextEditor::open(QString *errorString, const QString &fileName)
     m_document->setDisplayName(fileInfo.baseName());
     bool result = m_document->load(errorString, m_document->filePath());
     if (!result)
+    {
         return false;
+    }
     m_textEdit->setDocument(m_document->textDocument());
     return true;
 }

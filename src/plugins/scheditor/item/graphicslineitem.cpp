@@ -19,7 +19,9 @@ QLineF GraphicsLineItem::line() const
 void GraphicsLineItem::setLine(const QLineF &line)
 {
     if (m_line == line)
+    {
         return;
+    }
 
     prepareGeometryChange();
     m_line = line;
@@ -62,20 +64,24 @@ QList<QPointF> GraphicsLineItem::nearestPoints(QPointF pos) const
     QPointF xPoint;
     QLineF::IntersectType xType = m_line.intersect(m_line.normalVector().translated(pos), &xPoint);
     if (xType == QLineF::BoundedIntersection)
+    {
         return QList<QPointF>() << xPoint;
+    }
     return QList<QPointF>();
 }
 
 void GraphicsLineItem::itemNotification(IGraphicsObservableItem *item)
 {
-    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle*>(item);
+    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle *>(item);
     Q_ASSERT(handle);
 
     QLineF l = m_line;
-    if (handle == m_idToHandle[P1Handle]) {
+    if (handle == m_idToHandle[P1Handle])
+    {
         l.setP1(handle->pos());
     }
-    else {
+    else
+    {
         l.setP2(handle->pos());
     }
     setLine(l);
@@ -83,7 +89,8 @@ void GraphicsLineItem::itemNotification(IGraphicsObservableItem *item)
 
 QRectF GraphicsLineItem::boundingRect() const
 {
-    if (pen().widthF() == 0.0) {
+    if (pen().widthF() == 0.0)
+    {
         const qreal x1 = m_line.p1().x();
         const qreal x2 = m_line.p2().x();
         const qreal y1 = m_line.p1().y();
@@ -95,7 +102,9 @@ QRectF GraphicsLineItem::boundingRect() const
         m_boundingRect = QRectF(lx, ty, rx - lx, by - ty);
     }
     else
+    {
         m_boundingRect = shape().controlPointRect();
+    }
 
     return m_boundingRect;
 }
@@ -104,7 +113,9 @@ QPainterPath GraphicsLineItem::shape() const
 {
     QPainterPath path;
     if (m_line == QLineF())
+    {
         return path;
+    }
 
     path.moveTo(m_line.p1());
     path.lineTo(m_line.p2());
@@ -112,7 +123,8 @@ QPainterPath GraphicsLineItem::shape() const
     return shapeFromPath(path, pen());
 }
 
-void GraphicsLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicsLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                             QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -120,10 +132,13 @@ void GraphicsLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->drawLine(line());
 }
 
-QVariant GraphicsLineItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+QVariant GraphicsLineItem::itemChange(QGraphicsItem::GraphicsItemChange change,
+                                      const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
+    if (change == QGraphicsItem::ItemSelectedHasChanged)
+    {
+        for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+        {
             handle->setVisible(isSelected());
         }
     }

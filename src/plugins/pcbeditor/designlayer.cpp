@@ -19,7 +19,9 @@ DesignLayer::DesignLayer(QGraphicsItem *parent):
     m_pairedLayer(nullptr)
 {
     setFlags(ItemHasNoContents);
-    for (Primitive::Type type = Primitive::_BeginType; type < Primitive::_EndType; type = Primitive::Type(type + 1)) {
+    for (Primitive::Type type = Primitive::_BeginType; type < Primitive::_EndType;
+            type = Primitive::Type(type + 1))
+    {
         m_primitiveOpacityMap[type] = 1.0;
     }
     setEnabled(false);
@@ -43,14 +45,18 @@ QString DesignLayer::customName() const
 QString DesignLayer::effectiveName() const
 {
     if (m_customName.isEmpty())
+    {
         return m_name;
+    }
     return m_customName;
 }
 
 void DesignLayer::setDefaultName(const QString &name)
 {
     if (m_name == name)
+    {
         return;
+    }
 
     m_name = name;
 
@@ -60,7 +66,9 @@ void DesignLayer::setDefaultName(const QString &name)
 void DesignLayer::setCustomName(const QString &name)
 {
     if (m_customName == name)
+    {
         return;
+    }
 
     m_customName = name;
 
@@ -75,7 +83,9 @@ const QColor &DesignLayer::color() const
 void DesignLayer::setColor(const QColor &color)
 {
     if (m_color == color)
+    {
         return;
+    }
 
     m_color = color;
     updateItems();
@@ -103,7 +113,7 @@ DesignLayer *DesignLayer::pairedLayer() const
 bool DesignLayer::isValid() const
 {
     return !m_name.isEmpty() && m_color.isValid() && m_index != -1 &&
-            m_category != InvalidCategory && m_face != InvalidFace;
+           m_category != InvalidCategory && m_face != InvalidFace;
 }
 
 bool DesignLayer::isUsed() const
@@ -131,22 +141,23 @@ DesignLayer::ColorMode DesignLayer::colorMode() const
 
 QColor DesignLayer::effectiveColor() const
 {
-    switch(m_colorMode)
+    switch (m_colorMode)
     {
-    case NormalColorMode:
-        return color();
-    case MonochromedMode:
-        return QColor(0x2F, 0x2F, 0x2F);
-    case GrayscaledMode: {
-        QColor newColor = color().toHsv();
-        newColor.setHsv(newColor.hsvHue(), 0, newColor.value());
-        return newColor;
-    }
-    case HiddenMode:
-        return QColor();
-    default:
-        Q_ASSERT(false);
-        return QColor();
+        case NormalColorMode:
+            return color();
+        case MonochromedMode:
+            return QColor(0x2F, 0x2F, 0x2F);
+        case GrayscaledMode:
+        {
+            QColor newColor = color().toHsv();
+            newColor.setHsv(newColor.hsvHue(), 0, newColor.value());
+            return newColor;
+        }
+        case HiddenMode:
+            return QColor();
+        default:
+            Q_ASSERT(false);
+            return QColor();
     }
 }
 
@@ -180,7 +191,9 @@ DesignLayer::Category DesignLayer::category() const
 void DesignLayer::setIndex(int position)
 {
     if (m_index == position)
+    {
         return;
+    }
 
     m_index = position;
     emit indexChanged(position);
@@ -189,7 +202,9 @@ void DesignLayer::setIndex(int position)
 void DesignLayer::setCategory(DesignLayer::Category category)
 {
     if (m_category == category)
+    {
         return;
+    }
 
     m_category = category;
     emit categoryChanged(category);
@@ -198,7 +213,9 @@ void DesignLayer::setCategory(DesignLayer::Category category)
 void DesignLayer::setFace(DesignLayer::Face arg)
 {
     if (m_face == arg)
+    {
         return;
+    }
 
     m_face = arg;
     emit faceChanged(arg);
@@ -207,7 +224,9 @@ void DesignLayer::setFace(DesignLayer::Face arg)
 void DesignLayer::setPairedLayer(DesignLayer *layer)
 {
     if (m_pairedLayer == layer)
+    {
         return;
+    }
 
     m_pairedLayer = layer;
     emit pairedLayerChanged(layer);
@@ -216,7 +235,9 @@ void DesignLayer::setPairedLayer(DesignLayer *layer)
 void DesignLayer::setPresent(bool arg)
 {
     if (m_present == arg)
+    {
         return;
+    }
 
     m_present = arg;
     emit presentChanged(arg);
@@ -225,7 +246,9 @@ void DesignLayer::setPresent(bool arg)
 void DesignLayer::setColorMode(DesignLayer::ColorMode mode)
 {
     if (m_colorMode == mode)
+    {
         return;
+    }
 
     m_colorMode = mode;
     updateItems();
@@ -235,6 +258,8 @@ void DesignLayer::setColorMode(DesignLayer::ColorMode mode)
 
 void DesignLayer::updateItems()
 {
-    for (GraphicsItem *item: m_items)
+    for (GraphicsItem *item : m_items)
+    {
         item->update();
+    }
 }

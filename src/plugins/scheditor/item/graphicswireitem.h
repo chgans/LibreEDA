@@ -43,11 +43,11 @@ public:
 public:
     virtual SchItem *clone();
 
-//    //virtual QList<QPointF> hotSpots() const;
-//    virtual QList<QPointF> endPoints() const;
-//    virtual QList<QPointF> midPoints() const;
-//    virtual QList<QPointF> centerPoints() const;
-//    virtual QList<QPointF> nearestPoints(QPointF pos) const;
+    //    //virtual QList<QPointF> hotSpots() const;
+    //    virtual QList<QPointF> endPoints() const;
+    //    virtual QList<QPointF> midPoints() const;
+    //    virtual QList<QPointF> centerPoints() const;
+    //    virtual QList<QPointF> nearestPoints(QPointF pos) const;
 
     // IGraphicsItemObserver interface
 public:

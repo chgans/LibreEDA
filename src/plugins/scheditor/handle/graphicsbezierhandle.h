@@ -8,14 +8,15 @@
 
 
 class GraphicsBezierHandle:
-        public AbstractGraphicsHandle,
-        public IGraphicsItemObserver
+    public AbstractGraphicsHandle,
+    public IGraphicsItemObserver
 {
 public:
     explicit GraphicsBezierHandle(SchItem *parent = nullptr);
     ~GraphicsBezierHandle();
 
-    enum HandleType {
+    enum HandleType
+    {
         UndefinedHandle = 0,
         NodeHandle = 1,
         Control1Handle = 2,

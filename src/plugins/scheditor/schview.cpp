@@ -88,7 +88,8 @@ void SchView::setTool(InteractiveTool *tool)
 {
     m_tool = tool;
 
-    if (m_tool) {
+    if (m_tool)
+    {
         m_tool->setView(this);
     }
 }
@@ -132,7 +133,9 @@ void SchView::scaleView(qreal scaleFactor)
 {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
     if (factor < 0.07 || factor > 100)
+    {
         return;
+    }
 
     scale(scaleFactor, scaleFactor);
     updateMousePos();
@@ -151,7 +154,9 @@ void SchView::translateView(qreal dx, qreal dy)
 void SchView::setPaletteMode(Palette::Mode mode)
 {
     if (mode == m_palette->mode())
+    {
         return;
+    }
     m_palette->setMode(mode);
     applyPalette();
 }
@@ -171,7 +176,8 @@ void SchView::drawBackground(QPainter *painter, const QRectF &rect)
     painter->fillRect(rect, QBrush(m_palette->backgroundHighlight()));
     painter->fillRect(rect.intersected(sceneRect()), QBrush(m_palette->background()));
 
-    if (m_gridEnabled) {
+    if (m_gridEnabled)
+    {
         m_grid->draw(pixelSize(), painter, rect);
     }
 }
@@ -183,19 +189,22 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
     drawCursor(painter);
     drawOrigin(painter);
 
-    if (m_snapping) {
+    if (m_snapping)
+    {
         drawSnapDecoration(painter);
     }
 }
 
 void SchView::wheelEvent(QWheelEvent *event)
 {
-    if (!event->modifiers().testFlag(Qt::ControlModifier)) {
+    if (!event->modifiers().testFlag(Qt::ControlModifier))
+    {
         // While doing pan view (mid-button), disable wheel event
         // This improve usability for sensitive "vertical wheel" mouses
         // Where you can inadvertly push the wheel sideway while holding
         // the wheel down and the wheel is as well the "mid button"
-        if (!event->buttons().testFlag(Qt::MidButton)) {
+        if (!event->buttons().testFlag(Qt::MidButton))
+        {
             QGraphicsView::wheelEvent(event);
             updateRulerCursorRanges();
             updateRulerCursorPositions();
@@ -210,13 +219,16 @@ void SchView::wheelEvent(QWheelEvent *event)
 
 void SchView::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::MidButton) {
+    if (event->button() == Qt::MidButton)
+    {
         startPanView(event);
     }
-    else if (event->button() == Qt::RightButton) {
+    else if (event->button() == Qt::RightButton)
+    {
         QGraphicsView::mousePressEvent(event);
     }
-    else if (m_tool) {
+    else if (m_tool)
+    {
         QMouseEvent ev = createSnappedMouseEvent(event);
         m_tool->mousePressEvent(&ev);
     }
@@ -224,11 +236,14 @@ void SchView::mousePressEvent(QMouseEvent *event)
 
 void SchView::mouseMoveEvent(QMouseEvent *event)
 {
-    if (event->buttons().testFlag(Qt::MidButton)) {
+    if (event->buttons().testFlag(Qt::MidButton))
+    {
         updatePanView(event);
     }
-    else if (m_tool != nullptr) {
-        if (m_mousePositionChanged) {
+    else if (m_tool != nullptr)
+    {
+        if (m_mousePositionChanged)
+        {
             QMouseEvent ev = createSnappedMouseEvent(event);
             m_tool->mouseMoveEvent(&ev);
         }
@@ -240,10 +255,12 @@ void SchView::mouseMoveEvent(QMouseEvent *event)
 
 void SchView::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::MidButton) {
+    if (event->button() == Qt::MidButton)
+    {
         endPanView();
     }
-    else if (m_tool != nullptr) {
+    else if (m_tool != nullptr)
+    {
         QMouseEvent ev = createSnappedMouseEvent(event);
         m_tool->mouseReleaseEvent(&ev);
     }
@@ -252,25 +269,37 @@ void SchView::mouseReleaseEvent(QMouseEvent *event)
 void SchView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (m_tool != nullptr)
+    {
         m_tool->mouseDoubleClickEvent(event);
+    }
     else
+    {
         event->ignore();
+    }
 }
 
 void SchView::keyPressEvent(QKeyEvent *event)
 {
     if (m_tool != nullptr)
+    {
         m_tool->keyPressEvent(event);
+    }
     else
+    {
         QGraphicsView::keyPressEvent(event);
+    }
 }
 
 void SchView::keyReleaseEvent(QKeyEvent *event)
 {
     if (m_tool != nullptr)
+    {
         m_tool->keyReleaseEvent(event);
+    }
     else
+    {
         QGraphicsView::keyReleaseEvent(event);
+    }
 }
 
 void SchView::resizeEvent(QResizeEvent *event)
@@ -284,17 +313,22 @@ void SchView::resizeEvent(QResizeEvent *event)
 void SchView::updateMousePos()
 {
     QPointF pos = mapToScene(viewport()->mapFromGlobal(QCursor::pos()));
-    m_snapping = m_snapManager->snap(pos, 50*transform().m11()); // FIXME: magic number: 50 view's pixels
+    m_snapping = m_snapManager->snap(pos,
+                                     50 * transform().m11()); // FIXME: magic number: 50 view's pixels
 
-    if (!m_snapping) {
+    if (!m_snapping)
+    {
         m_mousePositionChanged = false;
     }
-    else {
-        if (m_mousePosition != m_snapManager->snappedPosition()) {
+    else
+    {
+        if (m_mousePosition != m_snapManager->snappedPosition())
+        {
             m_mousePosition = m_snapManager->snappedPosition();
             m_mousePositionChanged = true;
         }
-        else {
+        else
+        {
             m_mousePositionChanged = false;
         }
     }
@@ -327,7 +361,7 @@ QMouseEvent SchView::createSnappedMouseEvent(QMouseEvent *event)
 
 QRectF SchView::visibleSceneRect() const
 {
-    QPointF topLeft = mapToScene(QPoint(0,0) );
+    QPointF topLeft = mapToScene(QPoint(0, 0));
     QPointF bottomRight = mapToScene(QPoint(viewport()->width(), viewport()->height()));
     return QRectF(topLeft, bottomRight);
 }
@@ -346,7 +380,8 @@ void SchView::updateBackground()
 
 void SchView::applyPalette()
 {
-    m_cornerWidget->setStyleSheet(QString("background-color:%1;").arg(m_palette->backgroundHighlight().name()));
+    m_cornerWidget->setStyleSheet(QString("background-color:%1;").arg(
+                                      m_palette->backgroundHighlight().name()));
     m_horizontalRuler->setBackgroundColor(m_palette->backgroundHighlight());
     m_verticalRuler->setBackgroundColor(m_palette->backgroundHighlight());
     m_horizontalRuler->setForegroundColor(m_palette->primaryContent());
@@ -360,12 +395,14 @@ void SchView::applyPalette()
 void SchView::drawCursor(QPainter *painter)
 {
     if (mouseCursor() == NoMouseCursor)
+    {
         return;
+    }
 
     QPointF pos = cursorPosition();
     painter->setPen(QPen(m_palette->orange(), 0, Qt::SolidLine));
     QRectF rect(0, 0,
-                CursorMarkPixelSize/transform().m11(), CursorMarkPixelSize/transform().m22());
+                CursorMarkPixelSize / transform().m11(), CursorMarkPixelSize / transform().m22());
     rect.moveCenter(pos);
     painter->drawEllipse(rect);
 
@@ -377,8 +414,8 @@ void SchView::drawCursor(QPainter *painter)
     else
     {
         rect = QRectF(0, 0,
-                      4*CursorMarkPixelSize/transform().m11(),
-                      4*CursorMarkPixelSize/transform().m22());
+                      4 * CursorMarkPixelSize / transform().m11(),
+                      4 * CursorMarkPixelSize / transform().m22());
         rect.moveCenter(pos);
     }
     QPointF top(pos.x(),
@@ -396,13 +433,15 @@ void SchView::drawCursor(QPainter *painter)
 void SchView::drawOrigin(QPainter *painter)
 {
     if (originMark() == NoOriginMark)
+    {
         return;
+    }
 
     QPointF pos = originPosition();
 
     painter->setPen(QPen(m_palette->red(), 0, Qt::SolidLine));
     QRectF rect(0, 0,
-                OriginMarkPixelSize/transform().m11(), OriginMarkPixelSize/transform().m22());
+                OriginMarkPixelSize / transform().m11(), OriginMarkPixelSize / transform().m22());
     rect.moveCenter(pos);
     painter->drawEllipse(rect);
 
@@ -414,8 +453,8 @@ void SchView::drawOrigin(QPainter *painter)
     else
     {
         rect = QRectF(0, 0,
-                      4*OriginMarkPixelSize/transform().m11(),
-                      4*OriginMarkPixelSize/transform().m22());
+                      4 * OriginMarkPixelSize / transform().m11(),
+                      4 * OriginMarkPixelSize / transform().m22());
         rect.moveCenter(pos);
     }
     QPointF top(pos.x(),
@@ -436,7 +475,7 @@ void SchView::drawSnapDecoration(QPainter *painter)
     // m_snapManager->renderDecoration(painter, pos);
     painter->save();
     painter->translate(cursorPosition());
-    painter->scale(1.0/transform().m11(), 1.0/transform().m22());
+    painter->scale(1.0 / transform().m11(), 1.0 / transform().m22());
     painter->setPen(Qt::NoPen);
     painter->setBrush(QBrush(m_palette->emphasisedContent()));
     painter->setRenderHint(QPainter::Antialiasing);
@@ -470,7 +509,9 @@ void SchView::zoomIn(QPointF pos, qreal factor)
 void SchView::setHardwareAccelerationEnabled(bool enabled)
 {
     if (m_hardwareAccelerationEnabled == enabled)
+    {
         return;
+    }
 
     // Breaks mouse tracking, maybe need to call setMouseTracking after
     // setViewPort, and maybe even more things....
@@ -496,13 +537,15 @@ bool SchView::hardwareAccelerationEnabled() const
 void SchView::setRulerEnabled(bool enabled)
 {
     if (m_rulerEnabled == enabled)
+    {
         return;
+    }
 
     m_rulerEnabled = enabled;
 
     if (m_rulerEnabled)
     {
-        QGridLayout *grid = static_cast<QGridLayout*>(layout());
+        QGridLayout *grid = static_cast<QGridLayout *>(layout());
         grid->addWidget(m_cornerWidget, 0, 0);
         m_cornerWidget->show();
         grid->addWidget(m_horizontalRuler, 0, 1);
@@ -513,7 +556,7 @@ void SchView::setRulerEnabled(bool enabled)
     }
     else
     {
-        QGridLayout *grid = static_cast<QGridLayout*>(layout());
+        QGridLayout *grid = static_cast<QGridLayout *>(layout());
         grid->removeWidget(m_cornerWidget);
         m_cornerWidget->hide();
         grid->removeWidget(m_horizontalRuler);
@@ -532,7 +575,9 @@ bool SchView::rulerEnabled() const
 void SchView::setGridEnabled(bool enabled)
 {
     if (m_gridEnabled == enabled)
+    {
         return;
+    }
     m_gridEnabled = enabled;
     updateBackground();
 }
@@ -589,7 +634,9 @@ Qt::PenStyle SchView::gridFineLineStyle() const
 void SchView::setMouseCursor(SchView::MouseCursor cursor)
 {
     if (m_mouseCursor == cursor)
+    {
         return;
+    }
     m_mouseCursor = cursor;
     updateForeground();
 }
@@ -602,7 +649,9 @@ SchView::MouseCursor SchView::mouseCursor() const
 void SchView::setOriginMark(SchView::OriginMark mark)
 {
     if (m_originMark == mark)
+    {
         return;
+    }
     m_originMark = mark;
     updateForeground();
 }

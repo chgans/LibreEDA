@@ -16,11 +16,11 @@
 #include <QBrush>
 
 
-namespace Json
-{
+namespace Json {
 
 CORE_EXPORT bool toPoint(QString *errorString, const QJsonValue &jsonValue, QPointF &value);
-CORE_EXPORT bool toPointList(QString *errorString, const QJsonValue &jsonValue, QList<QPointF> &value);
+CORE_EXPORT bool toPointList(QString *errorString, const QJsonValue &jsonValue,
+                             QList<QPointF> &value);
 CORE_EXPORT bool toRect(QString *errorString, const QJsonValue &jsonValue, QRectF &value);
 CORE_EXPORT bool toPolygon(QString *errorString, const QJsonValue &jsonValue, QPolygonF &value);
 CORE_EXPORT bool toLine(QString *errorString, const QJsonValue &jsonValue, QLineF &value);

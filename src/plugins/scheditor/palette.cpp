@@ -62,41 +62,61 @@ Palette::Mode Palette::mode() const
 QColor Palette::background() const
 {
     if (m_mode == Dark)
+    {
         return BASE03;
+    }
     else
+    {
         return BASE3;
+    }
 }
 
 QColor Palette::backgroundHighlight() const
 {
     if (m_mode == Dark)
+    {
         return BASE02;
+    }
     else
+    {
         return BASE2;
+    }
 }
 
 QColor Palette::primaryContent() const
 {
     if (m_mode == Dark)
+    {
         return BASE0;
+    }
     else
+    {
         return BASE00;
+    }
 }
 
 QColor Palette::secondaryContent() const
 {
     if (m_mode == Dark)
+    {
         return BASE01;
+    }
     else
+    {
         return BASE1;
+    }
 }
 
 QColor Palette::emphasisedContent() const
 {
     if (m_mode == Dark)
+    {
         return BASE1;
+    }
     else
+    {
         return BASE01;
+    }
 }
 
 QColor Palette::yellow() const

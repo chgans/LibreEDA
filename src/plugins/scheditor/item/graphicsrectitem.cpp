@@ -59,7 +59,8 @@ qreal GraphicsRectItem::xRoundness() const
 void GraphicsRectItem::setXRoundness(qreal roundness)
 {
     qreal xRoundness = qMin(qMax(roundness, 0.0), 100.0);
-    if (qFuzzyCompare(xRoundness, m_xRoundness)) {
+    if (qFuzzyCompare(xRoundness, m_xRoundness))
+    {
         updateRoundnessHandles();
         return;
     }
@@ -78,7 +79,8 @@ qreal GraphicsRectItem::yRoundness() const
 void GraphicsRectItem::setYRoundness(qreal roundness)
 {
     qreal yRoundness = qMin(qMax(roundness, 0.0), 100.0);
-    if (qFuzzyCompare(yRoundness, m_yRoundness)) {
+    if (qFuzzyCompare(yRoundness, m_yRoundness))
+    {
         updateRoundnessHandles();
         return;
     }
@@ -92,17 +94,19 @@ void GraphicsRectItem::setYRoundness(qreal roundness)
 void GraphicsRectItem::updateSizeHandles()
 {
     blockItemNotification();
-    qreal midX = m_rect.right()-m_rect.width()/2.0;
-    qreal midY = m_rect.bottom()-m_rect.height()/2.0;
+    qreal midX = m_rect.right() - m_rect.width() / 2.0;
+    qreal midY = m_rect.bottom() - m_rect.height() / 2.0;
     m_idToHandle[TopLeft]->setPos(m_rect.topLeft());
     m_idToHandle[BottomRight]->setPos(m_rect.bottomRight());
     m_idToHandle[Bottom]->setPos(QPointF(midX, m_rect.bottom()));
     m_idToHandle[Left]->setPos(QPointF(m_rect.left(), midY));
-    if (m_rect == m_rect.normalized()) {
+    if (m_rect == m_rect.normalized())
+    {
         m_idToHandle[TopLeft]->setHandleRole(FDiagSizeHandleRole);
         m_idToHandle[BottomRight]->setHandleRole(FDiagSizeHandleRole);
     }
-    else {
+    else
+    {
         m_idToHandle[TopLeft]->setHandleRole(BDiagSizeHandleRole);
         m_idToHandle[BottomRight]->setHandleRole(BDiagSizeHandleRole);
     }
@@ -132,34 +136,35 @@ SchItem *GraphicsRectItem::clone()
 
 void GraphicsRectItem::itemNotification(IGraphicsObservableItem *item)
 {
-    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle*>(item);
+    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle *>(item);
     Q_ASSERT(handle);
 
     int id = handle->handleId();
     QRectF rect = m_rect;
     QRectF normedRect = m_rect.normalized();
-    switch (id) {
-    case XRoundness:
-        setXRoundness(100.0 * (normedRect.right() - handle->pos().x()) / (normedRect.width() / 2.0));
-        return;
-    case YRoundness:
-        setYRoundness(100.0 * (handle->pos().y() - normedRect.top()) / (normedRect.height() / 2.0));
-        return;
-    case TopLeft:
-        rect.setTopLeft(handle->pos());
-        break;
-    case BottomRight:
-        rect.setBottomRight(handle->pos());
-        break;
-    case Bottom:
-        rect.setBottom(handle->pos().y());
-        break;
-    case Left:
-        rect.setLeft(handle->pos().x());
-        break;
-    default:
-        Q_ASSERT(false);
-        return;
+    switch (id)
+    {
+        case XRoundness:
+            setXRoundness(100.0 * (normedRect.right() - handle->pos().x()) / (normedRect.width() / 2.0));
+            return;
+        case YRoundness:
+            setYRoundness(100.0 * (handle->pos().y() - normedRect.top()) / (normedRect.height() / 2.0));
+            return;
+        case TopLeft:
+            rect.setTopLeft(handle->pos());
+            break;
+        case BottomRight:
+            rect.setBottomRight(handle->pos());
+            break;
+        case Bottom:
+            rect.setBottom(handle->pos().y());
+            break;
+        case Left:
+            rect.setLeft(handle->pos().x());
+            break;
+        default:
+            Q_ASSERT(false);
+            return;
     }
     setRect(rect);
 }
@@ -167,18 +172,18 @@ void GraphicsRectItem::itemNotification(IGraphicsObservableItem *item)
 QList<QPointF> GraphicsRectItem::endPoints() const
 {
     return QList<QPointF>() << m_rect.topLeft()
-                            << m_rect.topRight()
-                            << m_rect.bottomRight()
-                            << m_rect.bottomLeft();
+           << m_rect.topRight()
+           << m_rect.bottomRight()
+           << m_rect.bottomLeft();
 }
 
 QList<QPointF> GraphicsRectItem::midPoints() const
 {
 
     return QList<QPointF>() << QPointF(m_rect.center().x(), m_rect.top())
-                            << QPointF(m_rect.right(), m_rect.center().y())
-                            << QPointF(m_rect.center().x(), m_rect.bottom())
-                            << QPointF(m_rect.left(), m_rect.center().y());
+           << QPointF(m_rect.right(), m_rect.center().y())
+           << QPointF(m_rect.center().x(), m_rect.bottom())
+           << QPointF(m_rect.left(), m_rect.center().y());
 }
 
 QList<QPointF> GraphicsRectItem::centerPoints() const
@@ -197,10 +202,13 @@ QList<QPointF> GraphicsRectItem::nearestPoints(QPointF pos) const
 
     QList<QPointF> xPoints;
     QPointF xPoint;
-    for (const QLineF &line: lines) {
+    for (const QLineF &line : lines)
+    {
         QLineF::IntersectType xType = line.intersect(line.normalVector().translated(pos), &xPoint);
         if (xType == QLineF::BoundedIntersection)
+        {
             xPoints << xPoint;
+        }
     }
 
     return xPoints;
@@ -208,11 +216,14 @@ QList<QPointF> GraphicsRectItem::nearestPoints(QPointF pos) const
 
 QRectF GraphicsRectItem::boundingRect() const
 {
-    if (m_boundingRect.isNull()) {
+    if (m_boundingRect.isNull())
+    {
         qreal halfpw = pen().style() == Qt::NoPen ? qreal(0) : pen().widthF() / 2;
         m_boundingRect = m_rect;
         if (halfpw > 0.0)
+        {
             m_boundingRect.adjust(-halfpw, -halfpw, halfpw, halfpw);
+        }
     }
     return m_boundingRect;
 
@@ -225,7 +236,8 @@ QPainterPath GraphicsRectItem::shape() const
     return shapeFromPath(path, pen());
 }
 
-void GraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                             QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -234,10 +246,13 @@ void GraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->drawRoundedRect(m_rect, m_xRoundness, m_yRoundness, Qt::RelativeSize);
 }
 
-QVariant GraphicsRectItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+QVariant GraphicsRectItem::itemChange(QGraphicsItem::GraphicsItemChange change,
+                                      const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
+    if (change == QGraphicsItem::ItemSelectedHasChanged)
+    {
+        for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+        {
             handle->setVisible(isSelected());
         }
     }

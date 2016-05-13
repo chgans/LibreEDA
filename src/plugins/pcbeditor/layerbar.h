@@ -14,7 +14,7 @@ class LayerTabBar : public QTabBar
 {
     Q_OBJECT
 public:
-    typedef std::function<void(QMenu*)> MenuProvider;
+    typedef std::function<void(QMenu *)> MenuProvider;
 
     explicit LayerTabBar(QWidget *parent = nullptr);
     ~LayerTabBar();

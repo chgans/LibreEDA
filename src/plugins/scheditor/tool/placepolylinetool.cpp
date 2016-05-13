@@ -10,16 +10,19 @@ PlacePolyineTool::PlacePolyineTool(QObject *parent):
     PlacementTool(parent), m_item(nullptr)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicslinetool.svg"),
-                           "Place a line", nullptr);
+                                  "Place a line", nullptr);
     action->setShortcut(QKeySequence("i,l"));
     setAction(action);
     setToolGroup("interactive-tools");
 
     m_penSettingsWidget = new PenSettingsWidget();
     connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
-            [this](const QPen &pen) {
+            [this](const QPen & pen)
+    {
         if (!m_item)
+        {
             return;
+        }
         m_item->setPen(pen);
     });
 
@@ -46,8 +49,11 @@ void PlacePolyineTool::addPoint(int idx, const QPointF &pos)
 
     QPointF itemPos = m_item->mapFromScene(pos);
     if (idx == 0)
+    {
         setP1(itemPos);
-    else {
+    }
+    else
+    {
         setP2(itemPos);
     }
 }
@@ -56,7 +62,9 @@ void PlacePolyineTool::freezePoint(int idx, const QPointF &pos)
 {
     Q_UNUSED(pos);
     if (idx == 0)
+    {
         return;
+    }
 
     emit taskCompleted(nullptr);
 
@@ -79,8 +87,11 @@ void PlacePolyineTool::movePoint(int idx, const QPointF &pos)
 
     QPointF itemPos = m_item->mapFromScene(pos);
     if (idx == 0)
+    {
         setP1(itemPos);
-    else {
+    }
+    else
+    {
         setP2(itemPos);
     }
 }

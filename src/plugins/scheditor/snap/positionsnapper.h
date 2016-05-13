@@ -42,10 +42,11 @@ protected:
     void updateAction();
 
     void setSnappedPosition(QPointF pos);
-    void setSnappedItems(const QList<SchItem*> &items);
+    void setSnappedItems(const QList<SchItem *> &items);
 
     QList<SchItem *> itemsNearby(QPointF pos, qreal maxDistance);
-    QPair<SchItem *, QPointF> closestItemPoint(QPointF pos, const QMultiMap<SchItem *, QPointF> &candidates);
+    QPair<SchItem *, QPointF> closestItemPoint(QPointF pos,
+                                               const QMultiMap<SchItem *, QPointF> &candidates);
 
 private:
     SchView *m_view;
@@ -58,7 +59,7 @@ private:
     QKeySequence m_shortcut;
 
     QPointF m_snappedPosition;
-    QList<SchItem*> m_snappedItems;
+    QList<SchItem *> m_snappedItems;
 };
 
 class NoSnapStrategy: public SnapStrategy
@@ -139,7 +140,7 @@ public:
     bool snap(QPointF mousePos, qreal maxDistance);
     QList<SchItem *> snappedItems() const;
     QPointF snappedPosition() const;
-    SnapStrategy * snappingStrategy() const;
+    SnapStrategy *snappingStrategy() const;
 
 private:
     QList<QString> m_groups;

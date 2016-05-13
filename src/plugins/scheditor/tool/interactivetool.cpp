@@ -103,7 +103,8 @@ SchItem *InteractiveTool::createPhantomItem(SchItem *item)
 QList<SchItem *> InteractiveTool::createPhantomItems(const QList<SchItem *> &items)
 {
     QList<SchItem *> phantomItems;
-    for (SchItem *item: items) {
+    for (SchItem *item : items)
+    {
         phantomItems.append(createPhantomItem(item));
     }
     return phantomItems;

@@ -34,22 +34,26 @@ TaskEditWidget::TaskEditWidget(QWidget *parent) :
 // Layout rearragement is done in such a way that keeps tab order
 void TaskEditWidget::setCentralWidget(QWidget *widget)
 {
-    if (m_centralWidget != nullptr) {
+    if (m_centralWidget != nullptr)
+    {
         m_layout->removeWidget(m_centralWidget);
         m_centralWidget->hide();
         m_layout->removeWidget(m_cancelButton);
     }
 
-    if (widget != nullptr) {
+    if (widget != nullptr)
+    {
         m_layout->insertWidget(0, widget);
         m_layout->insertWidget(1, m_cancelButton);
         // Align central widget and our extra ones (cancel button, ...)
-        if (widget->layout() != nullptr) {
+        if (widget->layout() != nullptr)
+        {
             widget->layout()->setMargin(0);
         }
         widget->show();
     }
-    else {
+    else
+    {
         m_layout->insertWidget(0, m_cancelButton);
     }
 
@@ -62,19 +66,25 @@ void TaskEditWidget::setCentralWidget(QWidget *widget)
 QWidget *TaskEditWidget::findLastChildToFocus(QObject *parent)
 {
     qDebug() << __FUNCTION__ << "parent" << parent;
-    for (int i = parent->children().count() - 1; i >= 0; i--) {
+    for (int i = parent->children().count() - 1; i >= 0; i--)
+    {
         QObject *childObject = parent->children().at(i);
         qDebug() << __FUNCTION__ << "child object" << childObject;
-        QWidget *childWidget = qobject_cast<QWidget*>(childObject);
+        QWidget *childWidget = qobject_cast<QWidget *>(childObject);
         if (childWidget == nullptr)
+        {
             continue;
+        }
         qDebug() << __FUNCTION__ << "child widget" << childWidget;
-        if (childWidget->focusPolicy() != Qt::NoFocus) {
+        if (childWidget->focusPolicy() != Qt::NoFocus)
+        {
             qDebug() << __FUNCTION__ << "Found!";
             return childWidget;
         }
         else
+        {
             return findLastChildToFocus(childWidget);
+        }
     }
     return nullptr;
 }

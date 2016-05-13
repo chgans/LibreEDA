@@ -25,7 +25,9 @@ QPolygonF GraphicsPolygonItem::polygon() const
 void GraphicsPolygonItem::setFillRule(Qt::FillRule fillRule)
 {
     if (m_fillRule == fillRule)
+    {
         return;
+    }
 
     m_fillRule = fillRule;
     update();
@@ -35,14 +37,18 @@ void GraphicsPolygonItem::setFillRule(Qt::FillRule fillRule)
 void GraphicsPolygonItem::setPolygon(QPolygonF polygon)
 {
     if (m_polygon == polygon)
+    {
         return;
+    }
 
     removeAllHandles();
 
     prepareGeometryChange();
     m_polygon = polygon;
     for (int i = 0; i < polygon.count(); i++)
+    {
         addRegularHandle(i, MoveHandleRole, CircularHandleShape, polygon[i]);
+    }
     m_boundingRect = QRectF();
     update();
 
@@ -72,7 +78,8 @@ void GraphicsPolygonItem::handleToPolygon()
 {
     prepareGeometryChange();
     m_polygon = QPolygonF();
-    for (int i = 0; i < m_idToHandle.count(); i++) {
+    for (int i = 0; i < m_idToHandle.count(); i++)
+    {
         m_polygon.append(m_idToHandle[i]->pos());
     }
     m_boundingRect = QRectF();
@@ -82,7 +89,8 @@ void GraphicsPolygonItem::handleToPolygon()
 void GraphicsPolygonItem::polygonToHandle()
 {
     blockItemNotification();
-    for (int i = 0; i < m_polygon.count(); i++) {
+    for (int i = 0; i < m_polygon.count(); i++)
+    {
         m_idToHandle[i]->setPos(m_polygon[i].x(),
                                 m_polygon[i].y());
     }
@@ -91,12 +99,17 @@ void GraphicsPolygonItem::polygonToHandle()
 
 QRectF GraphicsPolygonItem::boundingRect() const
 {
-    if (m_boundingRect.isNull()) {
+    if (m_boundingRect.isNull())
+    {
         qreal pw = pen().style() == Qt::NoPen ? qreal(0) : pen().widthF();
         if (pw == 0.0)
+        {
             m_boundingRect = m_polygon.boundingRect();
+        }
         else
+        {
             m_boundingRect = shape().controlPointRect();
+        }
     }
     return m_boundingRect;
 }
@@ -108,7 +121,8 @@ QPainterPath GraphicsPolygonItem::shape() const
     return shapeFromPath(path, pen());
 }
 
-void GraphicsPolygonItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicsPolygonItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                                QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -128,8 +142,10 @@ SchItem *GraphicsPolygonItem::clone()
 
 QVariant GraphicsPolygonItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        for (AbstractGraphicsHandle *handle: m_idToHandle) {
+    if (change == QGraphicsItem::ItemSelectedHasChanged)
+    {
+        for (AbstractGraphicsHandle *handle : m_idToHandle)
+        {
             handle->setVisible(isSelected());
         }
     }

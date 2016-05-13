@@ -50,6 +50,6 @@ private:
     QAction *m_action;
 };
 
-Q_DECLARE_METATYPE(SchTool*)
+Q_DECLARE_METATYPE(SchTool *)
 
 #endif // GRAPHICSTOOL_H

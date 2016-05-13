@@ -57,40 +57,52 @@ MainView::MainView(Scene *scene, QWidget *parent) :
 void MainView::addLayer(DesignLayer *layer)
 {
     if (m_indexToLayer.contains(layer->index()))
+    {
         return;
+    }
 
     int index = layer->index();
     m_indexToLayer[index] = layer;
     if (layoutScene() != nullptr)
+    {
         layoutScene()->addItem(layer);
+    }
     if (m_palette)
+    {
         layer->setColor(m_palette->color(PcbPalette::ColorRole(layer->index() + 1)));
+    }
     emit layerAdded(layer);
 }
 
 void MainView::removeLayer(DesignLayer *layer)
 {
     if (!m_indexToLayer.contains(layer->index()))
+    {
         return;
+    }
 
     int index = layer->index();
     Q_ASSERT(m_indexToLayer[layer->index()] == layer);
     m_indexToLayer.remove(index);
     if (layoutScene() != nullptr)
+    {
         layoutScene()->removeItem(layer);
+    }
     emit layerRemoved(layer);
 }
 
 void MainView::addLayers(const QList<DesignLayer *> &layers)
 {
-    for (DesignLayer *layer: layers) {
+    for (DesignLayer *layer : layers)
+    {
         addLayer(layer);
     }
 }
 
 void MainView::removeLayers(const QList<DesignLayer *> &layers)
 {
-    for (DesignLayer *layer: layers) {
+    for (DesignLayer *layer : layers)
+    {
         removeLayer(layer);
     }
 }
@@ -99,8 +111,9 @@ QList<DesignLayer *> MainView::layers()
 {
     QList<DesignLayer *> list = m_indexToLayer.values();
     qSort(list.begin(), list.end(),
-          [](DesignLayer *first, DesignLayer *second) {
-       return first->index() < second->index();
+          [](DesignLayer * first, DesignLayer * second)
+    {
+        return first->index() < second->index();
     });
 
     return list;
@@ -111,15 +124,20 @@ void MainView::setActiveLayer(DesignLayer *layer)
     Q_ASSERT(m_indexToLayer.values().contains(layer));
 
     if (layer == m_activeLayer)
+    {
         return;
+    }
 
-    if (m_activeLayer != nullptr) {
+    if (m_activeLayer != nullptr)
+    {
         m_activeLayer->setEnabled(false);
     }
 
     m_activeLayer = layer;
     if (m_activeLayer != nullptr)
+    {
         m_activeLayer->setEnabled(true);
+    }
 
     updateLayerDisplayModes();
     updateLayerZValues();
@@ -135,14 +153,17 @@ DesignLayer *MainView::activeLayer()
 void MainView::setPalette(PcbPalette *palette)
 {
     if (m_palette == palette)
+    {
         return;
+    }
 
     qDebug() << "Switching to palette" << palette->name();
 
     m_palette = palette;
     Q_ASSERT(palette);
 
-    for (DesignLayer *layer: m_indexToLayer.values()) {
+    for (DesignLayer *layer : m_indexToLayer.values())
+    {
         layer->setColor(m_palette->color(PcbPalette::ColorRole(layer->index() + 1)));
     }
 }
@@ -154,27 +175,30 @@ PcbPalette *MainView::palette() const
 
 void MainView::updateLayerDisplayModes()
 {
-    for (DesignLayer *layer: layers()) {
-        if (m_activeLayer == layer) {
+    for (DesignLayer *layer : layers())
+    {
+        if (m_activeLayer == layer)
+        {
             layer->setColorMode(DesignLayer::NormalColorMode);
             continue;
         }
-        switch (m_layerDisplayMode) {
-        case DisplayAllLayers:
-            layer->setColorMode(DesignLayer::NormalColorMode);
-            break;
-        case GreyscaleOtherLayers:
-            layer->setColorMode(DesignLayer::GrayscaledMode);
-            break;
-        case MonochromeOtherLayers:
-            layer->setColorMode(DesignLayer::MonochromedMode);
-            break;
-        case HideOtherLayers:
-            layer->setColorMode(DesignLayer::HiddenMode);
-            break;
-        default:
-            // Not reached
-            Q_ASSERT(false);
+        switch (m_layerDisplayMode)
+        {
+            case DisplayAllLayers:
+                layer->setColorMode(DesignLayer::NormalColorMode);
+                break;
+            case GreyscaleOtherLayers:
+                layer->setColorMode(DesignLayer::GrayscaledMode);
+                break;
+            case MonochromeOtherLayers:
+                layer->setColorMode(DesignLayer::MonochromedMode);
+                break;
+            case HideOtherLayers:
+                layer->setColorMode(DesignLayer::HiddenMode);
+                break;
+            default:
+                // Not reached
+                Q_ASSERT(false);
         }
     }
     invalidateScene(QRectF(), QGraphicsScene::ItemLayer);
@@ -183,24 +207,33 @@ void MainView::updateLayerDisplayModes()
 void MainView::updateLayerZValues()
 {
     int z = 0;
-    for (DesignLayer *layer: m_indexToLayer.values()) {
+    for (DesignLayer *layer : m_indexToLayer.values())
+    {
         if (layer->index() != m_activeLayer->index())
+        {
             layer->setZValue(z++);
+        }
     }
     if (m_activeLayer != nullptr)
+    {
         m_activeLayer->setZValue(z);
+    }
 }
 
 void MainView::addMaskingItem(QGraphicsItem *item)
 {
     if (!m_maskingItems.contains(item))
+    {
         m_maskingItems.append(item);
+    }
 }
 
 void MainView::removeMaskingItem(QGraphicsItem *item)
 {
     if (m_maskingItems.contains(item))
+    {
         m_maskingItems.removeOne(item);
+    }
 }
 
 void MainView::setMaskingItems(QList<QGraphicsItem *> items)
@@ -222,7 +255,9 @@ void MainView::resetMaskingItems()
 void MainView::setLayerDisplayMode(MainView::LayerDisplayMode mode)
 {
     if (m_layerDisplayMode == mode)
+    {
         return;
+    }
 
     m_layerDisplayMode = mode;
     updateLayerDisplayModes();
@@ -239,7 +274,9 @@ MainView::LayerDisplayMode MainView::cycleLayerDisplayMode()
     LayerDisplayMode mode = LayerDisplayMode(int(m_layerDisplayMode) + 1);
 
     if (mode == _EndDisplayMode)
+    {
         mode = _BeginDisplayMode;
+    }
 
     setLayerDisplayMode(mode);
     return layerDisplayMode();
@@ -248,7 +285,8 @@ MainView::LayerDisplayMode MainView::cycleLayerDisplayMode()
 #if 0
 void MainView::setScene(Scene *scene)
 {
-    if (m_scene) {
+    if (m_scene)
+    {
         m_scene->disconnect(this);
         m_lens->setBuddyView(nullptr);
         m_connectivity->setBuddyView(nullptr);
@@ -258,8 +296,10 @@ void MainView::setScene(Scene *scene)
 
     m_scene = scene;
 
-    if (m_scene == nullptr) {
-        for (DesignLayer *layer: m_indexToLayer.values()) {
+    if (m_scene == nullptr)
+    {
+        for (DesignLayer *layer : m_indexToLayer.values())
+        {
             m_scene->removeItem(layer);
         }
         return;
@@ -270,7 +310,8 @@ void MainView::setScene(Scene *scene)
     m_connectivity->setBuddyView(this);
     m_headsUp->setBuddyView(this);
 
-    for (DesignLayer *layer: m_indexToLayer.values()) {
+    for (DesignLayer *layer : m_indexToLayer.values())
+    {
         m_scene->addItem(layer);
     }
 
@@ -378,17 +419,24 @@ void MainView::toggleInsightLensShape()
 
 void MainView::wheelEvent(QWheelEvent *event)
 {
-    if (event->modifiers() & Qt::ControlModifier) {
+    if (event->modifiers() & Qt::ControlModifier)
+    {
         qreal factor;
         if (event->delta() > 0)
+        {
             factor = 1.2;
+        }
         else
+        {
             factor = 0.8;
+        }
         QMatrix m = matrix();
         m.scale(factor, factor);
         setMatrix(m);
         event->accept();
-    } else {
+    }
+    else
+    {
         QGraphicsView::wheelEvent(event);
     }
 }
@@ -397,11 +445,13 @@ void MainView::drawForeground(QPainter *painter, const QRectF &rect)
 {
     // Instead of dimming out all other components (decrease their opacity)
     // We grey them out with a semi-transparent mask
-    if (!m_maskingItems.isEmpty()) {
+    if (!m_maskingItems.isEmpty())
+    {
         QPainterPath path1;
         path1.addRect(rect);
         QPainterPath path2;
-        for (QGraphicsItem *item: m_maskingItems) {
+        for (QGraphicsItem *item : m_maskingItems)
+        {
             qDebug() << __FUNCTION__ << item->boundingRect();
             QRectF r = item->boundingRect().adjusted(-1, -1, 1, 1);
             r.translate(item->pos());
@@ -420,14 +470,19 @@ void MainView::mousePressEvent(QMouseEvent *event)
 
     // TODO: Better placement strategy
     // TODO: PickList population depends on layer display mode too
-    if (items(event->pos()).size() > 1) {
+    if (items(event->pos()).size() > 1)
+    {
         QList<QGraphicsItem *> allItems = items(event->pos());
         QList<QGraphicsItem *> enabledItems;
-        for (QGraphicsItem *item: allItems) {
+        for (QGraphicsItem *item : allItems)
+        {
             if (item->isEnabled())
+            {
                 enabledItems << item;
+            }
         }
-        if (enabledItems.count() > 1) {
+        if (enabledItems.count() > 1)
+        {
             m_pickList->setPickList(layoutScene(), enabledItems);
             m_pickList->move(mapFromGlobal(QCursor::pos()));
             // FIXME: we want it to grab the focus
@@ -441,7 +496,8 @@ void MainView::mouseMoveEvent(QMouseEvent *event)
 {
     hideDesignInsight();
     m_designInsightTimer.stop();
-    if (items(event->pos()).size() > 0) {
+    if (items(event->pos()).size() > 0)
+    {
         m_designInsightItem = items(event->pos()).first();
         m_designInsightTimer.start();
     }

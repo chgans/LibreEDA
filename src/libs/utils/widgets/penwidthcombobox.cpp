@@ -11,7 +11,7 @@ static QIcon icon(qreal width)
 
     QPen pen;
     pen.setColor(Qt::black);
-    pen.setWidth(10*width);
+    pen.setWidth(10 * width);
     pen.setCapStyle(Qt::FlatCap);
     pen.setStyle(Qt::SolidLine);
 
@@ -27,17 +27,20 @@ PenWidthComboBox::PenWidthComboBox(QWidget *parent) :
 {
     connect(this,
             static_cast<void (PenWidthComboBox::*)(int)>(&QComboBox::activated),
-            [this](int index) {
+            [this](int index)
+    {
         emit activated(itemData(index).value<qreal>());
     });
     connect(this,
             static_cast<void (PenWidthComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            [=](int index) {
+            [ = ](int index)
+    {
         emit currentIndexChanged(itemData(index).value<qreal>());
     });
     connect(this,
             static_cast<void (PenWidthComboBox::*)(int)>(&QComboBox::highlighted),
-            [=](int index) {
+            [ = ](int index)
+    {
         emit highlighted(itemData(index).value<qreal>());
     });
 }
@@ -49,8 +52,10 @@ void PenWidthComboBox::addItem(const QString &label, qreal width)
 
 void PenWidthComboBox::setCurrentIndex(qreal width)
 {
-    for (int index = 0; index < count(); index++) {
-        if (qFuzzyCompare(itemData(index).value<qreal>(), width)) {
+    for (int index = 0; index < count(); index++)
+    {
+        if (qFuzzyCompare(itemData(index).value<qreal>(), width))
+        {
             QComboBox::setCurrentIndex(index);
             return;
         }

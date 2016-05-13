@@ -3,7 +3,8 @@
 
 #include <sstream>
 
-namespace xdl { namespace symbol {
+namespace xdl {
+namespace symbol {
 
 struct ReaderPrivate
 {
@@ -11,20 +12,20 @@ struct ReaderPrivate
     {
         // Connect the parsers together.
         //
-        Symbol_p.parsers (string_p,
-                          string_p,
-                          ItemList_p);
+        Symbol_p.parsers(string_p,
+                         string_p,
+                         ItemList_p);
 
-        ItemList_p.parsers (Polyline_p,
-                            Polygon_p,
-                            Rectangle_p,
-                            Circle_p,
-                            CircularArc_p,
-                            Ellipse_p,
-                            EllipticalArc_p,
-                            Label_p,
-                            Pin_p,
-                            ItemGroup_p);
+        ItemList_p.parsers(Polyline_p,
+                           Polygon_p,
+                           Rectangle_p,
+                           Circle_p,
+                           CircularArc_p,
+                           Ellipse_p,
+                           EllipticalArc_p,
+                           Label_p,
+                           Pin_p,
+                           ItemGroup_p);
 
 
         Polyline_p.parsers(Pen_p,
@@ -39,30 +40,30 @@ struct ReaderPrivate
                            boolean_p,
                            PointList_p);
 
-        Polygon_p.parsers (Pen_p,
-                           Brush_p,
-                           Point_p,
-                           double_p,
-                           Angle_p,
-                           Opacity_p,
-                           boolean_p,
-                           boolean_p,
-                           boolean_p,
-                           boolean_p,
-                           PointList_p);
+        Polygon_p.parsers(Pen_p,
+                          Brush_p,
+                          Point_p,
+                          double_p,
+                          Angle_p,
+                          Opacity_p,
+                          boolean_p,
+                          boolean_p,
+                          boolean_p,
+                          boolean_p,
+                          PointList_p);
 
-        Rectangle_p.parsers (Pen_p,
-                             Brush_p,
-                             Point_p,
-                             double_p,
-                             Angle_p,
-                             Opacity_p,
-                             boolean_p,
-                             boolean_p,
-                             boolean_p,
-                             boolean_p,
-                             Point_p,
-                             Point_p);
+        Rectangle_p.parsers(Pen_p,
+                            Brush_p,
+                            Point_p,
+                            double_p,
+                            Angle_p,
+                            Opacity_p,
+                            boolean_p,
+                            boolean_p,
+                            boolean_p,
+                            boolean_p,
+                            Point_p,
+                            Point_p);
         Circle_p.parsers(Pen_p,
                          Brush_p,
                          Point_p,
@@ -91,95 +92,95 @@ struct ReaderPrivate
                               Angle_p,
                               Angle_p);
 
-        Ellipse_p.parsers (Pen_p,
-                           Brush_p,
-                           Point_p,
-                           double_p,
-                           Angle_p,
-                           Opacity_p,
-                           boolean_p,
-                           boolean_p,
-                           boolean_p,
-                           boolean_p,
-                           Point_p,
-                           NonNegativeDouble_p,
-                           NonNegativeDouble_p);
+        Ellipse_p.parsers(Pen_p,
+                          Brush_p,
+                          Point_p,
+                          double_p,
+                          Angle_p,
+                          Opacity_p,
+                          boolean_p,
+                          boolean_p,
+                          boolean_p,
+                          boolean_p,
+                          Point_p,
+                          NonNegativeDouble_p,
+                          NonNegativeDouble_p);
 
-        EllipticalArc_p.parsers (Pen_p,
-                                 Brush_p,
-                                 Point_p,
-                                 double_p,
-                                 Angle_p,
-                                 Opacity_p,
-                                 boolean_p,
-                                 boolean_p,
-                                 boolean_p,
-                                 boolean_p,
-                                 Point_p,
-                                 NonNegativeDouble_p,
-                                 NonNegativeDouble_p,
-                                 Angle_p,
-                                 Angle_p);
+        EllipticalArc_p.parsers(Pen_p,
+                                Brush_p,
+                                Point_p,
+                                double_p,
+                                Angle_p,
+                                Opacity_p,
+                                boolean_p,
+                                boolean_p,
+                                boolean_p,
+                                boolean_p,
+                                Point_p,
+                                NonNegativeDouble_p,
+                                NonNegativeDouble_p,
+                                Angle_p,
+                                Angle_p);
 
-        Label_p.parsers (Pen_p,
-                         Brush_p,
-                         Point_p,
-                         double_p,
-                         Angle_p,
-                         Opacity_p,
-                         boolean_p,
-                         boolean_p,
-                         boolean_p,
-                         boolean_p,
-                         string_p,
-                         Font_p);
-
-        Pin_p.parsers (Pen_p,
-                       Brush_p,
-                       Point_p,
-                       double_p,
-                       Angle_p,
-                       Opacity_p,
-                       boolean_p,
-                       boolean_p,
-                       boolean_p,
-                       boolean_p,
-                       string_p,
-                       string_p);
-
-        ItemGroup_p.parsers (Pen_p,
-                             Brush_p,
-                             Point_p,
-                             double_p,
-                             Angle_p,
-                             Opacity_p,
-                             boolean_p,
-                             boolean_p,
-                             boolean_p,
-                             boolean_p,
-                             ItemList_p);
-
-
-        Point_p.parsers (double_p,
-                         double_p);
-
-        Pen_p.parsers (NonNegativeDouble_p,
-                       Color_p,
-                       PenStyle_p,
-                       PenCapStyle_p,
-                       PenJoinStyle_p);
-
-        Brush_p.parsers (Color_p,
-                         BrushStyle_p);
-
-        PointList_p.parsers (Point_p);
-
-        Font_p.parsers (string_p,
-                        non_negative_integer_p,
+        Label_p.parsers(Pen_p,
+                        Brush_p,
+                        Point_p,
+                        double_p,
+                        Angle_p,
+                        Opacity_p,
                         boolean_p,
                         boolean_p,
                         boolean_p,
-                        boolean_p);
+                        boolean_p,
+                        string_p,
+                        Font_p);
+
+        Pin_p.parsers(Pen_p,
+                      Brush_p,
+                      Point_p,
+                      double_p,
+                      Angle_p,
+                      Opacity_p,
+                      boolean_p,
+                      boolean_p,
+                      boolean_p,
+                      boolean_p,
+                      string_p,
+                      string_p);
+
+        ItemGroup_p.parsers(Pen_p,
+                            Brush_p,
+                            Point_p,
+                            double_p,
+                            Angle_p,
+                            Opacity_p,
+                            boolean_p,
+                            boolean_p,
+                            boolean_p,
+                            boolean_p,
+                            ItemList_p);
+
+
+        Point_p.parsers(double_p,
+                        double_p);
+
+        Pen_p.parsers(NonNegativeDouble_p,
+                      Color_p,
+                      PenStyle_p,
+                      PenCapStyle_p,
+                      PenJoinStyle_p);
+
+        Brush_p.parsers(Color_p,
+                        BrushStyle_p);
+
+        PointList_p.parsers(Point_p);
+
+        Font_p.parsers(string_p,
+                       non_negative_integer_p,
+                       boolean_p,
+                       boolean_p,
+                       boolean_p,
+                       boolean_p);
     }
 
     // Instantiate individual parsers.
@@ -239,7 +240,7 @@ Symbol *Reader::read(const QString &filename)
         m_errorString = QString::fromStdString(stream.str());
         return nullptr;
     }
-    catch (const std::ios_base::failure&)
+    catch (const std::ios_base::failure &)
     {
         m_errorString = QString("General I/O failure");
         return nullptr;
@@ -251,4 +252,5 @@ QString Reader::errorString() const
     return m_errorString;
 }
 
-}}
+}
+}

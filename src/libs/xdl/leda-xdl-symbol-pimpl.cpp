@@ -1,6 +1,7 @@
 #include "leda-xdl-symbol-pimpl.h"
 
-namespace xdl { namespace symbol {
+namespace xdl {
+namespace symbol {
 
 // Black pen, cosmetic (width = 0.0), solid line with round joins and round cap
 static const QPen DEFAUL_PEN(QBrush(Qt::black), 0.0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
@@ -17,12 +18,12 @@ void Symbol_pimpl::pre()
     m_drawing.clear();
 }
 
-void Symbol_pimpl::name(const ::std::string& name)
+void Symbol_pimpl::name(const ::std::string &name)
 {
     m_name = QString::fromStdString(name);
 }
 
-void Symbol_pimpl::label(const ::std::string& label)
+void Symbol_pimpl::label(const ::std::string &label)
 {
     m_label = QString::fromStdString(label);
 }
@@ -50,52 +51,52 @@ void ItemList_pimpl::pre()
     m_items.clear();
 }
 
-void ItemList_pimpl::polyline(PolylineItem* polyline)
+void ItemList_pimpl::polyline(PolylineItem *polyline)
 {
     m_items.append(polyline);
 }
 
-void ItemList_pimpl::polygon(PolygonItem* polygon)
+void ItemList_pimpl::polygon(PolygonItem *polygon)
 {
     m_items.append(polygon);
 }
 
-void ItemList_pimpl::rectangle(RectangleItem* rectangle)
+void ItemList_pimpl::rectangle(RectangleItem *rectangle)
 {
     m_items.append(rectangle);
 }
 
-void ItemList_pimpl::circle(CircleItem* circle)
+void ItemList_pimpl::circle(CircleItem *circle)
 {
     m_items.append(circle);
 }
 
-void ItemList_pimpl::circular_arc(CircularArcItem* circular_arc)
+void ItemList_pimpl::circular_arc(CircularArcItem *circular_arc)
 {
     m_items.append(circular_arc);
 }
 
-void ItemList_pimpl::ellipse(EllipseItem* ellipse)
+void ItemList_pimpl::ellipse(EllipseItem *ellipse)
 {
     m_items.append(ellipse);
 }
 
-void ItemList_pimpl::elliptical_arc(EllipticalArcItem* elliptical_arc)
+void ItemList_pimpl::elliptical_arc(EllipticalArcItem *elliptical_arc)
 {
     m_items.append(elliptical_arc);
 }
 
-void ItemList_pimpl::label(LabelItem* label)
+void ItemList_pimpl::label(LabelItem *label)
 {
     m_items.append(label);
 }
 
-void ItemList_pimpl::pin(PinItem* pin)
+void ItemList_pimpl::pin(PinItem *pin)
 {
     m_items.append(pin);
 }
 
-void ItemList_pimpl::group(ItemGroup* group)
+void ItemList_pimpl::group(ItemGroup *group)
 {
     m_items.append(group);
 }
@@ -122,17 +123,17 @@ void Item_pimpl::pre()
     m_visible = true;
 }
 
-void Item_pimpl::pen(const QPen& pen)
+void Item_pimpl::pen(const QPen &pen)
 {
     m_pen = pen;
 }
 
-void Item_pimpl::brush(const QBrush& brush)
+void Item_pimpl::brush(const QBrush &brush)
 {
     m_brush = brush;
 }
 
-void Item_pimpl::position(const QPointF& position)
+void Item_pimpl::position(const QPointF &position)
 {
     m_position = position;
 }
@@ -142,12 +143,12 @@ void Item_pimpl::z_value(double z_value)
     m_zValue = z_value;
 }
 
-void Item_pimpl::rotation(const qreal& rotation)
+void Item_pimpl::rotation(const qreal &rotation)
 {
     m_rotation = rotation;
 }
 
-void Item_pimpl::opacity(const qreal& opacity)
+void Item_pimpl::opacity(const qreal &opacity)
 {
     m_opacity = opacity;
 }
@@ -196,17 +197,17 @@ void Circle_pimpl::pre()
     m_radius = 0.0f;
 }
 
-void Circle_pimpl::center(const QPointF& center)
+void Circle_pimpl::center(const QPointF &center)
 {
     m_center = center;
 }
 
-void Circle_pimpl::radius(const qreal& radius)
+void Circle_pimpl::radius(const qreal &radius)
 {
     m_radius = radius;
 }
 
-CircleItem* Circle_pimpl::post_Circle()
+CircleItem *Circle_pimpl::post_Circle()
 {
     auto *circle = new CircleItem();
     m_item = circle;
@@ -228,27 +229,27 @@ void CircularArc_pimpl::pre()
     m_spanAngle = 360.0;
 }
 
-void CircularArc_pimpl::center(const QPointF& center)
+void CircularArc_pimpl::center(const QPointF &center)
 {
     m_center = center;
 }
 
-void CircularArc_pimpl::radius(const qreal& radius)
+void CircularArc_pimpl::radius(const qreal &radius)
 {
     m_radius = radius;
 }
 
-void CircularArc_pimpl::start_angle(const qreal& start_angle)
+void CircularArc_pimpl::start_angle(const qreal &start_angle)
 {
     m_startAngle = start_angle;
 }
 
-void CircularArc_pimpl::span_angle(const qreal& span_angle)
+void CircularArc_pimpl::span_angle(const qreal &span_angle)
 {
     m_spanAngle = span_angle;
 }
 
-CircularArcItem* CircularArc_pimpl::post_CircularArc()
+CircularArcItem *CircularArc_pimpl::post_CircularArc()
 {
     auto arc = new CircularArcItem();
     m_item = arc;
@@ -271,7 +272,7 @@ void Ellipse_pimpl::pre()
     m_yRadius = 0.0;
 }
 
-void Ellipse_pimpl::center(const QPointF& center)
+void Ellipse_pimpl::center(const QPointF &center)
 {
     m_center = center;
 }
@@ -310,32 +311,32 @@ void EllipticalArc_pimpl::pre()
     m_spanAngle = 360.0;
 }
 
-void EllipticalArc_pimpl::center(const QPointF& center)
+void EllipticalArc_pimpl::center(const QPointF &center)
 {
     m_center = center;
 }
 
-void EllipticalArc_pimpl::x_radius(const qreal& x_radius)
+void EllipticalArc_pimpl::x_radius(const qreal &x_radius)
 {
     m_xRadius = x_radius;
 }
 
-void EllipticalArc_pimpl::y_radius(const qreal& y_radius)
+void EllipticalArc_pimpl::y_radius(const qreal &y_radius)
 {
     m_yRadius = y_radius;
 }
 
-void EllipticalArc_pimpl::start_angle(const qreal& start_angle)
+void EllipticalArc_pimpl::start_angle(const qreal &start_angle)
 {
     m_startAngle = start_angle;
 }
 
-void EllipticalArc_pimpl::span_angle(const qreal& span_angle)
+void EllipticalArc_pimpl::span_angle(const qreal &span_angle)
 {
     m_spanAngle = span_angle;
 }
 
-EllipticalArcItem* EllipticalArc_pimpl::post_EllipticalArc()
+EllipticalArcItem *EllipticalArc_pimpl::post_EllipticalArc()
 {
     auto *arc = new EllipticalArcItem();
     m_item = arc;
@@ -358,12 +359,12 @@ void Rectangle_pimpl::pre()
     m_bottomRight = QPointF();
 }
 
-void Rectangle_pimpl::top_left(const QPointF& top_left)
+void Rectangle_pimpl::top_left(const QPointF &top_left)
 {
     m_topLeft = top_left;
 }
 
-void Rectangle_pimpl::bottom_right(const QPointF& bottom_right)
+void Rectangle_pimpl::bottom_right(const QPointF &bottom_right)
 {
     m_bottomRight = bottom_right;
 }
@@ -387,7 +388,7 @@ void Polyline_pimpl::pre()
     m_vertices.clear();
 }
 
-void Polyline_pimpl::vertices(const QList<QPointF>& points)
+void Polyline_pimpl::vertices(const QList<QPointF> &points)
 {
     m_vertices = points;
 }
@@ -410,12 +411,12 @@ void Polygon_pimpl::pre()
     m_vertices.clear();
 }
 
-void Polygon_pimpl::vertices(const QList<QPointF>& vertices)
+void Polygon_pimpl::vertices(const QList<QPointF> &vertices)
 {
     m_vertices = vertices;
 }
 
-PolygonItem* Polygon_pimpl::post_Polygon()
+PolygonItem *Polygon_pimpl::post_Polygon()
 {
     auto *polygon = new PolygonItem();
     m_item = polygon;
@@ -544,7 +545,7 @@ void PointList_pimpl::pre()
     m_points.clear();
 }
 
-void PointList_pimpl::point(const QPointF& point)
+void PointList_pimpl::point(const QPointF &point)
 {
     m_points.append(point);
 }
@@ -567,22 +568,22 @@ void Pen_pimpl::width(const qreal &width)
     m_pen.setWidthF(width);
 }
 
-void Pen_pimpl::color(const QColor& color)
+void Pen_pimpl::color(const QColor &color)
 {
     m_pen.setColor(color);
 }
 
-void Pen_pimpl::style(const Qt::PenStyle& style)
+void Pen_pimpl::style(const Qt::PenStyle &style)
 {
     m_pen.setStyle(style);
 }
 
-void Pen_pimpl::cap_style(const Qt::PenCapStyle& cap_style)
+void Pen_pimpl::cap_style(const Qt::PenCapStyle &cap_style)
 {
     m_pen.setCapStyle(cap_style);
 }
 
-void Pen_pimpl::join_style(const Qt::PenJoinStyle& join_style)
+void Pen_pimpl::join_style(const Qt::PenJoinStyle &join_style)
 {
     m_pen.setJoinStyle(join_style);
 }
@@ -600,7 +601,7 @@ void Brush_pimpl::pre()
     m_brush = DEFAULT_BRUSH;
 }
 
-void Brush_pimpl::color(const QColor& color)
+void Brush_pimpl::color(const QColor &color)
 {
     m_brush.setColor(color);
 }
@@ -624,17 +625,27 @@ void PenStyle_pimpl::pre()
 
 Qt::PenStyle PenStyle_pimpl::post_PenStyle()
 {
-    const ::std::string& v(post_string());
-    if(v == "NoPen")
+    const ::std::string &v(post_string());
+    if (v == "NoPen")
+    {
         return Qt::NoPen;
-    if(v == "SolidLine")
+    }
+    if (v == "SolidLine")
+    {
         return Qt::SolidLine;
-    if(v == "DashLine")
+    }
+    if (v == "DashLine")
+    {
         return Qt::DashLine;
-    if(v == "DashDotLine")
+    }
+    if (v == "DashDotLine")
+    {
         return Qt::DashDotLine;
-    if(v == "DashDotdotLine")
+    }
+    if (v == "DashDotdotLine")
+    {
         return Qt::DashDotDotLine;
+    }
     return Qt::SolidLine;
 }
 
@@ -647,13 +658,19 @@ void PenCapStyle_pimpl::pre()
 
 Qt::PenCapStyle PenCapStyle_pimpl::post_PenCapStyle()
 {
-    const ::std::string& v(post_string());
-    if(v == "Flat")
+    const ::std::string &v(post_string());
+    if (v == "Flat")
+    {
         return Qt::FlatCap;
-    if(v == "Square")
+    }
+    if (v == "Square")
+    {
         return Qt::SquareCap;
-    if(v == "Round")
+    }
+    if (v == "Round")
+    {
         return Qt::RoundCap;
+    }
     return Qt::SquareCap;
 }
 
@@ -666,13 +683,19 @@ void PenJoinStyle_pimpl::pre()
 
 Qt::PenJoinStyle PenJoinStyle_pimpl::post_PenJoinStyle()
 {
-    const ::std::string& v(post_string());
-    if(v == "Miter")
+    const ::std::string &v(post_string());
+    if (v == "Miter")
+    {
         return Qt::MiterJoin;
-    if(v == "Bevel")
+    }
+    if (v == "Bevel")
+    {
         return Qt::BevelJoin;
-    if(v == "Round")
+    }
+    if (v == "Round")
+    {
         return Qt::RoundJoin;
+    }
     return Qt::RoundJoin;
 }
 
@@ -685,23 +708,39 @@ void BrushStyle_pimpl::pre()
 
 Qt::BrushStyle BrushStyle_pimpl::post_BrushStyle()
 {
-    const ::std::string& v(post_string());
-    if(v == "NoBrush")
+    const ::std::string &v(post_string());
+    if (v == "NoBrush")
+    {
         return Qt::NoBrush;
-    if(v == "Solid")
+    }
+    if (v == "Solid")
+    {
         return Qt::SolidPattern;
-    if(v == "Horizontal")
+    }
+    if (v == "Horizontal")
+    {
         return Qt::HorPattern;
-    if(v == "Vertical")
+    }
+    if (v == "Vertical")
+    {
         return Qt::VerPattern;
-    if(v == "Cross")
+    }
+    if (v == "Cross")
+    {
         return Qt::CrossPattern;
-    if(v == "BDiagonal")
+    }
+    if (v == "BDiagonal")
+    {
         return Qt::BDiagPattern;
-    if(v == "FDiagonal")
+    }
+    if (v == "FDiagonal")
+    {
         return Qt::FDiagPattern;
-    if(v == "CrossDiagonal")
+    }
+    if (v == "CrossDiagonal")
+    {
         return Qt::DiagCrossPattern;
+    }
     return Qt::SolidPattern;
 }
 
@@ -792,4 +831,5 @@ QFont Font_pimpl::post_Font()
     return m_font;
 }
 
-}}
+}
+}

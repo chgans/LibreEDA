@@ -237,7 +237,9 @@ static const QString S_FORCEENABLED_PLUGINS = QStringLiteral("Plugins/ForceEnabl
 PluginManager *PluginManager::instance()
 {
     if (m_instance == nullptr)
+    {
         m_instance = new PluginManager();
+    }
     return m_instance;
 }
 
@@ -275,11 +277,13 @@ void PluginManager::addObject(QObject *obj)
 {
     {
         QWriteLocker lock(&m_lock);
-        if (obj == nullptr) {
+        if (obj == nullptr)
+        {
             ExtensionWarning() << "Trying to add a null object";
             return;
         }
-        if (m_objectPool.contains(obj)) {
+        if (m_objectPool.contains(obj))
+        {
             ExtensionWarning() << "Trying to add an object multiple times:" << obj->objectName();
             return;
         }
@@ -294,11 +298,13 @@ void PluginManager::addObject(QObject *obj)
 */
 void PluginManager::removeObject(QObject *obj)
 {
-    if (obj == nullptr) {
+    if (obj == nullptr)
+    {
         ExtensionWarning() << "Trying to remove a null object";
         return;
     }
-    if (m_objectPool.contains(obj)) {
+    if (m_objectPool.contains(obj))
+    {
         ExtensionWarning() << "Trying to remove an unknown object:" << obj->objectName();
         return;
     }
@@ -329,9 +335,12 @@ QObject *PluginManager::getObjectByName(const QString &name)
 {
     QReadLocker lock(&m_lock);
     QList<QObject *> all = allObjects();
-    for (QObject *obj: all) {
+    for (QObject *obj : all)
+    {
         if (obj->objectName() == name)
+        {
             return obj;
+        }
     }
     return nullptr;
 }
@@ -348,9 +357,12 @@ QObject *PluginManager::getObjectByClassName(const QString &className)
     const QByteArray ba = className.toUtf8();
     QReadLocker lock(&m_lock);
     QList<QObject *> all = allObjects();
-    for (QObject *obj: all) {
+    for (QObject *obj : all)
+    {
         if (obj->inherits(ba.constData()))
+        {
             return obj;
+        }
     }
     return 0;
 }
@@ -371,51 +383,70 @@ int PluginManager::discoverPlugins()
 
     QStringList pluginFiles;
     QStringList searchPaths = m_pluginPaths;
-    while (!searchPaths.isEmpty()) {
+    while (!searchPaths.isEmpty())
+    {
         const QDir dir(searchPaths.takeFirst());
         const QFileInfoList files = dir.entryInfoList(QDir::Files | QDir::NoSymLinks);
-        for (const QFileInfo &file: files) {
+        for (const QFileInfo &file : files)
+        {
             const QString filePath = file.absoluteFilePath();
             if (QLibrary::isLibrary(filePath))
+            {
                 pluginFiles.append(filePath);
+            }
         }
-        const QFileInfoList dirs = dir.entryInfoList(QDir::Dirs|QDir::NoDotAndDotDot);
-        for (const QFileInfo &subdir: dirs)
+        const QFileInfoList dirs = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+        for (const QFileInfo &subdir : dirs)
+        {
             searchPaths << subdir.absoluteFilePath();
+        }
     }
     m_defaultPluginCollection = new PluginCollection(QString());
     m_pluginCollections.insert(QString(), m_defaultPluginCollection);
 
-    for (const QString &pluginFile: pluginFiles) {
+    for (const QString &pluginFile : pluginFiles)
+    {
         PluginSpec *spec = new PluginSpec;
-        if (!spec->read(pluginFile)) { // not a Libre EDA plugin
-            ExtensionWarning() << QFileInfo(pluginFile).baseName() <<  "read failed with" << spec->errorString();
+        if (!spec->read(pluginFile))   // not a Libre EDA plugin
+        {
+            ExtensionWarning() << QFileInfo(pluginFile).baseName() <<  "read failed with" <<
+                               spec->errorString();
             delete spec;
             continue;
         }
 
         PluginCollection *collection = 0;
         // find correct plugin collection or create a new one
-        if (m_pluginCollections.contains(spec->category())) {
+        if (m_pluginCollections.contains(spec->category()))
+        {
             collection = m_pluginCollections.value(spec->category());
-        } else {
+        }
+        else
+        {
             collection = new PluginCollection(spec->category());
             m_pluginCollections.insert(spec->category(), collection);
         }
 
         // defaultDisabledPlugins and defaultEnabledPlugins from install settings
         // is used to override the defaults read from the plugin spec
-        if (spec->isEnabledByDefault() && m_defaultDisabledPlugins.contains(spec->name())) {
+        if (spec->isEnabledByDefault() && m_defaultDisabledPlugins.contains(spec->name()))
+        {
             spec->setEnabledByDefault(false);
             spec->setEnabledBySettings(false);
-        } else if (!spec->isEnabledByDefault() && m_defaultEnabledPlugins.contains(spec->name())) {
+        }
+        else if (!spec->isEnabledByDefault() && m_defaultEnabledPlugins.contains(spec->name()))
+        {
             spec->setEnabledByDefault(true);
             spec->setEnabledBySettings(true);
         }
         if (!spec->isEnabledByDefault() && m_forceEnabledPlugins.contains(spec->name()))
+        {
             spec->setEnabledBySettings(true);
+        }
         if (spec->isEnabledByDefault() && m_disabledPlugins.contains(spec->name()))
+        {
             spec->setEnabledBySettings(false);
+        }
 
         collection->addPlugin(spec);
         m_pluginSpecs.append(spec);
@@ -433,7 +464,8 @@ int PluginManager::discoverPlugins()
 QList<PluginSpec *> PluginManager::loadQueue()
 {
     QList<PluginSpec *> queue;
-    for (PluginSpec *spec: m_pluginSpecs) {
+    for (PluginSpec *spec : m_pluginSpecs)
+    {
         QList<PluginSpec *> circularityCheckQueue;
         loadQueue(spec, queue, circularityCheckQueue);
     }
@@ -448,16 +480,20 @@ bool PluginManager::loadQueue(PluginSpec *spec, QList<PluginSpec *> &queue,
 {
 
     if (queue.contains(spec))
+    {
         return true;
+    }
     // check for circular dependencies
-    if (circularityCheckQueue.contains(spec)) {
+    if (circularityCheckQueue.contains(spec))
+    {
         QString error;
         error = PluginManager::tr("Circular dependency detected:");
         error += QLatin1Char('\n');
         int index = circularityCheckQueue.indexOf(spec);
-        for (int i = index; i < circularityCheckQueue.size(); ++i) {
+        for (int i = index; i < circularityCheckQueue.size(); ++i)
+        {
             error.append(PluginManager::tr("%1(%2) depends on")
-                .arg(circularityCheckQueue.at(i)->name()).arg(circularityCheckQueue.at(i)->version()));
+                         .arg(circularityCheckQueue.at(i)->name()).arg(circularityCheckQueue.at(i)->version()));
             error += QLatin1Char('\n');
         }
         error.append(PluginManager::tr("%1(%2)").arg(spec->name()).arg(spec->version()));
@@ -465,23 +501,29 @@ bool PluginManager::loadQueue(PluginSpec *spec, QList<PluginSpec *> &queue,
     }
     circularityCheckQueue.append(spec);
     // check if we have the dependencies
-    if (spec->state() == PluginSpec::Invalid || spec->state() == PluginSpec::Read) {
+    if (spec->state() == PluginSpec::Invalid || spec->state() == PluginSpec::Read)
+    {
         queue.append(spec);
         return false;
     }
 
     // add dependencies
     QHashIterator<PluginDependency, PluginSpec *> it(spec->dependencySpecs());
-    while (it.hasNext()) {
+    while (it.hasNext())
+    {
         it.next();
         // Skip test dependencies since they are not real dependencies but just force-loaded
         // plugins when running tests
         if (it.key().type == PluginDependency::Test)
+        {
             continue;
+        }
         PluginSpec *depSpec = it.value();
-        if (!loadQueue(depSpec, queue, circularityCheckQueue)) {
-            QString error = PluginManager::tr("Cannot load plugin because dependency failed to load: %1(%2)\nReason: %3")
-                    .arg(depSpec->name()).arg(depSpec->version()).arg(depSpec->errorString());
+        if (!loadQueue(depSpec, queue, circularityCheckQueue))
+        {
+            QString error =
+                PluginManager::tr("Cannot load plugin because dependency failed to load: %1(%2)\nReason: %3")
+                .arg(depSpec->name()).arg(depSpec->version()).arg(depSpec->errorString());
             return spec->reportError(error);
         }
     }
@@ -495,7 +537,8 @@ bool PluginManager::loadQueue(PluginSpec *spec, QList<PluginSpec *> &queue,
  */
 void PluginManager::resolveDependencies()
 {
-    for (PluginSpec *spec: m_pluginSpecs) {
+    for (PluginSpec *spec : m_pluginSpecs)
+    {
         spec->resolveDependencies(m_pluginSpecs);
     }
 }
@@ -512,7 +555,8 @@ void PluginManager::loadPlugins()
 {
     loadQueue();
     resolveDependencies();
-    for (PluginSpec *spec: m_pluginSpecs) {
+    for (PluginSpec *spec : m_pluginSpecs)
+    {
         spec->load();
         spec->initialise();
     }
@@ -608,9 +652,12 @@ QHash<QString, PluginCollection *> PluginManager::pluginCollections()
 */
 bool PluginManager::hasError()
 {
-    for (PluginSpec *spec: m_pluginSpecs) {
+    for (PluginSpec *spec : m_pluginSpecs)
+    {
         if (spec->hasError())
+        {
             return true;
+        }
     }
     return false;
 }
@@ -622,13 +669,18 @@ QSet<PluginSpec *> PluginManager::pluginsRequiringPlugin(PluginSpec *spec)
 {
     QSet<PluginSpec *> dependingPlugins;
     dependingPlugins.insert(spec);
-    for (PluginSpec *checkSpec: loadQueue()) {
+    for (PluginSpec *checkSpec : loadQueue())
+    {
         QHashIterator<PluginDependency, PluginSpec *> depIt(checkSpec->dependencySpecs());
-        while (depIt.hasNext()) {
+        while (depIt.hasNext())
+        {
             depIt.next();
             if (depIt.key().type != PluginDependency::Required)
+            {
                 continue;
-            if (dependingPlugins.contains(depIt.value())) {
+            }
+            if (dependingPlugins.contains(depIt.value()))
+            {
                 dependingPlugins.insert(checkSpec);
                 break; // no use to check other dependencies, continue with load queue
             }
@@ -647,15 +699,20 @@ QSet<PluginSpec *> PluginManager::pluginsRequiredByPlugin(PluginSpec *spec)
     recursiveDependencies.insert(spec);
     QList<PluginSpec *> queue;
     queue.append(spec);
-    while (!queue.isEmpty()) {
+    while (!queue.isEmpty())
+    {
         PluginSpec *checkSpec = queue.takeFirst();
         QHashIterator<PluginDependency, PluginSpec *> depIt(checkSpec->dependencySpecs());
-        while (depIt.hasNext()) {
+        while (depIt.hasNext())
+        {
             depIt.next();
             if (depIt.key().type != PluginDependency::Required)
+            {
                 continue;
+            }
             PluginSpec *depSpec = depIt.value();
-            if (!recursiveDependencies.contains(depSpec)) {
+            if (!recursiveDependencies.contains(depSpec))
+            {
                 recursiveDependencies.insert(depSpec);
                 queue.append(depSpec);
             }
@@ -673,10 +730,14 @@ QSet<PluginSpec *> PluginManager::pluginsRequiredByPlugin(PluginSpec *spec)
 void PluginManager::setSettings(QSettings *settings)
 {
     if (m_settings)
+    {
         delete m_settings;
+    }
     m_settings = settings;
     if (m_settings)
+    {
         m_settings->setParent(instance());
+    }
 }
 
 /*!
@@ -696,10 +757,14 @@ QSettings *PluginManager::settings()
 void PluginManager::setGlobalSettings(QSettings *settings)
 {
     if (m_globalSettings)
+    {
         delete m_globalSettings;
+    }
     m_globalSettings = settings;
     if (m_globalSettings)
+    {
         m_globalSettings->setParent(instance());
+    }
 
 }
 
@@ -717,14 +782,21 @@ QSettings *PluginManager::globalSettings()
 void PluginManager::writeSettings()
 {
     if (m_settings == nullptr)
+    {
         return;
+    }
     QStringList tempDisabledPlugins;
     QStringList tempForceEnabledPlugins;
-    for (PluginSpec *spec: m_pluginSpecs) {
+    for (PluginSpec *spec : m_pluginSpecs)
+    {
         if (spec->isEnabledByDefault() && !spec->isEnabledBySettings())
+        {
             tempDisabledPlugins.append(spec->name());
+        }
         if (!spec->isEnabledByDefault() && spec->isEnabledBySettings())
+        {
             tempForceEnabledPlugins.append(spec->name());
+        }
     }
 
     m_settings->setValue(S_IGNORED_PLUGINS, tempDisabledPlugins);
@@ -737,11 +809,13 @@ void PluginManager::writeSettings()
 void PluginManager::readSettings()
 {
 
-    if (m_globalSettings != nullptr) {
+    if (m_globalSettings != nullptr)
+    {
         m_defaultDisabledPlugins = m_globalSettings->value(S_IGNORED_PLUGINS).toStringList();
         m_defaultEnabledPlugins = m_globalSettings->value(S_FORCEENABLED_PLUGINS).toStringList();
     }
-    if (m_settings != nullptr) {
+    if (m_settings != nullptr)
+    {
         m_disabledPlugins = m_settings->value(S_IGNORED_PLUGINS).toStringList();
         m_forceEnabledPlugins = m_settings->value(S_FORCEENABLED_PLUGINS).toStringList();
     }

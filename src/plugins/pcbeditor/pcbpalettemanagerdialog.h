@@ -23,7 +23,7 @@ public slots:
 protected slots:
     void activatePalette(QListWidgetItem *item);
     void activateColor(QListWidgetItem *item);
-    void setActiveColor(const QColor & color);
+    void setActiveColor(const QColor &color);
     void saveCurrentProfileAs();
     void importAltiumProfile();
 

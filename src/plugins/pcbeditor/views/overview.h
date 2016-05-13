@@ -18,8 +18,8 @@ protected slots:
     void getObservedRect();
 
 protected:
-    void drawBackground(QPainter* painter, const QRectF& rect);
-    void drawForeground(QPainter* painter, const QRectF& rect);
+    void drawBackground(QPainter *painter, const QRectF &rect);
+    void drawForeground(QPainter *painter, const QRectF &rect);
     void resizeEvent(QResizeEvent *event);
 
     void mousePressEvent(QMouseEvent *event);
@@ -31,7 +31,8 @@ protected:
     void forceRedraw();
 
 private:
-    enum Move {
+    enum Move
+    {
         NoMove = 0,
         MoveRect,
         MoveTopLeft,

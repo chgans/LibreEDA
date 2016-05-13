@@ -12,7 +12,8 @@ SimpleTextDocument::SimpleTextDocument():
 bool SimpleTextDocument::load(QString *errorString, const QString &fileName)
 {
     QFile file(fileName);
-    if (!file.open(QFile::ReadOnly)) {
+    if (!file.open(QFile::ReadOnly))
+    {
         *errorString = file.errorString();
         return false;
     }
@@ -28,12 +29,14 @@ QTextDocument *SimpleTextDocument::textDocument()
 bool SimpleTextDocument::save(QString *errorString, const QString &fileName)
 {
     QFile file(fileName);
-    if (!file.open(QFile::WriteOnly)) {
+    if (!file.open(QFile::WriteOnly))
+    {
         *errorString = file.errorString();
         return false;
     }
     const QByteArray bytes = m_textDocument->toPlainText().toLatin1();
-    if (file.write(bytes.constData(), bytes.size()) < 0) {
+    if (file.write(bytes.constData(), bytes.size()) < 0)
+    {
         *errorString = file.errorString();
         return false;
     }

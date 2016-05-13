@@ -11,7 +11,8 @@ class InsightLensWidget : public QFrame
     Q_OBJECT
 
 public:
-    enum LensShape {
+    enum LensShape
+    {
         SquareLens = 0,
         RoundLens = 1
     };

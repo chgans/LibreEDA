@@ -14,7 +14,8 @@ class PcbPalette
 public:
 
     // TBD: use role + index
-    enum ColorRole {
+    enum ColorRole
+    {
         NoRole = 0,
         SignalLayer1 = 1,
         SignalLayer2 = 2,
@@ -193,7 +194,7 @@ public:
     bool isSystemPalette() const;
 
     //TBD: operator QVariant() const;
-    bool operator!=(const PcbPalette & p) const;
+    bool operator!=(const PcbPalette &p) const;
     PcbPalette &operator=(const PcbPalette &p);
     PcbPalette &operator=(PcbPalette &other);
     bool operator==(const PcbPalette &p) const;
@@ -212,8 +213,8 @@ private:
     void setSystemPalette(bool system);
 };
 
-Q_DECLARE_METATYPE(PcbPalette*)
-Q_DECLARE_METATYPE(const PcbPalette*)
+Q_DECLARE_METATYPE(PcbPalette *)
+Q_DECLARE_METATYPE(const PcbPalette *)
 
 // TBD:
 // QDataStream &operator<<(QDataStream &s, const PcbPalette &p);

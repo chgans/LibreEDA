@@ -28,7 +28,8 @@ public:
     quint64 addDrawingItem(Item *item); // takes ownership
     void replaceDrawingItem(quint64 id, Item *item); // takes ownership
     void removeDrawingItem(quint64 id);
-    void updateDrawingItem(quint64 id); // FIXME: this is actually use to notify that item have been changed externally
+    void updateDrawingItem(quint64
+                           id); // FIXME: this is actually use to notify that item have been changed externally
 
 signals:
     void drawingItemAdded(quint64 id, const Item *item);

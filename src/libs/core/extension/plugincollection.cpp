@@ -11,7 +11,7 @@
 /*!
  * Constructs a PluginCollection with the given \a name.
  */
-PluginCollection::PluginCollection(const QString& name) :
+PluginCollection::PluginCollection(const QString &name) :
     m_name(name)
 {
 

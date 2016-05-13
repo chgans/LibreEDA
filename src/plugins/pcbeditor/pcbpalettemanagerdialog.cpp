@@ -29,12 +29,14 @@
  */
 
 
-typedef struct {
+typedef struct
+{
     const char *altium;
     PcbPalette::ColorRole leda;
 } AltiumToLeda;
 
-static const AltiumToLeda gAltiumToLeda[] = {
+static const AltiumToLeda gAltiumToLeda[] =
+{
     { "TopLayer", PcbPalette::TopLayer },
     { "MidLayer1", PcbPalette::MidLayer1 },
     { "BottomLayer", PcbPalette::TopLayer }
@@ -45,7 +47,8 @@ static const QColor fromAltium(const QString &str)
 {
     QRegularExpression re("^00[0-9a-fA-f]{6}$");
     QRegularExpressionMatch rem = re.match(str);
-    if (!re.isValid() || !rem.isValid() || !rem.hasMatch()) {
+    if (!re.isValid() || !rem.isValid() || !rem.hasMatch())
+    {
         return QColor();
     }
     bool ok;
@@ -75,8 +78,8 @@ PcbPaletteManagerDialog::PcbPaletteManagerDialog(QWidget *parent) :
     leftWidget->setLayout(leftLayout);
     splitter->addWidget(leftWidget);
     m_paletteList = new QListWidget;
-    connect(m_paletteList, SIGNAL(itemClicked(QListWidgetItem*)),
-            this, SLOT(activatePalette(QListWidgetItem*)));
+    connect(m_paletteList, SIGNAL(itemClicked(QListWidgetItem *)),
+            this, SLOT(activatePalette(QListWidgetItem *)));
     leftLayout->addWidget(new QLabel("Available Profiles"));
     leftLayout->addWidget(m_paletteList);
     leftLayout->addWidget(new QLabel("Profile location"));
@@ -98,8 +101,8 @@ PcbPaletteManagerDialog::PcbPaletteManagerDialog(QWidget *parent) :
     QWidget *rightWidget = new QWidget;
     QHBoxLayout *rightLayout = new QHBoxLayout;
     m_colorList = new QListWidget;
-    connect(m_colorList, SIGNAL(itemClicked(QListWidgetItem*)),
-            this, SLOT(activateColor(QListWidgetItem*)));
+    connect(m_colorList, SIGNAL(itemClicked(QListWidgetItem *)),
+            this, SLOT(activateColor(QListWidgetItem *)));
     rightWidget->setLayout(rightLayout);
     splitter->addWidget(rightWidget);
     rightLayout->addWidget(m_colorList);
@@ -122,11 +125,13 @@ void PcbPaletteManagerDialog::initialise()
     QString current = mng->activePaletteIdentifier();
     m_paletteList->clear();
     m_colorList->clear();
-    for (const PcbPalette *palette: mng->palettes()) {
+    for (const PcbPalette *palette : mng->palettes())
+    {
         QString id = palette->name();
         QListWidgetItem *item = new QListWidgetItem(id);
         m_paletteList->addItem(item);
-        if (id == current) {
+        if (id == current)
+        {
             item->setSelected(true);
             activatePalette(item);
         }
@@ -139,21 +144,22 @@ void PcbPaletteManagerDialog::activatePalette(QListWidgetItem *item)
     QString id = item->text();
     const PcbPalette *palette = mng->palette(id);
     m_colorList->clear();
-    for (PcbPalette::ColorRole role: palette->allValidColorRoles()) {
+    for (PcbPalette::ColorRole role : palette->allValidColorRoles())
+    {
         QColor color = palette->color(role);
         QIcon icon = makeIcon(color);
         QString text = palette->colorRoleLabel(role);
         QListWidgetItem *item = new QListWidgetItem(icon, text);
         item->setData(Qt::UserRole, id);
-        item->setData(Qt::UserRole+1, role);
-        item->setData(Qt::UserRole+2, color);
+        item->setData(Qt::UserRole + 1, role);
+        item->setData(Qt::UserRole + 2, color);
         m_colorList->addItem(item);
     }
 }
 
 void PcbPaletteManagerDialog::activateColor(QListWidgetItem *item)
 {
-    m_colorDialog->setCurrentColor(item->data(Qt::UserRole+2).value<QColor>());
+    m_colorDialog->setCurrentColor(item->data(Qt::UserRole + 2).value<QColor>());
 }
 
 void PcbPaletteManagerDialog::setActiveColor(const QColor &color)
@@ -161,7 +167,7 @@ void PcbPaletteManagerDialog::setActiveColor(const QColor &color)
     QListWidgetItem *item = m_colorList->currentItem();
     QString id = item->data(Qt::UserRole).value<QString>();
     PcbPalette::ColorRole role;
-    role = static_cast<PcbPalette::ColorRole>(item->data(Qt::UserRole+1).toInt());
+    role = static_cast<PcbPalette::ColorRole>(item->data(Qt::UserRole + 1).toInt());
     PcbPaletteManager *mng = PcbPaletteManager::instance();
     mng->setPaletteColor()
     const PcbPalette *palette = mng->palette(id);
@@ -175,7 +181,9 @@ void PcbPaletteManagerDialog::saveCurrentProfileAs()
 {
     QListWidgetItem *item = m_paletteList->currentItem();
     if (!item)
+    {
         return;
+    }
 
     QString id = item->text();
     PcbPaletteManager *mng = PcbPaletteManager::instance();
@@ -184,16 +192,20 @@ void PcbPaletteManagerDialog::saveCurrentProfileAs()
     QString fileSuffix = "LedaPcbPalette";
     QString fileFilter = QString("*.%1").arg(fileSuffix);
     QString filename = QFileDialog::getSaveFileName(this,
-                                                "Save selected profile as",
-                                                "",
-                                                fileFilter);
+                                                    "Save selected profile as",
+                                                    "",
+                                                    fileFilter);
     if (filename.isEmpty())
+    {
         return;
+    }
 
     QFileInfo fileInfo(filename);
     QString newId = fileInfo.baseName();
     if (fileInfo.completeSuffix() != fileSuffix)
+    {
         filename.append(QString(".%1").arg(fileSuffix));
+    }
 
     QSettings settings(filename, QSettings::IniFormat);
     palette->saveToSettings(settings);
@@ -212,15 +224,19 @@ void PcbPaletteManagerDialog::importAltiumProfile()
                                                       "/home",
                                                       "Altium 2D Color Profile (*.PCBSysColors)");
     if (files.isEmpty())
+    {
         return;
+    }
 
     PcbPaletteManager *mng = PcbPaletteManager::instance();
 
-    for (QString filename: files) {
+    for (QString filename : files)
+    {
         QFileInfo fileInfo(filename);
         QString id = fileInfo.baseName();
         // FIXME: do a lowercase compare + unix vs windoz vs mac
-        if (mng->palettes().contains(id)) {
+        if (mng->palettes().contains(id))
+        {
             QMessageBox::warning(this, "Altium import",
                                  QString("A color palette with the \"%1\" identifier "
                                          "already exists").arg(id));
@@ -228,7 +244,8 @@ void PcbPaletteManagerDialog::importAltiumProfile()
         }
 
         QFile file(fileInfo.filePath());
-        if (!file.open(QIODevice::ReadOnly)) {
+        if (!file.open(QIODevice::ReadOnly))
+        {
             QMessageBox::warning(this, "Altium import",
                                  QString("Could not open %1 for reading, profile not "
                                          "imported!").arg(id));
@@ -238,7 +255,8 @@ void PcbPaletteManagerDialog::importAltiumProfile()
 
         QSettings settings(fileInfo.filePath(), QSettings::IniFormat);
         if (!settings.childGroups().contains("LayerColors") ||
-            !settings.childGroups().contains("WorkspaceColors")) {
+                !settings.childGroups().contains("WorkspaceColors"))
+        {
             QMessageBox::warning(this, "Altium import",
                                  QString("%1: file format not recognised, profile not "
                                          "imported!\nReason: Missing settings group(s)").arg(id));
@@ -248,22 +266,29 @@ void PcbPaletteManagerDialog::importAltiumProfile()
         PcbPalette *palette = new PcbPalette;
         //settings.beginGroup("LayerColors");
         int errors = 0;
-        for (PcbPalette::ColorRole role: palette->allValidColorRoles()) {
+        for (PcbPalette::ColorRole role : palette->allValidColorRoles())
+        {
             QString name = palette->colorRoleToAltiumName(role);
             QString value = settings.value(name).toString();
             QColor color = fromAltium(value);
             if (!color.isValid())
+            {
                 errors++;
+            }
             else
+            {
                 palette->setColor(role, color);
+            }
         }
-        if (errors > 16) {
+        if (errors > 16)
+        {
             QMessageBox::warning(this, "Altium import",
                                  QString("%1: file format not recognised, profile not "
                                          "imported!\nReason: too many parsing errors").arg(id));
             continue;
         }
-        else if (errors > 0) {
+        else if (errors > 0)
+        {
             QMessageBox::information(this, "Altium import",
                                      QString("%1: Profile imported with %2 "
                                              "error(s)").arg(id).arg(errors));

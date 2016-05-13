@@ -28,7 +28,9 @@ QRectF GraphicsRect::rect() const
 void GraphicsRect::setRect(const QRectF &rect)
 {
     if (m_rect == rect)
+    {
         return;
+    }
     m_rect = rect;
     prepareGeometryChange();
 }
@@ -41,7 +43,9 @@ qreal GraphicsRect::cornerRadius() const
 void GraphicsRect::setCornerRadius(qreal radius)
 {
     if (qFuzzyCompare(radius + 1, m_cornerRadius + 1))
+    {
         return;
+    }
     m_cornerRadius = radius;
     prepareGeometryChange();
 }
@@ -49,13 +53,20 @@ void GraphicsRect::setCornerRadius(qreal radius)
 bool GraphicsRect::fromJson(QString *errorString, const QJsonObject &jsonObject)
 {
     if (!GraphicsItem::fromJson(errorString, jsonObject))
+    {
         return false;
+    }
     QRectF rect;
     if (!Json::toRect(errorString, jsonObject.value(J_RECT), rect))
+    {
         return false;
+    }
     qreal radius = 0;
-    if (jsonObject.contains(J_CORNER_RADIUS) && !Json::toReal(errorString, jsonObject.value(J_CORNER_RADIUS), radius))
+    if (jsonObject.contains(J_CORNER_RADIUS)
+            && !Json::toReal(errorString, jsonObject.value(J_CORNER_RADIUS), radius))
+    {
         return false;
+    }
     setRect(rect);
     setCornerRadius(radius);
     return true;
@@ -85,7 +96,9 @@ void GraphicsRect::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     Q_UNUSED(option);
     Q_UNUSED(widget);
     if (!shouldPaint(painter, option, widget))
+    {
         return;
+    }
     painter->setPen(Qt::NoPen);
     painter->setBrush(QBrush(color(widget)));
     painter->drawRoundedRect(m_rect, m_cornerRadius, m_cornerRadius);

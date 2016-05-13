@@ -41,9 +41,11 @@ public:
     {
         static const double n_colors = 6;
         QGradientStops colors;
-        colors.reserve(n_colors+1);
-        for(int i=0;i<=n_colors;++i)
-            colors.append(QGradientStop(i/n_colors, QColor::fromHsvF(i/n_colors, saturation, value)));
+        colors.reserve(n_colors + 1);
+        for (int i = 0; i <= n_colors; ++i)
+        {
+            colors.append(QGradientStop(i / n_colors, QColor::fromHsvF(i / n_colors, saturation, value)));
+        }
         w->setColors(colors);
     }
 };
@@ -60,7 +62,7 @@ HueSlider::HueSlider(Qt::Orientation orientation, QWidget *parent) :
 
 HueSlider::~HueSlider()
 {
-	delete p;
+    delete p;
 }
 
 qreal HueSlider::colorSaturation() const

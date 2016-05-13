@@ -22,7 +22,7 @@ class DesignLayerManager : public QObject
     Q_PROPERTY(QString systemPath READ systemPath WRITE setSystemPath NOTIFY systemPathChanged)
     Q_PROPERTY(QString userPath READ userPath WRITE setUserPath NOTIFY userPathChanged)
 
-public:    
+public:
     ~DesignLayerManager();
 
     static DesignLayerManager *instance();

@@ -29,7 +29,7 @@ public:
 
 
 protected:
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent *event);
 
 private:
     Alignment m_alignment;

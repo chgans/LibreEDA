@@ -14,7 +14,8 @@ public:
     explicit Palette(QObject *parent = nullptr);
     ~Palette();
 
-    enum Mode {
+    enum Mode
+    {
         Dark = 0,
         Light
     };

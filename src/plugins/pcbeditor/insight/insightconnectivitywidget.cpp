@@ -17,11 +17,14 @@ InsightConnectivityWidget::InsightConnectivityWidget(QWidget *parent) :
     layout()->addWidget(m_view);
     QTreeWidget *tree = new QTreeWidget;
     tree->setColumnCount(1);
-    for (int i = 0; i < 1; ++i) {
+    for (int i = 0; i < 1; ++i)
+    {
         QTreeWidgetItem *itemi = new QTreeWidgetItem(tree, QStringList(QString("Schematics %1").arg(i)));
         itemi->setIcon(0, QIcon(":/icons/PCB-icon.png"));
-        for (int j = 0; j < 2; ++j) {
-            QTreeWidgetItem *itemj = new QTreeWidgetItem(itemi, QStringList(QString("Scematics %1.%2").arg(i).arg(j)));
+        for (int j = 0; j < 2; ++j)
+        {
+            QTreeWidgetItem *itemj = new QTreeWidgetItem(itemi,
+                                                         QStringList(QString("Scematics %1.%2").arg(i).arg(j)));
             itemj->setIcon(0, QIcon(":/icons/chip-package.png"));
         }
     }

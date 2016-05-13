@@ -17,7 +17,8 @@ class CoordinateWidget : public QWidget
 
 public:
     // TODO: add enableAxis
-    enum Axis {
+    enum Axis
+    {
         XAxis = 0,
         YAxis,
         ZAxis

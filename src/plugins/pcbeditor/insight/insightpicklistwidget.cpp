@@ -73,28 +73,31 @@ void InsightPickListWidget::setPickList(QGraphicsScene *scene, QList<QGraphicsIt
     m_table->clear();
 
     if (list.count() == 0)
+    {
         return;
+    }
 
     m_view->setScene(scene);
 
     m_table->setRowCount(list.size());
-    for (int i=0; i<list.size(); ++i) {
+    for (int i = 0; i < list.size(); ++i)
+    {
         QTableWidgetItem *item;
         item = new QTableWidgetItem(QIcon(":/icons/chip-package.png"), "chip");
         item->setData(Qt::UserRole, QVariant::fromValue(list.at(i)));
-        item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         m_table->setItem(i, 0, item);
         item = new QTableWidgetItem(QString("Item %1").arg(i));
         item->setData(Qt::UserRole, QVariant::fromValue(list.at(i)));
-        item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         m_table->setItem(i, 1, item);
         item = new QTableWidgetItem(QString("Square(300, 200, 150, 150)"));
-        item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         item->setData(Qt::UserRole, QVariant::fromValue(list.at(i)));
         m_table->setItem(i, 2, item);
         item = new QTableWidgetItem(QString("Top layer"));
         item->setData(Qt::UserRole, QVariant::fromValue(list.at(i)));
-        item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         m_table->setItem(i, 3, item);
     }
     activateTableItem(m_table->item(0, 0));
@@ -116,26 +119,32 @@ void InsightPickListWidget::selectItem(const QModelIndex &index)
 
 bool InsightPickListWidget::eventFilter(QObject *obj, QEvent *event)
 {
-    if (m_view && m_view->viewport() && obj == m_view->viewport()) {
+    if (m_view && m_view->viewport() && obj == m_view->viewport())
+    {
         // Start move
-        if (event->type() == QEvent::MouseButtonPress) {
+        if (event->type() == QEvent::MouseButtonPress)
+        {
             QMouseEvent *mev = static_cast<QMouseEvent *>(event);
-            if (mev->button() == Qt::LeftButton) {
+            if (mev->button() == Qt::LeftButton)
+            {
                 m_mousePos = mapToParent(mapFromGlobal(mev->globalPos()));
                 m_view->setCursor(Qt::ClosedHandCursor);
             }
         }
         // Do move
-        else if (event->type() == QEvent::MouseMove) {
+        else if (event->type() == QEvent::MouseMove)
+        {
             QMouseEvent *mev = static_cast<QMouseEvent *>(event);
-            if (mev->buttons() == Qt::LeftButton) {
+            if (mev->buttons() == Qt::LeftButton)
+            {
                 QPoint p = mapToParent(mapFromGlobal(mev->globalPos()));
                 move(pos() + p - m_mousePos);
                 m_mousePos = p;
             }
         }
         // Stop move
-        else if (event->type() == QEvent::MouseButtonRelease) {
+        else if (event->type() == QEvent::MouseButtonRelease)
+        {
             m_view->setCursor(Qt::OpenHandCursor);
         }
     }

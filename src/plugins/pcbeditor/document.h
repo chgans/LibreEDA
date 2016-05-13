@@ -24,7 +24,8 @@ class Document : public QObject
     // - objectCount
 
 public:
-    enum CommandStacks {
+    enum CommandStacks
+    {
         UndoStack = 0x01,
         RedoStack = 0x02,
         UndoAndRedoStacks = 0x03
@@ -54,7 +55,7 @@ signals:
     /* Object */
 public:
     void addObject(DocumentObject *obj);
-    DocumentObject *addObject(const QString& typeName);
+    DocumentObject *addObject(const QString &typeName);
     void removeObject(DocumentObject *obj);
     DocumentObject *copyObject(DocumentObject *obj,
                                Qt::FindChildOptions options = Qt::FindChildrenRecursively);

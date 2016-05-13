@@ -73,24 +73,31 @@ QList<SchItem *> SnapStrategy::itemsNearby(QPointF pos, qreal maxDistance)
     region.addEllipse(pos, maxDistance, maxDistance);
     QList<QGraphicsItem *> graphicsItems = view()->scene()->items(region, Qt::IntersectsItemShape);
     QList<SchItem *> schItems;
-    for (QGraphicsItem *graphicsItem: graphicsItems) {
+    for (QGraphicsItem *graphicsItem : graphicsItems)
+    {
         // TODO: use type()
         SchItem *schItem = dynamic_cast<SchItem *>(graphicsItem);
         if (schItem != nullptr)
+        {
             schItems << schItem;
+        }
     }
     return schItems;
 }
 
-QPair<SchItem *, QPointF> SnapStrategy::closestItemPoint(QPointF pos, const QMultiMap<SchItem *, QPointF> &candidates)
+QPair<SchItem *, QPointF> SnapStrategy::closestItemPoint(QPointF pos,
+                                                         const QMultiMap<SchItem *, QPointF> &candidates)
 {
     QPointF closestPoint;
     SchItem *closestItem = nullptr;
     int minDistance = INT_MAX;
-    for (SchItem *item: candidates.keys()) {
-        for (QPointF point: candidates.values(item)) {
+    for (SchItem *item : candidates.keys())
+    {
+        for (QPointF point : candidates.values(item))
+        {
             int distance = (point - pos).manhattanLength();
-            if (distance < minDistance) {
+            if (distance < minDistance)
+            {
                 closestItem = item;
                 closestPoint = point;
                 minDistance = distance;
@@ -221,22 +228,26 @@ SnapToItemHotSpotsStrategy::SnapToItemHotSpotsStrategy(SchView *view):
 
 bool SnapToItemHotSpotsStrategy::snap(QPointF mousePos, qreal maxDistance)
 {
-    QMultiMap<SchItem*, QPointF> candidates;
+    QMultiMap<SchItem *, QPointF> candidates;
     QPair<SchItem *, QPointF> winner;
 
-    QList<SchItem*> items = itemsNearby(mousePos, maxDistance);
-    for (SchItem *item: items) {
-        for (QPointF hotSpot: item->hotSpots()) {
+    QList<SchItem *> items = itemsNearby(mousePos, maxDistance);
+    for (SchItem *item : items)
+    {
+        for (QPointF hotSpot : item->hotSpots())
+        {
             QPointF pos = item->mapToScene(hotSpot);
             candidates.insert(item, pos);
         }
     }
 
     if (candidates.isEmpty())
+    {
         return false;
+    }
 
     winner = closestItemPoint(mousePos, candidates);
-    setSnappedItems(QList<SchItem*>() << winner.first);
+    setSnappedItems(QList<SchItem *>() << winner.first);
     setSnappedPosition(winner.second);
     return true;
 }
@@ -258,22 +269,26 @@ SnapToItemEndPointStrategy::SnapToItemEndPointStrategy(SchView *view):
 
 bool SnapToItemEndPointStrategy::snap(QPointF mousePos, qreal maxDistance)
 {
-    QMultiMap<SchItem*, QPointF> candidates;
+    QMultiMap<SchItem *, QPointF> candidates;
     QPair<SchItem *, QPointF> winner;
 
-    QList<SchItem*> items = itemsNearby(mousePos, maxDistance);
-    for (SchItem *item: items) {
-        for (QPointF hotSpot: item->endPoints()) {
+    QList<SchItem *> items = itemsNearby(mousePos, maxDistance);
+    for (SchItem *item : items)
+    {
+        for (QPointF hotSpot : item->endPoints())
+        {
             QPointF pos = item->mapToScene(hotSpot);
             candidates.insert(item, pos);
         }
     }
 
     if (candidates.isEmpty())
+    {
         return false;
+    }
 
     winner = closestItemPoint(mousePos, candidates);
-    setSnappedItems(QList<SchItem*>() << winner.first);
+    setSnappedItems(QList<SchItem *>() << winner.first);
     setSnappedPosition(winner.second);
     return true;
 }
@@ -295,22 +310,26 @@ SnapToItemMidPointStrategy::SnapToItemMidPointStrategy(SchView *view):
 
 bool SnapToItemMidPointStrategy::snap(QPointF mousePos, qreal maxDistance)
 {
-    QMultiMap<SchItem*, QPointF> candidates;
+    QMultiMap<SchItem *, QPointF> candidates;
     QPair<SchItem *, QPointF> winner;
 
-    QList<SchItem*> items = itemsNearby(mousePos, maxDistance);
-    for (SchItem *item: items) {
-        for (QPointF hotSpot: item->midPoints()) {
+    QList<SchItem *> items = itemsNearby(mousePos, maxDistance);
+    for (SchItem *item : items)
+    {
+        for (QPointF hotSpot : item->midPoints())
+        {
             QPointF pos = item->mapToScene(hotSpot);
             candidates.insert(item, pos);
         }
     }
 
     if (candidates.isEmpty())
+    {
         return false;
+    }
 
     winner = closestItemPoint(mousePos, candidates);
-    setSnappedItems(QList<SchItem*>() << winner.first);
+    setSnappedItems(QList<SchItem *>() << winner.first);
     setSnappedPosition(winner.second);
     return true;
 }
@@ -332,23 +351,27 @@ SnapToItemShapeStrategy::SnapToItemShapeStrategy(SchView *view):
 
 bool SnapToItemShapeStrategy::snap(QPointF mousePos, qreal maxDistance)
 {
-    QMultiMap<SchItem*, QPointF> candidates;
+    QMultiMap<SchItem *, QPointF> candidates;
     QPair<SchItem *, QPointF> winner;
 
-    QList<SchItem*> items = itemsNearby(mousePos, maxDistance);
-    for (SchItem *item: items) {
+    QList<SchItem *> items = itemsNearby(mousePos, maxDistance);
+    for (SchItem *item : items)
+    {
         QPointF itemPos = item->mapFromScene(mousePos);
-        for (QPointF itemPoint: item->nearestPoints(itemPos)) {
+        for (QPointF itemPoint : item->nearestPoints(itemPos))
+        {
             QPointF pos = item->mapToScene(itemPoint);
             candidates.insert(item, pos);
         }
     }
 
     if (candidates.isEmpty())
+    {
         return false;
+    }
 
     winner = closestItemPoint(mousePos, candidates);
-    setSnappedItems(QList<SchItem*>() << winner.first);
+    setSnappedItems(QList<SchItem *>() << winner.first);
     setSnappedPosition(winner.second);
     return true;
 }
@@ -370,22 +393,26 @@ SnapToItemCenterStrategy::SnapToItemCenterStrategy(SchView *view):
 
 bool SnapToItemCenterStrategy::snap(QPointF mousePos, qreal maxDistance)
 {
-    QMultiMap<SchItem*, QPointF> candidates;
+    QMultiMap<SchItem *, QPointF> candidates;
     QPair<SchItem *, QPointF> winner;
 
-    QList<SchItem*> items = itemsNearby(mousePos, maxDistance);
-    for (SchItem *item: items) {
-        for (QPointF center: item->centerPoints()) {
+    QList<SchItem *> items = itemsNearby(mousePos, maxDistance);
+    for (SchItem *item : items)
+    {
+        for (QPointF center : item->centerPoints())
+        {
             QPointF pos = item->mapToScene(center);
             candidates.insert(item, pos);
         }
     }
 
     if (candidates.isEmpty())
+    {
         return false;
+    }
 
     winner = closestItemPoint(mousePos, candidates);
-    setSnappedItems(QList<SchItem*>() << winner.first);
+    setSnappedItems(QList<SchItem *>() << winner.first);
     setSnappedPosition(winner.second);
     return true;
 }
@@ -410,10 +437,12 @@ SnapManager::SnapManager(SchView *view):
                  << new SnapToItemCenterStrategy(view)
                  << new SnapToItemShapeStrategy(view);
 
-    for (const QString &group: groups()) {
+    for (const QString &group : groups())
+    {
         QActionGroup *actionGroup = new QActionGroup(this);
         actionGroup->setExclusive(true);
-        for (QAction *action: actions(group)) {
+        for (QAction *action : actions(group))
+        {
             action->setActionGroup(actionGroup);
         }
     }
@@ -429,9 +458,12 @@ SnapManager::~SnapManager()
 QList<QString> SnapManager::groups() const
 {
     QList<QString> result;
-    for (SnapStrategy *strategy: m_strategies) {
+    for (SnapStrategy *strategy : m_strategies)
+    {
         if (!result.contains(strategy->group()))
+        {
             result.append(strategy->group());
+        }
     }
     return result;
 }
@@ -439,9 +471,12 @@ QList<QString> SnapManager::groups() const
 QList<QAction *> SnapManager::actions(const QString &group) const
 {
     QList<QAction *> result;
-    for (SnapStrategy *strategy: m_strategies) {
+    for (SnapStrategy *strategy : m_strategies)
+    {
         if (group.isEmpty() || strategy->group() == group)
+        {
             result.append(strategy->action());
+        }
     }
     return result;
 }
@@ -450,16 +485,20 @@ QPainterPath SnapManager::decoration() const
 {
     Q_ASSERT(m_winnerStrategy != nullptr);
     if (m_winnerStrategy != m_defaultStrategy)
+    {
         return m_winnerStrategy->decoration();
+    }
     else
-        return QPainterPath(); // Or make NoSnapStrategy returns an empty decoration?
+    {
+        return QPainterPath();    // Or make NoSnapStrategy returns an empty decoration?
+    }
 }
 
 bool SnapManager::snap(QPointF mousePos, qreal maxDistance)
 {
     m_winnerStrategy = nullptr;
     qreal minDistance = std::numeric_limits<qreal>::max();
-    for (SnapStrategy *strategy: m_strategies)
+    for (SnapStrategy *strategy : m_strategies)
     {
         if (!strategy->isEnabled())
         {
@@ -470,7 +509,8 @@ bool SnapManager::snap(QPointF mousePos, qreal maxDistance)
             continue;
         }
         qreal distance = (strategy->snappedPosition() - mousePos).manhattanLength();
-        if (distance < minDistance) {
+        if (distance < minDistance)
+        {
             m_winnerStrategy = strategy;
             minDistance = distance;
         }

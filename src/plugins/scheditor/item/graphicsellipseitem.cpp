@@ -29,7 +29,9 @@ qreal GraphicsEllipseItem::yRadius() const
 void GraphicsEllipseItem::setXRadius(qreal xRadius)
 {
     if (qFuzzyCompare(m_xRadius, xRadius))
+    {
         return;
+    }
 
     prepareGeometryChange();
     m_xRadius = xRadius;
@@ -46,7 +48,9 @@ void GraphicsEllipseItem::setXRadius(qreal xRadius)
 void GraphicsEllipseItem::setYRadius(qreal yRadius)
 {
     if (qFuzzyCompare(m_yRadius, yRadius))
+    {
         return;
+    }
 
     prepareGeometryChange();
     m_yRadius = yRadius;
@@ -68,20 +72,24 @@ QPointF GraphicsEllipseItem::pointAt(int angle) const
 
 qreal GraphicsEllipseItem::angleAt(const QPointF &pos) const
 {
-    QLineF vector(QPointF(0, 0), QPointF(pos.x()/xRadius(), pos.y()/m_yRadius));
+    QLineF vector(QPointF(0, 0), QPointF(pos.x() / xRadius(), pos.y() / m_yRadius));
     return int(16 * vector.angle());
 }
 
 QRectF GraphicsEllipseItem::boundingRect() const
 {
-    if (m_boundingRect.isNull()) {
+    if (m_boundingRect.isNull())
+    {
         qreal pw = pen().style() == Qt::NoPen ? qreal(0) : pen().widthF();
-        if (pw == 0.0 /*&& m_spanAngle == 360 * 16*/) {
-            m_boundingRect.setWidth(2*xRadius());
-            m_boundingRect.setHeight(2*yRadius());
+        if (pw == 0.0 /*&& m_spanAngle == 360 * 16*/)
+        {
+            m_boundingRect.setWidth(2 * xRadius());
+            m_boundingRect.setHeight(2 * yRadius());
         }
         else
+        {
             m_boundingRect = shape().controlPointRect();
+        }
     }
     return m_boundingRect;
 }
@@ -93,7 +101,8 @@ QPainterPath GraphicsEllipseItem::shape() const
     return shapeFromPath(path, pen());
 }
 
-void GraphicsEllipseItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicsEllipseItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                                QWidget *widget)
 {
     Q_UNUSED(widget);
 
@@ -133,10 +142,13 @@ QList<QPointF> GraphicsEllipseItem::nearestPoints(QPointF pos) const
     return QList<QPointF>() << pointAt(theta);
 }
 
-QVariant GraphicsEllipseItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+QVariant GraphicsEllipseItem::itemChange(QGraphicsItem::GraphicsItemChange change,
+                                         const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
+    if (change == QGraphicsItem::ItemSelectedHasChanged)
+    {
+        for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+        {
             handle->setVisible(isSelected());
         }
     }
@@ -147,7 +159,11 @@ void GraphicsEllipseItem::itemNotification(IGraphicsObservableItem *item)
 {
     AbstractGraphicsHandle *handle = static_cast<AbstractGraphicsHandle *>(item);
     if (handle == m_idToHandle[XRadiusHandle])
+    {
         setXRadius(qAbs(handle->pos().x()));
+    }
     else
+    {
         setYRadius(qAbs(handle->pos().y()));
+    }
 }

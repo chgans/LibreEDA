@@ -14,7 +14,8 @@ class PluginManager;
 
 struct PluginDependency
 {
-    enum Type {
+    enum Type
+    {
         Required,
         Optional,
         Test

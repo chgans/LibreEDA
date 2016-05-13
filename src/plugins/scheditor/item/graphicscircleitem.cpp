@@ -22,7 +22,9 @@ qreal GraphicsCircleItem::radius() const
 void GraphicsCircleItem::setRadius(qreal length)
 {
     if (qFuzzyCompare(m_radius, length))
+    {
         return;
+    }
 
     prepareGeometryChange();
     m_radius = length;
@@ -75,14 +77,18 @@ QList<QPointF> GraphicsCircleItem::nearestPoints(QPointF pos) const
 
 QRectF GraphicsCircleItem::boundingRect() const
 {
-    if (m_boundingRect.isNull()) {
+    if (m_boundingRect.isNull())
+    {
         qreal pw = pen().style() == Qt::NoPen ? qreal(0) : pen().widthF();
-        if (pw == 0.0 /*&& m_spanAngle == 360 * 16*/) {
+        if (pw == 0.0 /*&& m_spanAngle == 360 * 16*/)
+        {
             m_boundingRect.setWidth(2 * m_radius);
             m_boundingRect.setHeight(2 * m_radius);
         }
         else
+        {
             m_boundingRect = shape().controlPointRect();
+        }
     }
 
     return m_boundingRect;
@@ -95,12 +101,15 @@ QPainterPath GraphicsCircleItem::shape() const
     return shapeFromPath(path, pen());
 }
 
-void GraphicsCircleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicsCircleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                               QWidget *widget)
 {
     Q_UNUSED(widget);
 
     if (!shape().intersects(option->exposedRect))
+    {
         return;
+    }
 
     painter->setClipRect(option->exposedRect);
     painter->setPen(pen());
@@ -108,10 +117,13 @@ void GraphicsCircleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     painter->drawEllipse(QPointF(0, 0), radius(), radius());
 }
 
-QVariant GraphicsCircleItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+QVariant GraphicsCircleItem::itemChange(QGraphicsItem::GraphicsItemChange change,
+                                        const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
+    if (change == QGraphicsItem::ItemSelectedHasChanged)
+    {
+        for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+        {
             handle->setVisible(isSelected());
         }
     }

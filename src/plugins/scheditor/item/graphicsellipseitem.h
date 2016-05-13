@@ -11,7 +11,8 @@ class GraphicsEllipseItem : public SchItem
     Q_PROPERTY(qreal yRadius READ yRadius WRITE setYRadius NOTIFY yRadiusChanged)
 
 public:
-    enum HandleId {
+    enum HandleId
+    {
         XRadiusHandle = 0,
         YRadiusHandle,
         NbHandles

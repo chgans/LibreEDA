@@ -18,7 +18,8 @@ OutputDockWidget::~OutputDockWidget()
 
 void OutputDockWidget::setFactories(const QList<IOutputPaneFactory *> &factories)
 {
-    for (IOutputPaneFactory *factory: factories) {
+    for (IOutputPaneFactory *factory : factories)
+    {
         m_tabWidget->insertTab(factory->priority(),
                                factory->createWidget(),
                                factory->displayName());

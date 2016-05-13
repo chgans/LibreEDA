@@ -16,7 +16,7 @@ public:
     explicit OutputDockWidget(QWidget *parent = nullptr);
     ~OutputDockWidget();
 
-    void setFactories(const QList<IOutputPaneFactory*> &factories);
+    void setFactories(const QList<IOutputPaneFactory *> &factories);
 
 private:
     QTabWidget *m_tabWidget;

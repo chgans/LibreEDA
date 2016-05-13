@@ -27,15 +27,18 @@ TaskOptionWidget::TaskOptionWidget(QWidget *parent) :
 
 void TaskOptionWidget::setCentralWidget(QWidget *widget)
 {
-    if (m_centralWidget != nullptr) {
+    if (m_centralWidget != nullptr)
+    {
         m_layout->removeWidget(m_centralWidget);
         m_centralWidget->hide();
     }
 
-    if (widget != nullptr) {
+    if (widget != nullptr)
+    {
         m_layout->insertWidget(0, widget);
         // Align central widget and our extra ones (cancel button, ...)
-        if (widget->layout() != nullptr) {
+        if (widget->layout() != nullptr)
+        {
             widget->layout()->setMargin(0);
         }
         widget->show();

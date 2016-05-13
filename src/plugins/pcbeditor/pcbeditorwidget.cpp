@@ -38,11 +38,13 @@ PcbEditorWidget::PcbEditorWidget(QWidget *parent) :
 
     m_layerTabBar = new LayerTabBar();
     connect(m_view, &MainView::layerAdded,
-            this, [this](DesignLayer *layer) {
+            this, [this](DesignLayer * layer)
+    {
         m_layerTabBar->addLayerTab(layer);
     });
     connect(m_view, &MainView::layerRemoved,
-            this, [this](DesignLayer *layer) {
+            this, [this](DesignLayer * layer)
+    {
         m_layerTabBar->removeLayerTab(layer);
     });
     connect(m_view, &MainView::activeLayerChanged,
@@ -106,7 +108,7 @@ void PcbEditorWidget::scene(Scene *scene)
 
 void PcbEditorWidget::activate(QMainWindow *window)
 {
-    window->addAction(m_showBoardInsightPopUpMenuAction);    
+    window->addAction(m_showBoardInsightPopUpMenuAction);
     window->addAction(m_toggleHeadsUpDisplayAction);
     window->addAction(m_toggleHeadsUpTrackingAction);
     window->addAction(m_resetHeadsUpDeltaOriginAction);
@@ -146,12 +148,12 @@ void PcbEditorWidget::wheelEvent(QWheelEvent *event)
     Q_UNUSED(event);
     // FIXME: doesn't work here, wheel events on MainView
     // Move activate/previous/next layer in view?
-//    if (event->modifiers() == (Qt::ShiftModifier | Qt::ControlModifier)) {
-//        if (event->delta() > 0)
-//            m_layerBar->activateNextLayer();
-//        else
-//            m_layerBar->activatePreviousLayer();
-//    }
+    //    if (event->modifiers() == (Qt::ShiftModifier | Qt::ControlModifier)) {
+    //        if (event->delta() > 0)
+    //            m_layerBar->activateNextLayer();
+    //        else
+    //            m_layerBar->activatePreviousLayer();
+    //    }
 }
 
 void PcbEditorWidget::createActions()
@@ -222,7 +224,8 @@ void PcbEditorWidget::createActions()
     connect(m_toggleInsightLensAutoZoomAction, &QAction::triggered,
             m_view, &MainView::enableInsightLensAutoZoom);
 
-    m_toggleInsightLensSingleLayerModeAction = new QAction("Toggle Insight Lens Single Layer Mode", this);
+    m_toggleInsightLensSingleLayerModeAction = new QAction("Toggle Insight Lens Single Layer Mode",
+                                                           this);
     m_toggleInsightLensSingleLayerModeAction->setShortcut(QKeySequence("Shift+Ctrl+S"));
     m_toggleInsightLensSingleLayerModeAction->setCheckable(true);
     m_toggleInsightLensSingleLayerModeAction->setChecked(m_view->insightLensSingleLayerEnabled());

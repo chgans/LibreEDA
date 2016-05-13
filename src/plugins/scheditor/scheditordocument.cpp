@@ -33,7 +33,7 @@ bool SchEditorDocument::load(QString *errorString, const QString &fileName)
     m_symbolLabel = symbol->description;
     m_itemIndex = 0;
     m_drawingItemMap.clear();
-    for (auto item: symbol->drawingItems)
+    for (auto item : symbol->drawingItems)
     {
         addDrawingItem(item);
     }

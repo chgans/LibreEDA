@@ -21,7 +21,8 @@ void SchItemPropertyEditor::setObject(SchItem *object)
     m_object = object;
 }
 
-void SchItemPropertyEditor::setPropertyValue(const QString &name, const QVariant &value, bool changed)
+void SchItemPropertyEditor::setPropertyValue(const QString &name, const QVariant &value,
+                                             bool changed)
 {
     Q_UNUSED(name)
     Q_UNUSED(value)

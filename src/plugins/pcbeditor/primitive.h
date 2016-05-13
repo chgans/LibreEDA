@@ -5,7 +5,8 @@
 class Primitive
 {
 public:
-    enum Type {
+    enum Type
+    {
         Track = 0,
         Arc,
         Pad,

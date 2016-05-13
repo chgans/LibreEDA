@@ -19,8 +19,8 @@ public slots:
 
 protected:
     void drawItems(QPainter *painter, int numItems,
-                    QGraphicsItem *items[],
-                    const QStyleOptionGraphicsItem options[]);
+                   QGraphicsItem *items[],
+                   const QStyleOptionGraphicsItem options[]);
     void resizeEvent(QResizeEvent *event);
 
 private:

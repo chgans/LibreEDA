@@ -37,12 +37,13 @@ class UTILS_EXPORT ColorWheel : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged DESIGNABLE true STORED false )
-    Q_PROPERTY(qreal hue READ hue WRITE setHue DESIGNABLE false )
-    Q_PROPERTY(qreal saturation READ saturation WRITE setSaturation DESIGNABLE false )
-    Q_PROPERTY(qreal value READ value WRITE setValue DESIGNABLE false )
-    Q_PROPERTY(unsigned wheelWidth READ wheelWidth WRITE setWheelWidth DESIGNABLE true )
-    Q_PROPERTY(Display_Flags displayFlags READ displayFlags WRITE setDisplayFlags NOTIFY displayFlagsChanged DESIGNABLE true )
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged DESIGNABLE true STORED false)
+    Q_PROPERTY(qreal hue READ hue WRITE setHue DESIGNABLE false)
+    Q_PROPERTY(qreal saturation READ saturation WRITE setSaturation DESIGNABLE false)
+    Q_PROPERTY(qreal value READ value WRITE setValue DESIGNABLE false)
+    Q_PROPERTY(unsigned wheelWidth READ wheelWidth WRITE setWheelWidth DESIGNABLE true)
+    Q_PROPERTY(Display_Flags displayFlags READ displayFlags WRITE setDisplayFlags NOTIFY
+               displayFlagsChanged DESIGNABLE true)
 
 public:
     enum Display_Enum
@@ -156,7 +157,7 @@ protected:
 
 private:
     class Private;
-    Private * const p;
+    Private *const p;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ColorWheel::Display_Flags)

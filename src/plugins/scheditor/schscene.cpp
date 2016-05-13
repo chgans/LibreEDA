@@ -19,10 +19,13 @@ SchScene::~SchScene()
 QList<SchItem *> SchScene::selectedObjects()
 {
     QList<SchItem *> objects;
-    for (QGraphicsItem *item: selectedItems()) {
+    for (QGraphicsItem *item : selectedItems())
+    {
         SchItem *object = dynamic_cast<SchItem *>(item);
         if (object != nullptr)
+        {
             objects.append(object);
+        }
     }
     return objects;
 }
@@ -38,7 +41,7 @@ void SchScene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
     {
         case xdl::symbol::Item::Rectangle:
         {
-            auto documentItem = reinterpret_cast<const xdl::symbol::RectangleItem*>(item);
+            auto documentItem = reinterpret_cast<const xdl::symbol::RectangleItem *>(item);
             auto sceneItem = new GraphicsRectItem();
             sceneItem->setRect(QRectF(documentItem->topLeft, documentItem->bottomRight));
             sceneItem->setPos(documentItem->position);
@@ -52,7 +55,7 @@ void SchScene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
         }
         case xdl::symbol::Item::Circle:
         {
-            auto documentItem = reinterpret_cast<const xdl::symbol::CircleItem*>(item);
+            auto documentItem = reinterpret_cast<const xdl::symbol::CircleItem *>(item);
             auto sceneItem = new GraphicsCircleItem;
             sceneItem->setPos(documentItem->position);
             sceneItem->setRadius(documentItem->radius);
@@ -69,7 +72,7 @@ void SchScene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
         }
         case xdl::symbol::Item::Ellipse:
         {
-            auto documentItem = reinterpret_cast<const xdl::symbol::EllipseItem*>(item);
+            auto documentItem = reinterpret_cast<const xdl::symbol::EllipseItem *>(item);
             auto sceneItem = new GraphicsEllipseItem;
             sceneItem->setPos(documentItem->position);
             sceneItem->setXRadius(documentItem->xRadius);
@@ -91,12 +94,13 @@ void SchScene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
         }
         case xdl::symbol::Item::Polygon:
         {
-            auto documentItem = reinterpret_cast<const xdl::symbol::PolygonItem*>(item);
+            auto documentItem = reinterpret_cast<const xdl::symbol::PolygonItem *>(item);
             auto sceneItem = new GraphicsPolygonItem;
             sceneItem->setPos(documentItem->position);
             sceneItem->setPen(documentItem->pen);
             sceneItem->setBrush(documentItem->brush);
-            sceneItem->setPolygon(QPolygonF(documentItem->vertices.toVector())); // FIXME: use QVector in xdl too?
+            sceneItem->setPolygon(QPolygonF(
+                                      documentItem->vertices.toVector())); // FIXME: use QVector in xdl too?
             sceneItem->setData(0, QVariant::fromValue<quint64>(id));
             m_itemMap.insert(id, sceneItem);
             addItem(sceneItem);

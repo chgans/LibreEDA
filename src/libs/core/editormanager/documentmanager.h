@@ -49,7 +49,8 @@ public:
 
     static bool saveAllModifiedDocumentsSilently(bool *canceled = nullptr,
                                                  QList<IDocument *> *failedToClose = nullptr);
-    static bool saveModifiedDocumentsSilently(const QList<IDocument *> &documents, bool *canceled = nullptr,
+    static bool saveModifiedDocumentsSilently(const QList<IDocument *> &documents,
+                                              bool *canceled = nullptr,
                                               QList<IDocument *> *failedToClose = nullptr);
     static bool saveModifiedDocumentSilently(IDocument *document, bool *canceled = nullptr,
                                              QList<IDocument *> *failedToClose = nullptr);

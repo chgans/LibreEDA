@@ -3,7 +3,8 @@
 #include <QIcon>
 #include <QPainter>
 
-static QMap<Qt::BrushStyle, QString> styleToText = {
+static QMap<Qt::BrushStyle, QString> styleToText =
+{
     { Qt::NoBrush, QString("None") },
     { Qt::Dense7Pattern, QString("Dots") },
     { Qt::HorPattern, QString("Horizontal") },
@@ -27,17 +28,20 @@ BrushStyleComboBox::BrushStyleComboBox(QWidget *parent):
 {
     connect(this,
             static_cast<void (BrushStyleComboBox::*)(int)>(&QComboBox::activated),
-            [this](int index) {
+            [this](int index)
+    {
         emit activated(itemData(index).value<Qt::BrushStyle>());
     });
     connect(this,
             static_cast<void (BrushStyleComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            [=](int index) {
+            [ = ](int index)
+    {
         emit currentIndexChanged(itemData(index).value<Qt::BrushStyle>());
     });
     connect(this,
             static_cast<void (BrushStyleComboBox::*)(int)>(&QComboBox::highlighted),
-            [=](int index) {
+            [ = ](int index)
+    {
         emit highlighted(itemData(index).value<Qt::BrushStyle>());
     });
 }
@@ -51,8 +55,10 @@ void BrushStyleComboBox::addItem(Qt::BrushStyle style)
 
 void BrushStyleComboBox::setCurrentIndex(Qt::BrushStyle style)
 {
-    for (int index = 0; index < count(); index++) {
-        if (itemData(index).value<Qt::BrushStyle>() == style) {
+    for (int index = 0; index < count(); index++)
+    {
+        if (itemData(index).value<Qt::BrushStyle>() == style)
+        {
             QComboBox::setCurrentIndex(index);
             return;
         }

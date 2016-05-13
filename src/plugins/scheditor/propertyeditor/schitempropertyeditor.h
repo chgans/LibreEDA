@@ -27,9 +27,9 @@ public slots:
     void setPropertyValue(const QString &name, const QVariant &value, bool changed = true);
 
 private:
-//    QtTreePropertyBrowser *m_propertyBrowser;
-//    SchItemPropertyManager *m_propertyManager;
-//    SchItemEditorFactory *m_editorFactory;
+    //    QtTreePropertyBrowser *m_propertyBrowser;
+    //    SchItemPropertyManager *m_propertyManager;
+    //    SchItemEditorFactory *m_editorFactory;
     SchItem *m_object;
 };
 

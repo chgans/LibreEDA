@@ -22,8 +22,8 @@ LogWidget::LogWidget(QWidget *parent) :
 
 
     ui->configToolButton->setMenu(m_categoriesMenu);
-    connect(m_categoriesMenu, SIGNAL(triggered(QAction*)),
-            this, SLOT(filterCategoriesTriggered(QAction*)));
+    connect(m_categoriesMenu, SIGNAL(triggered(QAction *)),
+            this, SLOT(filterCategoriesTriggered(QAction *)));
 
     connect(ui->infoToolButton, &QToolButton::toggled,
             m_filterModel, &LogSortFilterProxyModel::setFilterIncludesDebugMessages);
@@ -42,9 +42,9 @@ LogWidget::LogWidget(QWidget *parent) :
     connect(ui->nextToolButton, &QToolButton::clicked,
             this, &LogWidget::goToNext);
 
-    connect(m_filterModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
+    connect(m_filterModel, SIGNAL(rowsInserted(QModelIndex, int, int)),
             this, SLOT(updateNavigationState()));
-    connect(m_filterModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
+    connect(m_filterModel, SIGNAL(rowsRemoved(QModelIndex, int, int)),
             this, SLOT(updateNavigationState()));
     connect(m_filterModel, SIGNAL(modelReset()),
             this, SLOT(updateNavigationState()));
@@ -67,7 +67,8 @@ LogModel *LogWidget::model()
 
 void LogWidget::setModel(LogModel *model)
 {
-    if (m_model) {
+    if (m_model)
+    {
         m_model->disconnect(this);
         ui->clearToolButton->disconnect(m_model);
         ui->tableView->selectionModel()->disconnect(this);
@@ -77,19 +78,22 @@ void LogWidget::setModel(LogModel *model)
     m_filterModel->setSourceModel(model);
     ui->tableView->setModel(m_filterModel);
 
-    if (m_model) {
+    if (m_model)
+    {
 #if 0
         connect(m_model, &LoggingModel::rowsInserted,
-                this, [this]() {
+                this, [this]()
+        {
             this->ui->tableView->scrollToBottom();
         });
 #endif
         connect(ui->clearToolButton, &QToolButton::clicked,
-                this, [this](bool checked) {
+                this, [this](bool checked)
+        {
             Q_UNUSED(checked);
             this->m_model->clearMessages();
         });
-        connect(ui->tableView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+        connect(ui->tableView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex, QModelIndex)),
                 this, SLOT(updateNavigationState()));
         connect(m_model, SIGNAL(categoryListChanged(QStringList)),
                 this, SLOT(updateCategoryList(QStringList)));
@@ -104,10 +108,14 @@ bool LogWidget::canNavigate() const
 bool LogWidget::canGoToNext() const
 {
     if (!canNavigate())
+    {
         return false;
+    }
 
     if (!ui->tableView->currentIndex().isValid())
+    {
         return true;
+    }
 
     return ui->tableView->currentIndex().row() != m_filterModel->rowCount() - 1;
 }
@@ -115,10 +123,14 @@ bool LogWidget::canGoToNext() const
 bool LogWidget::canGoToPrevious() const
 {
     if (!canNavigate())
+    {
         return false;
+    }
 
     if (!ui->tableView->currentIndex().isValid())
+    {
         return true;
+    }
 
     return ui->tableView->currentIndex().row() != 0;
 }
@@ -126,15 +138,18 @@ bool LogWidget::canGoToPrevious() const
 void LogWidget::goToNext()
 {
     if (!canNavigate())
+    {
         return;
+    }
 
     QModelIndex current = ui->tableView->currentIndex();
-    if (!current.isValid()) {
+    if (!current.isValid())
+    {
         ui->tableView->setCurrentIndex(m_filterModel->index(0, 0));
         return;
     }
 
-    QModelIndex next = m_filterModel->index(current.row()+1, 0);
+    QModelIndex next = m_filterModel->index(current.row() + 1, 0);
     ui->tableView->setCurrentIndex(next);
 
 }
@@ -142,22 +157,26 @@ void LogWidget::goToNext()
 void LogWidget::goToPrevious()
 {
     if (!canNavigate())
+    {
         return;
+    }
 
     QModelIndex current = ui->tableView->currentIndex();
-    if (!current.isValid()) {
+    if (!current.isValid())
+    {
         ui->tableView->setCurrentIndex(m_filterModel->index(0, 0));
         return;
     }
 
-    QModelIndex next = m_filterModel->index(current.row()-1, 0);
+    QModelIndex next = m_filterModel->index(current.row() - 1, 0);
     ui->tableView->setCurrentIndex(next);
 }
 
 void LogWidget::updateCategoryList(const QStringList &categories)
 {
     m_categoriesMenu->clear();
-    for (QString category: categories) {
+    for (QString category : categories)
+    {
         QAction *action = new QAction(m_categoriesMenu);
         action->setCheckable(true);
         action->setText(category);

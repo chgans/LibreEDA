@@ -22,7 +22,7 @@
 */
 
 QMap<QString, IEditorFactory *> EditorManager::m_factoryMap;
-QMap<QString, IEditor*> EditorManager::m_filePathEditorMap;
+QMap<QString, IEditor *> EditorManager::m_filePathEditorMap;
 IEditor *EditorManager::m_currentEditor = nullptr;
 EditorManager *EditorManager::m_instance = nullptr;
 
@@ -49,13 +49,16 @@ void EditorManager::addEditor(IEditor *editor, const QString &fileName)
 EditorManager *EditorManager::instance()
 {
     if (m_instance == nullptr)
+    {
         m_instance = new EditorManager();
+    }
     return m_instance;
 }
 
 void EditorManager::initialise()
 {
-    for (IEditorFactory *factory: PluginManager::getObjects<IEditorFactory>()) {
+    for (IEditorFactory *factory : PluginManager::getObjects<IEditorFactory>())
+    {
         m_factoryMap[factory->fileExtension()] = factory;
     }
 }
@@ -65,16 +68,19 @@ IEditor *EditorManager::openEditor(const QString &fileName)
     QFileInfo fileInfo(fileName);
     QString fileExtension = fileInfo.completeSuffix();
     QString filePath = fileInfo.canonicalFilePath();
-    if (!m_factoryMap.contains(fileExtension)) {
+    if (!m_factoryMap.contains(fileExtension))
+    {
         qWarning() << "No factory found for file" << filePath << "with extension" << fileExtension;
         return nullptr;
     }
-    if (!fileInfo.exists() || !fileInfo.isReadable() || !fileInfo.isFile()) {
+    if (!fileInfo.exists() || !fileInfo.isReadable() || !fileInfo.isFile())
+    {
         qWarning() << fileName << "doesn't exists, is not readable or is not a regular file";
         return nullptr;
     }
 
-    if (m_filePathEditorMap.contains(filePath)) {
+    if (m_filePathEditorMap.contains(filePath))
+    {
         IEditor *editor = m_filePathEditorMap.value(filePath);
         emit EditorManager::instance()->editorOpened(editor);
         return editor;
@@ -86,10 +92,13 @@ IEditor *EditorManager::openEditor(const QString &fileName)
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     QString errorString;
-    if (!editor->open(&errorString, filePath)) {
+    if (!editor->open(&errorString, filePath))
+    {
         QApplication::restoreOverrideCursor();
         if (errorString.isEmpty())
+        {
             errorString = tr("Could not open \"%1\": Unknown error").arg(filePath);
+        }
         QMessageBox::critical(QApplication::activeWindow(), tr("File Error"), errorString);
         delete editor;
         return nullptr;
@@ -103,7 +112,9 @@ IEditor *EditorManager::openEditor(const QString &fileName)
 bool EditorManager::closeEditor(IEditor *editor)
 {
     if (!DocumentManager::closeDocument(editor->document()))
+    {
         return false;
+    }
     emit instance()->editorAboutToClose(editor);
     m_filePathEditorMap.remove(editor->document()->filePath());// FIXME
     emit instance()->editorClosed(editor);
@@ -133,7 +144,8 @@ QStringList EditorManager::supportedFileExtensions()
 QString EditorManager::supportedFileFilter()
 {
     QStringList filters;
-    for (const QString &ext: m_factoryMap.keys()) {
+    for (const QString &ext : m_factoryMap.keys())
+    {
         filters.append(QString("*.%1").arg(ext));
     }
     return filters.join(' ');

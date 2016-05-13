@@ -16,7 +16,7 @@ struct CORE_EXPORT NavigationView
     QList<QWidget *> toolBarWidgets;
 };
 
-Q_DECLARE_METATYPE(NavigationView*)
+Q_DECLARE_METATYPE(NavigationView *)
 
 class CORE_EXPORT INavigationViewFactory : public QObject
 {

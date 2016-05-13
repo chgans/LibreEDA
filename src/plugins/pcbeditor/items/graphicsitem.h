@@ -26,7 +26,8 @@ public:
     void setLocked(bool locked);
 
     LayoutView *paintedView(QWidget *paintedWidget) const;
-    bool shouldPaint(const QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *paintedWidget) const;
+    bool shouldPaint(const QPainter *painter, const QStyleOptionGraphicsItem *option,
+                     QWidget *paintedWidget) const;
     QColor color(QWidget *paintedWidget) const;
     qreal opacity(QWidget *paintedWidget) const;
 

@@ -28,9 +28,12 @@ BrushSettingsWidget::BrushSettingsWidget(QWidget *parent):
     layout->addRow(new QLabel("Color"), m_colorComboBox);
     m_brush.setColor(m_colorComboBox->currentData().value<QColor>());
     connect(m_colorComboBox, &PenColorComboBox::currentIndexChanged,
-            this, [this](QColor color) {
+            this, [this](QColor color)
+    {
         if (m_brush.color() == color)
+        {
             return;
+        }
         m_brush.setColor(color);
         emit brushChanged(m_brush);
     });
@@ -44,9 +47,12 @@ BrushSettingsWidget::BrushSettingsWidget(QWidget *parent):
     layout->addRow(new QLabel("Style"), m_styleComboBox);
     m_brush.setStyle(m_styleComboBox->currentData().value<Qt::BrushStyle>());
     connect(m_styleComboBox, &BrushStyleComboBox::currentIndexChanged,
-            this, [this](Qt::BrushStyle style) {
+            this, [this](Qt::BrushStyle style)
+    {
         if (m_brush.style() == style)
+        {
             return;
+        }
         m_brush.setStyle(style);
         emit brushChanged(m_brush);
     });
@@ -61,7 +67,9 @@ QBrush BrushSettingsWidget::brush() const
 void BrushSettingsWidget::setBrush(const QBrush &brush)
 {
     if (m_brush == brush)
+    {
         return;
+    }
     m_brush = brush;
     emit brushChanged(m_brush);
 }

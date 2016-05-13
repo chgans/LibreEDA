@@ -2,7 +2,7 @@
 #include "scheditordocument.h"
 
 UndoCommand::UndoCommand(UndoCommand *parent):
-    QUndoCommand (parent), m_document(nullptr)
+    QUndoCommand(parent), m_document(nullptr)
 {
 
 }
@@ -18,7 +18,7 @@ SchEditorDocument *UndoCommand::document() const
 }
 
 PlacementCommand::PlacementCommand(UndoCommand *parent):
-    UndoCommand (parent)
+    UndoCommand(parent)
 {
 
 }
@@ -45,7 +45,7 @@ void PlacementCommand::placeItem(xdl::symbol::Item *item)
 
 
 PlaceRectangleCommand::PlaceRectangleCommand(UndoCommand *parent):
-    PlacementCommand (parent)
+    PlacementCommand(parent)
 {
     setText("Place rectangle");
 }
@@ -64,7 +64,7 @@ void PlaceRectangleCommand::redo()
 }
 
 PlaceCircleCommand::PlaceCircleCommand(UndoCommand *parent):
-    PlacementCommand (parent)
+    PlacementCommand(parent)
 {
     setText("Place circle");
 }
@@ -83,7 +83,7 @@ void PlaceCircleCommand::redo()
 }
 
 PlaceCircularArcCommand::PlaceCircularArcCommand(UndoCommand *parent):
-    PlacementCommand (parent)
+    PlacementCommand(parent)
 {
     setText("Place circular arc");
 }
@@ -99,7 +99,7 @@ void PlaceCircularArcCommand::redo()
 }
 
 PlaceEllipseCommand::PlaceEllipseCommand(UndoCommand *parent):
-    PlacementCommand (parent)
+    PlacementCommand(parent)
 {
     setText("Place ellipse");
 }
@@ -119,7 +119,7 @@ void PlaceEllipseCommand::redo()
 }
 
 PlaceEllipticalArcCommand::PlaceEllipticalArcCommand(UndoCommand *parent):
-    PlacementCommand (parent)
+    PlacementCommand(parent)
 {
     setText("Place elliptical arc");
 }
@@ -135,7 +135,7 @@ void PlaceEllipticalArcCommand::redo()
 }
 
 PlacePolylineCommand::PlacePolylineCommand(UndoCommand *parent):
-    PlacementCommand (parent)
+    PlacementCommand(parent)
 {
     setText("Place polyline");
 }
@@ -151,7 +151,7 @@ void PlacePolylineCommand::redo()
 }
 
 PlacePolygonCommand::PlacePolygonCommand(UndoCommand *parent):
-    PlacementCommand (parent)
+    PlacementCommand(parent)
 {
     setText("Place polygon");
 }
@@ -169,7 +169,7 @@ void PlacePolygonCommand::redo()
 }
 
 PlaceLabelCommand::PlaceLabelCommand(UndoCommand *parent):
-    PlacementCommand (parent)
+    PlacementCommand(parent)
 {
     setText("Place label");
 }
@@ -185,14 +185,14 @@ void PlaceLabelCommand::redo()
 }
 
 MoveCommand::MoveCommand(UndoCommand *parent):
-    UndoCommand (parent)
+    UndoCommand(parent)
 {
     setText("Move ? item(s)");
 }
 
 void MoveCommand::undo()
 {
-    for (quint64 id: itemIds)
+    for (quint64 id : itemIds)
     {
         auto item = document()->drawingItem(id);
         if (item == nullptr)
@@ -206,7 +206,7 @@ void MoveCommand::undo()
 
 void MoveCommand::redo()
 {
-    for (quint64 id: itemIds)
+    for (quint64 id : itemIds)
     {
         auto item = document()->drawingItem(id);
         if (item == nullptr)

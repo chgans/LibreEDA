@@ -35,7 +35,7 @@ class DesignLayer : public QGraphicsObject
     // TODO: Stack orientation => top, bottom, no orientation
     Q_PROPERTY(Face face READ face WRITE setFace NOTIFY faceChanged)
     // TODO: This one is stack orientation related, we need as well drill pairing
-    Q_PROPERTY(DesignLayer* pairedLayer READ pairedLayer WRITE setPairedLayer NOTIFY pairedLayerChanged)
+    Q_PROPERTY(DesignLayer *pairedLayer READ pairedLayer WRITE setPairedLayer NOTIFY pairedLayerChanged)
 
     // TODO: 2D or 3D Color => palette stuff
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
@@ -43,13 +43,15 @@ class DesignLayer : public QGraphicsObject
     Q_PROPERTY(QColor effectiveColor READ effectiveColor NOTIFY effectiveColorChanged STORED false)
 
 public:
-    enum Face {
+    enum Face
+    {
         InvalidFace = 0,
         TopFace,
         BottomFace
     };
 
-    enum Category {
+    enum Category
+    {
         InvalidCategory = 0,
         SignalCategory,
         PlaneCategory,
@@ -59,7 +61,8 @@ public:
         SilkscreenCategory
     };
 
-    enum ColorMode {
+    enum ColorMode
+    {
         NormalColorMode = 0,
         MonochromedMode,
         GrayscaledMode,
@@ -75,7 +78,7 @@ public:
     int index() const;
     Category category() const;
     Face face() const;
-    DesignLayer* pairedLayer() const;
+    DesignLayer *pairedLayer() const;
     bool isValid() const;
     bool isUsed() const;
     qreal opacityForPrimitive(Primitive::Type type);
@@ -94,7 +97,7 @@ signals:
     void indexChanged(int position);
     void categoryChanged(Category category);
     void faceChanged(Face arg);
-    void pairedLayerChanged(DesignLayer* pairedLayer);
+    void pairedLayerChanged(DesignLayer *pairedLayer);
     void presentChanged(bool arg);
     void colorModeChanged(ColorMode mode);
     void effectiveColorChanged(QColor arg);
@@ -106,7 +109,7 @@ public slots:
     void setIndex(int position);
     void setCategory(Category category);
     void setFace(Face arg);
-    void setPairedLayer(DesignLayer* layer);
+    void setPairedLayer(DesignLayer *layer);
     void setPresent(bool arg);
     void setColorMode(ColorMode mode);
 
@@ -118,7 +121,7 @@ private:
     Category m_category;
     Face m_face;
     ColorMode m_colorMode;
-    DesignLayer* m_pairedLayer;
+    DesignLayer *m_pairedLayer;
     QMap<Primitive::Type, qreal> m_primitiveOpacityMap;
     bool m_present;
     QList<GraphicsItem *> m_items;
@@ -138,7 +141,7 @@ public:
 Q_DECLARE_METATYPE(DesignLayer::Category)
 Q_DECLARE_METATYPE(DesignLayer::Face)
 Q_DECLARE_METATYPE(DesignLayer::ColorMode)
-Q_DECLARE_METATYPE(DesignLayer*)
+Q_DECLARE_METATYPE(DesignLayer *)
 
 typedef QList<DesignLayer *> DesignLayerList;
 

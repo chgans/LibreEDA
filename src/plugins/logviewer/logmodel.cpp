@@ -40,7 +40,9 @@ int LogModel::columnCount(const QModelIndex &parent) const
 QVariant LogModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
+    {
         return QVariant();
+    }
 
     Q_ASSERT(index.row() < m_messages.count());
     Q_ASSERT(index.column() < 2);
@@ -49,28 +51,28 @@ QVariant LogModel::data(const QModelIndex &index, int role) const
 
     switch (role)
     {
-    case Qt::DisplayRole:
-        switch(index.column())
-        {
-        case 0:
-            return QVariant(msg->categoryName);
-        case 1:
-            return QVariant(msg->text);
+        case Qt::DisplayRole:
+            switch (index.column())
+            {
+                case 0:
+                    return QVariant(msg->categoryName);
+                case 1:
+                    return QVariant(msg->text);
+                default:
+                    return QVariant();
+            }
+        case Qt::DecorationRole:
+            switch (index.column())
+            {
+                case 0:
+                    return QVariant(QIcon::fromTheme(m_messageTypeIconNames[msg->messageType]));
+                case 1:
+                    return QVariant();
+                default:
+                    return QVariant();
+            }
         default:
             return QVariant();
-        }
-    case Qt::DecorationRole:
-        switch(index.column())
-        {
-        case 0:
-            return QVariant(QIcon::fromTheme(m_messageTypeIconNames[msg->messageType]));
-        case 1:
-            return QVariant();
-        default:
-            return QVariant();
-        }
-    default:
-        return QVariant();
     }
 }
 
@@ -79,7 +81,9 @@ LogMessage *LogModel::message(const QModelIndex &index) const
     int row = index.row();
 
     if (!index.isValid() || row < 0 || row >= m_messages.count())
+    {
         return 0;
+    }
 
     return m_messages.value(row);
 }
@@ -91,7 +95,8 @@ void LogModel::addMessage(LogMessage *message)
     beginInsertRows(QModelIndex(), pos, pos);
     m_messages.append(message);
     endInsertRows();
-    if (!m_categories.contains(message->categoryName)) {
+    if (!m_categories.contains(message->categoryName))
+    {
         m_categories.append(message->categoryName);
         emit categoryListChanged(m_categories);
     }
@@ -103,7 +108,8 @@ void LogModel::clearMessages()
     qDeleteAll(m_messages);
     m_messages.clear();
     endResetModel();
-    if (m_categories.count() > 0) {
+    if (m_categories.count() > 0)
+    {
         m_categories.clear();
         emit categoryListChanged(m_categories);
     }

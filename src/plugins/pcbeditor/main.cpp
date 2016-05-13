@@ -29,16 +29,17 @@
 QVector<double> readPosition(const QJsonArray a)
 {
     double x = 0.0, y = 0.0, z = 0.0;
-    switch (a.size()) {
-    case 3:
-        z = a[2].toDouble();
-    case 2:
-        x = a[0].toDouble();
-        y = a[1].toDouble();
-        break;
-    default:
-        qDebug() << "Invalid position";
-        break;
+    switch (a.size())
+    {
+        case 3:
+            z = a[2].toDouble();
+        case 2:
+            x = a[0].toDouble();
+            y = a[1].toDouble();
+            break;
+        default:
+            qDebug() << "Invalid position";
+            break;
     }
     QVector<double> pos;
     pos << x << y << z;
@@ -77,7 +78,8 @@ QFont readFont(const QJsonObject &obj)
 QVector<QPointF> readPointList(const QJsonArray a)
 {
     QVector<QPointF> points;
-    for (QJsonValue val: a) {
+    for (QJsonValue val : a)
+    {
         points << QPointF(val.toArray()[0].toDouble(),
                           val.toArray()[1].toDouble());
     }
@@ -93,7 +95,8 @@ QPainterPath radialSymetricPath(const QPainterPath &path)
     result.setElementPositionAt(0,
                                 path.elementAt(0).x,
                                 path.elementAt(0).y);
-    for (int i=1; i<(n-1); ++i) {
+    for (int i = 1; i < (n - 1); ++i)
+    {
         int to = i, ref = to - 1, from1 = n - i, from2 = from1 - 1;
         qreal dx = path.elementAt(from2).x - path.elementAt(from1).x;
         qreal dy = path.elementAt(from2).y - path.elementAt(from1).y;
@@ -101,9 +104,9 @@ QPainterPath radialSymetricPath(const QPainterPath &path)
                                     result.elementAt(ref).x - dx,
                                     result.elementAt(ref).y - dy);
     }
-    result.setElementPositionAt(n-1,
-                                path.elementAt(n-1).x,
-                                path.elementAt(n-1).y);
+    result.setElementPositionAt(n - 1,
+                                path.elementAt(n - 1).x,
+                                path.elementAt(n - 1).y);
     return result;
 }
 
@@ -113,8 +116,9 @@ QPainterPath axialSymetricPath(const QPainterPath &path)
     QPainterPath result = path;
     int n = result.elementCount();
     QLineF axis(result.elementAt(0).x, result.elementAt(0).y,
-               result.elementAt(n-1).x, result.elementAt(n-1).y);
-    for (int i=1; i<(n-1); ++i) {
+                result.elementAt(n - 1).x, result.elementAt(n - 1).y);
+    for (int i = 1; i < (n - 1); ++i)
+    {
         QLineF line(result.elementAt(0).x, result.elementAt(0).y,
                     result.elementAt(i).x, result.elementAt(i).y);
         line.setAngle(axis.angle() + line.angleTo(axis));
@@ -151,7 +155,8 @@ int main(int argc, char *argv[])
     layerManager->loadFromDefaults();
 
     PcbPalette *palette = paletteManager->activePalette();
-    for (DesignLayer *layer: layerManager->allLayers()) {
+    for (DesignLayer *layer : layerManager->allLayers())
+    {
         QColor color = palette->color(PcbPalette::ColorRole(layer->index() + 1));
         layer->setColor(color);
     }
@@ -161,18 +166,21 @@ int main(int argc, char *argv[])
     {
         QString filename("../graphicsview-1/test.json");
         QFile file(filename);
-        if (!file.open(QIODevice::ReadOnly)) {
+        if (!file.open(QIODevice::ReadOnly))
+        {
             qDebug() << "Couldn't open" << filename;
             return 1;
         }
         QJsonParseError error;
         QJsonDocument doc = QJsonDocument::fromJson(file.readAll(), &error);
-        if (doc.isNull()) {
+        if (doc.isNull())
+        {
             qDebug() << "Doc is null";
             qDebug() << error.errorString() << error.offset;
             return 1;
         }
-        if (!doc.isObject()) {
+        if (!doc.isObject())
+        {
             qDebug() << "Doc is not an object!";
             return 1;
         }
@@ -180,25 +188,29 @@ int main(int argc, char *argv[])
         // Header
         QJsonObject obj = doc.object();
         qDebug() << obj["producer"].toString()
-                <<  obj["version"].toString()
-                <<  obj["author"].toString()
-                <<  obj["license"].toString();
+                 <<  obj["version"].toString()
+                 <<  obj["author"].toString()
+                 <<  obj["license"].toString();
 
         // Graphical items
-        if (!obj.keys().contains("items")) {
+        if (!obj.keys().contains("items"))
+        {
             qDebug() << "Document has no items";
             return 1;
         }
         QJsonArray items = obj["items"].toArray();
-        for (QJsonValue val: items) {
-            if (!val.isObject()) {
+        for (QJsonValue val : items)
+        {
+            if (!val.isObject())
+            {
                 qDebug() << "Item is not an object";
                 continue;
             }
 
             obj = val.toObject();
             QString type = obj["type"].toString();
-            if (type.isNull()) {
+            if (type.isNull())
+            {
                 qDebug() << "Item has no type";
                 continue;
             }
@@ -210,7 +222,8 @@ int main(int argc, char *argv[])
             DesignLayer *layer = layerManager->layerAt(layerIndex);
             QColor color = layer->color();
             qDebug() << layer->defaultName() << layer->index() << layer->color();
-            if (type.toLower() == "rectangle") {
+            if (type.toLower() == "rectangle")
+            {
                 QGraphicsRectItem *ritem = new QGraphicsRectItem();
                 ritem->setRect(QRectF(points[0], points[1]));
                 QPen pen;
@@ -220,7 +233,8 @@ int main(int argc, char *argv[])
                 ritem->setBrush(brush);
                 item = ritem;
             }
-            else if (type.toLower() == "polyline") {
+            else if (type.toLower() == "polyline")
+            {
                 QGraphicsPolygonItem *pitem = new QGraphicsPolygonItem();
                 pitem->setPolygon(QPolygonF(points));
                 QPen pen;
@@ -231,7 +245,8 @@ int main(int argc, char *argv[])
                 pitem->setPen(pen);
                 item = pitem;
             }
-            else {
+            else
+            {
                 continue;
             }
             item->setPos(pos[0], pos[1]);

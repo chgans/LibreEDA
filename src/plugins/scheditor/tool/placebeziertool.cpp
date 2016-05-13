@@ -10,16 +10,19 @@ PlaceBezierTool::PlaceBezierTool(QObject *parent):
     m_item(nullptr)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicsbeziertool.svg"),
-                           "Place a bezier curve", nullptr);
+                                  "Place a bezier curve", nullptr);
     action->setShortcut(QKeySequence("i,b"));
     setAction(action);
     setToolGroup("interactive-tools");
 
     m_penSettingsWidget = new PenSettingsWidget();
     connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
-            [this](const QPen &pen) {
+            [this](const QPen & pen)
+    {
         if (!m_item)
+        {
             return;
+        }
         m_item->setPen(pen);
     });
 
@@ -58,11 +61,13 @@ bool PlaceBezierTool::removePoint(int idx, const QPointF &pos)
     Q_UNUSED(pos);
     QPointF oldPos = m_item->pointAt(idx);
     m_item->removePoint(idx);
-    if (m_item->pointCount() > 1) {
-        m_item->movePoint(idx-1, oldPos);
+    if (m_item->pointCount() > 1)
+    {
+        m_item->movePoint(idx - 1, oldPos);
         return true; // Keep going
     }
-    else {
+    else
+    {
         return false; // remove and delete bezier
     }
     return false;

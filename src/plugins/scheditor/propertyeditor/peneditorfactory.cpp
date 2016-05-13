@@ -28,7 +28,8 @@ void PenEditorFactory::connectPropertyManager(PenPropertyManager *manager)
     m_colorFactory->addPropertyManager(manager->subColorManager());
 }
 
-QWidget *PenEditorFactory::createEditor(PenPropertyManager *manager, QtProperty *property, QWidget *parent)
+QWidget *PenEditorFactory::createEditor(PenPropertyManager *manager, QtProperty *property,
+                                        QWidget *parent)
 {
     Q_UNUSED(manager);
 

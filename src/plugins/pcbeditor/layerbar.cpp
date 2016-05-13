@@ -40,16 +40,20 @@ DesignLayer *LayerTabBar::currentLayer() const
 
 void LayerTabBar::addLayerTab(DesignLayer *layer, bool visible)
 {
-    if (m_allLayers.contains(layer)) {
+    if (m_allLayers.contains(layer))
+    {
         qWarning() << __FUNCTION__ << "Layer" << layer->defaultName() << "already added";
         return;
     }
-    if (visible) {
+    if (visible)
+    {
         int layerTabIndex = -1;
         // Keep layer tab in layer index (design layer stack position)
-        for (int index = 0; index < count() ; index++) {
+        for (int index = 0; index < count() ; index++)
+        {
             DesignLayer *current = indexToLayer(index);
-            if (current->index() > layer->index()) {
+            if (current->index() > layer->index())
+            {
                 layerTabIndex = index;
                 break;
             }
@@ -58,14 +62,19 @@ void LayerTabBar::addLayerTab(DesignLayer *layer, bool visible)
         QString text = layer->effectiveName();
         blockSignals(true);
         if (layerTabIndex == -1)
+        {
             layerTabIndex = addTab(icon, text);
+        }
         else
+        {
             insertTab(layerTabIndex, layer->effectiveName());
+        }
         setTabData(layerTabIndex, QVariant::fromValue<DesignLayer *>(layer));
         blockSignals(false);
         m_visibleLayers.append(layer);
     }
-    else {
+    else
+    {
         m_hiddenLayers.append(layer);
     }
     m_allLayers.append(layer);
@@ -73,16 +82,19 @@ void LayerTabBar::addLayerTab(DesignLayer *layer, bool visible)
 
 void LayerTabBar::removeLayerTab(DesignLayer *layer)
 {
-    if (!m_allLayers.contains(layer)) {
+    if (!m_allLayers.contains(layer))
+    {
         qWarning() << __FUNCTION__ << "Layer" << layer->defaultName() << "not found";
         return;
     }
 
-    if (m_visibleLayers.contains(layer)) {
+    if (m_visibleLayers.contains(layer))
+    {
         removeTab(layerToIndex(layer));
         m_visibleLayers.removeOne(layer);
     }
-    else if (m_hiddenLayers.contains(layer)) {
+    else if (m_hiddenLayers.contains(layer))
+    {
         m_hiddenLayers.removeOne(layer);
     }
     m_allLayers.removeOne(layer);
@@ -90,7 +102,8 @@ void LayerTabBar::removeLayerTab(DesignLayer *layer)
 
 void LayerTabBar::hideLayerTab(DesignLayer *layer)
 {
-    if (!m_visibleLayers.contains(layer)) {
+    if (!m_visibleLayers.contains(layer))
+    {
         qWarning() << __FUNCTION__ << "Layer" << layer->defaultName() << "not found";
         return;
     }
@@ -101,7 +114,8 @@ void LayerTabBar::hideLayerTab(DesignLayer *layer)
 
 void LayerTabBar::showLayerTab(DesignLayer *layer)
 {
-    if (!m_hiddenLayers.contains(layer)) {
+    if (!m_hiddenLayers.contains(layer))
+    {
         qWarning() << __FUNCTION__ << "Layer" << layer->defaultName() << "not found";
         return;
     }
@@ -110,9 +124,12 @@ void LayerTabBar::showLayerTab(DesignLayer *layer)
 
 void LayerTabBar::setCurrentLayer(DesignLayer *layer)
 {
-    if (currentIndex() >= 0) {
+    if (currentIndex() >= 0)
+    {
         if (layer == indexToLayer(currentIndex()))
+        {
             return;
+        }
     }
     setCurrentIndex(layerToIndex(layer));
 }
@@ -124,16 +141,20 @@ void LayerTabBar::onCurrentIndexChanged(int index)
 
 int LayerTabBar::layerToIndex(DesignLayer *layer)
 {
-    for (int index = 0; index < count() ; index++) {
+    for (int index = 0; index < count() ; index++)
+    {
         if (indexToLayer(index) == layer)
+        {
             return index;
+        }
     }
     return -1;
 }
 
 DesignLayer *LayerTabBar::indexToLayer(int index) const
 {
-    if (index < 0 || index >= count()) {
+    if (index < 0 || index >= count())
+    {
         qWarning() << __FUNCTION__ << "Index out of range" << index;
         return nullptr;
     }

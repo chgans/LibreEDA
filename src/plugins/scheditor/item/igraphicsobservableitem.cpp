@@ -15,7 +15,8 @@ IGraphicsObservableItem::IGraphicsObservableItem():
 
 IGraphicsObservableItem::~IGraphicsObservableItem()
 {
-    for (IGraphicsItemObserver *observer: m_observers) {
+    for (IGraphicsItemObserver *observer : m_observers)
+    {
         removeItemObserver(observer);
     }
 }
@@ -29,9 +30,12 @@ void IGraphicsObservableItem::beginItemObserverTransaction()
 void IGraphicsObservableItem::addItemObserver(IGraphicsItemObserver *observer)
 {
     if (m_observers.contains(observer))
+    {
         return;
+    }
     m_observers.append(observer);
-    if (!m_transactionInProgress) {
+    if (!m_transactionInProgress)
+    {
         observer->beginObservedItemTransaction();
         observer->addObservedItem(this);
         observer->endObserveredItemTransaction();
@@ -41,9 +45,12 @@ void IGraphicsObservableItem::addItemObserver(IGraphicsItemObserver *observer)
 void IGraphicsObservableItem::removeItemObserver(IGraphicsItemObserver *observer)
 {
     if (!m_observers.contains(observer))
+    {
         return;
+    }
     m_observers.removeOne(observer);
-    if (!m_transactionInProgress) {
+    if (!m_transactionInProgress)
+    {
         observer->beginObservedItemTransaction();
         observer->removeObservedItem(this);
         observer->endObserveredItemTransaction();
@@ -64,7 +71,8 @@ QList<IGraphicsItemObserver *> IGraphicsObservableItem::itemObservers() const
 void IGraphicsObservableItem::notifyObservers()
 {
     Q_ASSERT(!m_transactionInProgress);
-    for (IGraphicsItemObserver *observer: m_observers) {
+    for (IGraphicsItemObserver *observer : m_observers)
+    {
         observer->onItemNotification(this);
     }
 }

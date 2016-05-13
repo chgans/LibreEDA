@@ -27,9 +27,12 @@ InsightDockWidget::InsightDockWidget(QWidget *parent) :
 void InsightDockWidget::attachView(MainView *view)
 {
     if (m_mainView)
+    {
         detachView();
+    }
     m_mainView = view;
-    if (m_mainView) {
+    if (m_mainView)
+    {
         m_detailView->setObservedView(view);
         m_overview->setObservedView(view);
     }

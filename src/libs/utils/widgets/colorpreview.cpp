@@ -88,42 +88,45 @@ QColor ColorPreview::comparisonColor() const
 
 QSize ColorPreview::sizeHint() const
 {
-    return QSize(24,24);
+    return QSize(24, 24);
 }
 
 void ColorPreview::paint(QPainter &painter, QRect rect) const
 {
     QColor c1, c2;
-    switch(p->display_mode) {
-    case NoAlpha:
-        c1 = c2 = p->col.rgb();
-        break;
-    case AllAlpha:
-        c1 = c2 = p->col;
-        break;
-    case SplitAlpha:
-        c1 = p->col.rgb();
-        c2 = p->col;
-        break;
-    case SplitColor:
-        c1 = p->comparison;
-        c2 = p->col;
-        break;
+    switch (p->display_mode)
+    {
+        case NoAlpha:
+            c1 = c2 = p->col.rgb();
+            break;
+        case AllAlpha:
+            c1 = c2 = p->col;
+            break;
+        case SplitAlpha:
+            c1 = p->col.rgb();
+            c2 = p->col;
+            break;
+        case SplitColor:
+            c1 = p->comparison;
+            c2 = p->col;
+            break;
     }
 
-    if(c1.alpha()<255 || c2.alpha()<255)
-        painter.fillRect(1, 1, rect.width()-2, rect.height()-2, p->back);
+    if (c1.alpha() < 255 || c2.alpha() < 255)
+    {
+        painter.fillRect(1, 1, rect.width() - 2, rect.height() - 2, p->back);
+    }
 
     int w = (rect.width() - 2) / 2;
     int h = rect.height() - 2;
     painter.fillRect(1, 1, w, h, c1);
-    painter.fillRect(1+w, 1, w, h, c2);
+    painter.fillRect(1 + w, 1, w, h, c2);
 
-    paint_tl_border(painter,size(),palette().color(QPalette::Mid),0);
-    paint_tl_border(painter,size(),palette().color(QPalette::Dark),1);
+    paint_tl_border(painter, size(), palette().color(QPalette::Mid), 0);
+    paint_tl_border(painter, size(), palette().color(QPalette::Dark), 1);
 
-    paint_br_border(painter,size(),palette().color(QPalette::Midlight),1);
-    paint_br_border(painter,size(),palette().color(QPalette::Button),0);
+    paint_br_border(painter, size(), palette().color(QPalette::Midlight), 1);
+    paint_br_border(painter, size(), palette().color(QPalette::Button), 0);
 }
 
 void ColorPreview::setColor(const QColor &c)
@@ -151,25 +154,27 @@ void ColorPreview::resizeEvent(QResizeEvent *)
     update();
 }
 
-void ColorPreview::mouseReleaseEvent(QMouseEvent * ev)
+void ColorPreview::mouseReleaseEvent(QMouseEvent *ev)
 {
-    if ( QRect(QPoint(0,0),size()).contains(ev->pos()) )
+    if (QRect(QPoint(0, 0), size()).contains(ev->pos()))
+    {
         emit clicked();
+    }
 }
 
 void ColorPreview::mouseMoveEvent(QMouseEvent *ev)
 {
 
-    if ( ev->buttons() &Qt::LeftButton && !QRect(QPoint(0,0),size()).contains(ev->pos()) )
+    if (ev->buttons() &Qt::LeftButton && !QRect(QPoint(0, 0), size()).contains(ev->pos()))
     {
         QMimeData *data = new QMimeData;
 
         data->setColorData(p->col);
 
-        QDrag* drag = new QDrag(this);
+        QDrag *drag = new QDrag(this);
         drag->setMimeData(data);
 
-        QPixmap preview(24,24);
+        QPixmap preview(24, 24);
         preview.fill(p->col);
         drag->setPixmap(preview);
 

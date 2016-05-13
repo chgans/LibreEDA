@@ -28,10 +28,12 @@ class MainView : public LayoutView
 
     Q_ENUMS(LayerDisplayMode)
 
-    Q_PROPERTY(LayerDisplayMode layerDisplayMode READ layerDisplayMode WRITE setLayerDisplayMode NOTIFY layerDisplayModeChanged)
+    Q_PROPERTY(LayerDisplayMode layerDisplayMode READ layerDisplayMode WRITE setLayerDisplayMode NOTIFY
+               layerDisplayModeChanged)
 
 public:
-    enum LayerDisplayMode {
+    enum LayerDisplayMode
+    {
         DisplayAllLayers,
         GreyscaleOtherLayers,
         MonochromeOtherLayers,
@@ -58,8 +60,8 @@ public:
 
     void addMaskingItem(QGraphicsItem *item);
     void removeMaskingItem(QGraphicsItem *item);
-    void setMaskingItems(QList<QGraphicsItem*> items);
-    QList<QGraphicsItem*> maskingItems();
+    void setMaskingItems(QList<QGraphicsItem *> items);
+    QList<QGraphicsItem *> maskingItems();
     void resetMaskingItems();
 
     void setLayerDisplayMode(LayerDisplayMode mode);
@@ -105,7 +107,7 @@ protected:
     void updateLayerZValues();
 
     void wheelEvent(QWheelEvent *event);
-    void drawForeground(QPainter * painter, const QRectF & rect);
+    void drawForeground(QPainter *painter, const QRectF &rect);
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void focusOutEvent(QFocusEvent *event);
@@ -123,7 +125,7 @@ private:
     QGraphicsItem *m_designInsightItem;
     InsightConnectivityWidget *m_connectivity;
 
-    QList<QGraphicsItem*> m_maskingItems;
+    QList<QGraphicsItem *> m_maskingItems;
 
     InsightLensWidget *m_lens;
     InsightHeadsUpWidget *m_headsUp;
@@ -135,7 +137,7 @@ protected slots:
     void showDesignInsight();
     void hideDesignInsight();
 
-    void onItemSelectedFromPickList(QGraphicsItem* item);
+    void onItemSelectedFromPickList(QGraphicsItem *item);
 
 
     // QGraphicsView interface

@@ -9,7 +9,8 @@
 #include <QRectF>
 #include <QFont>
 
-namespace xdl { namespace symbol {
+namespace xdl {
+namespace symbol {
 
 class XDL_EXPORT Item
 {
@@ -63,7 +64,10 @@ public:
     RectangleItem();
     ~RectangleItem();
 
-    Type type() const { return Rectangle; }
+    Type type() const
+    {
+        return Rectangle;
+    }
 
     QPointF topLeft;
     QPointF bottomRight;
@@ -75,7 +79,10 @@ public:
     CircleItem();
     ~CircleItem();
 
-    Type type() const { return Circle; }
+    Type type() const
+    {
+        return Circle;
+    }
 
     QPointF center;
     qreal radius = 0.0f;
@@ -87,7 +94,10 @@ public:
     CircularArcItem();
     ~CircularArcItem();
 
-    Type type() const { return CircularArc; }
+    Type type() const
+    {
+        return CircularArc;
+    }
 
     QPointF center;
     qreal radius = 0.0f;
@@ -101,7 +111,10 @@ public:
     EllipseItem();
     ~EllipseItem();
 
-    Type type() const { return Ellipse; }
+    Type type() const
+    {
+        return Ellipse;
+    }
 
     QPointF center;
     qreal xRadius;
@@ -114,7 +127,10 @@ public:
     EllipticalArcItem();
     ~EllipticalArcItem();
 
-    Type type() const { return EllipticalArc; }
+    Type type() const
+    {
+        return EllipticalArc;
+    }
 
     QPointF center;
     qreal xRadius = 0.0f;
@@ -129,7 +145,10 @@ public:
     PolylineItem();
     ~PolylineItem();
 
-    Type type() const { return Polyline; }
+    Type type() const
+    {
+        return Polyline;
+    }
 
     QList<QPointF> vertices;
 };
@@ -140,7 +159,10 @@ public:
     PolygonItem();
     ~PolygonItem();
 
-    Type type() const { return Polygon; }
+    Type type() const
+    {
+        return Polygon;
+    }
 
     QList<QPointF> vertices;
 };
@@ -151,7 +173,10 @@ public:
     LabelItem();
     ~LabelItem();
 
-    Type type() const { return Label; }
+    Type type() const
+    {
+        return Label;
+    }
 
     QString text;
     QFont font;
@@ -164,7 +189,10 @@ public:
     PinItem();
     ~PinItem();
 
-    Type type() const { return Pin; }
+    Type type() const
+    {
+        return Pin;
+    }
 
     LabelItem *designator;
     LabelItem *label;
@@ -176,12 +204,16 @@ public:
     ItemGroup();
     ~ItemGroup();
 
-    Type type() const { return Group; }
+    Type type() const
+    {
+        return Group;
+    }
 
-    QList<Item*> children;
+    QList<Item *> children;
 };
 
 // Text (frame)
 
-}}
+}
+}
 #endif // XDLSYMBOL_H

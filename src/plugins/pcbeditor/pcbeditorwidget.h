@@ -23,7 +23,10 @@ public:
     explicit PcbEditorWidget(QWidget *parent = nullptr);
     ~PcbEditorWidget();
 
-    MainView *graphicsView() { return m_view; }
+    MainView *graphicsView()
+    {
+        return m_view;
+    }
 
     Scene *scene() const;
 

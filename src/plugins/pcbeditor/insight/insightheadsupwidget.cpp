@@ -90,7 +90,7 @@ InsightHeadsUpWidget::InsightHeadsUpWidget(QWidget *parent) :
     QColor color2(255, 255, 255);
     Items itemSet1 = CursorLocation | LastClickDelta;
     Items itemSet2 = SnapInformation | ObjectSummary | ShortcutInformation | ViolationInformation |
-            NetInformation | ComponentInformation;
+                     NetInformation | ComponentInformation;
     setDisplayedItems(itemSet1);
     setDisplayedItemsHover(itemSet1 | itemSet2);
     setItemColor(itemSet1, color1);
@@ -123,14 +123,16 @@ void InsightHeadsUpWidget::setItemFont(Item item, const QFont &font)
 
 void InsightHeadsUpWidget::setItemFont(Items items, const QFont &font)
 {
-    for (QWidget *widget: itemWidgets(items)) {
+    for (QWidget *widget : itemWidgets(items))
+    {
         widget->setFont(font);
     }
 }
 
 QFont InsightHeadsUpWidget::itemFont(InsightHeadsUpWidget::Item item) const
 {
-    for (QWidget *widget: itemWidgets(item)) {
+    for (QWidget *widget : itemWidgets(item))
+    {
         return widget->font();
     }
     return QFont();
@@ -144,7 +146,8 @@ void InsightHeadsUpWidget::setItemColor(InsightHeadsUpWidget::Item item, const Q
 
 void InsightHeadsUpWidget::setItemColor(Items items, const QColor &color)
 {
-    for (QWidget *widget: itemWidgets(items)) {
+    for (QWidget *widget : itemWidgets(items))
+    {
         QPalette p = widget->palette();
         p.setColor(QPalette::Text, color);
         widget->setPalette(p);
@@ -153,7 +156,8 @@ void InsightHeadsUpWidget::setItemColor(Items items, const QColor &color)
 
 QColor InsightHeadsUpWidget::itemColor(InsightHeadsUpWidget::Item item) const
 {
-    for (QWidget *widget: itemWidgets(item)) {
+    for (QWidget *widget : itemWidgets(item))
+    {
         return widget->palette().color(QPalette::WindowText);
     }
     return QColor();
@@ -167,7 +171,9 @@ InsightHeadsUpWidget::Items InsightHeadsUpWidget::displayedItems() const
 void InsightHeadsUpWidget::setDisplayedItem(InsightHeadsUpWidget::Item item, bool displayed)
 {
     if (m_displayedItems.testFlag(item) == displayed)
+    {
         return;
+    }
 
     m_displayedItems ^= item;
     updateItemWidgets();
@@ -177,7 +183,9 @@ void InsightHeadsUpWidget::setDisplayedItem(InsightHeadsUpWidget::Item item, boo
 void InsightHeadsUpWidget::setDisplayedItems(Items items)
 {
     if (m_displayedItems == items)
+    {
         return;
+    }
 
     m_displayedItems = items;
     updateItemWidgets();
@@ -187,7 +195,9 @@ void InsightHeadsUpWidget::setDisplayedItems(Items items)
 void InsightHeadsUpWidget::setDisplayedItemHover(InsightHeadsUpWidget::Item item, bool displayed)
 {
     if (m_displayedItemsHover.testFlag(item) == displayed)
+    {
         return;
+    }
     m_displayedItemsHover |= item;
     updateItemWidgets();
     emit displayedItemsHoverChanged();
@@ -211,7 +221,9 @@ bool InsightHeadsUpWidget::displayedItemHover(InsightHeadsUpWidget::Item item) c
 void InsightHeadsUpWidget::setDisplayedItemsHover(Items items)
 {
     if (m_displayedItemsHover == items)
+    {
         return;
+    }
 
     m_displayedItemsHover = items;
     updateItemWidgets();
@@ -231,9 +243,13 @@ qreal InsightHeadsUpWidget::hoverOpacity() const
 qreal InsightHeadsUpWidget::effectiveOpacity() const
 {
     if (m_displayMode == HoverMode)
+    {
         return m_hoverOpacity;
+    }
     else
+    {
         return m_opacity;
+    }
 }
 
 InsightHeadsUpWidget::DisplayMode InsightHeadsUpWidget::displayMode() const
@@ -244,10 +260,14 @@ InsightHeadsUpWidget::DisplayMode InsightHeadsUpWidget::displayMode() const
 void InsightHeadsUpWidget::setBuddyView(QGraphicsView *view)
 {
     if (m_view != nullptr && m_view->scene() != nullptr)
+    {
         m_view->scene()->removeEventFilter(this);
+    }
     m_view = view;
     if (m_view != nullptr && m_view->scene() != nullptr)
+    {
         m_view->scene()->installEventFilter(this);
+    }
 
 }
 
@@ -268,37 +288,38 @@ QBrush InsightHeadsUpWidget::brush() const
 
 void InsightHeadsUpWidget::setItemData(InsightHeadsUpWidget::Item item, const QVariant &data)
 {
-    switch (item) {
-    case CursorLocation:
-        setCursorLocation(data.toPointF());
-        break;
-    case LastClickDelta:
-        setCursorDelta(data.toPointF());
-        break;
-    case CurrentLayer:
-        setCurrentLayer(data.toString());
-        break;
-    case SnapInformation:
-        setSnapInformation(data.toString());
-        break;
-    case ObjectSummary:
-        setObjectSummary(data.toString());
-        break;
-    case ShortcutInformation:
-        setShortCutInformation(data.toString());
-        break;
-    case ViolationInformation:
-        setViolationInformation(data.toString());
-        break;
-    case NetInformation:
-        setNetInformation(data.toString());
-        break;
-    case ComponentInformation:
-        setComponentInformation(data.toString());
-        break;
-    default:
-        // Not reached
-        break;
+    switch (item)
+    {
+        case CursorLocation:
+            setCursorLocation(data.toPointF());
+            break;
+        case LastClickDelta:
+            setCursorDelta(data.toPointF());
+            break;
+        case CurrentLayer:
+            setCurrentLayer(data.toString());
+            break;
+        case SnapInformation:
+            setSnapInformation(data.toString());
+            break;
+        case ObjectSummary:
+            setObjectSummary(data.toString());
+            break;
+        case ShortcutInformation:
+            setShortCutInformation(data.toString());
+            break;
+        case ViolationInformation:
+            setViolationInformation(data.toString());
+            break;
+        case NetInformation:
+            setNetInformation(data.toString());
+            break;
+        case ComponentInformation:
+            setComponentInformation(data.toString());
+            break;
+        default:
+            // Not reached
+            break;
     }
 }
 
@@ -311,7 +332,9 @@ void InsightHeadsUpWidget::resetDeltaOrigin()
 void InsightHeadsUpWidget::setOpacity(qreal opacity)
 {
     if (m_opacity == opacity)
+    {
         return;
+    }
 
     m_opacity = opacity;
     updateContent();
@@ -321,7 +344,9 @@ void InsightHeadsUpWidget::setOpacity(qreal opacity)
 void InsightHeadsUpWidget::setHoverOpacity(qreal opacity)
 {
     if (m_hoverOpacity == opacity)
+    {
         return;
+    }
 
     m_hoverOpacity = opacity;
     updateContent();
@@ -331,7 +356,9 @@ void InsightHeadsUpWidget::setHoverOpacity(qreal opacity)
 void InsightHeadsUpWidget::setDisplayMode(InsightHeadsUpWidget::DisplayMode arg)
 {
     if (m_displayMode == arg)
+    {
         return;
+    }
 
     m_displayMode = arg;
     updateItemWidgets();
@@ -341,7 +368,9 @@ void InsightHeadsUpWidget::setDisplayMode(InsightHeadsUpWidget::DisplayMode arg)
 void InsightHeadsUpWidget::setPen(const QPen &pen)
 {
     if (m_pen == pen)
+    {
         return;
+    }
 
     m_pen = pen;
     update();
@@ -351,7 +380,9 @@ void InsightHeadsUpWidget::setPen(const QPen &pen)
 void InsightHeadsUpWidget::setBrush(const QBrush &brush)
 {
     if (m_brush == brush)
+    {
         return;
+    }
 
     m_brush = brush;
     update();
@@ -361,7 +392,9 @@ void InsightHeadsUpWidget::setBrush(const QBrush &brush)
 void InsightHeadsUpWidget::setCursorLocation(const QPointF &pos)
 {
     if (m_cursorLocation == pos)
+    {
         return;
+    }
 
     prepareUpdateContent();
     m_cursorLocation = pos;
@@ -381,7 +414,9 @@ void InsightHeadsUpWidget::setCursorDelta(const QPointF &pos)
 void InsightHeadsUpWidget::setCursorDeltaOrigin(const QPointF &pos)
 {
     if (m_cursorDeltaOrigin == pos)
+    {
         return;
+    }
 
     prepareUpdateContent();
     m_cursorDeltaOrigin = pos;
@@ -425,25 +460,31 @@ void InsightHeadsUpWidget::setComponentInformation(const QString &text)
 
 bool InsightHeadsUpWidget::eventFilter(QObject *watched, QEvent *event)
 {
-    if (watched == m_view->scene()) {
+    if (watched == m_view->scene())
+    {
         QPoint viewPos;
         QPointF scenePos;
-        switch (event->type()) {
-        case QEvent::GraphicsSceneMouseMove:
-            viewPos = m_view->viewport()->mapFromGlobal(QCursor::pos());
-            scenePos = m_view->mapToScene(viewPos);
-            setCursorLocation(scenePos);
-            setCursorDelta(m_cursorLocation - m_cursorDeltaOrigin);
-            if (m_view->scene()->itemAt(scenePos, m_view->transform()))
-                setDisplayMode(HoverMode);
-            else
-                setDisplayMode(HeadsUpMode);
-            break;
-        case QEvent::GraphicsSceneMousePress:
-            resetDeltaOrigin();
-            break;
-        default:
-            break;
+        switch (event->type())
+        {
+            case QEvent::GraphicsSceneMouseMove:
+                viewPos = m_view->viewport()->mapFromGlobal(QCursor::pos());
+                scenePos = m_view->mapToScene(viewPos);
+                setCursorLocation(scenePos);
+                setCursorDelta(m_cursorLocation - m_cursorDeltaOrigin);
+                if (m_view->scene()->itemAt(scenePos, m_view->transform()))
+                {
+                    setDisplayMode(HoverMode);
+                }
+                else
+                {
+                    setDisplayMode(HeadsUpMode);
+                }
+                break;
+            case QEvent::GraphicsSceneMousePress:
+                resetDeltaOrigin();
+                break;
+            default:
+                break;
         }
 
     }
@@ -452,7 +493,8 @@ bool InsightHeadsUpWidget::eventFilter(QObject *watched, QEvent *event)
 
 void InsightHeadsUpWidget::prepareUpdateContent()
 {
-    if (m_view != nullptr && m_view->viewport() != nullptr) {
+    if (m_view != nullptr && m_view->viewport() != nullptr)
+    {
         QPoint topLeft = parentWidget()->mapToGlobal(geometry().topLeft());
         topLeft = m_view->viewport()->mapFromGlobal(topLeft);
         QPoint bottomRight = parentWidget()->mapToGlobal(geometry().bottomRight());
@@ -480,29 +522,44 @@ QList<QWidget *> InsightHeadsUpWidget::itemWidgets(InsightHeadsUpWidget::Items i
                 << m_xCursorDeltaLabelBuddy << m_yCursorDeltaLabelBuddy
                 << m_xCursorUnitLabel << m_yCursorUnitLabel;
     if (items.testFlag(CurrentLayer))
+    {
         widgets << m_currentLayerLabel;
+    }
     if (items.testFlag(SnapInformation))
+    {
         widgets << m_snapInfoLabel;
+    }
     if (items.testFlag(ObjectSummary))
+    {
         widgets << m_objectSummaryLabel;
+    }
     if (items.testFlag(ShortcutInformation))
+    {
         widgets << m_shortcutInfoLabel;
+    }
     if (items.testFlag(ViolationInformation))
+    {
         widgets << m_violationInfoLabel;
+    }
     if (items.testFlag(NetInformation))
+    {
         widgets << m_netInfoLabel;
+    }
     if (items.testFlag(ComponentInformation))
+    {
         widgets << m_componentInfoLabel;
+    }
     return widgets;
 }
 
 void InsightHeadsUpWidget::updateItemWidget(InsightHeadsUpWidget::Item item)
 {
     bool enabled = (m_displayedItems.testFlag(item) && m_displayMode == HeadsUpMode) ||
-            (m_displayedItemsHover.testFlag(item) && m_displayMode == HoverMode);
+                   (m_displayedItemsHover.testFlag(item) && m_displayMode == HoverMode);
 
     prepareUpdateContent();
-    for (QWidget *widget: itemWidgets(item)) {
+    for (QWidget *widget : itemWidgets(item))
+    {
         widget->setVisible(enabled);
     }
     updateContent();

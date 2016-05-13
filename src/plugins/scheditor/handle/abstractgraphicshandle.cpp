@@ -18,13 +18,13 @@ AbstractGraphicsHandle::AbstractGraphicsHandle(SchItem *parent):
     setPen(QPen(QColor("#839496"), 0)); // Primary content
     setBrush(QColor("#073642")); // BG
 
-//    setPen(QPen(gpalette::Content2, 0));
-//    setBrush(QBrush(gpalette::Content4));
+    //    setPen(QPen(gpalette::Content2, 0));
+    //    setBrush(QBrush(gpalette::Content4));
 
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 
-    updateShape();    
+    updateShape();
 
     setVisible(false);
 }
@@ -52,7 +52,9 @@ int AbstractGraphicsHandle::handleId() const
 void AbstractGraphicsHandle::setHandleRole(GraphicsHandleRole role)
 {
     if (m_role == role)
+    {
         return;
+    }
 
     prepareGeometryChange();
     m_role = role;
@@ -67,7 +69,9 @@ GraphicsHandleRole AbstractGraphicsHandle::handleRole() const
 void AbstractGraphicsHandle::setHandleShape(GraphicsHandleShape shape)
 {
     if (m_handleShape == shape)
+    {
         return;
+    }
 
     m_handleShape = shape;
 
@@ -94,15 +98,24 @@ QCursor AbstractGraphicsHandle::roleToCursor(GraphicsHandleRole role)
 {
     switch (role)
     {
-    case MoveHandleRole: return QCursor(Qt::PointingHandCursor);
-    case VSizeHandleRole: return QCursor(Qt::SizeVerCursor);
-    case HSizeHandleRole: return QCursor(Qt::SizeHorCursor);
-    case BDiagSizeHandleRole: return QCursor(Qt::SizeBDiagCursor);
-    case FDiagSizeHandleRole: return QCursor(Qt::SizeFDiagCursor);
-    case RotateHandleRole: return QCursor(); // TBD
-    case ShearHandleRole: return QCursor();  // TBD
-    case MarkHandleRole: return QCursor();   // TBD
-    default: return QCursor();
+        case MoveHandleRole:
+            return QCursor(Qt::PointingHandCursor);
+        case VSizeHandleRole:
+            return QCursor(Qt::SizeVerCursor);
+        case HSizeHandleRole:
+            return QCursor(Qt::SizeHorCursor);
+        case BDiagSizeHandleRole:
+            return QCursor(Qt::SizeBDiagCursor);
+        case FDiagSizeHandleRole:
+            return QCursor(Qt::SizeFDiagCursor);
+        case RotateHandleRole:
+            return QCursor(); // TBD
+        case ShearHandleRole:
+            return QCursor();  // TBD
+        case MarkHandleRole:
+            return QCursor();   // TBD
+        default:
+            return QCursor();
     }
 }
 
@@ -110,34 +123,38 @@ void AbstractGraphicsHandle::updateShape()
 {
     int radius = 5;
     QPainterPath path;
-    switch (m_handleShape) {
-    case CircularHandleShape:
-        radius *= 0.97;
-        path.addEllipse(QPointF(0, 0), radius, radius);
-        break;
-    case SquaredHandleShape:
-        radius *= 0.8;
-        path.addRect(-radius, -radius, 2*radius, 2*radius);
-        break;
-    case DiamondedHandleShape: {
-        QVector<QPointF> points;
-        points << QPointF(0, -radius) << QPointF(radius, 0)
-               << QPointF(0, radius) << QPointF(-radius, 0);
-        path.addPolygon(QPolygonF(points));
-        path.closeSubpath();
-        break;
-    }
-    default:
-        // Not reached
-        break;
+    switch (m_handleShape)
+    {
+        case CircularHandleShape:
+            radius *= 0.97;
+            path.addEllipse(QPointF(0, 0), radius, radius);
+            break;
+        case SquaredHandleShape:
+            radius *= 0.8;
+            path.addRect(-radius, -radius, 2 * radius, 2 * radius);
+            break;
+        case DiamondedHandleShape:
+        {
+            QVector<QPointF> points;
+            points << QPointF(0, -radius) << QPointF(radius, 0)
+                   << QPointF(0, radius) << QPointF(-radius, 0);
+            path.addPolygon(QPolygonF(points));
+            path.closeSubpath();
+            break;
+        }
+        default:
+            // Not reached
+            break;
     }
     setPath(path);
 }
 
 
-QVariant AbstractGraphicsHandle::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+QVariant AbstractGraphicsHandle::itemChange(QGraphicsItem::GraphicsItemChange change,
+                                            const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemPositionHasChanged) {
+    if (change == QGraphicsItem::ItemPositionHasChanged)
+    {
         notifyObservers();
     }
     return value;

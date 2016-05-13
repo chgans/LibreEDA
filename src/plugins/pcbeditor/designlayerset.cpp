@@ -23,12 +23,16 @@ QString DesignLayerSet::name() const
 void DesignLayerSet::setName(const QString &name)
 {
     if (m_name == name)
+    {
         return;
+    }
     m_name = name;
     QString ename = effectiveName();
     emit nameChanged(m_name);
     if (ename != effectiveName())
+    {
         emit effectiveNameChanged(effectiveName());
+    }
 }
 
 QString DesignLayerSet::customName() const
@@ -39,19 +43,25 @@ QString DesignLayerSet::customName() const
 QString DesignLayerSet::effectiveName() const
 {
     if (m_customName.isEmpty())
+    {
         return m_name;
+    }
     return m_customName;
 }
 
 void DesignLayerSet::setCustomName(const QString &name)
 {
     if (m_customName == name)
+    {
         return;
+    }
     m_customName = name;
     QString ename = effectiveName();
     emit customNameChanged(m_customName);
     if (ename != effectiveName())
+    {
         emit effectiveNameChanged(effectiveName());
+    }
 }
 
 bool DesignLayerSet::isSystem() const
@@ -62,7 +72,9 @@ bool DesignLayerSet::isSystem() const
 void DesignLayerSet::setIsSystem(bool isSystem)
 {
     if (isSystem == m_isSystem)
+    {
         return;
+    }
     m_isSystem = isSystem;
     // emit isSystemChanged(m_isSystem);
 }
@@ -78,7 +90,8 @@ void DesignLayerSet::loadFromSettings(QSettings &settings)
     setIsSystem(settings.value("system", false).toBool());
     setName(settings.value("label", "<unknown>").toString());
     int nb = settings.beginReadArray("layers");
-    for (int i = 0; i < nb; i++) {
+    for (int i = 0; i < nb; i++)
+    {
         m_layers.append(settings.value(QString("%1").arg(i), -1).toInt());
     }
     settings.endArray();
@@ -91,7 +104,8 @@ void DesignLayerSet::saveToSettings(QSettings &settings) const
     settings.setValue("system", isSystem());
     settings.setValue("label", name());
     settings.beginReadArray("layers");
-    for (int i = 0; i < m_layers.count(); i++) {
+    for (int i = 0; i < m_layers.count(); i++)
+    {
         settings.setValue(QString("%1").arg(i), m_layers.value(i));
     }
     settings.endArray();
@@ -106,14 +120,18 @@ void DesignLayerSet::add(int index)
 void DesignLayerSet::add(const QList<int> &indexes)
 {
     bool changed = false;
-    for (int idx: indexes) {
-        if (!m_layers.contains(idx)) {
+    for (int idx : indexes)
+    {
+        if (!m_layers.contains(idx))
+        {
             changed = true;
             m_layers.append(idx);
         }
     }
     if (changed)
+    {
         emit layersChanged(m_layers);
+    }
 }
 
 void DesignLayerSet::remove(int index)
@@ -124,9 +142,13 @@ void DesignLayerSet::remove(int index)
 void DesignLayerSet::remove(const QList<int> &indexes)
 {
     bool changed = false;
-    for (int idx: indexes)
+    for (int idx : indexes)
+    {
         changed |= m_layers.removeOne(idx);
+    }
     if (changed)
+    {
         emit layersChanged(m_layers);
+    }
 }
 
