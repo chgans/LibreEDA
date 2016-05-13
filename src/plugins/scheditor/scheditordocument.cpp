@@ -14,7 +14,7 @@ Q_LOGGING_CATEGORY(Log, "leda.sch.document")
 
 SchEditorDocument::SchEditorDocument(QObject *parent) :
     IDocument(parent),
-    m_commandStack(new QUndoStack(this))
+    m_itemIndex(0)
 {
     setModified(true);
 }
@@ -31,33 +31,12 @@ bool SchEditorDocument::load(QString *errorString, const QString &fileName)
 
     m_symbolName = symbol->name;
     m_symbolLabel = symbol->description;
-    quint64 idx = 0;
     for (auto item: symbol->drawingItems)
     {
-        m_drawingItemMap.insert(idx++, item);
+        addDrawingItem(item);
     }
 
-    auto circle = new xdl::symbol::CircleItem;
-    circle->radius = 50;
-    m_drawingItemMap.insert(idx++, circle);
-    auto ellipse = new xdl::symbol::EllipseItem;
-    ellipse->xRadius = 50;
-    ellipse->yRadius = 100;
-    ellipse->position = QPointF(100, 100);
-    m_drawingItemMap.insert(idx++, ellipse);
-
     return true;
-}
-
-void SchEditorDocument::executeCommand(SchCommand *command)
-{
-    Q_UNUSED(command);
-    //m_commandStack->push(command);
-}
-
-QUndoStack *SchEditorDocument::undoStack()
-{
-    return m_commandStack;
 }
 
 const xdl::symbol::Item *SchEditorDocument::drawingItem(quint64 id) const
@@ -72,6 +51,41 @@ const xdl::symbol::Item *SchEditorDocument::drawingItem(quint64 id) const
 QList<quint64> SchEditorDocument::drawingItemIdList() const
 {
     return m_drawingItemMap.keys();
+}
+
+quint64 SchEditorDocument::addDrawingItem(SchEditorDocument::Item *item)
+{
+    m_itemIndex++;
+    m_drawingItemMap.insert(m_itemIndex, item);
+    emit drawingItemAdded(m_itemIndex, item);
+    return m_itemIndex;
+}
+
+void SchEditorDocument::replaceDrawingItem(quint64 id, SchEditorDocument::Item *item)
+{
+    if (!m_drawingItemMap.contains(id))
+    {
+        delete item;
+        return;
+    }
+
+    auto oldItem = m_drawingItemMap.value(id);
+    m_drawingItemMap.insert(id, item);
+    emit drawingItemChanged(id, item);
+    delete oldItem;
+}
+
+void SchEditorDocument::removeDrawingItem(quint64 id)
+{
+    if (!m_drawingItemMap.contains(id))
+    {
+        return;
+    }
+
+    auto item = m_drawingItemMap.value(id);
+    m_drawingItemMap.remove(id);
+    emit drawingItemRemoved(id);
+    delete item;
 }
 
 bool SchEditorDocument::save(QString *errorString, const QString &fileName)

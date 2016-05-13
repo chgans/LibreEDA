@@ -15,6 +15,8 @@
 #include "tool/placewiretool.h"
 #include "tool/placearctool.h"
 
+#include "command/placeitemcommand.h"
+
 #include "snap/positionsnapper.h"
 
 #include "dock/taskdockwidget.h"
@@ -26,12 +28,14 @@
 #include <QMainWindow>
 #include <QAction>
 #include <QToolBar>
+#include <QUndoStack>
 
 #include <QFileInfo>
 #include <QTimer>
 
 SchEditor::SchEditor(QObject *parent) :
-    IEditor(parent)
+    IEditor(parent),
+    m_undoStack(new QUndoStack)
 {
     addScene();
     addView();
@@ -83,57 +87,53 @@ void SchEditor::applySettings(const SchEditorSettings &settings)
     m_taskDockWidget->applySettings(settings);
 }
 
-
 bool SchEditor::open(QString *errorString, const QString &fileName)
 {
     m_document = new SchEditorDocument();
     m_document->setFilePath(fileName);
     QFileInfo fileInfo(fileName);
     m_document->setDisplayName(fileInfo.baseName());
+
     bool result = m_document->load(errorString, m_document->filePath());
     if (!result)
+    {
         return false;
+    }
+
     for (quint64 id: m_document->drawingItemIdList())
     {
-        switch (m_document->drawingItem(id)->type())
-        {
-            case xdl::symbol::Item::Rectangle:
-                break;
-            case xdl::symbol::Item::Circle:
-            {
-                auto item = reinterpret_cast<const xdl::symbol::CircleItem*>(m_document->drawingItem(id));
-                QRectF rect(0, 0, 2*item->radius, 2*item->radius);
-                rect.moveCenter(item->center);
-                auto graphicsItem = m_scene->addEllipse(rect);
-                graphicsItem->setPos(item->position);
-                break;
-            }
-            case xdl::symbol::Item::CircularArc:
-                break;
-            case xdl::symbol::Item::Ellipse:
-            {
-                auto item = reinterpret_cast<const xdl::symbol::EllipseItem*>(m_document->drawingItem(id));
-                QRectF rect(0, 0, 2*item->xRadius, 2*item->yRadius);
-                rect.moveCenter(item->center);
-                auto graphicsItem = m_scene->addEllipse(rect);
-                graphicsItem->setPos(item->position);
-                break;
-            }
-            case xdl::symbol::Item::EllipticalArc:
-                break;
-            case xdl::symbol::Item::Polyline:
-                break;
-            case xdl::symbol::Item::Polygon:
-                break;
-            case xdl::symbol::Item::Label:
-                break;
-            case xdl::symbol::Item::Pin:
-                break;
-            case xdl::symbol::Item::Group:
-                break;
-        }
+        m_scene->addDocumentItem(id, m_document->drawingItem(id));
     }
-    m_undoDockWidget->setStack(m_document->undoStack());
+
+    connect(m_document, &SchEditorDocument::drawingItemAdded,
+            m_scene, &SchScene::addDocumentItem);
+//    connect(m_document, &SchEditorDocument::drawingItemChanged,
+//            m_scene, &SchScene::removeDocumentItem);
+    connect(m_document, &SchEditorDocument::drawingItemRemoved,
+            m_scene, &SchScene::removeDocumentItem);
+
+    m_undoDockWidget->setStack(m_undoStack);
+
+    for (int i = 1; i < 6; i++)
+    {
+        auto command = new PlaceRectangleCommand;
+        command->position = QPointF(i*50, 10);
+        command->topLeft = QPointF(50, 50);
+        command->bottomRight = QPointF(75, 75);
+        command->pen = QPen(QColor(i*5, i*25, i*50), 1.0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        command->brush = command->pen.color().darker();
+        command->setDocument(m_document);
+        m_undoStack->push(command);
+    }
+
+    // FIXME: gross hack for now
+    auto placementTool = static_cast<PlacementTool *>(m_interactiveTools.at(1));
+    connect(placementTool, &PlacementTool::placementCompleted,
+            this, [this](PlacementCommand *command) {
+        command->setDocument(m_document);
+        m_undoStack->push(command);
+    });
+
     return true;
 }
 
@@ -189,14 +189,14 @@ void SchEditor::addInteractiveTools()
     m_interactiveToolsToolBar = new QToolBar();
 
     addInteractiveTool(new GraphicsSelectTool(this));
-    addInteractiveTool(new PlacePolyineTool(this));
+    //addInteractiveTool(new PlacePolyineTool(this));
     //addInteractiveTool(new GraphicsWireTool(this));
     addInteractiveTool(new PlaceRectangleTool(this));
-    addInteractiveTool(new PlacePolygonTool(this));
-    addInteractiveTool(new PlaceCircleTool(this));
-    addInteractiveTool(new PlaceArcTool(this));
-    addInteractiveTool(new PlaceEllipseTool(this));
-    addInteractiveTool(new PlaceBezierTool(this));
+    //addInteractiveTool(new PlacePolygonTool(this));
+    //addInteractiveTool(new PlaceCircleTool(this));
+    //addInteractiveTool(new PlaceArcTool(this));
+    //addInteractiveTool(new PlaceEllipseTool(this));
+    //addInteractiveTool(new PlaceBezierTool(this));
 
 #if 0
     QAction *action;

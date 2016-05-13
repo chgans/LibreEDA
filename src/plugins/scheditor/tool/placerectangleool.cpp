@@ -3,6 +3,7 @@
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
 #include "handle/abstractgraphicshandle.h"
+#include "command/placeitemcommand.h"
 
 #include <QAction>
 
@@ -75,6 +76,17 @@ void PlaceRectangleTool::freezePoint(int idx, const QPointF &pos)
         return;
 
     emit objectInserted(m_item);
+
+    auto command = new PlaceRectangleCommand;
+    command->position = m_item->pos();
+    command->opacity = m_item->opacity();
+    command->zValue = m_item->zValue();
+    command->pen = m_item->pen();
+    command->brush = m_item->brush();
+    command->topLeft = m_item->rect().topLeft();
+    command->bottomRight = m_item->rect().bottomRight();
+    emit placementCompleted(command);
+
     resetTool();
 }
 

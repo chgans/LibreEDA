@@ -5,10 +5,11 @@
 #include "xdl/symbol.h"
 
 #include <QMap>
+#include <QAtomicInteger>
 
 class SchCommand;
-class QUndoStack;
 
+// TODO: investigate passing item by const reference and implement cow on item's data?
 class SchEditorDocument : public IDocument
 {
     Q_OBJECT
@@ -18,27 +19,25 @@ public:
 
     bool load(QString *errorString, const QString &fileName);
 
-    QUndoStack *undoStack();
-
     QString symbolName() const;
     QString symbolLabel() const;
     const Item *drawingItem(quint64 id) const;
     QList<quint64> drawingItemIdList() const;
 
+    quint64 addDrawingItem(Item *item); // takes ownership
+    void replaceDrawingItem(quint64 id, Item *item); // takes ownership
+    void removeDrawingItem(quint64 id);
+
 signals:
-    void itemAdded(quint64 id);
-    void itemRemoved(quint64 id);
-    void itemChanged(quint64 id);
-
-public slots:
-    void executeCommand(SchCommand *command);
-
+    void drawingItemAdded(quint64 id, const Item *item);
+    void drawingItemChanged(quint64 id, const Item *item);
+    void drawingItemRemoved(quint64 id);
 
 private:
+    QAtomicInteger<quint64> m_itemIndex;
     QString m_symbolName;
     QString m_symbolLabel;
     QMap<quint64, Item *> m_drawingItemMap;
-    QUndoStack *m_commandStack;
 
     // IDocument interface
 public:

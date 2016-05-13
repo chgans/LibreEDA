@@ -6,6 +6,8 @@
 #include <QPointF>
 #include <QFont>
 
+#include "xdl/symbol.h"
+
 class SchEditorDocument;
 
 class UndoCommand: public QUndoCommand
@@ -20,18 +22,21 @@ private:
     SchEditorDocument *m_document;
 };
 
-class PlaceItemCommand: public UndoCommand
+class PlacementCommand: public UndoCommand
 {
 public:
-    PlaceItemCommand(UndoCommand *parent = nullptr);
+    PlacementCommand(UndoCommand *parent = nullptr);
 
-    void undo();
-    void redo();
+protected:
+    void removeItem();
+    void placeItem(xdl::symbol::Item *item);
+
+public:
+    quint64 itemId;
 
     // 1 - Visual
-    qreal penWidth;
-    Qt::PenStyle penStyle;
-    QColor penColor;
+    QPen pen;
+    QBrush brush;
     qreal opacity;
     // 2 - Geometry
     QPointF position;
@@ -44,45 +49,7 @@ public:
     qreal zValue;
 };
 
-class ChangeItemVisual: public UndoCommand
-{
-public:
-    ChangeItemVisual(UndoCommand *parent = nullptr);
-
-    void undo();
-    void redo();
-
-    qreal penWidth;
-    Qt::PenStyle penStyle;
-    QColor penColor;
-    qreal opacity;
-};
-
-class ChangeItemGeometry: public UndoCommand
-{
-public:
-    ChangeItemGeometry(UndoCommand *parent = nullptr);
-
-    void undo();
-    void redo();
-
-    QPointF position;
-    qreal rotation;
-    bool xMirrored;
-    bool yMirrored;
-};
-
-class ChangeItemState: public UndoCommand
-{
-public:
-    ChangeItemState(UndoCommand *parent = nullptr);
-
-    bool locked;
-    bool visible;
-    qreal zValue;
-};
-
-class PlaceRectangleCommand: public PlaceItemCommand
+class PlaceRectangleCommand: public PlacementCommand
 {
 public:
     PlaceRectangleCommand(UndoCommand *parent = nullptr);
@@ -94,7 +61,7 @@ public:
     QPointF bottomRight;
 };
 
-class PlaceCircleCommand: public PlaceItemCommand
+class PlaceCircleCommand: public PlacementCommand
 {
 public:
     PlaceCircleCommand(UndoCommand *parent = nullptr);
@@ -106,7 +73,7 @@ public:
     qreal radius;
 };
 
-class PlaceCircularCommand: public PlaceItemCommand
+class PlaceCircularCommand: public PlacementCommand
 {
 public:
     PlaceCircularCommand(UndoCommand *parent = nullptr);
@@ -120,7 +87,7 @@ public:
     qreal spanAngle;
 };
 
-class PlaceEllipseCommand: public PlaceItemCommand
+class PlaceEllipseCommand: public PlacementCommand
 {
 public:
     PlaceEllipseCommand(UndoCommand *parent = nullptr);
@@ -133,7 +100,7 @@ public:
     qreal yRadius;
 };
 
-class PlaceEllipticalArcCommand: public PlaceItemCommand
+class PlaceEllipticalArcCommand: public PlacementCommand
 {
 public:
     PlaceEllipticalArcCommand(UndoCommand *parent = nullptr);
@@ -148,7 +115,7 @@ public:
     qreal spanAngle;
 };
 
-class PlacePolylineCommand: public PlaceItemCommand
+class PlacePolylineCommand: public PlacementCommand
 {
 public:
     PlacePolylineCommand(UndoCommand *parent = nullptr);
@@ -159,7 +126,7 @@ public:
     QList<QPointF> vertices; // position is always first point?
 };
 
-class PlacePolygonCommand: public PlaceItemCommand
+class PlacePolygonCommand: public PlacementCommand
 {
 public:
     PlacePolygonCommand(UndoCommand *parent = nullptr);
@@ -170,7 +137,7 @@ public:
     QList<QPointF> vertices; // position is always first point?
 };
 
-class PlaceLabelCommand: public PlaceItemCommand
+class PlaceLabelCommand: public PlacementCommand
 {
 public:
     PlaceLabelCommand(UndoCommand *parent = nullptr);

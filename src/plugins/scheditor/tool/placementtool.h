@@ -6,6 +6,7 @@
 #include <QPointF>
 #include <QString>
 
+class PlacementCommand;
 class AbstractGraphicsHandle;
 class QWidget;
 class QAction;
@@ -47,6 +48,7 @@ public:
 
 signals:
     void objectInserted(SchItem *object);
+    void placementCompleted(PlacementCommand *command);
 
 public slots:
     void goBack();

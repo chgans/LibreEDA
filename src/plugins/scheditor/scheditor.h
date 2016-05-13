@@ -2,13 +2,14 @@
 #define GRAPHICSEDITOR_H
 
 #include "core/editormanager/ieditor.h"
+#include "scheditordocument.h"
 
 class QMainWindow;
 class QActionGroup;
 class QToolBar;
 class QComboBox;
+class QUndoStack;
 
-class SchEditorDocument;
 class SchView;
 class SchScene;
 class InteractiveTool;
@@ -38,6 +39,7 @@ public slots:
 private:
     SchEditorDocument *m_document = nullptr;
     SnapManager *m_snapManager = nullptr;
+    QUndoStack *m_undoStack;
 
     void addInteractiveTools();
     void addInteractiveTool(InteractiveTool *tool);
