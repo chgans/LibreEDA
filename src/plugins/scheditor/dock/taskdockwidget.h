@@ -1,14 +1,14 @@
 #ifndef TASKDOCKWIDGET_H
 #define TASKDOCKWIDGET_H
 
-#include <QDockWidget>
+#include "scheditor/dock/dockwidget.h"
 
 class QSplitter;
 class TaskEditWidget;
 class TaskOptionWidget;
 class InteractiveTool;
 
-class TaskDockWidget : public QDockWidget
+class TaskDockWidget : public DockWidget
 {
     Q_OBJECT
 
@@ -22,6 +22,10 @@ public slots:
 
 private:
     QList<QWidget *> m_widgets;
+
+    // DockWidget interface
+public slots:
+    void applySettings(const SchSettings &settings);
 };
 
 #endif // TASKDOCKWIDGET_H

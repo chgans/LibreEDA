@@ -12,6 +12,8 @@ LedaPlugin {
     files: [
         "command/placeitemcommand.cpp",
         "command/placeitemcommand.h",
+        "dock/dockwidget.cpp",
+        "dock/dockwidget.h",
         "dock/taskdockwidget.cpp",
         "dock/taskdockwidget.h",
         "dock/propertyeditordockwidget.cpp",

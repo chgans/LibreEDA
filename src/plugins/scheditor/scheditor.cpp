@@ -79,7 +79,8 @@ void SchEditor::applySettings(const SchEditorSettings &settings)
     }
     // TODO: other tools
     // TODO: snap manager
-    // TODO: dock widgets
+    m_propertyEditorDockWidget->applySettings(settings);
+    m_taskDockWidget->applySettings(settings);
 }
 
 

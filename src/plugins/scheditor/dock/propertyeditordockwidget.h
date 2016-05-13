@@ -1,6 +1,8 @@
 #ifndef PROPERTYEDITORDOCKWIDGET_H
 #define PROPERTYEDITORDOCKWIDGET_H
 
+#include "scheditor/dock/dockwidget.h"
+
 #include <QDockWidget>
 #include <QMap>
 #include <QList>

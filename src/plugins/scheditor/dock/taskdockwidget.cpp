@@ -27,3 +27,8 @@ void TaskDockWidget::setTool(InteractiveTool *tool)
         newWidget->show();
     }
 }
+
+void TaskDockWidget::applySettings(const SchSettings &settings)
+{
+    Q_UNUSED(settings);
+}

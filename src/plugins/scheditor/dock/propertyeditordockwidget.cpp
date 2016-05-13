@@ -60,3 +60,9 @@ void PropertyEditorDockWidget::updateEditor(int)
         m_editor->setObjects(objects);
     }
 }
+
+
+void PropertyEditorDockWidget::applySettings(const SchSettings &settings)
+{
+    Q_UNUSED(settings);
+}
