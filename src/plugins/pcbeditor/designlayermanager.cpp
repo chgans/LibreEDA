@@ -60,12 +60,12 @@ void DesignLayerManager::loadLayerSets()
 {
     qDebug() << "Layerset manager: Loading layersets";
     m_sets.clear();
-    foreach (DesignLayerSet *set, m_sets)
+    for (DesignLayerSet *set: m_sets)
         emit layerSetRemoved(set);
     qDeleteAll(m_sets);
     m_sets << loadLayerSets(m_systemPath)
            << loadLayerSets(m_userPath);
-    foreach (DesignLayerSet *set, m_sets)
+    for (DesignLayerSet *set: m_sets)
         emit layerSetAdded(set);
     qDebug() << "Layerset manager: Loaded " << count() << "layersets";
 }
@@ -81,7 +81,7 @@ QList<DesignLayerSet *> DesignLayerManager::loadLayerSets(const QString &path)
     QStringList filters;
     filters << "*.LedaPcbLayerSet";
     QList<DesignLayerSet *> sets;
-    foreach (QFileInfo fileInfo, dir.entryInfoList(filters)) {
+    for (QFileInfo fileInfo: dir.entryInfoList(filters)) {
         DesignLayerSet *set = new DesignLayerSet;
         sets.append(set);
         QString id = fileInfo.baseName();
@@ -113,7 +113,7 @@ void DesignLayerManager::add(DesignLayerSet *set)
 
 void DesignLayerManager::add(QList<DesignLayerSet *> sets)
 {
-    foreach (DesignLayerSet *set, sets) {
+    for (DesignLayerSet *set: sets) {
         if (!m_sets.contains(set)) {
             m_sets.append(set);
             emit layerSetAdded(set);
@@ -128,7 +128,7 @@ void DesignLayerManager::remove(DesignLayerSet *set)
 
 void DesignLayerManager::remove(QList<DesignLayerSet *> sets)
 {
-    foreach (DesignLayerSet *set, sets) {
+    for (DesignLayerSet *set: sets) {
         if (m_sets.contains(set)) {
             m_sets.removeOne(set);
             emit layerSetRemoved(set);

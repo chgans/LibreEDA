@@ -22,11 +22,6 @@ private:
     void setP2(const QPointF &pos);
 
     // GraphicsTool interface
-public:
-    virtual void activate(const QAction *which);
-    virtual void desactivate(const QAction *which);
-
-    // GraphicsTool interface
 public slots:
     virtual void cancel();
 

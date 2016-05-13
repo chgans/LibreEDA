@@ -75,8 +75,6 @@ void PlaceRectangleTool::freezePoint(int idx, const QPointF &pos)
     if (idx == 0)
         return;
 
-    emit objectInserted(m_item);
-
     auto command = new PlaceRectangleCommand;
     command->position = m_item->pos();
     command->opacity = m_item->opacity();
@@ -85,7 +83,10 @@ void PlaceRectangleTool::freezePoint(int idx, const QPointF &pos)
     command->brush = m_item->brush();
     command->topLeft = m_item->rect().topLeft();
     command->bottomRight = m_item->rect().bottomRight();
-    emit placementCompleted(command);
+    emit taskCompleted(command);
+
+    delete m_item;
+    m_item = nullptr;
 
     resetTool();
 }
@@ -130,15 +131,4 @@ void PlaceRectangleTool::setP2(const QPointF &pos)
 {
     m_rect.setBottomRight(pos);
     m_item->setRect(m_rect.normalized());
-}
-
-
-void PlaceRectangleTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void PlaceRectangleTool::desactivate(const QAction *which)
-{
-    Q_UNUSED(which);
 }

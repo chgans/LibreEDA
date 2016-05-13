@@ -329,7 +329,7 @@ QObject *PluginManager::getObjectByName(const QString &name)
 {
     QReadLocker lock(&m_lock);
     QList<QObject *> all = allObjects();
-    foreach (QObject *obj, all) {
+    for (QObject *obj: all) {
         if (obj->objectName() == name)
             return obj;
     }
@@ -348,7 +348,7 @@ QObject *PluginManager::getObjectByClassName(const QString &className)
     const QByteArray ba = className.toUtf8();
     QReadLocker lock(&m_lock);
     QList<QObject *> all = allObjects();
-    foreach (QObject *obj, all) {
+    for (QObject *obj: all) {
         if (obj->inherits(ba.constData()))
             return obj;
     }
@@ -374,19 +374,19 @@ int PluginManager::discoverPlugins()
     while (!searchPaths.isEmpty()) {
         const QDir dir(searchPaths.takeFirst());
         const QFileInfoList files = dir.entryInfoList(QDir::Files | QDir::NoSymLinks);
-        foreach (const QFileInfo &file, files) {
+        for (const QFileInfo &file: files) {
             const QString filePath = file.absoluteFilePath();
             if (QLibrary::isLibrary(filePath))
                 pluginFiles.append(filePath);
         }
         const QFileInfoList dirs = dir.entryInfoList(QDir::Dirs|QDir::NoDotAndDotDot);
-        foreach (const QFileInfo &subdir, dirs)
+        for (const QFileInfo &subdir: dirs)
             searchPaths << subdir.absoluteFilePath();
     }
     m_defaultPluginCollection = new PluginCollection(QString());
     m_pluginCollections.insert(QString(), m_defaultPluginCollection);
 
-    foreach (const QString &pluginFile, pluginFiles) {
+    for (const QString &pluginFile: pluginFiles) {
         PluginSpec *spec = new PluginSpec;
         if (!spec->read(pluginFile)) { // not a Libre EDA plugin
             ExtensionWarning() << QFileInfo(pluginFile).baseName() <<  "read failed with" << spec->errorString();
@@ -433,7 +433,7 @@ int PluginManager::discoverPlugins()
 QList<PluginSpec *> PluginManager::loadQueue()
 {
     QList<PluginSpec *> queue;
-    foreach (PluginSpec *spec, m_pluginSpecs) {
+    for (PluginSpec *spec: m_pluginSpecs) {
         QList<PluginSpec *> circularityCheckQueue;
         loadQueue(spec, queue, circularityCheckQueue);
     }
@@ -495,7 +495,7 @@ bool PluginManager::loadQueue(PluginSpec *spec, QList<PluginSpec *> &queue,
  */
 void PluginManager::resolveDependencies()
 {
-    foreach (PluginSpec *spec, m_pluginSpecs) {
+    for (PluginSpec *spec: m_pluginSpecs) {
         spec->resolveDependencies(m_pluginSpecs);
     }
 }
@@ -512,7 +512,7 @@ void PluginManager::loadPlugins()
 {
     loadQueue();
     resolveDependencies();
-    foreach (PluginSpec *spec, m_pluginSpecs) {
+    for (PluginSpec *spec: m_pluginSpecs) {
         spec->load();
         spec->initialise();
     }
@@ -608,7 +608,7 @@ QHash<QString, PluginCollection *> PluginManager::pluginCollections()
 */
 bool PluginManager::hasError()
 {
-    foreach (PluginSpec *spec, m_pluginSpecs) {
+    for (PluginSpec *spec: m_pluginSpecs) {
         if (spec->hasError())
             return true;
     }
@@ -622,7 +622,7 @@ QSet<PluginSpec *> PluginManager::pluginsRequiringPlugin(PluginSpec *spec)
 {
     QSet<PluginSpec *> dependingPlugins;
     dependingPlugins.insert(spec);
-    foreach (PluginSpec *checkSpec, loadQueue()) {
+    for (PluginSpec *checkSpec: loadQueue()) {
         QHashIterator<PluginDependency, PluginSpec *> depIt(checkSpec->dependencySpecs());
         while (depIt.hasNext()) {
             depIt.next();
@@ -720,7 +720,7 @@ void PluginManager::writeSettings()
         return;
     QStringList tempDisabledPlugins;
     QStringList tempForceEnabledPlugins;
-    foreach (PluginSpec *spec, m_pluginSpecs) {
+    for (PluginSpec *spec: m_pluginSpecs) {
         if (spec->isEnabledByDefault() && !spec->isEnabledBySettings())
             tempDisabledPlugins.append(spec->name());
         if (!spec->isEnabledByDefault() && spec->isEnabledBySettings())

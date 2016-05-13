@@ -81,7 +81,7 @@ void MainWindow::onOpenFileRequested()
     if (fileNames.isEmpty())
         return;
     IEditor *editortoActivate = nullptr;
-    foreach (const QString &fileName, fileNames) {
+    for (const QString &fileName: fileNames) {
         IEditor *editor = EditorManager::openEditor(fileName);
         if (editor != nullptr)
             editortoActivate = editor;
@@ -96,7 +96,7 @@ void MainWindow::onRecentFilesRequested()
     if (DocumentManager::recentFiles().isEmpty())
         return;
     QAction *action;
-    foreach (const QString &file, DocumentManager::recentFiles()) {
+    for (const QString &file: DocumentManager::recentFiles()) {
         action = m_recentFilesMenu->addAction(file);
         connect(action, &QAction::triggered,
                 this, [this, file](bool) {

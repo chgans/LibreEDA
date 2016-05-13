@@ -77,7 +77,7 @@ QFont readFont(const QJsonObject &obj)
 QVector<QPointF> readPointList(const QJsonArray a)
 {
     QVector<QPointF> points;
-    foreach (QJsonValue val, a) {
+    for (QJsonValue val: a) {
         points << QPointF(val.toArray()[0].toDouble(),
                           val.toArray()[1].toDouble());
     }
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
     layerManager->loadFromDefaults();
 
     PcbPalette *palette = paletteManager->activePalette();
-    foreach (DesignLayer *layer, layerManager->allLayers()) {
+    for (DesignLayer *layer: layerManager->allLayers()) {
         QColor color = palette->color(PcbPalette::ColorRole(layer->index() + 1));
         layer->setColor(color);
     }
@@ -190,7 +190,7 @@ int main(int argc, char *argv[])
             return 1;
         }
         QJsonArray items = obj["items"].toArray();
-        foreach (QJsonValue val, items) {
+        for (QJsonValue val: items) {
             if (!val.isObject()) {
                 qDebug() << "Item is not an object";
                 continue;

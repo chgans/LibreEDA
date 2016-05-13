@@ -77,7 +77,7 @@ bool PcbDocument::load(QString *errorString, const QString &fileName)
         return false;
     }
     QList<GraphicsItem *> items;
-    foreach (QJsonValue value, jsonValue.toArray()) {
+    for (QJsonValue value: jsonValue.toArray()) {
         if (!value.isObject()) {
             *errorString = QString("Malformed document: bad item");
             return false;

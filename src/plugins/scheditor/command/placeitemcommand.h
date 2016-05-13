@@ -73,10 +73,10 @@ public:
     qreal radius;
 };
 
-class PlaceCircularCommand: public PlacementCommand
+class PlaceCircularArcCommand: public PlacementCommand
 {
 public:
-    PlaceCircularCommand(UndoCommand *parent = nullptr);
+    PlaceCircularArcCommand(UndoCommand *parent = nullptr);
 
     void undo();
     void redo();
@@ -147,6 +147,18 @@ public:
 
     QString text;
     QFont font;
+};
+
+class MoveCommand: public UndoCommand
+{
+public:
+    MoveCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QList<quint64> itemIds;
+    QPointF delta;
 };
 
 #endif // PLACEITEMCOMMAND_H

@@ -10,7 +10,7 @@ IGraphicsItemObserver::IGraphicsItemObserver():
 
 IGraphicsItemObserver::~IGraphicsItemObserver()
 {
-    foreach(IGraphicsObservableItem *item, m_items) {
+    for (IGraphicsObservableItem *item: m_items) {
         removeObservedItem(item);
     }
 }

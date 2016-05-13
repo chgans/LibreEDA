@@ -7,6 +7,7 @@
 class SchView;
 class SchScene;
 class SchEditorSettings;
+class UndoCommand;
 
 class QWidget;
 class QAction;
@@ -35,11 +36,9 @@ public:
     void setAction(QAction *action);
     QAction *action() const;
 
-    virtual void activate(const QAction *which, SchView *view) = 0;
-    virtual void desactivate(const QAction *which, SchView *view) = 0;
-
 signals:
     void finished();
+    void taskCompleted(UndoCommand *command);
 
 public slots:
     virtual void cancel();

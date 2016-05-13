@@ -15,7 +15,7 @@ IGraphicsObservableItem::IGraphicsObservableItem():
 
 IGraphicsObservableItem::~IGraphicsObservableItem()
 {
-    foreach(IGraphicsItemObserver *observer, m_observers) {
+    for (IGraphicsItemObserver *observer: m_observers) {
         removeItemObserver(observer);
     }
 }
@@ -64,7 +64,7 @@ QList<IGraphicsItemObserver *> IGraphicsObservableItem::itemObservers() const
 void IGraphicsObservableItem::notifyObservers()
 {
     Q_ASSERT(!m_transactionInProgress);
-    foreach (IGraphicsItemObserver *observer, m_observers) {
+    for (IGraphicsItemObserver *observer: m_observers) {
         observer->onItemNotification(this);
     }
 }

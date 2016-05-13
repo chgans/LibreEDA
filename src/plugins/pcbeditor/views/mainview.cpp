@@ -83,14 +83,14 @@ void MainView::removeLayer(DesignLayer *layer)
 
 void MainView::addLayers(const QList<DesignLayer *> &layers)
 {
-    foreach (DesignLayer *layer, layers) {
+    for (DesignLayer *layer: layers) {
         addLayer(layer);
     }
 }
 
 void MainView::removeLayers(const QList<DesignLayer *> &layers)
 {
-    foreach (DesignLayer *layer, layers) {
+    for (DesignLayer *layer: layers) {
         removeLayer(layer);
     }
 }
@@ -142,7 +142,7 @@ void MainView::setPalette(PcbPalette *palette)
     m_palette = palette;
     Q_ASSERT(palette);
 
-    foreach (DesignLayer *layer, m_indexToLayer.values()) {
+    for (DesignLayer *layer: m_indexToLayer.values()) {
         layer->setColor(m_palette->color(PcbPalette::ColorRole(layer->index() + 1)));
     }
 }
@@ -154,7 +154,7 @@ PcbPalette *MainView::palette() const
 
 void MainView::updateLayerDisplayModes()
 {
-    foreach (DesignLayer *layer, layers()) {
+    for (DesignLayer *layer: layers()) {
         if (m_activeLayer == layer) {
             layer->setColorMode(DesignLayer::NormalColorMode);
             continue;
@@ -183,7 +183,7 @@ void MainView::updateLayerDisplayModes()
 void MainView::updateLayerZValues()
 {
     int z = 0;
-    foreach (DesignLayer *layer, m_indexToLayer.values()) {
+    for (DesignLayer *layer: m_indexToLayer.values()) {
         if (layer->index() != m_activeLayer->index())
             layer->setZValue(z++);
     }
@@ -259,7 +259,7 @@ void MainView::setScene(Scene *scene)
     m_scene = scene;
 
     if (m_scene == nullptr) {
-        foreach (DesignLayer *layer, m_indexToLayer.values()) {
+        for (DesignLayer *layer: m_indexToLayer.values()) {
             m_scene->removeItem(layer);
         }
         return;
@@ -270,7 +270,7 @@ void MainView::setScene(Scene *scene)
     m_connectivity->setBuddyView(this);
     m_headsUp->setBuddyView(this);
 
-    foreach (DesignLayer *layer, m_indexToLayer.values()) {
+    for (DesignLayer *layer: m_indexToLayer.values()) {
         m_scene->addItem(layer);
     }
 
@@ -401,7 +401,7 @@ void MainView::drawForeground(QPainter *painter, const QRectF &rect)
         QPainterPath path1;
         path1.addRect(rect);
         QPainterPath path2;
-        foreach (QGraphicsItem *item, m_maskingItems) {
+        for (QGraphicsItem *item: m_maskingItems) {
             qDebug() << __FUNCTION__ << item->boundingRect();
             QRectF r = item->boundingRect().adjusted(-1, -1, 1, 1);
             r.translate(item->pos());
@@ -423,7 +423,7 @@ void MainView::mousePressEvent(QMouseEvent *event)
     if (items(event->pos()).size() > 1) {
         QList<QGraphicsItem *> allItems = items(event->pos());
         QList<QGraphicsItem *> enabledItems;
-        foreach (QGraphicsItem *item, allItems) {
+        for (QGraphicsItem *item: allItems) {
             if (item->isEnabled())
                 enabledItems << item;
         }

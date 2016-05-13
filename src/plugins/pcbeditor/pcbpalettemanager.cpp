@@ -34,7 +34,7 @@ void PcbPaletteManager::add(PcbPalette *palette)
 
 void PcbPaletteManager::add(QList<PcbPalette *> palettes)
 {
-    foreach (PcbPalette *palette, palettes) {
+    for (PcbPalette *palette: palettes) {
         if (!m_palettes.contains(palette)) {
             m_palettes.append(palette);
             emit paletteAdded(palette);
@@ -49,7 +49,7 @@ void PcbPaletteManager::remove(PcbPalette *palette)
 
 void PcbPaletteManager::remove(QList<PcbPalette *> palettes)
 {
-    foreach (PcbPalette *palette, palettes) {
+    for (PcbPalette *palette: palettes) {
         if (m_palettes.contains(palette)) {
             m_palettes.removeOne(palette);
             emit paletteRemoved(palette);
@@ -87,12 +87,12 @@ void PcbPaletteManager::loadPalettes()
 {
     qDebug() << "Palette manager: Loading palettes";
     m_palettes.clear();
-    foreach (PcbPalette *palette, m_palettes)
+    for (PcbPalette *palette: m_palettes)
        emit paletteRemoved(palette);
     qDeleteAll(m_palettes);
     m_palettes << loadPalettes(m_systemPath)
                << loadPalettes(m_userPath);
-    foreach (PcbPalette *palette, m_palettes)
+    for (PcbPalette *palette: m_palettes)
        emit paletteAdded(palette);
     qDebug() << "Palette manager: Loaded " << count() << "palettes";
 }
@@ -113,7 +113,7 @@ QList<PcbPalette *> PcbPaletteManager::loadPalettes(const QString &path)
     QStringList filters;
     filters << "*.LedaPcbPalette";
     QList<PcbPalette *> palettes;
-    foreach (QFileInfo fileInfo, dir.entryInfoList(filters)) {
+    for (QFileInfo fileInfo: dir.entryInfoList(filters)) {
         PcbPalette *palette = new PcbPalette();
         palettes.append(palette);
         QString id = fileInfo.baseName();

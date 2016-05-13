@@ -52,7 +52,7 @@ DocumentManager *DocumentManager::instance()
 
 void DocumentManager::addDocuments(QList<IDocument *> documents)
 {
-    foreach (IDocument *document, documents)
+    for (IDocument *document: documents)
         addDocument(document);
 }
 
@@ -78,7 +78,7 @@ QList<IDocument *> DocumentManager::documents()
 QList<IDocument *> DocumentManager::modifiedDocuments()
 {
     QList<IDocument *> result;
-    foreach (IDocument *document, m_documents) {
+    for (IDocument *document: m_documents) {
         if (document->isModified())
             result.append(document);
     }

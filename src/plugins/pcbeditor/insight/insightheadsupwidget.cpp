@@ -123,14 +123,14 @@ void InsightHeadsUpWidget::setItemFont(Item item, const QFont &font)
 
 void InsightHeadsUpWidget::setItemFont(Items items, const QFont &font)
 {
-    foreach (QWidget *widget, itemWidgets(items)) {
+    for (QWidget *widget: itemWidgets(items)) {
         widget->setFont(font);
     }
 }
 
 QFont InsightHeadsUpWidget::itemFont(InsightHeadsUpWidget::Item item) const
 {
-    foreach (QWidget *widget, itemWidgets(item)) {
+    for (QWidget *widget: itemWidgets(item)) {
         return widget->font();
     }
     return QFont();
@@ -144,7 +144,7 @@ void InsightHeadsUpWidget::setItemColor(InsightHeadsUpWidget::Item item, const Q
 
 void InsightHeadsUpWidget::setItemColor(Items items, const QColor &color)
 {
-    foreach (QWidget *widget, itemWidgets(items)) {
+    for (QWidget *widget: itemWidgets(items)) {
         QPalette p = widget->palette();
         p.setColor(QPalette::Text, color);
         widget->setPalette(p);
@@ -153,7 +153,7 @@ void InsightHeadsUpWidget::setItemColor(Items items, const QColor &color)
 
 QColor InsightHeadsUpWidget::itemColor(InsightHeadsUpWidget::Item item) const
 {
-    foreach (QWidget *widget, itemWidgets(item)) {
+    for (QWidget *widget: itemWidgets(item)) {
         return widget->palette().color(QPalette::WindowText);
     }
     return QColor();
@@ -502,7 +502,7 @@ void InsightHeadsUpWidget::updateItemWidget(InsightHeadsUpWidget::Item item)
             (m_displayedItemsHover.testFlag(item) && m_displayMode == HoverMode);
 
     prepareUpdateContent();
-    foreach (QWidget *widget, itemWidgets(item)) {
+    for (QWidget *widget: itemWidgets(item)) {
         widget->setVisible(enabled);
     }
     updateContent();

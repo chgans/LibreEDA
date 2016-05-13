@@ -136,7 +136,7 @@ QList<QPointF> GraphicsEllipseItem::nearestPoints(QPointF pos) const
 QVariant GraphicsEllipseItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
+        for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
             handle->setVisible(isSelected());
         }
     }

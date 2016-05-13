@@ -56,7 +56,7 @@ void ColorProfileEditor::initialise()
     ui->profileTable->setRowCount(m_manager->palettes().count());
     ui->profileTable->setColumnCount(2);
     int i = 0;
-    foreach (const PcbPalette *palette, m_manager->palettes()) {
+    for (const PcbPalette *palette: m_manager->palettes()) {
         QString id = palette->name();
         QTableWidgetItem *nameItem = new QTableWidgetItem();
         nameItem->setText(id);
@@ -94,7 +94,7 @@ void ColorProfileEditor::populateColorView()
         groupItem->setData(0, Qt::UserRole,
                            QVariant::fromValue<DesignLayer::Category>(category));
 
-        foreach (DesignLayer *layer, manager->layersForCategory(category)) {
+        for (DesignLayer *layer: manager->layersForCategory(category)) {
             QTreeWidgetItem *colorItem =  new QTreeWidgetItem();
             PcbPalette::ColorRole role = PcbPalette::ColorRole(layer->index() + 1);
             QColor color = m_activeProfile->color(role);

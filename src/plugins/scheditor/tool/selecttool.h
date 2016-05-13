@@ -1,5 +1,5 @@
-#ifndef GRAPHICSSELECTTOOL_H
-#define GRAPHICSSELECTTOOL_H
+#ifndef SELECTTOOL_H
+#define SELECTTOOL_H
 
 #include "tool/interactivetool.h"
 
@@ -10,13 +10,13 @@ class AbstractGraphicsHandle;
 
 class QRubberBand;
 
-class GraphicsSelectTool : public InteractiveTool
+class SelectTool : public InteractiveTool
 {
     Q_OBJECT
 
 public:
-    explicit GraphicsSelectTool(QObject *parent = nullptr);
-    ~GraphicsSelectTool();
+    explicit SelectTool(QObject *parent = nullptr);
+    ~SelectTool();
 
 private:
     enum ToolState {
@@ -34,7 +34,8 @@ private:
     Operation m_operation;
 
     QPoint m_mousePressPosition;
-    QPointF m_lastMouseScenePosition;
+    QPointF m_lastMousePosition;
+    QPointF mouseDeltaPosition() const;
     SchItem *m_item;
     QList<SchItem *> m_items;
     QList<SchItem *> m_phantomItems;
@@ -47,8 +48,6 @@ private:
     // GraphicsTool interface
 public:
     void setView(SchView *view);
-    virtual void activate(const QAction *which, SchView *view);
-    virtual void desactivate(const QAction *which, SchView *view);
 
     // GraphicsTool interface
 public slots:
@@ -63,4 +62,4 @@ public:
     virtual void keyReleaseEvent(QKeyEvent *event);
 };
 
-#endif // GRAPHICSSELECTTOOL_H
+#endif // SELECTTOOL_H

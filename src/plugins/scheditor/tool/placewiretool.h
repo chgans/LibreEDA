@@ -21,11 +21,6 @@ private:
     GraphicsWireItem *m_item;
     PenSettingsWidget *m_penSettingsWidget;
 
-    // GraphicsTool interface
-public:
-    virtual void activate(const QAction *which);
-    virtual void desactivate(const QAction *which);
-
     // PlacementTool interface
 public:
     virtual SchItem *beginInsert(const QPointF &pos);

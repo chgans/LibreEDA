@@ -1,5 +1,7 @@
 #include "tool/placeellipsetool.h"
 #include "item/graphicsellipseitem.h"
+#include "command/placeitemcommand.h"
+
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
 
@@ -39,16 +41,6 @@ PlaceEllipseTool::~PlaceEllipseTool()
 
 }
 
-void PlaceEllipseTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void PlaceEllipseTool::desactivate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
 SchItem *PlaceEllipseTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsEllipseItem();
@@ -85,7 +77,20 @@ void PlaceEllipseTool::freezePoint(int idx, const QPointF &pos)
     if ( idx != 2)
         return;
 
-    emit objectInserted(m_item);
+    auto command = new PlaceEllipseCommand;
+    command->position = m_item->pos();
+    command->opacity = m_item->opacity();
+    command->zValue = m_item->zValue();
+    command->pen = m_item->pen();
+    command->brush = m_item->brush();
+    command->center = QPointF(0, 0);
+    command->xRadius = m_item->xRadius();
+    command->yRadius = m_item->yRadius();
+    emit taskCompleted(command);
+
+    delete m_item;
+    m_item = nullptr;
+
     resetTool();
 }
 

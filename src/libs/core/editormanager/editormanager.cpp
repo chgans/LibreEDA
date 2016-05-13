@@ -55,7 +55,7 @@ EditorManager *EditorManager::instance()
 
 void EditorManager::initialise()
 {
-    foreach (IEditorFactory *factory, PluginManager::getObjects<IEditorFactory>()) {
+    for (IEditorFactory *factory: PluginManager::getObjects<IEditorFactory>()) {
         m_factoryMap[factory->fileExtension()] = factory;
     }
 }
@@ -133,7 +133,7 @@ QStringList EditorManager::supportedFileExtensions()
 QString EditorManager::supportedFileFilter()
 {
     QStringList filters;
-    foreach (const QString &ext, m_factoryMap.keys()) {
+    for (const QString &ext: m_factoryMap.keys()) {
         filters.append(QString("*.%1").arg(ext));
     }
     return filters.join(' ');

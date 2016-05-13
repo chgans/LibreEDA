@@ -129,7 +129,7 @@ SchItem *GraphicsPolygonItem::clone()
 QVariant GraphicsPolygonItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (AbstractGraphicsHandle *handle, m_idToHandle) {
+        for (AbstractGraphicsHandle *handle: m_idToHandle) {
             handle->setVisible(isSelected());
         }
     }

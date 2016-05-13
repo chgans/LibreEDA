@@ -105,7 +105,7 @@ IPlugin::IPlugin(QObject *parent) : QObject(parent)
  */
 IPlugin::~IPlugin()
 {
-    foreach (QObject *obj, m_addedObjectsInReverseOrder)
+    for (QObject *obj: m_addedObjectsInReverseOrder)
         PluginManager::removeObject(obj);
     qDeleteAll(m_addedObjectsInReverseOrder);
     m_addedObjectsInReverseOrder.clear();

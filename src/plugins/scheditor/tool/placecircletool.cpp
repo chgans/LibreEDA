@@ -2,6 +2,7 @@
 #include "item/graphicscircleitem.h"
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
+#include "command/placeitemcommand.h"
 
 #include <QAction>
 
@@ -38,16 +39,6 @@ PlaceCircleTool::~PlaceCircleTool()
 {
 }
 
-void PlaceCircleTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void PlaceCircleTool::desactivate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
 SchItem *PlaceCircleTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsCircleItem();
@@ -76,7 +67,19 @@ void PlaceCircleTool::freezePoint(int idx, const QPointF &pos)
     if ( idx == 0)
         return;
 
-    emit objectInserted(m_item);
+    auto command = new PlaceCircleCommand;
+    command->position = m_item->pos();
+    command->opacity = m_item->opacity();
+    command->zValue = m_item->zValue();
+    command->pen = m_item->pen();
+    command->brush = m_item->brush();
+    command->center = QPointF(0, 0);
+    command->radius = m_item->radius();
+    emit taskCompleted(command);
+
+    delete m_item;
+    m_item = nullptr;
+
     resetTool();
 }
 

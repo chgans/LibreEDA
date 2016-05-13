@@ -33,16 +33,6 @@ PlaceBezierTool::~PlaceBezierTool()
 
 }
 
-void PlaceBezierTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void PlaceBezierTool::desactivate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
 SchItem *PlaceBezierTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsBezierItem();
@@ -86,8 +76,12 @@ void PlaceBezierTool::movePoint(int idx, const QPointF &pos)
 void PlaceBezierTool::endInsert(const QPointF &pos)
 {
     Q_UNUSED(pos);
-    emit objectInserted(m_item);
+
+    emit taskCompleted(nullptr);
+
+    delete m_item;
     m_item = nullptr;
+
     resetTool();
 }
 

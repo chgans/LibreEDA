@@ -39,16 +39,6 @@ PlaceArcTool::~PlaceArcTool()
 
 }
 
-void PlaceArcTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void PlaceArcTool::desactivate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
 SchItem *PlaceArcTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsArcItem();
@@ -69,7 +59,11 @@ void PlaceArcTool::freezePoint(int idx, const QPointF &pos)
 
     if (idx != 4)
         return;
-    emit objectInserted(m_item);
+    emit taskCompleted(nullptr);
+
+    delete m_item;
+    m_item = nullptr;
+
     resetTool();
 }
 

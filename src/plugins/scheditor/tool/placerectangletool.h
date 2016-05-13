@@ -27,11 +27,6 @@ private:
     QRectF m_rect;
 
     // GraphicsTool interface
-public:
-    virtual void activate(const QAction *which);
-    virtual void desactivate(const QAction *which);
-
-    // GraphicsTool interface
 public slots:
     virtual void cancel();
 

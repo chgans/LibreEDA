@@ -1,5 +1,6 @@
 #include "tool/placepolylinetool.h"
 #include "item/graphicslineitem.h"
+
 #include "utils/widgets/pensettingswidget.h"
 #include "handle/abstractgraphicshandle.h"
 
@@ -31,16 +32,6 @@ void PlacePolyineTool::cancel()
 {
 }
 
-void PlacePolyineTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void PlacePolyineTool::desactivate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
 SchItem *PlacePolyineTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsLineItem();
@@ -67,7 +58,11 @@ void PlacePolyineTool::freezePoint(int idx, const QPointF &pos)
     if (idx == 0)
         return;
 
-    emit objectInserted(m_item);
+    emit taskCompleted(nullptr);
+
+    delete m_item;
+    m_item = nullptr;
+
     resetTool();
 }
 

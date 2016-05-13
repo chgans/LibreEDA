@@ -110,7 +110,7 @@ bool SchItem::isYMirrored() const
 QList<QPointF> SchItem::hotSpots() const
 {
     QList<QPointF> points;
-    foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
+    for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
         Q_ASSERT(handle->parentItem() == this);
         points.append(handle->pos());
     }
@@ -246,7 +246,7 @@ void SchItem::removeHandle(AbstractGraphicsHandle *handle)
 void SchItem::removeAllHandles()
 {
     blockItemNotification();
-    foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
+    for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
         removeObservedItem(handle);
         handle->setParentItem(nullptr);
         delete handle;

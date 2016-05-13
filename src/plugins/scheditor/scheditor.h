@@ -13,6 +13,8 @@ class QUndoStack;
 class SchView;
 class SchScene;
 class InteractiveTool;
+class PlacementTool;
+class SelectTool;
 class TaskDockWidget;
 class PropertyEditorDockWidget;
 class UndoDockWidget;
@@ -42,10 +44,11 @@ private:
     QUndoStack *m_undoStack;
 
     void addInteractiveTools();
-    void addInteractiveTool(InteractiveTool *tool);
-    QActionGroup *m_interactiveToolsActionGroup = nullptr;
+    QActionGroup *m_interactiveActionGroup = nullptr;
+    QToolBar *m_interactiveToolBar = nullptr;
+    SelectTool *m_selectTool;
+    QList<PlacementTool *> m_placementTools;
     QList<InteractiveTool *> m_interactiveTools;
-    QToolBar *m_interactiveToolsToolBar = nullptr;
 
     void addSnapTools();
     QToolBar *m_snapToolBar = nullptr;

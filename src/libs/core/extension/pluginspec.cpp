@@ -547,10 +547,10 @@ bool PluginSpec::resolveDependencies(const QList<PluginSpec *> &specs)
         m_state = PluginSpec::Read;
 
     QHash<PluginDependency, PluginSpec *> resolvedDependencies;
-    foreach (const PluginDependency &dependency, m_dependencies) {
+    for (const PluginDependency &dependency: m_dependencies) {
         PluginSpec *found = 0;
 
-        foreach (PluginSpec *spec, specs) {
+        for (PluginSpec *spec: specs) {
             if (spec->provides(dependency.name, dependency.version)) {
                 found = spec;
                 break;
@@ -755,7 +755,7 @@ bool PluginSpec::readMetaData(const QJsonObject &metaData)
         return reportError("Dependencies is not an array.");
     if (!value.isUndefined()) {
         QJsonArray array = value.toArray();
-        foreach (QJsonValue depVal, array) {
+        for (QJsonValue depVal: array) {
             if (!depVal.isObject()) {
                 return reportError("Dependency item is not an object.");
             }
@@ -791,7 +791,7 @@ bool PluginSpec::readMetaData(const QJsonObject &metaData)
         return reportError("Invalid argument array");
     if (!value.isUndefined()) {
         QJsonArray array = value.toArray();
-        foreach (const QJsonValue &v, array) {
+        for (const QJsonValue &v: array) {
             if (!v.isObject())
                 return reportError("Invalid argument entry");
             QJsonObject argumentObject = v.toObject();

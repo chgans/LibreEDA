@@ -86,15 +86,10 @@ InteractiveTool *SchView::tool()
 
 void SchView::setTool(InteractiveTool *tool)
 {
-    if (m_tool) {
-        m_tool->desactivate(m_tool->action(), this);
-    }
-
     m_tool = tool;
 
     if (m_tool) {
         m_tool->setView(this);
-        m_tool->activate(tool->action(), this);
     }
 }
 

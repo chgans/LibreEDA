@@ -235,6 +235,6 @@ void DesignLayer::setColorMode(DesignLayer::ColorMode mode)
 
 void DesignLayer::updateItems()
 {
-    foreach(GraphicsItem *item, m_items)
+    for (GraphicsItem *item: m_items)
         item->update();
 }

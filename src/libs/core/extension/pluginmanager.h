@@ -31,7 +31,7 @@ public:
         QReadLocker lock(&m_lock);
         QList<T *> results;
         QList<QObject *> all = allObjects();
-        foreach (QObject *obj, all) {
+        for (QObject *obj: all) {
             T *result = qobject_cast<T *>(obj);
             if (result)
                 results += result;
@@ -44,7 +44,7 @@ public:
         QReadLocker lock(&m_lock);
         QList<T *> results;
         QList<QObject *> all = allObjects();
-        foreach (QObject *obj, all) {
+        for (QObject *obj: all) {
             T *result = qobject_cast<T *>(obj);
             if (result && predicate(result))
                 results += result;
@@ -55,7 +55,7 @@ public:
     {
         QReadLocker lock(&m_lock);
         QList<QObject *> all = allObjects();
-        foreach (QObject *obj, all) {
+        for (QObject *obj: all) {
             if (T *result = qobject_cast<T *>(obj))
                 return result;
         }
@@ -65,7 +65,7 @@ public:
     {
         QReadLocker lock(&m_lock);
         QList<QObject *> all = allObjects();
-        foreach (QObject *obj, all) {
+        for (QObject *obj: all) {
             if (T *result = qobject_cast<T *>(obj))
                 if (predicate(result))
                     return result;

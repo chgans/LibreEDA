@@ -372,7 +372,7 @@ SchItem *GraphicsBezierItem::clone()
 {
     GraphicsBezierItem *item = new GraphicsBezierItem();
     SchItem::cloneTo(item);
-    foreach (const QPointF &point, points()) {
+    for (const QPointF &point: points()) {
         item->addPoint(point);
     }
     return item;
@@ -394,7 +394,7 @@ void GraphicsBezierItem::itemNotification(IGraphicsObservableItem *item)
 QVariant GraphicsBezierItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
+        for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
             handle->setVisible(isSelected());
         }
     }

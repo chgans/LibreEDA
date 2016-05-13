@@ -20,6 +20,7 @@ public:
 public slots:
     void applySettings(const SchEditorSettings &settings);
     void addDocumentItem(quint64 id, const SchEditorDocument::Item *item);
+    void updateDocumentItem(quint64 id, const SchEditorDocument::Item *item);
     void removeDocumentItem(quint64 id);
 
 private:

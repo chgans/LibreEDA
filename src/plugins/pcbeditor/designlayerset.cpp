@@ -106,7 +106,7 @@ void DesignLayerSet::add(int index)
 void DesignLayerSet::add(const QList<int> &indexes)
 {
     bool changed = false;
-    foreach (int idx, indexes) {
+    for (int idx: indexes) {
         if (!m_layers.contains(idx)) {
             changed = true;
             m_layers.append(idx);
@@ -124,7 +124,7 @@ void DesignLayerSet::remove(int index)
 void DesignLayerSet::remove(const QList<int> &indexes)
 {
     bool changed = false;
-    foreach (int idx, indexes)
+    for (int idx: indexes)
         changed |= m_layers.removeOne(idx);
     if (changed)
         emit layersChanged(m_layers);

@@ -18,12 +18,12 @@ TaskDockWidget::TaskDockWidget(QWidget *parent, Qt::WindowFlags flags) :
 
 void TaskDockWidget::setTool(InteractiveTool *tool)
 {
-    foreach (QWidget *oldWidget, m_widgets) {
+    for (QWidget *oldWidget: m_widgets) {
         widget()->layout()->removeWidget(oldWidget);
         oldWidget->hide();
     }
     m_widgets = tool->optionWidgets();
-    foreach (QWidget *newWidget, m_widgets) {
+    for (QWidget *newWidget: m_widgets) {
         widget()->layout()->addWidget(newWidget);
         newWidget->show();
     }

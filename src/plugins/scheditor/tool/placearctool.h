@@ -22,11 +22,6 @@ private:
     PenSettingsWidget *m_penSettingsWidget;
     BrushSettingsWidget *m_brushSettingsWidget;
 
-    // GraphicsTool interface
-public:
-    virtual void activate(const QAction *which);
-    virtual void desactivate(const QAction *which);
-
     // PlacementTool interface
 public:
     virtual SchItem *beginInsert(const QPointF &pos);

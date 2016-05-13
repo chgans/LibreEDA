@@ -134,7 +134,7 @@ void WriterPrivate::writeItem(const Item *item)
 void WriterPrivate::writeItemList(const char *listTag, const QList<Item *> &items)
 {
     xmlWriter->writeStartElement(listTag);
-    foreach (Item *item, items) {
+    for (Item *item: items) {
        writeItem(item);
     }
     xmlWriter->writeEndElement();
@@ -276,7 +276,7 @@ void WriterPrivate::writePoint(const char *tag, const QPointF &point)
 void WriterPrivate::writePointList(const char *listTag, const char *pointTag, const QList<QPointF> &pointList)
 {
     xmlWriter->writeStartElement(listTag);
-    foreach (const QPointF &pos, pointList)
+    for (const QPointF &pos: pointList)
         writePoint(pointTag, pos);
     xmlWriter->writeEndElement();
 }

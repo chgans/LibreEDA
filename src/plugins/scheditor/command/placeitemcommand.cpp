@@ -71,26 +71,29 @@ PlaceCircleCommand::PlaceCircleCommand(UndoCommand *parent):
 
 void PlaceCircleCommand::undo()
 {
-
+    removeItem();
 }
 
 void PlaceCircleCommand::redo()
 {
-
+    auto circle = new xdl::symbol::CircleItem;
+    circle->center = center;
+    circle->radius = radius;
+    placeItem(circle);
 }
 
-PlaceCircularCommand::PlaceCircularCommand(UndoCommand *parent):
+PlaceCircularArcCommand::PlaceCircularArcCommand(UndoCommand *parent):
     PlacementCommand (parent)
 {
     setText("Place circular arc");
 }
 
-void PlaceCircularCommand::undo()
+void PlaceCircularArcCommand::undo()
 {
 
 }
 
-void PlaceCircularCommand::redo()
+void PlaceCircularArcCommand::redo()
 {
 
 }
@@ -103,12 +106,16 @@ PlaceEllipseCommand::PlaceEllipseCommand(UndoCommand *parent):
 
 void PlaceEllipseCommand::undo()
 {
-
+    removeItem();
 }
 
 void PlaceEllipseCommand::redo()
 {
-
+    auto ellipse = new xdl::symbol::EllipseItem;
+    ellipse->center = center;
+    ellipse->xRadius = xRadius;
+    ellipse->yRadius = yRadius;
+    placeItem(ellipse);
 }
 
 PlaceEllipticalArcCommand::PlaceEllipticalArcCommand(UndoCommand *parent):
@@ -151,12 +158,14 @@ PlacePolygonCommand::PlacePolygonCommand(UndoCommand *parent):
 
 void PlacePolygonCommand::undo()
 {
-
+    removeItem();
 }
 
 void PlacePolygonCommand::redo()
 {
-
+    auto polygon = new xdl::symbol::PolygonItem;
+    polygon->vertices = vertices;
+    placeItem(polygon);
 }
 
 PlaceLabelCommand::PlaceLabelCommand(UndoCommand *parent):
@@ -173,4 +182,39 @@ void PlaceLabelCommand::undo()
 void PlaceLabelCommand::redo()
 {
 
+}
+
+MoveCommand::MoveCommand(UndoCommand *parent):
+    UndoCommand (parent)
+{
+    setText("Move ? item(s)");
+}
+
+void MoveCommand::undo()
+{
+    for (quint64 id: itemIds)
+    {
+        auto item = document()->drawingItem(id);
+        if (item == nullptr)
+        {
+            continue;
+        }
+        item->position -= delta;
+        document()->updateDrawingItem(id);
+    }
+}
+
+void MoveCommand::redo()
+{
+    for (quint64 id: itemIds)
+    {
+        auto item = document()->drawingItem(id);
+        if (item == nullptr)
+        {
+            continue;
+        }
+        item->position += delta;
+        document()->updateDrawingItem(id);
+    }
+    setText(QString("Move %1 item(s)").arg(itemIds.count()));
 }

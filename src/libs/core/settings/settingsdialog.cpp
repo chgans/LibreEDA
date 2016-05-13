@@ -188,11 +188,11 @@ void SettingsDialog::done(int code)
 
 void SettingsDialog::accept()
 {
-    foreach (ISettingsPage *page, m_visitedPages)
+    for (ISettingsPage *page: m_visitedPages)
     {
         page->apply();
     }
-    foreach (ISettingsPage *page, m_pages)
+    for (ISettingsPage *page: m_pages)
     {
         page->finish();
     }
@@ -201,7 +201,7 @@ void SettingsDialog::accept()
 
 void SettingsDialog::reject()
 {
-    foreach (ISettingsPage *page, m_pages)
+    for (ISettingsPage *page: m_pages)
     {
         page->finish();
     }
@@ -210,7 +210,7 @@ void SettingsDialog::reject()
 
 void SettingsDialog::apply()
 {
-    foreach (ISettingsPage *page, m_visitedPages)
+    for (ISettingsPage *page: m_visitedPages)
     {
         page->apply();
     }

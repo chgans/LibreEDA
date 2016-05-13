@@ -122,7 +122,7 @@ void PcbPaletteManagerDialog::initialise()
     QString current = mng->activePaletteIdentifier();
     m_paletteList->clear();
     m_colorList->clear();
-    foreach (const PcbPalette *palette, mng->palettes()) {
+    for (const PcbPalette *palette: mng->palettes()) {
         QString id = palette->name();
         QListWidgetItem *item = new QListWidgetItem(id);
         m_paletteList->addItem(item);
@@ -139,7 +139,7 @@ void PcbPaletteManagerDialog::activatePalette(QListWidgetItem *item)
     QString id = item->text();
     const PcbPalette *palette = mng->palette(id);
     m_colorList->clear();
-    foreach(PcbPalette::ColorRole role, palette->allValidColorRoles()) {
+    for (PcbPalette::ColorRole role: palette->allValidColorRoles()) {
         QColor color = palette->color(role);
         QIcon icon = makeIcon(color);
         QString text = palette->colorRoleLabel(role);
@@ -216,7 +216,7 @@ void PcbPaletteManagerDialog::importAltiumProfile()
 
     PcbPaletteManager *mng = PcbPaletteManager::instance();
 
-    foreach (QString filename, files) {
+    for (QString filename: files) {
         QFileInfo fileInfo(filename);
         QString id = fileInfo.baseName();
         // FIXME: do a lowercase compare + unix vs windoz vs mac
@@ -248,7 +248,7 @@ void PcbPaletteManagerDialog::importAltiumProfile()
         PcbPalette *palette = new PcbPalette;
         //settings.beginGroup("LayerColors");
         int errors = 0;
-        foreach(PcbPalette::ColorRole role, palette->allValidColorRoles()) {
+        for (PcbPalette::ColorRole role: palette->allValidColorRoles()) {
             QString name = palette->colorRoleToAltiumName(role);
             QString value = settings.value(name).toString();
             QColor color = fromAltium(value);

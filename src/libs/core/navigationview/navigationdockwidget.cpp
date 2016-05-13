@@ -41,7 +41,7 @@ void NavigationDockWidget::setFactories(const QList<INavigationViewFactory *> &f
     m_factories = factories;
 
     // loadFactories()
-    foreach (INavigationViewFactory *factory, m_factories) {
+    for (INavigationViewFactory *factory: m_factories) {
         m_comboBox->addItem(factory->displayName(),
                             QVariant::fromValue<NavigationView *>(factory->createView()));
     }
@@ -69,7 +69,7 @@ void NavigationDockWidget::activateNavigationView(int index)
     m_toolBar->clear();
     QAction *action = m_toolBar->addWidget(m_comboBox);
     action->setVisible(true);
-    foreach (QWidget *widget, view->toolBarWidgets) {
+    for (QWidget *widget: view->toolBarWidgets) {
         m_toolBar->addWidget(widget);
     }
     setWidget(view->widget);

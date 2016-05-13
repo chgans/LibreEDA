@@ -197,7 +197,7 @@ QList<QPointF> GraphicsRectItem::nearestPoints(QPointF pos) const
 
     QList<QPointF> xPoints;
     QPointF xPoint;
-    foreach (const QLineF &line, lines) {
+    for (const QLineF &line: lines) {
         QLineF::IntersectType xType = line.intersect(line.normalVector().translated(pos), &xPoint);
         if (xType == QLineF::BoundedIntersection)
             xPoints << xPoint;
@@ -237,7 +237,7 @@ void GraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 QVariant GraphicsRectItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (AbstractGraphicsHandle *handle, m_handleToId.keys()) {
+        for (AbstractGraphicsHandle *handle: m_handleToId.keys()) {
             handle->setVisible(isSelected());
         }
     }

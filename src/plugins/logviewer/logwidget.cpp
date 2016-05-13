@@ -157,7 +157,7 @@ void LogWidget::goToPrevious()
 void LogWidget::updateCategoryList(const QStringList &categories)
 {
     m_categoriesMenu->clear();
-    foreach (QString category, categories) {
+    for (QString category: categories) {
         QAction *action = new QAction(m_categoriesMenu);
         action->setCheckable(true);
         action->setText(category);

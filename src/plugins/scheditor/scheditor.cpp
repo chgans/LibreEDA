@@ -6,7 +6,7 @@
 #include "scheditorsettings.h"
 
 #include "tool/placebeziertool.h"
-#include "tool/graphicsselecttool.h"
+#include "tool/selecttool.h"
 #include "tool/placepolylinetool.h"
 #include "tool/placerectangletool.h"
 #include "tool/placecircletool.h"
@@ -51,7 +51,7 @@ SchEditor::~SchEditor()
 {
     qDeleteAll(m_pathPointToolBar->actions());
     qDeleteAll(m_snapToolBar->actions());
-    qDeleteAll(m_interactiveToolsToolBar->actions());
+    qDeleteAll(m_interactiveToolBar->actions());
     qDeleteAll(m_arrangeToolBar->actions());
     delete m_propertyEditorDockWidget;
     delete m_taskDockWidget;
@@ -107,32 +107,12 @@ bool SchEditor::open(QString *errorString, const QString &fileName)
 
     connect(m_document, &SchEditorDocument::drawingItemAdded,
             m_scene, &SchScene::addDocumentItem);
-//    connect(m_document, &SchEditorDocument::drawingItemChanged,
-//            m_scene, &SchScene::removeDocumentItem);
+    connect(m_document, &SchEditorDocument::drawingItemChanged,
+            m_scene, &SchScene::updateDocumentItem);
     connect(m_document, &SchEditorDocument::drawingItemRemoved,
             m_scene, &SchScene::removeDocumentItem);
 
     m_undoDockWidget->setStack(m_undoStack);
-
-    for (int i = 1; i < 6; i++)
-    {
-        auto command = new PlaceRectangleCommand;
-        command->position = QPointF(i*50, 10);
-        command->topLeft = QPointF(50, 50);
-        command->bottomRight = QPointF(75, 75);
-        command->pen = QPen(QColor(i*5, i*25, i*50), 1.0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        command->brush = command->pen.color().darker();
-        command->setDocument(m_document);
-        m_undoStack->push(command);
-    }
-
-    // FIXME: gross hack for now
-    auto placementTool = static_cast<PlacementTool *>(m_interactiveTools.at(1));
-    connect(placementTool, &PlacementTool::placementCompleted,
-            this, [this](PlacementCommand *command) {
-        command->setDocument(m_document);
-        m_undoStack->push(command);
-    });
 
     return true;
 }
@@ -154,8 +134,8 @@ QString SchEditor::displayName() const
 
 void SchEditor::activate(QMainWindow *win)
 {
-    win->addToolBar(m_interactiveToolsToolBar);
-    m_interactiveToolsToolBar->show();
+    win->addToolBar(m_interactiveToolBar);
+    m_interactiveToolBar->show();
     win->addToolBar(m_snapToolBar);
     m_snapToolBar->show();
     win->addToolBar(m_arrangeToolBar);
@@ -180,86 +160,51 @@ void SchEditor::desactivate(QMainWindow *win)
     win->removeToolBar(m_arrangeToolBar);
     win->removeToolBar(m_pathPointToolBar);
     win->removeToolBar(m_snapToolBar);
-    win->removeToolBar(m_interactiveToolsToolBar);
+    win->removeToolBar(m_interactiveToolBar);
 }
 
 void SchEditor::addInteractiveTools()
 {
-    m_interactiveToolsActionGroup = new QActionGroup(this);
-    m_interactiveToolsToolBar = new QToolBar();
+    m_selectTool = new SelectTool(this);
+    m_interactiveTools << m_selectTool;
 
-    addInteractiveTool(new GraphicsSelectTool(this));
-    //addInteractiveTool(new PlacePolyineTool(this));
-    //addInteractiveTool(new GraphicsWireTool(this));
-    addInteractiveTool(new PlaceRectangleTool(this));
-    //addInteractiveTool(new PlacePolygonTool(this));
-    //addInteractiveTool(new PlaceCircleTool(this));
-    //addInteractiveTool(new PlaceArcTool(this));
-    //addInteractiveTool(new PlaceEllipseTool(this));
-    //addInteractiveTool(new PlaceBezierTool(this));
-
-#if 0
-    QAction *action;
-    action = new QAction(QIcon(":/icons/graphicsbeziercurvetool.svg"),
-                         "Add a a bezier curve", nullptr);
-    m_interactiveToolsToolBar->addAction(action);
-    action = new QAction(QIcon(":/icons/graphicsbeziersplinetool.svg"), // TODO: rename to basisspline
-                         "Add a basis spline (B-spline)", nullptr);
-    m_interactiveToolsToolBar->addAction(action);
-#endif
-
-    // TODO:
-    //  - polyline => wire
-    //  - wire: add "make junction" and "make bridge"
-    //  - wire mode: 90 deg, 45 deg, bezier
-    //  - BSpline vs bezier curve
-    //  - create new data class alongside QPoint, QLine, QRect, ...: Ellipse, circle, arc
-    //  - with easy convert to/from QPolygon, QRect, QPainterPath, etc...
-    //  - regular polygon, arbitrary polygon and "advanced" shape
-}
-
-void SchEditor::addInteractiveTool(InteractiveTool *tool)
-{
-
-    bool firstTool = m_interactiveTools.count() == 0;
-    bool firstAction = m_interactiveToolsActionGroup->actions().count() == 0;
-    QAction *action = tool->action();
-    action->setCheckable(true);
-    action->setData(QVariant::fromValue<InteractiveTool *>(tool));
-    m_interactiveToolsActionGroup->addAction(action);
-    m_interactiveToolsToolBar->addAction(action);
-
-    action->setChecked(firstAction);
-    if (firstAction) {
-        connect(m_interactiveToolsActionGroup, &QActionGroup::triggered,
-                this, [this](QAction *action) {
-            InteractiveTool *tool = action->data().value<InteractiveTool*>();
-            // tool->activate(); Do this here or in view?
-            m_view->setTool(tool);
-            m_taskDockWidget->setTool(tool);
-        });
-    }
-    else {
-        connect(tool, &SchTool::finished,
-                this, [this]() {
-            m_interactiveTools.first()->action()->trigger();
-        });
+    m_placementTools /*<< new PlacePolyineTool(this)*/
+                     << new PlaceRectangleTool(this)
+                     << new PlaceCircleTool(this)
+                     << new PlaceEllipseTool(this)
+                     << new PlacePolygonTool(this);
+    for (auto tool: m_placementTools)
+    {
+        m_interactiveTools << tool;
+        connect(tool, &SchTool::finished, // TODO: rename to differentiate with taskCompleted, canceled, ...
+                m_selectTool->action(), &QAction::trigger);
     }
 
-    m_interactiveTools.append(tool);
-    if (firstTool) {
-        QTimer *timer = new QTimer();
-        timer->setSingleShot(true);
-        timer->setInterval(0);
-        // We need to activate default tool once editor is fully created *and* visible
-        connect(timer, &QTimer::timeout,
-                [this, tool, timer]() {
-            m_view->setTool(tool);
-            m_taskDockWidget->setTool(tool);
-            delete timer;
+    m_interactiveActionGroup = new QActionGroup(this);
+    m_interactiveToolBar = new QToolBar();
+    for (auto tool: m_interactiveTools)
+    {
+        QAction *action = tool->action();
+        action->setCheckable(true);
+        action->setData(QVariant::fromValue<InteractiveTool *>(tool));
+        m_interactiveActionGroup->addAction(action);
+        m_interactiveToolBar->addAction(action);
+        connect(tool, &SchTool::taskCompleted,
+                this, [this](UndoCommand *command)
+        {
+            command->setDocument(m_document);
+            m_undoStack->push(command);
         });
-        timer->start();
     }
+    m_selectTool->action()->setChecked(true);
+
+    connect(m_interactiveActionGroup, &QActionGroup::triggered,
+            this, [this](QAction *action)
+    {
+        InteractiveTool *tool = action->data().value<InteractiveTool*>();
+        m_view->setTool(tool);
+        m_taskDockWidget->setTool(tool);
+    });
 }
 
 void SchEditor::addSnapTools()
@@ -267,7 +212,8 @@ void SchEditor::addSnapTools()
     m_snapManager = m_view->snapManager(); //new SnapManager(m_view);
     m_snapToolBar = new QToolBar();
 
-    foreach (const QString &group, m_snapManager->groups()) {
+    for (auto group: m_snapManager->groups())
+    {
         m_snapToolBar->addActions(m_snapManager->actions(group));
     }
 
@@ -277,43 +223,11 @@ void SchEditor::addSnapTools()
 void SchEditor::addPathPointTools()
 {
     m_pathPointToolBar = new QToolBar();
-#if 0
-    QAction *action;
-
-
-    action = new QAction(QIcon(":/icons/graphicspathpointadd.svg"),
-                         "Add a point to an existing path", nullptr);
-    m_pathPointToolBar->addAction(action);
-
-    action = new QAction(QIcon(":/icons/graphicspathpointdel.svg"),
-                         "Delete a point from an existing path", nullptr);
-    m_pathPointToolBar->addAction(action);
-
-    action = new QAction(QIcon(":/icons/graphicspathpointcorner.svg"),
-                         "Make selected path points corner", nullptr);
-    m_pathPointToolBar->addAction(action);
-
-    action = new QAction(QIcon(":/icons/graphicspathpointsymetrical.svg"),
-                         "Make selected path points symetrical", nullptr);
-    m_pathPointToolBar->addAction(action);
-
-    action = new QAction(QIcon(":/icons/graphicspathpointsmooth.svg"),
-                         "Make selected path points smooth", nullptr);
-    m_pathPointToolBar->addAction(action);
-
-    action = new QAction(QIcon(":/icons/graphicspathpointsmooth.svg"),
-                         "Make selected path points auto-smooth", nullptr);
-    m_pathPointToolBar->addAction(action);
-#endif
 }
 
-// They all work on one or more items
+// TODO: group/ungroup. send to back. front, raise, lower. align and distribute.
 void SchEditor::addArrangeTools()
 {
-    // group/ungroup
-    // send to back. front, raise, lower
-    // align and distribute
-    //
     m_arrangeToolBar = new QToolBar();
 }
 
@@ -323,22 +237,12 @@ void SchEditor::addDockWidgets()
     m_propertyEditorDockWidget = new PropertyEditorDockWidget();
     m_undoDockWidget = new UndoDockWidget();
 
-#if 1
     connect(m_scene, &SchScene::selectionChanged,
             this, [this]() {
         QList<QObject *> objects;
-        foreach (QObject *object, m_scene->selectedObjects()) {
+        for (QObject *object: m_scene->selectedObjects()) {
             objects.append(object);
         }
         m_propertyEditorDockWidget->setObjects(objects);
     });
-#else
-    connect(m_scene, &SchScene::selectionChanged,
-            this, [this]() {
-        if (m_scene->selectedObjects().count())
-            m_propertyEditorDockWidget->setItem(m_scene->selectedObjects().first());
-        else
-            m_propertyEditorDockWidget->setItem(nullptr);
-    });
-#endif
 }

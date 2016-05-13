@@ -34,16 +34,6 @@ PlaceWireTool::~PlaceWireTool()
 {
 }
 
-void PlaceWireTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void PlaceWireTool::desactivate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
 SchItem *PlaceWireTool::beginInsert(const QPointF &pos)
 {
     m_item = new GraphicsWireItem();
@@ -88,8 +78,12 @@ void PlaceWireTool::movePoint(int idx, const QPointF &pos)
 void PlaceWireTool::endInsert(const QPointF &pos)
 {
     Q_UNUSED(pos);
-    emit objectInserted(m_item);
+
+    emit taskCompleted(nullptr);
+
+    delete m_item;
     m_item = nullptr;
+
     resetTool();
 }
 

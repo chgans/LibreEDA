@@ -127,7 +127,7 @@ void GraphicsWireItem::itemNotification(IGraphicsObservableItem *item)
 QVariant GraphicsWireItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        foreach (AbstractGraphicsHandle *handle, m_idToHandle) {
+        for (AbstractGraphicsHandle *handle: m_idToHandle) {
             handle->setVisible(isSelected());
         }
     }

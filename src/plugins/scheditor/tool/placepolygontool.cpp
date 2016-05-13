@@ -1,10 +1,11 @@
-#include "utils/widgets/pensettingswidget.h"
-#include "utils/widgets/brushsettingswidget.h"
 #include "tool/placepolygontool.h"
 #include "item/graphicspolygonitem.h"
+#include "command/placeitemcommand.h"
+
+#include "utils/widgets/pensettingswidget.h"
+#include "utils/widgets/brushsettingswidget.h"
 
 #include <QPolygonF>
-
 #include <QAction>
 
 PlacePolygonTool::PlacePolygonTool(QObject *parent):
@@ -12,7 +13,7 @@ PlacePolygonTool::PlacePolygonTool(QObject *parent):
     m_item(nullptr)
 {
     QAction *action = new QAction(QIcon(":/icons/tool/graphicspolygontool.svg"),
-                           "Place a rectangle", nullptr);
+                           "Place a polygon", nullptr);
     action->setShortcut(QKeySequence("i,p"));
     setAction(action);
     setToolGroup("interactive-tools");
@@ -40,16 +41,6 @@ PlacePolygonTool::PlacePolygonTool(QObject *parent):
 PlacePolygonTool::~PlacePolygonTool()
 {
 
-}
-
-void PlacePolygonTool::activate(const QAction *which)
-{
-    Q_UNUSED(which);
-}
-
-void PlacePolygonTool::desactivate(const QAction *which)
-{
-    Q_UNUSED(which);
 }
 
 SchItem *PlacePolygonTool::beginInsert(const QPointF &pos)
@@ -99,8 +90,19 @@ void PlacePolygonTool::movePoint(int idx, const QPointF &pos)
 void PlacePolygonTool::endInsert(const QPointF &pos)
 {
     Q_UNUSED(pos);
-    emit objectInserted(m_item);
+
+    auto command = new PlacePolygonCommand;
+    command->position = m_item->pos();
+    command->opacity = m_item->opacity();
+    command->zValue = m_item->zValue();
+    command->pen = m_item->pen();
+    command->brush = m_item->brush();
+    command->vertices = m_item->polygon().toList();
+    emit taskCompleted(command);
+
+    delete m_item;
     m_item = nullptr;
+
     resetTool();
 }
 

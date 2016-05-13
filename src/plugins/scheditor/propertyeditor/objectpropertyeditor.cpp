@@ -127,7 +127,7 @@ void ObjectPropertyEditor::populateBrowser(QObject *object, const QMetaObject *m
         parentProperty->addSubProperty(property);
     }
     QtBrowserItem *item = addProperty(parentProperty);
-    foreach (QtBrowserItem *childItem, item->children()) {
+    for (QtBrowserItem *childItem: item->children()) {
         setExpanded(childItem, false);
     }
 }
