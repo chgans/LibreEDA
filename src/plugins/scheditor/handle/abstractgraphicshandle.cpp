@@ -15,8 +15,8 @@ AbstractGraphicsHandle::AbstractGraphicsHandle(SchItem *parent):
     m_parent(parent) // hackish: Because BezierHandle act as a proxy
 {
     // FIXME: From palette
-    setPen(QPen(QBrush(Qt::red), 0));
-    setBrush(QBrush(Qt::white));
+    setPen(QPen(QColor("#839496"), 0)); // Primary content
+    setBrush(QColor("#073642")); // BG
 
 //    setPen(QPen(gpalette::Content2, 0));
 //    setBrush(QBrush(gpalette::Content4));
