@@ -1,12 +1,12 @@
 #include "logmessage.h"
 
 LogMessage::LogMessage():
-    messageType(QtDebugMsg), categoryName(nullptr)
+    messageType(QtDebugMsg)
 {
 
 }
 
-LogMessage::LogMessage(QtMsgType messageType, const QString &text, const char *categoryName):
+LogMessage::LogMessage(QtMsgType messageType, const QString &text, const QString &categoryName):
     messageType(messageType), text(text), categoryName(categoryName)
 {
 

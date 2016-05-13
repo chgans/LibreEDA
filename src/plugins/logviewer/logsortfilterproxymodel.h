@@ -14,7 +14,7 @@ public:
 
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
-    bool filterIncludesCategoryName(const char *categoryName) const;
+    bool filterIncludesCategoryName(const QString &categoryName) const;
     bool filterIncludesMessageType(QtMsgType messageType) const;
     bool filterIncludesDebugMessages() const;
     bool filterIncludesWarningMessages() const;
@@ -23,7 +23,7 @@ public:
 
 public slots:
     void setFilterIncludesMessageType(QtMsgType messageType, bool includes);
-    void setFilterIncludesCategoryName(const char *categoryName, bool includes);
+    void setFilterIncludesCategoryName(const QString &categoryName, bool includes);
     void setFilterIncludesDebugMessages(bool includes);
     void setFilterIncludesWarningMessages(bool includes);
     void setFilterIncludesCriticalMessages(bool includes);
@@ -31,7 +31,7 @@ public slots:
 
 private:
     QMap<QtMsgType, bool> m_messageType;
-    QMap<const char *, bool> m_category;
+    QMap<QString, bool> m_category;
 };
 
 #endif // LOGSORTFILTERPROXYMODEL_H

@@ -32,11 +32,11 @@ protected slots:
     void updateNavigationState();
     void goToNext();
     void goToPrevious();
-    void updateCategoryList(const QList<const char *> categories);
+    void updateCategoryList(const QStringList &categories);
     void filterCategoriesTriggered(QAction *action);
 
 protected:
-    void setCategoryVisibility(const char *categoryName, bool visible);
+    void setCategoryVisibility(const QString &categoryName, bool visible);
 
 private:
     Ui::LogWidget *ui;

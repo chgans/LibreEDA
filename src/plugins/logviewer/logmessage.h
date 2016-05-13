@@ -11,12 +11,12 @@ class LogMessage
 {
 public:
     LogMessage();
-    LogMessage(QtMsgType messageType, const QString &text, const char *categoryName = 0);
+    LogMessage(QtMsgType messageType, const QString &text, const QString &categoryName = QString());
     ~LogMessage();
 
     QtMsgType messageType;
     QString text;
-    const char *categoryName;
+    QString categoryName;
 
 };
 /*

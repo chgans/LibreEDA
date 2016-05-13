@@ -53,7 +53,7 @@ QVariant LogModel::data(const QModelIndex &index, int role) const
         switch(index.column())
         {
         case 0:
-            return QVariant(QString(QByteArray(msg->categoryName)));
+            return QVariant(msg->categoryName);
         case 1:
             return QVariant(msg->text);
         default:

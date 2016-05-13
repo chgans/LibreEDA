@@ -31,13 +31,13 @@ bool LogSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex
     LogMessage *msg = model->message(index);
     QtMsgType type = msg->messageType;
     ASSERT_TYPE(type);
-    const char *category = msg->categoryName;
+    QString category = msg->categoryName;
     return filterIncludesMessageType(type) &&
             filterIncludesCategoryName(category) &&
             QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
 }
 
-bool LogSortFilterProxyModel::filterIncludesCategoryName(const char *categoryName) const
+bool LogSortFilterProxyModel::filterIncludesCategoryName(const QString &categoryName) const
 {
     if (!m_category.contains(categoryName))
         return true;
@@ -56,7 +56,7 @@ void LogSortFilterProxyModel::setFilterIncludesMessageType(QtMsgType messageType
     invalidateFilter();
 }
 
-void LogSortFilterProxyModel::setFilterIncludesCategoryName(const char *categoryName, bool includes)
+void LogSortFilterProxyModel::setFilterIncludesCategoryName(const QString &categoryName, bool includes)
 {
     m_category[categoryName] = includes;
     invalidateFilter();

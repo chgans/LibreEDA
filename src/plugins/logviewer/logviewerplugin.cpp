@@ -16,7 +16,7 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
     if (logModel == nullptr)
         return;
 
-    logModel->addMessage(new LogMessage(type, msg, context.category));
+    logModel->addMessage(new LogMessage(type, msg, QString(QByteArray(context.category))));
 }
 
 LogViewerPlugin::LogViewerPlugin(QObject *parent):

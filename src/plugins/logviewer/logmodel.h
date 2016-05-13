@@ -26,16 +26,16 @@ public:
     void addMessage(LogMessage *message);
 
 signals:
-    void categoryListChanged(const QList<const char *> &categories);
+    void categoryListChanged(const QStringList &categories);
 
 public slots:
     void clearMessages();
 
 private:
     QList<LogMessage*> m_messages;
-    QList<QString> m_messageTypeNames;
-    QList<QString> m_messageTypeIconNames;
-    QList<const char *> m_categories;
+    QStringList m_messageTypeNames;
+    QStringList m_messageTypeIconNames;
+    QStringList m_categories;
 };
 
 #endif // LOGMODEL_H

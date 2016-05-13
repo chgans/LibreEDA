@@ -91,8 +91,8 @@ void LogWidget::setModel(LogModel *model)
         });
         connect(ui->tableView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
                 this, SLOT(updateNavigationState()));
-        connect(m_model, SIGNAL(categoryListChanged(QList<const char*>)),
-                this, SLOT(updateCategoryList(QList<const char*>)));
+        connect(m_model, SIGNAL(categoryListChanged(QStringList)),
+                this, SLOT(updateCategoryList(QStringList)));
     }
 }
 
@@ -154,26 +154,26 @@ void LogWidget::goToPrevious()
     ui->tableView->setCurrentIndex(next);
 }
 
-void LogWidget::updateCategoryList(const QList<const char *> categories)
+void LogWidget::updateCategoryList(const QStringList &categories)
 {
     m_categoriesMenu->clear();
-    foreach (const char *name, categories) {
+    foreach (QString category, categories) {
         QAction *action = new QAction(m_categoriesMenu);
         action->setCheckable(true);
-        action->setText(QString(QByteArray(name)));
-        action->setData((quint64)name);
-        action->setChecked(m_filterModel->filterIncludesCategoryName(name));
+        action->setText(category);
+        action->setData(category);
+        action->setChecked(m_filterModel->filterIncludesCategoryName(category));
         m_categoriesMenu->addAction(action);
     }
 }
 
 void LogWidget::filterCategoriesTriggered(QAction *action)
 {
-    const char *category = (const char *)action->data().toInt(); // FIXME!
+    QString category = action->data().toString();
     setCategoryVisibility(category, action->isChecked());
 }
 
-void LogWidget::setCategoryVisibility(const char *categoryName, bool visible)
+void LogWidget::setCategoryVisibility(const QString &categoryName, bool visible)
 {
     m_filterModel->setFilterIncludesCategoryName(categoryName, visible);
 }
