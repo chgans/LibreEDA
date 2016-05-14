@@ -19,26 +19,6 @@ InteractiveTool::~InteractiveTool()
 
 }
 
-QWidget *InteractiveTool::optionWidget()
-{
-    return m_optionWidget;
-}
-
-void InteractiveTool::setOptionWidget(QWidget *widget)
-{
-    m_optionWidget = widget;
-}
-
-QWidget *InteractiveTool::taskWidget()
-{
-    return m_taskWidget;
-}
-
-void InteractiveTool::setOperationWidget(QWidget *widget)
-{
-    m_taskWidget = widget;
-}
-
 QList<QWidget *> InteractiveTool::optionWidgets()
 {
     return m_optionWidgets;

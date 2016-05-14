@@ -49,8 +49,6 @@ SelectTool::SelectTool(QObject *parent):
                                   "select", nullptr);
     setAction(action);
     setToolGroup("interactive-tools");
-    setOperationWidget(nullptr);
-    setOptionWidget(nullptr);
 }
 
 SelectTool::~SelectTool()
@@ -274,11 +272,11 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
             QPointF delta = mouseDeltaPosition();
             if (!delta.isNull())
             {
-                auto command = new MoveCommand;
+                auto command = new TranslateCommand;
                 for (auto sceneItem : m_items)
                 {
                     command->itemIds << sceneItem->data(0).value<quint64>();
-                    command->delta = delta;
+                    command->amount = delta;
                 }
                 emit taskCompleted(command);
             }

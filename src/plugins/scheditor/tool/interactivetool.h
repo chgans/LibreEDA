@@ -20,10 +20,6 @@ public:
     explicit InteractiveTool(QObject *parent = nullptr);
     ~InteractiveTool();
 
-    QWidget *optionWidget();
-    void setOptionWidget(QWidget *widget);
-    QWidget *taskWidget();
-    void setOperationWidget(QWidget *widget);
     QList<QWidget *> optionWidgets();
     void setOptionWidgets(QList<QWidget *> widgets);
 
@@ -38,8 +34,6 @@ public:
     virtual void wheelEvent(QWheelEvent *event);
 
 protected:
-    QWidget *m_taskWidget;
-    QWidget *m_optionWidget;
     QList<QWidget *> m_optionWidgets;
 
     SchItem *createPhantomItem(SchItem *item);
