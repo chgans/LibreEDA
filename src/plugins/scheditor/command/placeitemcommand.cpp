@@ -1,5 +1,10 @@
 #include "placeitemcommand.h"
 #include "scheditordocument.h"
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(LedaSymbolCommand)
+
+Q_LOGGING_CATEGORY(LedaSymbolCommand, "leda.sch.command")
 
 UndoCommand::UndoCommand(UndoCommand *parent):
     QUndoCommand(parent), m_document(nullptr)
@@ -15,6 +20,11 @@ void UndoCommand::setDocument(SchEditorDocument *document)
 SchEditorDocument *UndoCommand::document() const
 {
     return m_document;
+}
+
+void UndoCommand::warnItemNotFound(const QString command, quint64 id)
+{
+    qCWarning(LedaSymbolCommand) << QString("%1: Item '%2' not found").arg(command).arg(id);
 }
 
 PlacementCommand::PlacementCommand(UndoCommand *parent):
@@ -184,37 +194,248 @@ void PlaceLabelCommand::redo()
 
 }
 
-MoveCommand::MoveCommand(UndoCommand *parent):
+TranslateCommand::TranslateCommand(UndoCommand *parent):
     UndoCommand(parent)
 {
     setText("Move ? item(s)");
 }
 
-void MoveCommand::undo()
+void TranslateCommand::undo()
 {
-    for (quint64 id : itemIds)
+    for (quint64 id : itemIdList)
     {
         auto item = document()->drawingItem(id);
         if (item == nullptr)
         {
+            warnItemNotFound("Translate", id);
             continue;
         }
-        item->position -= delta;
+        item->position -= amount;
         document()->updateDrawingItem(id);
     }
 }
 
-void MoveCommand::redo()
+void TranslateCommand::redo()
 {
-    for (quint64 id : itemIds)
+    for (quint64 id : itemIdList)
     {
         auto item = document()->drawingItem(id);
         if (item == nullptr)
         {
+            warnItemNotFound("Translate", id);
             continue;
         }
-        item->position += delta;
+        item->position += amount;
         document()->updateDrawingItem(id);
     }
-    setText(QString("Move %1 item(s)").arg(itemIds.count()));
+
+    setText(QString("Move %1 item").arg(itemIdList.count()));
+    if (itemIdList.count() > 1)
+    {
+        setText(text() + "s");
+    }
+}
+
+RotateCommand::RotateCommand(UndoCommand *parent):
+    UndoCommand (parent)
+{
+    setText("Rotate item");
+}
+
+void RotateCommand::undo()
+{
+    for (quint64 id : itemIdList)
+    {
+        auto item = document()->drawingItem(id);
+        if (item == nullptr)
+        {
+            warnItemNotFound("Rotate", id);
+            continue;
+        }
+        item->rotation -= amount;
+        document()->updateDrawingItem(id);
+    }
+}
+
+void RotateCommand::redo()
+{
+    for (quint64 id : itemIdList)
+    {
+        auto item = document()->drawingItem(id);
+        if (item == nullptr)
+        {
+            warnItemNotFound("Rotate", id);
+            continue;
+        }
+        item->rotation += amount;
+        document()->updateDrawingItem(id);
+    }
+
+    setText(QString("Rotate %1 item").arg(itemIdList.count()));
+    if (itemIdList.count() > 1)
+    {
+        setText(text() + "s");
+    }
+}
+
+MirrorCommand::MirrorCommand(UndoCommand *parent):
+    UndoCommand (parent)
+{
+
+}
+
+void MirrorCommand::undo()
+{
+    for (quint64 id : itemIdList)
+    {
+        auto item = document()->drawingItem(id);
+        if (item == nullptr)
+        {
+            warnItemNotFound("Mirror", id);
+            continue;
+        }
+        switch (orientation)
+        {
+            case Qt::Vertical:
+            {
+                item->yMirrored = !mirrored;
+                break;
+            }
+            case Qt::Horizontal:
+            {
+                item->xMirrored = !mirrored;
+                break;
+            }
+        }
+        document()->updateDrawingItem(id);
+    }
+}
+
+void MirrorCommand::redo()
+{
+    for (quint64 id : itemIdList)
+    {
+        auto item = document()->drawingItem(id);
+        if (item == nullptr)
+        {
+            warnItemNotFound("Mirror", id);
+            continue;
+        }
+        switch (orientation)
+        {
+            case Qt::Vertical:
+            {
+                item->yMirrored = mirrored;
+                break;
+            }
+            case Qt::Horizontal:
+            {
+                item->xMirrored = mirrored;
+                break;
+            }
+        }
+        document()->updateDrawingItem(id);
+    }
+
+    setText(QString("Mirror %1 item").arg(itemIdList.count()));
+    if (itemIdList.count() > 1)
+    {
+        setText(text() + "s");
+    }
+}
+
+SetLockStateCommand::SetLockStateCommand(UndoCommand *parent):
+    UndoCommand (parent)
+{
+
+}
+
+void SetLockStateCommand::undo()
+{
+    for (quint64 id : itemIdList)
+    {
+        auto item = document()->drawingItem(id);
+        if (item == nullptr)
+        {
+            warnItemNotFound("Lock", id);
+            continue;
+        }
+        item->locked = !lockState;
+        document()->updateDrawingItem(id);
+    }
+}
+
+void SetLockStateCommand::redo()
+{
+    for (quint64 id : itemIdList)
+    {
+        auto item = document()->drawingItem(id);
+        if (item == nullptr)
+        {
+            warnItemNotFound("Lock", id);
+            continue;
+        }
+        item->locked = lockState;
+        document()->updateDrawingItem(id);
+    }
+
+    if (lockState)
+    {
+        setText(QString("Lock %1 item").arg(itemIdList.count()));
+    }
+    else
+    {
+        setText(QString("Unlock %1 item").arg(itemIdList.count()));
+    }
+
+    if (itemIdList.count() > 1)
+    {
+        setText(text() + "s");
+    }
+}
+
+CloneCommand::CloneCommand(UndoCommand *parent):
+    UndoCommand(parent)
+{
+
+}
+
+void CloneCommand::undo()
+{
+    for (quint64 id : cloneIdList)
+    {
+        auto clone = document()->drawingItem(id);
+        if (clone == nullptr)
+        {
+            warnItemNotFound("Clone", id);
+            continue;
+        }
+        document()->removeDrawingItem(id);
+    }
+}
+
+void CloneCommand::redo()
+{
+    cloneIdList.clear();
+
+    for (quint64 id : itemIdList)
+    {
+        auto item = document()->drawingItem(id);
+        if (item == nullptr)
+        {
+            warnItemNotFound("Clone", id);
+            continue;
+        }
+        auto clone = item->clone();
+        quint64 cloneId = document()->addDrawingItem(clone);
+        clone->position += translation;
+        document()->updateDrawingItem(cloneId);
+        cloneIdList.append(cloneId);
+    }
+
+    setText(QString("Clone %1 item").arg(itemIdList.count()));
+    if (itemIdList.count() > 1)
+    {
+        setText(text() + "s");
+    }
 }

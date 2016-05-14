@@ -226,15 +226,13 @@ void SelectTool::mouseMoveEvent(QMouseEvent *event)
                 {
                     m_phantomItems = createPhantomItems(m_items);
                 }
-                Q_ASSERT(m_items.count() == m_phantomItems.count());
-                QRectF sceneShift = QRectF(m_mousePressPosition,
-                                           event->pos());
-                sceneShift.moveTopLeft(QPointF(0, 0));
+                QPointF mouseScenePosition = event->pos();
+                QLineF vector(m_lastMousePosition, mouseScenePosition);
                 for (int i = 0; i < m_items.count(); i++)
                 {
-                    QPointF itemPos = m_items[i]->pos() + sceneShift.bottomRight();
-                    m_phantomItems[i]->setPos(itemPos);
+                    m_phantomItems[i]->moveBy(vector.dx(), vector.dy());
                 }
+                m_lastMousePosition = mouseScenePosition;
                 break;
             }
             case MoveHandle:
@@ -275,9 +273,9 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
                 auto command = new TranslateCommand;
                 for (auto sceneItem : m_items)
                 {
-                    command->itemIds << sceneItem->data(0).value<quint64>();
-                    command->amount = delta;
+                    command->itemIdList << sceneItem->data(0).value<quint64>();
                 }
+                command->amount = delta;
                 emit taskCompleted(command);
             }
             m_items.clear();
@@ -286,11 +284,18 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
         }
         case CloneItem:
         {
-            for (int i = 0; i < m_items.count(); i++)
+            QPointF delta = mouseDeltaPosition();
+            if (!delta.isNull())
             {
-                m_items[i]->setGraphicsEffect(nullptr);
-                m_phantomItems[i]->setGraphicsEffect(nullptr);
+                auto command = new CloneCommand;
+                for (auto sceneItem : m_items)
+                {
+                    command->itemIdList << sceneItem->data(0).value<quint64>();
+                }
+                command->translation = delta;
+                emit taskCompleted(command);
             }
+            qDeleteAll(m_phantomItems);
             m_phantomItems.clear();
             m_items.clear();
             m_item = nullptr;

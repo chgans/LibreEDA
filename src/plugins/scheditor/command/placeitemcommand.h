@@ -18,6 +18,9 @@ public:
     void setDocument(SchEditorDocument *document);
     SchEditorDocument *document() const;
 
+protected:
+    void warnItemNotFound(const QString command, quint64 id);
+
 private:
     SchEditorDocument *m_document;
 };
@@ -61,10 +64,34 @@ public:
     QPointF bottomRight;
 };
 
+class ChangeRectangleGeometryCommand: public PlacementCommand
+{
+public:
+    ChangeRectangleGeometryCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QPointF topLeft;
+    QPointF bottomRight;
+};
+
 class PlaceCircleCommand: public PlacementCommand
 {
 public:
     PlaceCircleCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QPointF center; // = position ?
+    qreal radius;
+};
+
+class ChangeCircleGeometryCommand: public PlacementCommand
+{
+public:
+    ChangeCircleGeometryCommand(UndoCommand *parent = nullptr);
 
     void undo();
     void redo();
@@ -87,10 +114,37 @@ public:
     qreal spanAngle;
 };
 
+class ChangeCircularArcGeometryCommand: public PlacementCommand
+{
+public:
+    ChangeCircularArcGeometryCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QPointF center; // = position ?
+    qreal radius;
+    qreal startAngle;
+    qreal spanAngle;
+};
+
 class PlaceEllipseCommand: public PlacementCommand
 {
 public:
     PlaceEllipseCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QPointF center; // = position ?
+    qreal xRadius;
+    qreal yRadius;
+};
+
+class ChangeEllipseGeometryCommand: public PlacementCommand
+{
+public:
+    ChangeEllipseGeometryCommand(UndoCommand *parent = nullptr);
 
     void undo();
     void redo();
@@ -115,6 +169,21 @@ public:
     qreal spanAngle;
 };
 
+class ChangeEllipticalArcGeometryCommand: public PlacementCommand
+{
+public:
+    ChangeEllipticalArcGeometryCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QPointF center; // = position ?
+    qreal xRadius;
+    qreal yRadius;
+    qreal startAngle;
+    qreal spanAngle;
+};
+
 class PlacePolylineCommand: public PlacementCommand
 {
 public:
@@ -126,10 +195,32 @@ public:
     QList<QPointF> vertices; // position is always first point?
 };
 
+class ChangePolylineGeometryCommand: public PlacementCommand
+{
+public:
+    ChangePolylineGeometryCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QList<QPointF> vertices; // position is always first point?
+};
+
 class PlacePolygonCommand: public PlacementCommand
 {
 public:
     PlacePolygonCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QList<QPointF> vertices; // position is always first point?
+};
+
+class ChangePolygonGeometryCommand: public PlacementCommand
+{
+public:
+    ChangePolygonGeometryCommand(UndoCommand *parent = nullptr);
 
     void undo();
     void redo();
@@ -149,16 +240,120 @@ public:
     QFont font;
 };
 
-class MoveCommand: public UndoCommand
+class ChangeLabelContentCommand: public UndoCommand
 {
 public:
-    MoveCommand(UndoCommand *parent = nullptr);
+    ChangeLabelContentCommand(UndoCommand *parent = nullptr);
 
     void undo();
     void redo();
 
-    QList<quint64> itemIds;
-    QPointF delta;
+    QString text;
+    QFont font;
+};
+
+// TODO: PlacePinCommand
+
+// TBD: align and distribute
+class TranslateCommand: public UndoCommand
+{
+public:
+    TranslateCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QList<quint64> itemIdList;
+    QPointF amount;
+};
+
+class RotateCommand: public UndoCommand
+{
+public:
+    RotateCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QList<quint64> itemIdList;
+    qreal amount;
+};
+
+class MirrorCommand: public UndoCommand
+{
+public:
+    MirrorCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QList<quint64> itemIdList;
+    Qt::Orientation orientation;
+    bool mirrored;
+};
+
+class SetLockStateCommand: public UndoCommand
+{
+public:
+    SetLockStateCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QList<quint64> itemIdList;
+    bool lockState;
+};
+
+class SetVisibilityCommand: public UndoCommand
+{
+public:
+    SetVisibilityCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QList<quint64> itemIdList;
+    bool visibility;
+};
+
+class ChangeOpacityByCommand: public UndoCommand
+{
+public:
+    ChangeOpacityByCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    qreal amount;
+};
+
+class ChangeZValueByCommand: public UndoCommand
+{
+public:
+    ChangeZValueByCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    qreal amount;
+};
+
+// group/ungroup
+
+class CloneCommand: public UndoCommand
+{
+public:
+    CloneCommand(UndoCommand *parent = nullptr);
+
+    void undo();
+    void redo();
+
+    QList<quint64> itemIdList;
+    QPointF translation;
+
+private:
+    QList<quint64> cloneIdList;
+
 };
 
 #endif // PLACEITEMCOMMAND_H

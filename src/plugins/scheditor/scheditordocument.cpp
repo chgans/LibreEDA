@@ -8,9 +8,10 @@
 #include <QUndoStack>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(Log)
 
-Q_LOGGING_CATEGORY(Log, "leda.sch.document")
+Q_DECLARE_LOGGING_CATEGORY(LedaSymbolDocumentLog)
+
+Q_LOGGING_CATEGORY(LedaSymbolDocumentLog, "leda.sch.document")
 
 SchEditorDocument::SchEditorDocument(QObject *parent) :
     IDocument(parent),

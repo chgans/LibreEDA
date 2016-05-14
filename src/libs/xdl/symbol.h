@@ -33,6 +33,7 @@ public:
     virtual ~Item();
 
     virtual Type type() const = 0;
+    virtual Item *clone() const = 0;
 
     QPen pen;
     QBrush brush;
@@ -69,6 +70,13 @@ public:
         return Rectangle;
     }
 
+    Item *clone() const
+    {
+        auto item = new RectangleItem;
+        *item = *this;
+        return item;
+    }
+
     QPointF topLeft;
     QPointF bottomRight;
 };
@@ -84,6 +92,13 @@ public:
         return Circle;
     }
 
+    Item *clone() const
+    {
+        auto item = new CircleItem;
+        *item = *this;
+        return item;
+    }
+
     QPointF center;
     qreal radius = 0.0f;
 };
@@ -97,6 +112,13 @@ public:
     Type type() const
     {
         return CircularArc;
+    }
+
+    Item *clone() const
+    {
+        auto item = new CircularArcItem;
+        *item = *this;
+        return item;
     }
 
     QPointF center;
@@ -116,6 +138,13 @@ public:
         return Ellipse;
     }
 
+    Item *clone() const
+    {
+        auto item = new EllipseItem;
+        *item = *this;
+        return item;
+    }
+
     QPointF center;
     qreal xRadius;
     qreal yRadius;
@@ -130,6 +159,13 @@ public:
     Type type() const
     {
         return EllipticalArc;
+    }
+
+    Item *clone() const
+    {
+        auto item = new EllipticalArcItem;
+        *item = *this;
+        return item;
     }
 
     QPointF center;
@@ -150,6 +186,13 @@ public:
         return Polyline;
     }
 
+    Item *clone() const
+    {
+        auto item = new PolylineItem;
+        *item = *this;
+        return item;
+    }
+
     QList<QPointF> vertices;
 };
 
@@ -164,6 +207,13 @@ public:
         return Polygon;
     }
 
+    Item *clone() const
+    {
+        auto item = new PolygonItem;
+        *item = *this;
+        return item;
+    }
+
     QList<QPointF> vertices;
 };
 
@@ -176,6 +226,13 @@ public:
     Type type() const
     {
         return Label;
+    }
+
+    Item *clone() const
+    {
+        auto item = new LabelItem;
+        *item = *this;
+        return item;
     }
 
     QString text;
@@ -194,6 +251,14 @@ public:
         return Pin;
     }
 
+    // FIXME: have to deep clone
+    Item *clone() const
+    {
+        auto item = new PinItem;
+        *item = *this;
+        return item;
+    }
+
     LabelItem *designator;
     LabelItem *label;
 };
@@ -207,6 +272,14 @@ public:
     Type type() const
     {
         return Group;
+    }
+
+    // FIXME: have to deep clone
+    Item *clone() const
+    {
+        auto item = new ItemGroup;
+        *item = *this;
+        return item;
     }
 
     QList<Item *> children;
