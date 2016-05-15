@@ -29,7 +29,7 @@ public:
 
     SchView *view();
     SchScene *scene();
-    virtual void setView(SchView *view);
+    void setView(SchView *view);
 
     void setToolGroup(const QString &group);
     QString toolGroup() const;

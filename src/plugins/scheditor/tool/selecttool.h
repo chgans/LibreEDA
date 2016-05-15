@@ -3,12 +3,11 @@
 
 #include "tool/interactivetool.h"
 
-#include <QPoint>
-
-class SchItem;
 class AbstractGraphicsHandle;
 class ItemPropertyEditor;
-class QRubberBand;
+class MoveItemTool;
+class CloneItemTool;
+class DragSelectTool;
 
 class SelectTool : public InteractiveTool
 {
@@ -34,23 +33,18 @@ private:
     };
     ToolState m_state;
     Operation m_operation;
+    MoveItemTool *m_moveItemTool;
+    CloneItemTool *m_cloneItemTool;
+    DragSelectTool *m_dragSelectTool;
+    InteractiveTool *m_currentTool;
 
-    QPoint m_mousePressPosition;
-    QPointF m_lastMousePosition;
-    QPointF mouseDeltaPosition() const;
-    SchItem *m_item;
-    QList<SchItem *> m_items;
-    QList<SchItem *> m_phantomItems;
     AbstractGraphicsHandle *m_handle;
-    QRubberBand *m_rubberBand;
     ItemPropertyEditor *m_itemPropertyEditor;
 
-    void updateCursor(QMouseEvent *event);
+    void updateOperation(Qt::KeyboardModifiers modifiers);
     void setOperation(Operation operation);
-
-    // GraphicsTool interface
-public:
-    void setView(SchView *view);
+    void updateCursor();
+    void setCurrentTool(InteractiveTool *tool);
 
     // GraphicsTool interface
 public slots:

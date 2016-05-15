@@ -1,54 +1,23 @@
 #include "tool/selecttool.h"
-
+#include "tool/moveitemtool.h"
+#include "tool/cloneitemtool.h"
+#include "tool/dragselecttool.h"
 #include "schscene.h"
 #include "schview.h"
 #include "item/schitem.h"
 #include "handle/abstractgraphicshandle.h"
-#include "command/placeitemcommand.h"
 #include "propertyeditor/itempropertyeditor.h"
-
-#include <QGraphicsItem>
-#include <QGraphicsEffect>
+#include "command/placeitemcommand.h"
 
 #include <QMouseEvent>
 #include <QKeyEvent>
-#include <QRubberBand>
 #include <QAction>
-#include <QDialog>
-
-#include <QStateMachine>
-#include <QState>
-#include <QFinalState>
-#include <QSignalTransition>
-
-// Select tool:
-//  Click based:
-//  - clear selection: left press on background, release
-//  - add/remove item to selection: left press on item w or w/o Shift modifier, release
-//  - double left click => send signal
-//  - right click => send signal (done by QWidget)
-//  Drag based:
-//  - drag select: left press on background, drag mouse, release
-//  - single move: left press on item, drag mouse, release
-//  - group move: left press on any selected items, drag mouse, release
-//  - clone: left press w/ Ctrl on item, drag mouse, release
-//  Cursors:
-//   Qt::DragMoveCursor
-//   Qt::DragCopyCursor
-//   Qt::SizeAllCursor
-
-// TODO: Make DragSelect, MoveItem, CloneItem and MoveHandle 4 sub InteractiveTools,
-// Manage which one is active (OperationState) or  to be activated (HintState) and
-// simply dispatch events to them when activated (including mousePressEvent() on activation)
 
 SelectTool::SelectTool(QObject *parent):
     InteractiveTool(parent),
     m_state(HintState),
     m_operation(DragSelect),
-    m_mousePressPosition(QPoint(0, 0)),
-    m_item(nullptr),
-    m_handle(nullptr),
-    m_rubberBand(new QRubberBand(QRubberBand::Rectangle))
+    m_handle(nullptr)
 {
     QAction *action = new QAction(QIcon::fromTheme("edit-select"),
                                   "select", nullptr);
@@ -59,6 +28,18 @@ SelectTool::SelectTool(QObject *parent):
     QList<QWidget *> widgets;
     widgets << m_itemPropertyEditor;
     setOptionWidgets(widgets);
+
+    m_moveItemTool = new MoveItemTool(this);
+    connect(m_moveItemTool, &SchTool::taskCompleted,
+            this, &SchTool::taskCompleted);
+
+    m_cloneItemTool = new CloneItemTool(this);
+    connect(m_cloneItemTool, &SchTool::taskCompleted,
+            this, &SchTool::taskCompleted);
+
+    m_dragSelectTool = new DragSelectTool(this);
+
+    m_currentTool = nullptr;
 }
 
 SelectTool::~SelectTool()
@@ -66,23 +47,22 @@ SelectTool::~SelectTool()
 
 }
 
-QPointF SelectTool::mouseDeltaPosition() const
+void SelectTool::updateOperation(Qt::KeyboardModifiers modifiers)
 {
-    return m_lastMousePosition - m_mousePressPosition;
-}
-
-void SelectTool::updateCursor(QMouseEvent *event)
-{
+    // Could use auto handle = view()->ItemUnderMouse<AbstractGraphicsHandle>();
     AbstractGraphicsHandle *handle = view()->handleUnderMouse();
-    SchItem *object = view()->objectUnderMouse();
     if (handle != nullptr)
     {
         m_handle = handle;
         setOperation(MoveHandle);
+        return;
     }
-    else if (object != nullptr && object->isEnabled())
+
+    // Could use auto item = view()->ItemUnderMouse<SchItem>();
+    SchItem *item = view()->objectUnderMouse();
+    if (item != nullptr && item->isEnabled())
     {
-        if (event->modifiers().testFlag(Qt::ControlModifier))
+        if (modifiers.testFlag(Qt::ControlModifier))
         {
             setOperation(CloneItem);
         }
@@ -90,17 +70,15 @@ void SelectTool::updateCursor(QMouseEvent *event)
         {
             setOperation(MoveItem);
         }
+        return;
     }
-    else
-    {
-        setOperation(DragSelect);
-    }
+
+    setOperation(DragSelect);
 }
 
-void SelectTool::setOperation(SelectTool::Operation operation)
+void SelectTool::updateCursor()
 {
-    m_operation = operation;
-    switch (operation)
+    switch (m_operation)
     {
         case DragSelect:
         {
@@ -114,9 +92,6 @@ void SelectTool::setOperation(SelectTool::Operation operation)
         }
         case MoveHandle:
         {
-            Q_ASSERT(m_handle != nullptr);
-            // TBD: Cursor can change when the handle is dragged around
-            // it would be nice to update the view cursor accordingly
             view()->setCursor(m_handle->handleCursor());
             break;
         }
@@ -128,23 +103,29 @@ void SelectTool::setOperation(SelectTool::Operation operation)
     }
 }
 
-void SelectTool::cancel()
+void SelectTool::setOperation(SelectTool::Operation operation)
 {
+    m_operation = operation;
+    updateCursor();
 }
 
-void SelectTool::setView(SchView *other)
+void SelectTool::setCurrentTool(InteractiveTool *tool)
 {
-    if (view())
+    if (m_currentTool != nullptr)
     {
-        //destroyStateMachine();
-        m_rubberBand->setParent(nullptr);
+        m_currentTool->setView(nullptr);
     }
-    SchTool::setView(other);
-    if (other)
+
+    m_currentTool = tool;
+
+    if (m_currentTool != nullptr)
     {
-        //buildStateMachine();
-        m_rubberBand->setParent(view()->viewport());
+        m_currentTool->setView(view());
     }
+}
+
+void SelectTool::cancel()
+{
 }
 
 void SelectTool::mousePressEvent(QMouseEvent *event)
@@ -154,51 +135,67 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
         return;
     }
 
-    if (m_state == HintState)
+    Q_ASSERT(m_state == HintState);
+
+
+    switch (m_operation)
     {
-        AbstractGraphicsHandle *handle = view()->handleUnderMouse();
-        SchItem *object = view()->objectUnderMouse();
-        m_mousePressPosition = event->pos();
-        switch (m_operation)
+        case DragSelect:
         {
-            case DragSelect:
+            if (!event->modifiers().testFlag(Qt::ShiftModifier))
             {
-                if (!event->modifiers().testFlag(Qt::ShiftModifier))
-                {
-                    scene()->clearSelection();
-                }
-                m_rubberBand->setGeometry(view()->mapFromScene(QRect(m_mousePressPosition,
-                                                                     m_mousePressPosition)).boundingRect());
-                m_rubberBand->show();
-                break;
+                scene()->clearSelection();
             }
-            case MoveItem:
-            case CloneItem:
-            {
-                Q_ASSERT(object != nullptr);
-                if (event->modifiers().testFlag(Qt::ShiftModifier))
-                {
-                    object->setSelected(!object->isSelected());
-                }
-                else if (!object->isSelected())
-                {
-                    scene()->clearSelection();
-                    object->setSelected(true);
-                }
-                m_item = object;
-                m_items = scene()->selectedObjects();
-                m_lastMousePosition = event->pos();
-                break;
-            }
-            case MoveHandle:
-            {
-                Q_ASSERT(handle != nullptr);
-                m_handle = handle;
-                break;
-            }
+            setCurrentTool(m_dragSelectTool);
+            break;
         }
-        m_state = OperationState;
+        case MoveItem:
+        {
+            SchItem *object = view()->objectUnderMouse();
+            if (object == nullptr)
+            {
+                scene()->clearSelection();
+            }
+            else if (event->modifiers().testFlag(Qt::ShiftModifier))
+            {
+                object->setSelected(!object->isSelected());
+            }
+            else if (!object->isSelected())
+            {
+                scene()->clearSelection();
+                object->setSelected(true);
+                setCurrentTool(m_moveItemTool);
+            }
+            else
+            {
+                setCurrentTool(m_moveItemTool);
+            }
+            break;
+        }
+        case CloneItem:
+        {
+            setCurrentTool(m_cloneItemTool);
+            break;
+        }
+        case MoveHandle:
+        {
+#if 0
+            Q_ASSERT(handle != nullptr);
+            m_handle = handle;
+#endif
+            break;
+        }
     }
+
+    m_state = OperationState;
+
+    if (m_currentTool == nullptr)
+    {
+        return;
+    }
+
+    m_currentTool->mousePressEvent(event);
+
     event->accept();
 }
 
@@ -207,54 +204,29 @@ void SelectTool::mouseMoveEvent(QMouseEvent *event)
 {
     if (m_state == HintState)
     {
-        updateCursor(event);
+        updateOperation(event->modifiers());
+        return;
+    }
+
+    if (m_operation == MoveHandle)
+    {
     }
     else
     {
-        switch (m_operation)
-        {
-            case DragSelect:
-            {
-                QRect viewRect = view()->mapFromScene(QRect(m_mousePressPosition, event->pos())).boundingRect();
-                m_rubberBand->setGeometry(viewRect);
-                break;
-            }
-            case MoveItem:
-            {
-                QPointF mouseScenePosition = event->pos();
-                QLineF vector(m_lastMousePosition, mouseScenePosition);
-                for (int i = 0; i < m_items.count(); i++)
-                {
-                    m_items[i]->moveBy(vector.dx(), vector.dy());
-                }
-                m_lastMousePosition = mouseScenePosition;
-                break;
-            }
-            case CloneItem:
-            {
-                if (m_phantomItems.count() == 0)
-                {
-                    m_phantomItems = createPhantomItems(m_items);
-                }
-                QPointF mouseScenePosition = event->pos();
-                QLineF vector(m_lastMousePosition, mouseScenePosition);
-                for (int i = 0; i < m_items.count(); i++)
-                {
-                    m_phantomItems[i]->moveBy(vector.dx(), vector.dy());
-                }
-                m_lastMousePosition = mouseScenePosition;
-                break;
-            }
-            case MoveHandle:
-            {
-                // TODO: use phantomItem as well
-                QPointF scenePos = event->pos();
-                QPointF handlePos = m_handle->mapToParent(m_handle->mapFromScene(scenePos));
-                m_handle->setPos(handlePos);
-                break;
-            }
-        }
+        m_currentTool->mouseMoveEvent(event);
     }
+#if 0
+    case MoveHandle:
+    {
+        // TBD: Cursor can change when the handle is dragged around
+        // it would be nice to update the view cursor accordingly
+        // TODO: use phantomItem as well
+        QPointF scenePos = event->pos();
+        QPointF handlePos = m_handle->mapToParent(m_handle->mapFromScene(scenePos));
+        m_handle->setPos(handlePos);
+        break;
+    }
+#endif
     event->accept();
 }
 
@@ -265,80 +237,37 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
         return;
     }
 
-    switch (m_operation)
+    if (m_currentTool == nullptr)
     {
-        case DragSelect:
-        {
-            QPainterPath path;
-            path.addPolygon(view()->mapToScene(m_rubberBand->geometry()));
-            scene()->setSelectionArea(path);
-            m_rubberBand->hide();
-            QList<SchItem *> items = scene()->selectedObjects();
-            if (items.isEmpty())
-            {
-                m_itemPropertyEditor->setItem(nullptr);
-            }
-            else
-            {
-                m_itemPropertyEditor->setItem(items.first());
-            }
-            break;
-        }
-        case MoveItem:
-        {
-            QPointF delta = mouseDeltaPosition();
-            if (!delta.isNull())
-            {
-                auto command = new TranslateCommand;
-                for (auto sceneItem : m_items)
-                {
-                    command->itemIdList << sceneItem->data(0).value<quint64>();
-                }
-                command->amount = delta;
-                emit taskCompleted(command);
-            }
-            m_items.clear();
-            m_item = nullptr;
-            break;
-        }
-        case CloneItem:
-        {
-            QPointF delta = mouseDeltaPosition();
-            if (!delta.isNull())
-            {
-                auto command = new CloneCommand;
-                for (auto sceneItem : m_items)
-                {
-                    command->itemIdList << sceneItem->data(0).value<quint64>();
-                }
-                command->translation = delta;
-                emit taskCompleted(command);
-            }
-            qDeleteAll(m_phantomItems);
-            m_phantomItems.clear();
-            m_items.clear();
-            m_item = nullptr;
-            break;
-        }
-        case MoveHandle:
-            m_handle = nullptr;
+        return;
     }
 
+    if (m_operation == MoveHandle)
+    {
+    }
+    else
+    {
+        m_currentTool->mouseReleaseEvent(event);
+    }
+
+#if 0
+    case MoveHandle:
+    {
+        m_handle = nullptr;
+        break;
+    }
+#endif
     m_state = HintState;
 
-    updateCursor(event);
+    updateOperation(event->modifiers());
     event->accept();
 }
 
 void SelectTool::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Control)
-    {
-        if (m_operation == MoveItem && m_state == HintState)
-        {
-            setOperation(CloneItem);
-        }
-    }
+    updateOperation(event->modifiers());
+    event->accept();
+#if 0
     else if (event->key() == Qt::Key_Delete)
     {
         for (QGraphicsItem *item : scene()->selectedItems())
@@ -347,17 +276,11 @@ void SelectTool::keyPressEvent(QKeyEvent *event)
             delete item;
         }
     }
-    event->accept();
+#endif
 }
 
 void SelectTool::keyReleaseEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Control)
-    {
-        if (m_operation == CloneItem && m_state == HintState)
-        {
-            setOperation(MoveItem);
-        }
-    }
+    updateOperation(event->modifiers());
     event->accept();
 }

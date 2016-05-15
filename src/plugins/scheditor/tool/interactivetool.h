@@ -10,8 +10,6 @@ class QKeyEvent;
 class QWheelEvent;
 class QWidget;
 
-class SchItem;
-
 class InteractiveTool: public SchTool
 {
     Q_OBJECT
@@ -35,9 +33,6 @@ public:
 
 protected:
     QList<QWidget *> m_optionWidgets;
-
-    SchItem *createPhantomItem(SchItem *item);
-    QList<SchItem *> createPhantomItems(const QList<SchItem *> &items);
 };
 
 #endif // INTERACTIVETOOL_H

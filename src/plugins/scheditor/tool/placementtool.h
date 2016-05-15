@@ -8,6 +8,7 @@
 
 class PlacementCommand;
 class AbstractGraphicsHandle;
+class SchItem;
 class QWidget;
 class QAction;
 
