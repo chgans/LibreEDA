@@ -7,7 +7,7 @@
 
 class SchItem;
 class AbstractGraphicsHandle;
-
+class ItemPropertyEditor;
 class QRubberBand;
 
 class SelectTool : public InteractiveTool
@@ -43,6 +43,7 @@ private:
     QList<SchItem *> m_phantomItems;
     AbstractGraphicsHandle *m_handle;
     QRubberBand *m_rubberBand;
+    ItemPropertyEditor *m_itemPropertyEditor;
 
     void updateCursor(QMouseEvent *event);
     void setOperation(Operation operation);

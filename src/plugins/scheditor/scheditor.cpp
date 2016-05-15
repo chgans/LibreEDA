@@ -240,11 +240,14 @@ void SchEditor::addDockWidgets()
     connect(m_scene, &SchScene::selectionChanged,
             this, [this]()
     {
-        QList<QObject *> objects;
-        for (QObject *object : m_scene->selectedObjects())
+        QList<SchItem *> items = m_scene->selectedObjects();
+        if (items.isEmpty())
         {
-            objects.append(object);
+            m_propertyEditorDockWidget->setItem(nullptr);
         }
-        m_propertyEditorDockWidget->setObjects(objects);
+        else
+        {
+            m_propertyEditorDockWidget->setItem(items.first());
+        }
     });
 }

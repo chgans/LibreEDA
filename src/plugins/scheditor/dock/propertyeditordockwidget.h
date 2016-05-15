@@ -4,14 +4,9 @@
 #include "scheditor/dock/dockwidget.h"
 
 #include <QDockWidget>
-#include <QMap>
-#include <QList>
-#include <QString>
 
-class ObjectPropertyEditor;
+class ItemPropertyEditor;
 class SchItem;
-class QStackedWidget;
-class QComboBox;
 
 class PropertyEditorDockWidget : public DockWidget
 {
@@ -23,17 +18,10 @@ public:
 signals:
 
 public slots:
-    void setObjects(QList<QObject *> objects);
     void setItem(SchItem *item);
 
-private slots:
-    void updateEditor(int index);
-
 private:
-    ObjectPropertyEditor *m_editor;
-    QComboBox *m_objectComboBox;
-    QMap<QString, QList<QObject *> > m_classNameToObjects;
-    QList<QObject *> m_objects;
+    ItemPropertyEditor *m_editor;
 
     // DockWidget interface
 public slots:

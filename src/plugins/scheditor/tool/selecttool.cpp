@@ -5,6 +5,7 @@
 #include "item/schitem.h"
 #include "handle/abstractgraphicshandle.h"
 #include "command/placeitemcommand.h"
+#include "propertyeditor/itempropertyeditor.h"
 
 #include <QGraphicsItem>
 #include <QGraphicsEffect>
@@ -36,6 +37,10 @@
 //   Qt::DragCopyCursor
 //   Qt::SizeAllCursor
 
+// TODO: Make DragSelect, MoveItem, CloneItem and MoveHandle 4 sub InteractiveTools,
+// Manage which one is active (OperationState) or  to be activated (HintState) and
+// simply dispatch events to them when activated (including mousePressEvent() on activation)
+
 SelectTool::SelectTool(QObject *parent):
     InteractiveTool(parent),
     m_state(HintState),
@@ -49,6 +54,11 @@ SelectTool::SelectTool(QObject *parent):
                                   "select", nullptr);
     setAction(action);
     setToolGroup("interactive-tools");
+
+    m_itemPropertyEditor = new ItemPropertyEditor;
+    QList<QWidget *> widgets;
+    widgets << m_itemPropertyEditor;
+    setOptionWidgets(widgets);
 }
 
 SelectTool::~SelectTool()
@@ -263,6 +273,15 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
             path.addPolygon(view()->mapToScene(m_rubberBand->geometry()));
             scene()->setSelectionArea(path);
             m_rubberBand->hide();
+            QList<SchItem *> items = scene()->selectedObjects();
+            if (items.isEmpty())
+            {
+                m_itemPropertyEditor->setItem(nullptr);
+            }
+            else
+            {
+                m_itemPropertyEditor->setItem(items.first());
+            }
             break;
         }
         case MoveItem:
