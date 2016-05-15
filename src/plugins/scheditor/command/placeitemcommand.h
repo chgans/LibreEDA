@@ -335,6 +335,7 @@ public:
     void undo();
     void redo();
 
+    QList<quint64> itemIdList;
     qreal amount;
 };
 

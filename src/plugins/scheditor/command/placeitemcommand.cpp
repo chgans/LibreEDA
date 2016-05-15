@@ -439,3 +439,44 @@ void CloneCommand::redo()
         setText(text() + "s");
     }
 }
+
+ChangeZValueByCommand::ChangeZValueByCommand(UndoCommand *parent):
+    UndoCommand (parent)
+{
+}
+
+void ChangeZValueByCommand::undo()
+{
+    for (quint64 id : itemIdList)
+    {
+        auto item = document()->drawingItem(id);
+        if (item == nullptr)
+        {
+            warnItemNotFound("Rotate", id);
+            continue;
+        }
+        item->zValue -= amount;
+        document()->updateDrawingItem(id);
+    }
+}
+
+void ChangeZValueByCommand::redo()
+{
+    for (quint64 id : itemIdList)
+    {
+        auto item = document()->drawingItem(id);
+        if (item == nullptr)
+        {
+            warnItemNotFound("Z Value", id);
+            continue;
+        }
+        item->zValue += amount;
+        document()->updateDrawingItem(id);
+    }
+
+    setText(QString("Change %1 Z Value").arg(itemIdList.count()));
+    if (itemIdList.count() > 1)
+    {
+        setText(text() + "s");
+    }
+}
