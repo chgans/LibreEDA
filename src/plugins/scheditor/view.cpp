@@ -5,7 +5,7 @@
 #include "grid/cartesiangrid.h"
 #include "palette.h"
 #include "snap/positionsnapper.h"
-#include "widget/graphicsviewruler.h"
+#include "widget/rulerbarwidget.h"
 #include "settings.h"
 
 #include <QOpenGLWidget>
@@ -40,10 +40,10 @@ View::View(QWidget *parent):
     QGridLayout *layout = new QGridLayout;
     layout->setSpacing(0);
     layout->setMargin(0);
-    m_horizontalRuler = new GraphicsViewRuler(GraphicsViewRuler::Horizontal);
-    m_verticalRuler = new GraphicsViewRuler(GraphicsViewRuler::Vertical);
+    m_horizontalRuler = new RulerBarWidget(RulerBarWidget::Horizontal);
+    m_verticalRuler = new RulerBarWidget(RulerBarWidget::Vertical);
     m_cornerWidget = new QWidget;
-    m_cornerWidget->setFixedSize(GraphicsViewRuler::BREADTH, GraphicsViewRuler::BREADTH);
+    m_cornerWidget->setFixedSize(RulerBarWidget::BREADTH, RulerBarWidget::BREADTH);
     layout->addWidget(viewport(),   1, 1);
     setLayout(layout);
 
@@ -552,7 +552,7 @@ void View::setRulerEnabled(bool enabled)
         m_horizontalRuler->show();
         grid->addWidget(m_verticalRuler, 1, 0);
         m_verticalRuler->show();
-        setViewportMargins(GraphicsViewRuler::BREADTH, GraphicsViewRuler::BREADTH, 0, 0);
+        setViewportMargins(RulerBarWidget::BREADTH, RulerBarWidget::BREADTH, 0, 0);
     }
     else
     {

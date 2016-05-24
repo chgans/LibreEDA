@@ -1,4 +1,4 @@
-#include "graphicsviewruler.h"
+#include "rulerbarwidget.h"
 
 #include <QMouseEvent>
 #include <QPainter>
@@ -9,26 +9,26 @@
 // https://kernelcoder.wordpress.com/2010/08/25/how-to-insert-ruler-scale-type-widget-into-a-qabstractscrollarea-type-widget/
 // http://stackoverflow.com/questions/10027008/separate-layers-like-feature-on-qgraphicsview
 
-const int GraphicsViewRuler::BREADTH = 23;
+const int RulerBarWidget::BREADTH = 23;
 
-GraphicsViewRuler::GraphicsViewRuler(GraphicsViewRuler::Alignment alignment, QWidget *parent) :
+RulerBarWidget::RulerBarWidget(RulerBarWidget::Alignment alignment, QWidget *parent) :
     QWidget(parent), m_alignment(alignment)
 {
 }
 
-GraphicsViewRuler::~GraphicsViewRuler()
+RulerBarWidget::~RulerBarWidget()
 {
 
 }
 
-void GraphicsViewRuler::setCursorRange(qreal first, qreal last)
+void RulerBarWidget::setCursorRange(qreal first, qreal last)
 {
     m_firstPos = first;
     m_lastPos = last;
     update();
 }
 
-void GraphicsViewRuler::setCursorPosition(const QPointF &pos)
+void RulerBarWidget::setCursorPosition(const QPointF &pos)
 {
     if (m_alignment == Horizontal)
     {
@@ -41,17 +41,17 @@ void GraphicsViewRuler::setCursorPosition(const QPointF &pos)
     update();
 }
 
-QSize GraphicsViewRuler::minimumSizeHint() const
+QSize RulerBarWidget::minimumSizeHint() const
 {
     return QSize(BREADTH, BREADTH);
 }
 
-GraphicsViewRuler::Alignment GraphicsViewRuler::rulerType() const
+RulerBarWidget::Alignment RulerBarWidget::rulerType() const
 {
     return m_alignment;
 }
 
-void GraphicsViewRuler::setBackgroundColor(const QColor &color)
+void RulerBarWidget::setBackgroundColor(const QColor &color)
 {
     if (m_backgroundColor == color)
     {
@@ -61,12 +61,12 @@ void GraphicsViewRuler::setBackgroundColor(const QColor &color)
     update();
 }
 
-QColor GraphicsViewRuler::backgroundColor() const
+QColor RulerBarWidget::backgroundColor() const
 {
     return m_backgroundColor;
 }
 
-void GraphicsViewRuler::setForegroundColor(const QColor &color)
+void RulerBarWidget::setForegroundColor(const QColor &color)
 {
     if (m_foregroundColor == color)
     {
@@ -76,7 +76,7 @@ void GraphicsViewRuler::setForegroundColor(const QColor &color)
     update();
 }
 
-QColor GraphicsViewRuler::foregroundColor() const
+QColor RulerBarWidget::foregroundColor() const
 {
     return m_foregroundColor;
 }
@@ -86,7 +86,7 @@ static const int MAJOR_TICK_HEIGHT = 6;
 static const int MINOR_TICK_HEIGHT = 3;
 
 // TODO: update only inside event->rect()
-void GraphicsViewRuler::paintEvent(QPaintEvent *event)
+void RulerBarWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
@@ -137,7 +137,7 @@ void GraphicsViewRuler::paintEvent(QPaintEvent *event)
     drawIndicator(painter, ratio * (m_currentPos - m_firstPos));
 }
 
-int GraphicsViewRuler::length()
+int RulerBarWidget::length()
 {
     if (m_alignment == Vertical)
     {
@@ -149,7 +149,7 @@ int GraphicsViewRuler::length()
     }
 }
 
-void GraphicsViewRuler::drawMajorTick(QPainter &painter, int pixelPos, qreal logicalPos)
+void RulerBarWidget::drawMajorTick(QPainter &painter, int pixelPos, qreal logicalPos)
 {
     QFont font = painter.font();
     font.setPixelSize(FONT_SIZE);
@@ -175,7 +175,7 @@ void GraphicsViewRuler::drawMajorTick(QPainter &painter, int pixelPos, qreal log
     }
 }
 
-void GraphicsViewRuler::drawMinorTick(QPainter &painter, int pixelPos)
+void RulerBarWidget::drawMinorTick(QPainter &painter, int pixelPos)
 {
     if (m_alignment == Horizontal)
     {
@@ -189,7 +189,7 @@ void GraphicsViewRuler::drawMinorTick(QPainter &painter, int pixelPos)
     }
 }
 
-void GraphicsViewRuler::drawIndicator(QPainter &painter, int pixelPos)
+void RulerBarWidget::drawIndicator(QPainter &painter, int pixelPos)
 {
     static const int cursorWidth = 6;
     static const int cursorHeight = 3;

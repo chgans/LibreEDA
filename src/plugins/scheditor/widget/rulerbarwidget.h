@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-class GraphicsViewRuler : public QWidget
+class RulerBarWidget : public QWidget
 {
     Q_OBJECT
     Q_ENUMS(Alignment)
@@ -12,14 +12,14 @@ public:
     enum Alignment { Horizontal, Vertical };
     static const int BREADTH;
 
-    explicit GraphicsViewRuler(GraphicsViewRuler::Alignment alignment, QWidget *parent = nullptr);
-    ~GraphicsViewRuler();
+    explicit RulerBarWidget(RulerBarWidget::Alignment alignment, QWidget *parent = nullptr);
+    ~RulerBarWidget();
 
     void setCursorRange(qreal first, qreal last);
     void setCursorPosition(const QPointF &pos);
 
     QSize minimumSizeHint() const;
-    GraphicsViewRuler::Alignment rulerType() const;
+    RulerBarWidget::Alignment rulerType() const;
 
     void setBackgroundColor(const QColor &color);
     QColor backgroundColor() const;

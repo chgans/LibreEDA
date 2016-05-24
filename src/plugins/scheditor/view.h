@@ -9,7 +9,7 @@ class InteractiveTool;
 class Item;
 class Handle;
 class SnapManager;
-class GraphicsViewRuler;
+class RulerBarWidget;
 class Palette;
 class CartesianGrid;
 class Grid;
@@ -124,8 +124,8 @@ private:
     CartesianGrid *m_grid;
 
     QWidget *m_cornerWidget;
-    GraphicsViewRuler *m_horizontalRuler;
-    GraphicsViewRuler *m_verticalRuler;
+    RulerBarWidget *m_horizontalRuler;
+    RulerBarWidget *m_verticalRuler;
     void updateRulerCursorPositions();
     void updateRulerCursorRanges();
 
