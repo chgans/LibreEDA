@@ -53,7 +53,6 @@ SchEditor::~SchEditor()
     qDeleteAll(m_snapToolBar->actions());
     qDeleteAll(m_interactiveToolBar->actions());
     qDeleteAll(m_arrangeToolBar->actions());
-    delete m_propertyEditorDockWidget;
     delete m_taskDockWidget;
     delete m_view;
     delete m_scene;
@@ -82,8 +81,7 @@ void SchEditor::applySettings(const SchEditorSettings &settings)
         tool->applySettings(settings);
     }
     // TODO: other tools
-    // TODO: snap manager
-    m_propertyEditorDockWidget->applySettings(settings);
+    // TODO: snap manager    
     m_taskDockWidget->applySettings(settings);
 }
 
@@ -142,20 +140,16 @@ void SchEditor::activate(QMainWindow *win)
     m_arrangeToolBar->show();
     win->addToolBar(m_pathPointToolBar);
     m_pathPointToolBar->show();
-    win->addDockWidget(Qt::RightDockWidgetArea, m_propertyEditorDockWidget);
-    m_propertyEditorDockWidget->show();
     win->addDockWidget(Qt::RightDockWidgetArea, m_taskDockWidget);
     m_taskDockWidget->show();
     win->addDockWidget(Qt::RightDockWidgetArea, m_undoDockWidget);
     m_undoDockWidget->show();
-    win->tabifyDockWidget(m_propertyEditorDockWidget, m_taskDockWidget);
     win->tabifyDockWidget(m_taskDockWidget, m_undoDockWidget);
 }
 
 void SchEditor::desactivate(QMainWindow *win)
 {
     win->removeDockWidget(m_undoDockWidget);
-    win->removeDockWidget(m_propertyEditorDockWidget);
     win->removeDockWidget(m_taskDockWidget);
     win->removeToolBar(m_arrangeToolBar);
     win->removeToolBar(m_pathPointToolBar);
@@ -196,15 +190,39 @@ void SchEditor::addInteractiveTools()
             m_undoStack->push(command);
         });
     }
-    m_selectTool->action()->setChecked(true);
 
     connect(m_interactiveActionGroup, &QActionGroup::triggered,
             this, [this](QAction * action)
     {
         InteractiveTool *tool = action->data().value<InteractiveTool *>();
-        m_view->setTool(tool);
-        m_taskDockWidget->setTool(tool);
+        setInteractiveTool(tool);
     });
+
+    m_selectTool->action()->setChecked(true);
+    m_selectTool->action()->trigger();
+    setInteractiveTool(m_selectTool);
+}
+
+void SchEditor::setInteractiveTool(InteractiveTool *tool)
+{
+    if (m_interactiveTool != nullptr)
+    {
+        m_interactiveTool->disconnect(m_taskDockWidget);
+    }
+
+    m_interactiveTool = tool;
+    m_view->setTool(m_interactiveTool);
+
+    if (m_interactiveTool != nullptr)
+    {
+        connect(m_interactiveTool, &InteractiveTool::taskWidgetsChanged,
+                m_taskDockWidget, &TaskDockWidget::setTaskWidgets);
+        m_taskDockWidget->setTaskWidgets(tool->taskWidgets());
+    }
+    else
+    {
+        m_taskDockWidget->setTaskWidgets(QList<QWidget *>());
+    }
 }
 
 void SchEditor::addSnapTools()
@@ -234,20 +252,5 @@ void SchEditor::addArrangeTools()
 void SchEditor::addDockWidgets()
 {
     m_taskDockWidget = new TaskDockWidget();
-    m_propertyEditorDockWidget = new PropertyEditorDockWidget();
     m_undoDockWidget = new UndoDockWidget();
-
-    connect(m_scene, &SchScene::selectionChanged,
-            this, [this]()
-    {
-        QList<SchItem *> items = m_scene->selectedObjects();
-        if (items.isEmpty())
-        {
-            m_propertyEditorDockWidget->setItem(nullptr);
-        }
-        else
-        {
-            m_propertyEditorDockWidget->setItem(items.first());
-        }
-    });
 }

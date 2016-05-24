@@ -28,7 +28,7 @@ PlaceBezierTool::PlaceBezierTool(QObject *parent):
 
     QList<QWidget *> widgets;
     widgets << m_penSettingsWidget;
-    setOptionWidgets(widgets);
+    setTaskWidgets(widgets);
 }
 
 PlaceBezierTool::~PlaceBezierTool()

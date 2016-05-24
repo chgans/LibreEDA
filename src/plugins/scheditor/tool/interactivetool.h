@@ -18,8 +18,8 @@ public:
     explicit InteractiveTool(QObject *parent = nullptr);
     ~InteractiveTool();
 
-    QList<QWidget *> optionWidgets();
-    void setOptionWidgets(QList<QWidget *> widgets);
+    QList<QWidget *> taskWidgets();
+    void setTaskWidgets(QList<QWidget *> widgets);
 
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
@@ -31,8 +31,11 @@ public:
 
     virtual void wheelEvent(QWheelEvent *event);
 
+signals:
+    void taskWidgetsChanged(QList<QWidget *> widgets);
+
 protected:
-    QList<QWidget *> m_optionWidgets;
+    QList<QWidget *> m_taskWidgets;
 };
 
 #endif // INTERACTIVETOOL_H

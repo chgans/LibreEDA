@@ -25,9 +25,7 @@ SelectTool::SelectTool(QObject *parent):
     setToolGroup("interactive-tools");
 
     m_itemPropertyEditor = new ItemPropertyEditor;
-    QList<QWidget *> widgets;
-    widgets << m_itemPropertyEditor;
-    setOptionWidgets(widgets);
+    m_defaultTaskWidgets << m_itemPropertyEditor;
 
     m_moveItemTool = new MoveItemTool(this);
     connect(m_moveItemTool, &SchTool::taskCompleted,
@@ -40,6 +38,7 @@ SelectTool::SelectTool(QObject *parent):
     m_dragSelectTool = new DragSelectTool(this);
 
     m_currentTool = nullptr;
+    updateTaskWidgets();
 }
 
 SelectTool::~SelectTool()
@@ -121,6 +120,19 @@ void SelectTool::setCurrentTool(InteractiveTool *tool)
     if (m_currentTool != nullptr)
     {
         m_currentTool->setView(view());
+    }
+    updateTaskWidgets();
+}
+
+void SelectTool::updateTaskWidgets()
+{
+    if (m_currentTool != nullptr)
+    {
+        setTaskWidgets(m_currentTool->taskWidgets());
+    }
+    else
+    {
+        setTaskWidgets(m_defaultTaskWidgets);
     }
 }
 
@@ -260,6 +272,7 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
     m_state = HintState;
 
     updateOperation(event->modifiers());
+    setCurrentTool(nullptr);
     event->accept();
 }
 

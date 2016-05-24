@@ -16,7 +16,6 @@ class InteractiveTool;
 class PlacementTool;
 class SelectTool;
 class TaskDockWidget;
-class PropertyEditorDockWidget;
 class UndoDockWidget;
 class SnapManager;
 class SchEditorSettings;
@@ -49,6 +48,8 @@ private:
     SelectTool *m_selectTool;
     QList<PlacementTool *> m_placementTools;
     QList<InteractiveTool *> m_interactiveTools;
+    void setInteractiveTool(InteractiveTool *tool);
+    InteractiveTool * m_interactiveTool = nullptr;
 
     void addSnapTools();
     QToolBar *m_snapToolBar = nullptr;
@@ -61,7 +62,6 @@ private:
 
     void addDockWidgets();
     TaskDockWidget *m_taskDockWidget = nullptr;
-    PropertyEditorDockWidget *m_propertyEditorDockWidget = nullptr;
     UndoDockWidget *m_undoDockWidget;
 
     void addView();

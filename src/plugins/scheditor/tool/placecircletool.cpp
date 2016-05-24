@@ -38,7 +38,7 @@ PlaceCircleTool::PlaceCircleTool(QObject *parent):
 
     QList<QWidget *> widgets;
     widgets << m_penSettingsWidget << m_brushSettingsWidget;
-    setOptionWidgets(widgets);
+    setTaskWidgets(widgets);
 }
 
 PlaceCircleTool::~PlaceCircleTool()

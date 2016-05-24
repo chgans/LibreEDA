@@ -40,11 +40,13 @@ private:
 
     AbstractGraphicsHandle *m_handle;
     ItemPropertyEditor *m_itemPropertyEditor;
+    QList<QWidget *> m_defaultTaskWidgets;
 
     void updateOperation(Qt::KeyboardModifiers modifiers);
     void setOperation(Operation operation);
     void updateCursor();
     void setCurrentTool(InteractiveTool *tool);
+    void updateTaskWidgets();
 
     // GraphicsTool interface
 public slots:

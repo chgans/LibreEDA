@@ -31,7 +31,7 @@ PlaceWireTool::PlaceWireTool(QObject *parent):
 
     QList<QWidget *> widgets;
     widgets << m_penSettingsWidget;
-    setOptionWidgets(widgets);
+    setTaskWidgets(widgets);
 }
 
 PlaceWireTool::~PlaceWireTool()

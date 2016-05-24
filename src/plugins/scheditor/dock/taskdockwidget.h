@@ -3,11 +3,6 @@
 
 #include "scheditor/dock/dockwidget.h"
 
-class QSplitter;
-class TaskEditWidget;
-class TaskOptionWidget;
-class InteractiveTool;
-
 class TaskDockWidget : public DockWidget
 {
     Q_OBJECT
@@ -18,7 +13,7 @@ public:
 signals:
 
 public slots:
-    void setTool(InteractiveTool *tool);
+    void setTaskWidgets(const QList<QWidget *> widgets);
 
 private:
     QList<QWidget *> m_widgets;

@@ -1,7 +1,4 @@
-#include "tool/interactivetool.h"
 #include "dock/taskdockwidget.h"
-#include "widget/taskeditwidget.h"
-#include "widget/taskoptionwidget.h"
 
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -16,14 +13,16 @@ TaskDockWidget::TaskDockWidget(QWidget *parent, Qt::WindowFlags flags) :
     setWidget(widget);
 }
 
-void TaskDockWidget::setTool(InteractiveTool *tool)
+void TaskDockWidget::setTaskWidgets(const QList<QWidget *> widgets)
 {
     for (QWidget *oldWidget : m_widgets)
     {
         widget()->layout()->removeWidget(oldWidget);
         oldWidget->hide();
     }
-    m_widgets = tool->optionWidgets();
+
+    m_widgets = widgets;
+
     for (QWidget *newWidget : m_widgets)
     {
         widget()->layout()->addWidget(newWidget);

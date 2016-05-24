@@ -28,7 +28,7 @@ PlacePolyineTool::PlacePolyineTool(QObject *parent):
 
     QList<QWidget *> widgets;
     widgets << m_penSettingsWidget;
-    setOptionWidgets(widgets);
+    setTaskWidgets(widgets);
 }
 
 void PlacePolyineTool::cancel()

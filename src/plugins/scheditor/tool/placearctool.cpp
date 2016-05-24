@@ -37,7 +37,7 @@ PlaceArcTool::PlaceArcTool(QObject *parent):
 
     QList<QWidget *> widgets;
     widgets << m_penSettingsWidget << m_brushSettingsWidget;
-    setOptionWidgets(widgets);
+    setTaskWidgets(widgets);
 }
 
 PlaceArcTool::~PlaceArcTool()

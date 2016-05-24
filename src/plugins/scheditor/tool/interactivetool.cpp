@@ -15,14 +15,15 @@ InteractiveTool::~InteractiveTool()
 
 }
 
-QList<QWidget *> InteractiveTool::optionWidgets()
+QList<QWidget *> InteractiveTool::taskWidgets()
 {
-    return m_optionWidgets;
+    return m_taskWidgets;
 }
 
-void InteractiveTool::setOptionWidgets(QList<QWidget *> widgets)
+void InteractiveTool::setTaskWidgets(QList<QWidget *> widgets)
 {
-    m_optionWidgets = widgets;
+    m_taskWidgets = widgets;
+    emit taskWidgetsChanged(m_taskWidgets);
 }
 
 void InteractiveTool::mousePressEvent(QMouseEvent *event)
