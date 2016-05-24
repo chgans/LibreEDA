@@ -5,7 +5,7 @@
 #include <QKeyEvent>
 
 InteractiveTool::InteractiveTool(QObject *parent):
-    SchTool(parent)
+    Tool(parent)
 {
 
 }

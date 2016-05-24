@@ -45,9 +45,9 @@ PlaceArcTool::~PlaceArcTool()
 
 }
 
-SchItem *PlaceArcTool::beginInsert(const QPointF &pos)
+Item *PlaceArcTool::beginInsert(const QPointF &pos)
 {
-    m_item = new GraphicsArcItem();
+    m_item = new ArcItem();
     m_item->setPos(pos);
     m_item->setPen(m_penSettingsWidget->pen());
     m_item->setBrush(m_brushSettingsWidget->brush());
@@ -84,14 +84,14 @@ bool PlaceArcTool::removePoint(int idx, const QPointF &pos)
         case 1:
             return false; // Remove and delete Arc
         case 2:
-            handleId = GraphicsArcItem::XRadiusHandle;
+            handleId = ArcItem::XRadiusHandle;
             break;
         case 3:
-            handleId = GraphicsArcItem::YRadiusHandle;
+            handleId = ArcItem::YRadiusHandle;
             break;
         case 4:
             m_item->setSpanAngle(0);
-            handleId = GraphicsArcItem::StartAngleHandle;
+            handleId = ArcItem::StartAngleHandle;
             break;
         default:
             // Fail loudly
@@ -118,11 +118,11 @@ void PlaceArcTool::movePoint(int idx, const QPointF &pos)
             m_item->setYRadius(p.y());
             break;
         case 3:
-            m_item->handleAt(GraphicsArcItem::StartAngleHandle)->setPos(p);
-            m_item->handleAt(GraphicsArcItem::SpanAngleHandle)->setPos(p);
+            m_item->handleAt(ArcItem::StartAngleHandle)->setPos(p);
+            m_item->handleAt(ArcItem::SpanAngleHandle)->setPos(p);
             break;
         case 4:
-            m_item->handleAt(GraphicsArcItem::SpanAngleHandle)->setPos(p);
+            m_item->handleAt(ArcItem::SpanAngleHandle)->setPos(p);
             break;
         default:
             // Fail loudly

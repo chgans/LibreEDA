@@ -28,12 +28,12 @@ SelectTool::SelectTool(QObject *parent):
     m_defaultTaskWidgets << m_itemPropertyEditor;
 
     m_moveItemTool = new MoveItemTool(this);
-    connect(m_moveItemTool, &SchTool::taskCompleted,
-            this, &SchTool::taskCompleted);
+    connect(m_moveItemTool, &Tool::taskCompleted,
+            this, &Tool::taskCompleted);
 
     m_cloneItemTool = new CloneItemTool(this);
-    connect(m_cloneItemTool, &SchTool::taskCompleted,
-            this, &SchTool::taskCompleted);
+    connect(m_cloneItemTool, &Tool::taskCompleted,
+            this, &Tool::taskCompleted);
 
     m_dragSelectTool = new DragSelectTool(this);
 
@@ -49,7 +49,7 @@ SelectTool::~SelectTool()
 void SelectTool::updateOperation(Qt::KeyboardModifiers modifiers)
 {
     // Could use auto handle = view()->ItemUnderMouse<AbstractGraphicsHandle>();
-    AbstractGraphicsHandle *handle = view()->handleUnderMouse();
+    Handle *handle = view()->handleUnderMouse();
     if (handle != nullptr)
     {
         m_handle = handle;
@@ -58,7 +58,7 @@ void SelectTool::updateOperation(Qt::KeyboardModifiers modifiers)
     }
 
     // Could use auto item = view()->ItemUnderMouse<SchItem>();
-    SchItem *item = view()->objectUnderMouse();
+    Item *item = view()->objectUnderMouse();
     if (item != nullptr && item->isEnabled())
     {
         if (modifiers.testFlag(Qt::ControlModifier))
@@ -163,7 +163,7 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
         }
         case MoveItem:
         {
-            SchItem *object = view()->objectUnderMouse();
+            Item *object = view()->objectUnderMouse();
             if (object == nullptr)
             {
                 scene()->clearSelection();

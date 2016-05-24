@@ -4,7 +4,7 @@
 #include "tool/schtool.h"
 #include <QtGlobal>
 
-class GraphicsItemAlignTool : public SchTool
+class GraphicsItemAlignTool : public Tool
 {
     Q_OBJECT
 

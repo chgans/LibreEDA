@@ -5,14 +5,14 @@
 
 #include <QPen>
 
-class GraphicsBezierHandle;
+class BezierHandle;
 
-class GraphicsBezierItem : public SchItem
+class BezierItem : public Item
 {
     Q_OBJECT
 
 public:
-    explicit GraphicsBezierItem(SchItem *parent = nullptr);
+    explicit BezierItem(Item *parent = nullptr);
 
     QPainterPath path() const;
     void setPath(const QPainterPath &path);
@@ -61,11 +61,11 @@ public:
 
     // SchItem interface
 public:
-    virtual SchItem *clone();
+    virtual Item *clone();
 
     // IGraphicsItemObserver interface
 protected:
-    virtual void itemNotification(IGraphicsObservableItem *item);
+    virtual void itemNotification(IObservableItem *item);
 
     // QGraphicsItem interface
 protected:

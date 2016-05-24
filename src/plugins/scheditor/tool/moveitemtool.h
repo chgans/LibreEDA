@@ -5,7 +5,7 @@
 
 #include <QPointF>
 
-class SchItem;
+class Item;
 
 class MoveItemTool : public InteractiveTool
 {
@@ -13,7 +13,7 @@ public:
     MoveItemTool(QObject *parent = nullptr);
 
 private:
-    QList<SchItem *> m_items;
+    QList<Item *> m_items;
     QPointF m_pressPosition;
     QPointF m_lastPosition;
 

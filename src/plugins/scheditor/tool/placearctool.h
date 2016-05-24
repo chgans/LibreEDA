@@ -3,7 +3,7 @@
 
 #include "tool/placementtool.h"
 
-class GraphicsArcItem;
+class ArcItem;
 class PenSettingsWidget;
 class BrushSettingsWidget;
 
@@ -18,13 +18,13 @@ public:
     ~PlaceArcTool();
 
 private:
-    GraphicsArcItem *m_item;
+    ArcItem *m_item;
     PenSettingsWidget *m_penSettingsWidget;
     BrushSettingsWidget *m_brushSettingsWidget;
 
     // PlacementTool interface
 public:
-    virtual SchItem *beginInsert(const QPointF &pos);
+    virtual Item *beginInsert(const QPointF &pos);
     virtual void addPoint(int idx, const QPointF &pos);
     virtual void freezePoint(int idx, const QPointF &pos);
     virtual bool removePoint(int idx, const QPointF &pos);

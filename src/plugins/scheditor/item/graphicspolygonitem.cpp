@@ -1,28 +1,28 @@
 #include "item/graphicspolygonitem.h"
 
-GraphicsPolygonItem::GraphicsPolygonItem(SchItem *parent):
-    SchItem(parent),
+PolygonItem::PolygonItem(Item *parent):
+    Item(parent),
     m_fillRule(Qt::OddEvenFill)
 {
 
 }
 
-GraphicsPolygonItem::~GraphicsPolygonItem()
+PolygonItem::~PolygonItem()
 {
 
 }
 
-Qt::FillRule GraphicsPolygonItem::fillRule() const
+Qt::FillRule PolygonItem::fillRule() const
 {
     return m_fillRule;
 }
 
-QPolygonF GraphicsPolygonItem::polygon() const
+QPolygonF PolygonItem::polygon() const
 {
     return m_polygon;
 }
 
-void GraphicsPolygonItem::setFillRule(Qt::FillRule fillRule)
+void PolygonItem::setFillRule(Qt::FillRule fillRule)
 {
     if (m_fillRule == fillRule)
     {
@@ -34,7 +34,7 @@ void GraphicsPolygonItem::setFillRule(Qt::FillRule fillRule)
     emit fillRuleChanged(fillRule);
 }
 
-void GraphicsPolygonItem::setPolygon(QPolygonF polygon)
+void PolygonItem::setPolygon(QPolygonF polygon)
 {
     if (m_polygon == polygon)
     {
@@ -55,7 +55,7 @@ void GraphicsPolygonItem::setPolygon(QPolygonF polygon)
     emit polygonChanged(polygon);
 }
 
-void GraphicsPolygonItem::addPoint(const QPointF &pos)
+void PolygonItem::addPoint(const QPointF &pos)
 {
     addRegularHandle(m_polygon.count(), MoveHandleRole, CircularHandleShape, pos);
     m_polygon.append(pos);
@@ -64,7 +64,7 @@ void GraphicsPolygonItem::addPoint(const QPointF &pos)
     emit polygonChanged(m_polygon);
 }
 
-void GraphicsPolygonItem::movePoint(int idx, const QPointF &pos)
+void PolygonItem::movePoint(int idx, const QPointF &pos)
 {
     blockItemNotification();
     m_idToHandle[idx]->setPos(pos);
@@ -74,7 +74,7 @@ void GraphicsPolygonItem::movePoint(int idx, const QPointF &pos)
     emit polygonChanged(m_polygon);
 }
 
-void GraphicsPolygonItem::handleToPolygon()
+void PolygonItem::handleToPolygon()
 {
     prepareGeometryChange();
     m_polygon = QPolygonF();
@@ -86,7 +86,7 @@ void GraphicsPolygonItem::handleToPolygon()
     update();
 }
 
-void GraphicsPolygonItem::polygonToHandle()
+void PolygonItem::polygonToHandle()
 {
     blockItemNotification();
     for (int i = 0; i < m_polygon.count(); i++)
@@ -97,7 +97,7 @@ void GraphicsPolygonItem::polygonToHandle()
     unblockItemNotification();
 }
 
-QRectF GraphicsPolygonItem::boundingRect() const
+QRectF PolygonItem::boundingRect() const
 {
     if (m_boundingRect.isNull())
     {
@@ -114,14 +114,14 @@ QRectF GraphicsPolygonItem::boundingRect() const
     return m_boundingRect;
 }
 
-QPainterPath GraphicsPolygonItem::shape() const
+QPainterPath PolygonItem::shape() const
 {
     QPainterPath path;
     path.addPolygon(polygon());
     return shapeFromPath(path, pen());
 }
 
-void GraphicsPolygonItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void PolygonItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                                 QWidget *widget)
 {
     Q_UNUSED(option);
@@ -131,20 +131,20 @@ void GraphicsPolygonItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
     painter->drawPolygon(polygon(), fillRule());
 }
 
-SchItem *GraphicsPolygonItem::clone()
+Item *PolygonItem::clone()
 {
-    GraphicsPolygonItem *item = new GraphicsPolygonItem();
+    PolygonItem *item = new PolygonItem();
     item->setPolygon(polygon());
     item->setFillRule(fillRule());
-    SchItem::cloneTo(item);
+    Item::cloneTo(item);
     return item;
 }
 
-QVariant GraphicsPolygonItem::itemChange(GraphicsItemChange change, const QVariant &value)
+QVariant PolygonItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged)
     {
-        for (AbstractGraphicsHandle *handle : m_idToHandle)
+        for (Handle *handle : m_idToHandle)
         {
             handle->setVisible(isSelected());
         }
@@ -152,7 +152,7 @@ QVariant GraphicsPolygonItem::itemChange(GraphicsItemChange change, const QVaria
     return value;
 }
 
-void GraphicsPolygonItem::itemNotification(IGraphicsObservableItem *item)
+void PolygonItem::itemNotification(IObservableItem *item)
 {
     Q_UNUSED(item);
     handleToPolygon();

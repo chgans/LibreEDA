@@ -20,13 +20,13 @@ ItemPropertyEditor::~ItemPropertyEditor()
 
 }
 
-const SchItem *ItemPropertyEditor::item() const
+const Item *ItemPropertyEditor::item() const
 {
     return m_item;
 }
 
 // TODO: based on item type, delegate additional property groups to be added and update of tehir values
-void ItemPropertyEditor::setItem(const SchItem *item)
+void ItemPropertyEditor::setItem(const Item *item)
 {
     if (item == m_item)
     {

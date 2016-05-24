@@ -3,7 +3,7 @@
 
 #include "tool/interactivetool.h"
 
-class AbstractGraphicsHandle;
+class Handle;
 class ItemPropertyEditor;
 class MoveItemTool;
 class CloneItemTool;
@@ -38,7 +38,7 @@ private:
     DragSelectTool *m_dragSelectTool;
     InteractiveTool *m_currentTool;
 
-    AbstractGraphicsHandle *m_handle;
+    Handle *m_handle;
     ItemPropertyEditor *m_itemPropertyEditor;
     QList<QWidget *> m_defaultTaskWidgets;
 

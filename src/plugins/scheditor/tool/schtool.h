@@ -4,9 +4,9 @@
 #include <QObject>
 
 
-class SchView;
-class SchScene;
-class SchEditorSettings;
+class View;
+class Scene;
+class Settings;
 class UndoCommand;
 
 class QWidget;
@@ -20,16 +20,16 @@ class QAction;
  *  - replace option dialog w/ option widget: allow to dosplay widget in a QDock or something
  */
 
-class SchTool : public QObject
+class Tool : public QObject
 {
     Q_OBJECT
 public:
-    explicit SchTool(QObject *parent = nullptr);
-    ~SchTool();
+    explicit Tool(QObject *parent = nullptr);
+    ~Tool();
 
-    SchView *view();
-    SchScene *scene();
-    void setView(SchView *view);
+    View *view();
+    Scene *scene();
+    void setView(View *view);
 
     void setToolGroup(const QString &group);
     QString toolGroup() const;
@@ -42,14 +42,14 @@ signals:
 
 public slots:
     virtual void cancel();
-    virtual void applySettings(const SchEditorSettings &settings);
+    virtual void applySettings(const Settings &settings);
 
 private:
-    SchView *m_view;
+    View *m_view;
     QString m_toolGroup;
     QAction *m_action;
 };
 
-Q_DECLARE_METATYPE(SchTool *)
+Q_DECLARE_METATYPE(Tool *)
 
 #endif // GRAPHICSTOOL_H

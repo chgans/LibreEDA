@@ -6,9 +6,9 @@
 #include <QPainterPathStroker>
 #include <QPainter>
 
-AbstractGraphicsHandle::AbstractGraphicsHandle(SchItem *parent):
+Handle::Handle(Item *parent):
     QGraphicsPathItem(parent),
-    IGraphicsObservableItem(),
+    IObservableItem(),
     m_role(MoveHandleRole),
     m_handleShape(CircularHandleShape),
     m_behaviour(NormalHandleBehaviour),
@@ -29,27 +29,27 @@ AbstractGraphicsHandle::AbstractGraphicsHandle(SchItem *parent):
     setVisible(false);
 }
 
-AbstractGraphicsHandle::~AbstractGraphicsHandle()
+Handle::~Handle()
 {
 
 }
 
-QCursor AbstractGraphicsHandle::handleCursor() const
+QCursor Handle::handleCursor() const
 {
     return roleToCursor(m_role);
 }
 
-void AbstractGraphicsHandle::setHandleId(int id)
+void Handle::setHandleId(int id)
 {
     m_id = id;
 }
 
-int AbstractGraphicsHandle::handleId() const
+int Handle::handleId() const
 {
     return m_id;
 }
 
-void AbstractGraphicsHandle::setHandleRole(GraphicsHandleRole role)
+void Handle::setHandleRole(GraphicsHandleRole role)
 {
     if (m_role == role)
     {
@@ -61,12 +61,12 @@ void AbstractGraphicsHandle::setHandleRole(GraphicsHandleRole role)
     update();
 }
 
-GraphicsHandleRole AbstractGraphicsHandle::handleRole() const
+GraphicsHandleRole Handle::handleRole() const
 {
     return m_role;
 }
 
-void AbstractGraphicsHandle::setHandleShape(GraphicsHandleShape shape)
+void Handle::setHandleShape(GraphicsHandleShape shape)
 {
     if (m_handleShape == shape)
     {
@@ -78,23 +78,23 @@ void AbstractGraphicsHandle::setHandleShape(GraphicsHandleShape shape)
     updateShape();
 }
 
-GraphicsHandleShape AbstractGraphicsHandle::handleShape() const
+GraphicsHandleShape Handle::handleShape() const
 {
     return m_handleShape;
 }
 
-SchItem *AbstractGraphicsHandle::parentGraphicsObject() const
+Item *Handle::parentGraphicsObject() const
 {
     return m_parent;
 }
 
-void AbstractGraphicsHandle::setParentGraphicsObject(SchItem *parent)
+void Handle::setParentGraphicsObject(Item *parent)
 {
     m_parent = parent;
     // TBD: we could auto-add the observer
 }
 
-QCursor AbstractGraphicsHandle::roleToCursor(GraphicsHandleRole role)
+QCursor Handle::roleToCursor(GraphicsHandleRole role)
 {
     switch (role)
     {
@@ -119,7 +119,7 @@ QCursor AbstractGraphicsHandle::roleToCursor(GraphicsHandleRole role)
     }
 }
 
-void AbstractGraphicsHandle::updateShape()
+void Handle::updateShape()
 {
     int radius = 5;
     QPainterPath path;
@@ -150,7 +150,7 @@ void AbstractGraphicsHandle::updateShape()
 }
 
 
-QVariant AbstractGraphicsHandle::itemChange(QGraphicsItem::GraphicsItemChange change,
+QVariant Handle::itemChange(QGraphicsItem::GraphicsItemChange change,
                                             const QVariant &value)
 {
     if (change == QGraphicsItem::ItemPositionHasChanged)

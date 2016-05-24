@@ -1,12 +1,12 @@
 #include "handle/graphicsregularhandle.h"
 
-GraphicsRegularHandle::GraphicsRegularHandle(SchItem *parent):
-    AbstractGraphicsHandle(parent)
+RegularHandle::RegularHandle(Item *parent):
+    Handle(parent)
 {
     setFlag(QGraphicsItem::ItemIgnoresTransformations);
 }
 
-GraphicsRegularHandle::~GraphicsRegularHandle()
+RegularHandle::~RegularHandle()
 {
 
 }

@@ -5,7 +5,7 @@
 #include <QPointF>
 #include <QSizeF>
 
-class GraphicsCartesianGrid : public GraphicsGrid
+class CartesianGrid : public Grid
 {
 public:
     enum Quadrant
@@ -16,13 +16,13 @@ public:
         BottomLeftQuadrant = 3
     };
 
-    explicit GraphicsCartesianGrid();
-    explicit GraphicsCartesianGrid(const GraphicsCartesianGrid &other);
+    explicit CartesianGrid();
+    explicit CartesianGrid(const CartesianGrid &other);
 
     QString typeName() const;
     QString typeId() const;
     QString description() const;
-    GraphicsGrid *clone() const;
+    Grid *clone() const;
     void draw(const QSizeF &pixelPerMm, QPainter *painter, const QRectF &rect) const;
     QRectF rect() const;
     QPointF snap(const QSizeF &pixelPerMm, QPointF point) const;

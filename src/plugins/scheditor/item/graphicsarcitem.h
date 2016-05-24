@@ -6,7 +6,7 @@
 // TODO: Pie vs chord vs whole shape
 // TODO: keep ratio (ellipse vs circle)
 
-class GraphicsArcItem : public SchItem
+class ArcItem : public Item
 {
     Q_OBJECT
 
@@ -24,11 +24,11 @@ public:
         SpanAngleHandle
     };
 
-    explicit GraphicsArcItem(SchItem *parent = nullptr);
-    explicit GraphicsArcItem(qreal xRadius, qreal yRadius, SchItem *parent = nullptr);
-    explicit GraphicsArcItem(qreal xRadius, qreal yRadius, int startAngle, int spanAngle,
-                             SchItem *parent = nullptr);
-    ~GraphicsArcItem();
+    explicit ArcItem(Item *parent = nullptr);
+    explicit ArcItem(qreal xRadius, qreal yRadius, Item *parent = nullptr);
+    explicit ArcItem(qreal xRadius, qreal yRadius, int startAngle, int spanAngle,
+                             Item *parent = nullptr);
+    ~ArcItem();
 
     qreal xRadius() const;
     qreal yRadius() const;
@@ -66,11 +66,11 @@ protected:
 
     // IGraphicsItemObserver interface
 public:
-    virtual void itemNotification(IGraphicsObservableItem *item);
+    virtual void itemNotification(IObservableItem *item);
 
     // SchItem interface
 public:
-    virtual SchItem *clone();
+    virtual Item *clone();
 
     //virtual QList<QPointF> hotSpots() const;
     virtual QList<QPointF> endPoints() const;

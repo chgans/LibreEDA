@@ -18,18 +18,18 @@ Q_LOGGING_CATEGORY(GraphicsBezierItemLog, "graphics.bezier.item")
  *  - Add a beginMove/endMove, while moving we don't have to recompute shape
  */
 
-GraphicsBezierItem::GraphicsBezierItem(SchItem *parent):
-    SchItem(parent)
+BezierItem::BezierItem(Item *parent):
+    Item(parent)
 {
     setFlag(QGraphicsItem::ItemUsesExtendedStyleOption, true);
 }
 
-QPainterPath GraphicsBezierItem::path() const
+QPainterPath BezierItem::path() const
 {
     return m_path;
 }
 
-void GraphicsBezierItem::setPath(const QPainterPath &path)
+void BezierItem::setPath(const QPainterPath &path)
 {
     m_path = path;
     setShapeDirty();
@@ -37,12 +37,12 @@ void GraphicsBezierItem::setPath(const QPainterPath &path)
 }
 
 // pos is in local coordinate
-int GraphicsBezierItem::addPoint(const QPointF &pos)
+int BezierItem::addPoint(const QPointF &pos)
 {
     DEBUG() << "About to insert BezierHandle #" << handleCount() + 1 << "at" << pos;
 
     int newId = pointCount();
-    GraphicsBezierHandle *newHandle = addBezierHandle(newId);
+    BezierHandle *newHandle = addBezierHandle(newId);
     newHandle->setNodePos(pos);
 
     if (newId == 0)
@@ -54,7 +54,7 @@ int GraphicsBezierItem::addPoint(const QPointF &pos)
                qFuzzyCompare(m_py.last(), pos.y())))
     {
         // Update the first/last status
-        GraphicsBezierHandle *prevHandle = bezierHandleAt(newId - 1);
+        BezierHandle *prevHandle = bezierHandleAt(newId - 1);
         prevHandle->setLast(false);
         newHandle->setLast(true);
     }
@@ -88,7 +88,7 @@ int GraphicsBezierItem::addPoint(const QPointF &pos)
     return pointCount() - 1;
 }
 
-void GraphicsBezierItem::removePoint(int index)
+void BezierItem::removePoint(int index)
 {
     Q_ASSERT(index < pointCount());
 
@@ -106,7 +106,7 @@ void GraphicsBezierItem::removePoint(int index)
     }
 
     // Remove handle
-    GraphicsBezierHandle *handle = bezierHandleAt(index);
+    BezierHandle *handle = bezierHandleAt(index);
     bool firstRemoved = index == 0;
     bool lastRemoved = index == (handleCount() - 1);
     removeHandle(handle);
@@ -128,7 +128,7 @@ void GraphicsBezierItem::removePoint(int index)
     unblockItemNotification();
 }
 
-void GraphicsBezierItem::movePoint(int index, const QPointF &pos)
+void BezierItem::movePoint(int index, const QPointF &pos)
 {
     Q_ASSERT(index < pointCount());
 
@@ -141,7 +141,7 @@ void GraphicsBezierItem::movePoint(int index, const QPointF &pos)
     unblockItemNotification();
 }
 
-QPainterPath GraphicsBezierItem::copyPath(const QPainterPath &src, int first, int last)
+QPainterPath BezierItem::copyPath(const QPainterPath &src, int first, int last)
 {
     QPainterPath dst;
     int i = first;
@@ -165,7 +165,7 @@ QPainterPath GraphicsBezierItem::copyPath(const QPainterPath &src, int first, in
     return dst;
 }
 
-void GraphicsBezierItem::smoothBezier()
+void BezierItem::smoothBezier()
 {
 
     // TODO: don't always rebuild the whole path
@@ -201,7 +201,7 @@ void GraphicsBezierItem::smoothBezier()
 }
 
 // https://www.particleincell.com/2012/bezier-splines/
-void GraphicsBezierItem::computeBezierControlPoints(const QVector<qreal> &p, QVector<qreal> &c1,
+void BezierItem::computeBezierControlPoints(const QVector<qreal> &p, QVector<qreal> &c1,
                                                     QVector<qreal> &c2)
 {
     int n = p.size() - 1;
@@ -253,7 +253,7 @@ void GraphicsBezierItem::computeBezierControlPoints(const QVector<qreal> &p, QVe
 }
 
 //
-void GraphicsBezierItem::bezierToHandles()
+void BezierItem::bezierToHandles()
 {
     Q_ASSERT(pointCount() == handleCount());
 
@@ -271,9 +271,9 @@ void GraphicsBezierItem::bezierToHandles()
     }
 }
 
-void GraphicsBezierItem::bezierToHandle(int idx)
+void BezierItem::bezierToHandle(int idx)
 {
-    GraphicsBezierHandle *handle = bezierHandleAt(idx);
+    BezierHandle *handle = bezierHandleAt(idx);
 
     handle->setNodePos(m_px[idx], m_py[idx]);
 
@@ -288,7 +288,7 @@ void GraphicsBezierItem::bezierToHandle(int idx)
     }
 }
 
-void GraphicsBezierItem::handlesToBezier()
+void BezierItem::handlesToBezier()
 {
     for (int i = 0; i < pointCount(); i++)
     {
@@ -296,7 +296,7 @@ void GraphicsBezierItem::handlesToBezier()
     }
 }
 
-void GraphicsBezierItem::handleToBezier(int idx)
+void BezierItem::handleToBezier(int idx)
 {
     Q_ASSERT(pointCount() == handleCount());
 
@@ -305,7 +305,7 @@ void GraphicsBezierItem::handleToBezier(int idx)
         return;
     }
 
-    GraphicsBezierHandle *handle = bezierHandleAt(idx);
+    BezierHandle *handle = bezierHandleAt(idx);
 
     m_px[idx] = handle->nodePos().x();
     m_py[idx] = handle->nodePos().y();
@@ -323,13 +323,13 @@ void GraphicsBezierItem::handleToBezier(int idx)
     }
 }
 
-QPointF GraphicsBezierItem::pointAt(int idx) const
+QPointF BezierItem::pointAt(int idx) const
 {
     Q_ASSERT(idx < pointCount());
     return QPointF(m_px[idx], m_py[idx]);
 }
 
-QList<QPointF> GraphicsBezierItem::points() const
+QList<QPointF> BezierItem::points() const
 {
     QList<QPointF> result;
     for (int i = 0; i < pointCount(); i++)
@@ -339,30 +339,30 @@ QList<QPointF> GraphicsBezierItem::points() const
     return result;
 }
 
-int GraphicsBezierItem::pointCount() const
+int BezierItem::pointCount() const
 {
     return m_px.size();
 }
 
-void GraphicsBezierItem::setBoundingRectDirty()
+void BezierItem::setBoundingRectDirty()
 {
     prepareGeometryChange();
     m_boundingRectIsDirty = true;
 }
 
-void GraphicsBezierItem::computeBoundingRect() const
+void BezierItem::computeBoundingRect() const
 {
     qreal extra = pen().widthF() / 2.0;
     m_boundingRect = m_path.boundingRect().adjusted(-extra, -extra, +extra, +extra);
     m_boundingRectIsDirty = false;
 }
 
-void GraphicsBezierItem::setShapeDirty()
+void BezierItem::setShapeDirty()
 {
     m_shapeIsDirty = true;
 }
 
-void GraphicsBezierItem::computeShape() const
+void BezierItem::computeShape() const
 {
     QPainterPathStroker stroker;
     stroker.setWidth(pen().widthF());
@@ -373,7 +373,7 @@ void GraphicsBezierItem::computeShape() const
     m_shapeIsDirty = false;
 }
 
-QRectF GraphicsBezierItem::boundingRect() const
+QRectF BezierItem::boundingRect() const
 {
     if (m_boundingRectIsDirty)
     {
@@ -382,7 +382,7 @@ QRectF GraphicsBezierItem::boundingRect() const
     return m_boundingRect;
 }
 
-QPainterPath GraphicsBezierItem::shape() const
+QPainterPath BezierItem::shape() const
 {
     if (m_shapeIsDirty)
     {
@@ -391,7 +391,7 @@ QPainterPath GraphicsBezierItem::shape() const
     return m_shape;
 }
 
-void GraphicsBezierItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void BezierItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                                QWidget *widget)
 {
     Q_UNUSED(widget);
@@ -410,10 +410,10 @@ void GraphicsBezierItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     painter->drawPath(m_path);
 }
 
-SchItem *GraphicsBezierItem::clone()
+Item *BezierItem::clone()
 {
-    GraphicsBezierItem *item = new GraphicsBezierItem();
-    SchItem::cloneTo(item);
+    BezierItem *item = new BezierItem();
+    Item::cloneTo(item);
     for (const QPointF &point : points())
     {
         item->addPoint(point);
@@ -421,7 +421,7 @@ SchItem *GraphicsBezierItem::clone()
     return item;
 }
 
-void GraphicsBezierItem::itemNotification(IGraphicsObservableItem *item)
+void BezierItem::itemNotification(IObservableItem *item)
 {
     Q_UNUSED(item);
     blockItemNotification();
@@ -435,12 +435,12 @@ void GraphicsBezierItem::itemNotification(IGraphicsObservableItem *item)
 }
 
 
-QVariant GraphicsBezierItem::itemChange(QGraphicsItem::GraphicsItemChange change,
+QVariant BezierItem::itemChange(QGraphicsItem::GraphicsItemChange change,
                                         const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged)
     {
-        for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+        for (Handle *handle : m_handleToId.keys())
         {
             handle->setVisible(isSelected());
         }

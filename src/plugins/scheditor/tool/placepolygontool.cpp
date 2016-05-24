@@ -49,9 +49,9 @@ PlacePolygonTool::~PlacePolygonTool()
 
 }
 
-SchItem *PlacePolygonTool::beginInsert(const QPointF &pos)
+Item *PlacePolygonTool::beginInsert(const QPointF &pos)
 {
-    m_item = new GraphicsPolygonItem();
+    m_item = new PolygonItem();
     m_item->setPos(pos);
     m_item->setPen(m_penSettingsWidget->pen());
     m_item->setBrush(m_brushSettingsWidget->brush());

@@ -4,19 +4,19 @@
 #include <QPainter>
 #include <QPen>
 
-GraphicsLineItem::GraphicsLineItem(SchItem *parent):
-    SchItem(parent)
+PolylineItem::PolylineItem(Item *parent):
+    Item(parent)
 {
     addRegularHandle(P1Handle, MoveHandleRole, CircularHandleShape);
     addRegularHandle(P2Handle, MoveHandleRole, CircularHandleShape);
 }
 
-QLineF GraphicsLineItem::line() const
+QLineF PolylineItem::line() const
 {
     return m_line;
 }
 
-void GraphicsLineItem::setLine(const QLineF &line)
+void PolylineItem::setLine(const QLineF &line)
 {
     if (m_line == line)
     {
@@ -36,30 +36,30 @@ void GraphicsLineItem::setLine(const QLineF &line)
     emit lineChanged();
 }
 
-SchItem *GraphicsLineItem::clone()
+Item *PolylineItem::clone()
 {
-    GraphicsLineItem *item = new GraphicsLineItem();
-    SchItem::cloneTo(item);
+    PolylineItem *item = new PolylineItem();
+    Item::cloneTo(item);
     item->setLine(line());
     return item;
 }
 
-QList<QPointF> GraphicsLineItem::endPoints() const
+QList<QPointF> PolylineItem::endPoints() const
 {
     return QList<QPointF>() << m_line.p1() << m_line.p2();
 }
 
-QList<QPointF> GraphicsLineItem::midPoints() const
+QList<QPointF> PolylineItem::midPoints() const
 {
     return QList<QPointF>() << m_line.pointAt(0.5);
 }
 
-QList<QPointF> GraphicsLineItem::centerPoints() const
+QList<QPointF> PolylineItem::centerPoints() const
 {
     return QList<QPointF>() << m_line.pointAt(0.5);
 }
 
-QList<QPointF> GraphicsLineItem::nearestPoints(QPointF pos) const
+QList<QPointF> PolylineItem::nearestPoints(QPointF pos) const
 {
     QPointF xPoint;
     QLineF::IntersectType xType = m_line.intersect(m_line.normalVector().translated(pos), &xPoint);
@@ -70,9 +70,9 @@ QList<QPointF> GraphicsLineItem::nearestPoints(QPointF pos) const
     return QList<QPointF>();
 }
 
-void GraphicsLineItem::itemNotification(IGraphicsObservableItem *item)
+void PolylineItem::itemNotification(IObservableItem *item)
 {
-    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle *>(item);
+    Handle *handle = dynamic_cast<Handle *>(item);
     Q_ASSERT(handle);
 
     QLineF l = m_line;
@@ -87,7 +87,7 @@ void GraphicsLineItem::itemNotification(IGraphicsObservableItem *item)
     setLine(l);
 }
 
-QRectF GraphicsLineItem::boundingRect() const
+QRectF PolylineItem::boundingRect() const
 {
     if (pen().widthF() == 0.0)
     {
@@ -109,7 +109,7 @@ QRectF GraphicsLineItem::boundingRect() const
     return m_boundingRect;
 }
 
-QPainterPath GraphicsLineItem::shape() const
+QPainterPath PolylineItem::shape() const
 {
     QPainterPath path;
     if (m_line == QLineF())
@@ -123,7 +123,7 @@ QPainterPath GraphicsLineItem::shape() const
     return shapeFromPath(path, pen());
 }
 
-void GraphicsLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void PolylineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                              QWidget *widget)
 {
     Q_UNUSED(option);
@@ -132,12 +132,12 @@ void GraphicsLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->drawLine(line());
 }
 
-QVariant GraphicsLineItem::itemChange(QGraphicsItem::GraphicsItemChange change,
+QVariant PolylineItem::itemChange(QGraphicsItem::GraphicsItemChange change,
                                       const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged)
     {
-        for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+        for (Handle *handle : m_handleToId.keys())
         {
             handle->setVisible(isSelected());
         }

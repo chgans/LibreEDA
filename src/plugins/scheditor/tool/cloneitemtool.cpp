@@ -12,9 +12,9 @@ CloneItemTool::CloneItemTool(QObject *parent):
 
 }
 
-SchItem *CloneItemTool::cloneItem(SchItem *item)
+Item *CloneItemTool::cloneItem(Item *item)
 {
-    SchItem *clone = item->clone();
+    Item *clone = item->clone();
 
     QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
     effect->setColor(Qt::darkGray);
@@ -29,10 +29,10 @@ SchItem *CloneItemTool::cloneItem(SchItem *item)
     return clone;
 }
 
-QList<SchItem *> CloneItemTool::cloneItems(QList<SchItem *> items)
+QList<Item *> CloneItemTool::cloneItems(QList<Item *> items)
 {
-    QList<SchItem *> clones;
-    for (SchItem *item : items)
+    QList<Item *> clones;
+    for (Item *item : items)
     {
         clones.append(cloneItem(item));
     }

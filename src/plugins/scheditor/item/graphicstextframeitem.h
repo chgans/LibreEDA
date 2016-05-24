@@ -9,7 +9,7 @@ class QGraphicsTextItem;
 
 // TODO: Auto resize to content
 // TODO: Wrap mode: QTextOption::WrapMode of item's document
-class GraphicsTextFrameItem: public SchItem
+class TextFrameItem: public Item
 {
     Q_OBJECT
 
@@ -20,7 +20,7 @@ public:
         FixedSizePolicy
     };
 
-    explicit GraphicsTextFrameItem(SchItem *parent = nullptr);
+    explicit TextFrameItem(Item *parent = nullptr);
 
 
 private:
@@ -75,11 +75,11 @@ public:
 
     // IGraphicsItemObserver interface
 public:
-    virtual void itemNotification(IGraphicsObservableItem *item);
+    virtual void itemNotification(IObservableItem *item);
 
     // SchItem interface
 public:
-    virtual SchItem *clone();
+    virtual Item *clone();
 
     // QGraphicsItem interface
 protected:

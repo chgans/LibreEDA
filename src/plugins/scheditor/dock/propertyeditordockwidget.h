@@ -6,7 +6,7 @@
 #include <QDockWidget>
 
 class ItemPropertyEditor;
-class SchItem;
+class Item;
 
 class PropertyEditorDockWidget : public DockWidget
 {
@@ -18,14 +18,14 @@ public:
 signals:
 
 public slots:
-    void setItem(SchItem *item);
+    void setItem(Item *item);
 
 private:
     ItemPropertyEditor *m_editor;
 
     // DockWidget interface
 public slots:
-    void applySettings(const SchEditorSettings &settings);
+    void applySettings(const Settings &settings);
 };
 
 #endif // PROPERTYEDITORDOCKWIDGET_H

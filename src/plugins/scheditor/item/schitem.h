@@ -16,14 +16,14 @@ class QPainter;
 class QStyleOptionGraphicsItem;
 class QWidget;
 
-class GraphicsRegularHandle;
-class GraphicsBezierHandle;
+class RegularHandle;
+class BezierHandle;
 
 // TODO: add properties
 // TODO: AbstractPath and AbstractShape (allow to morph between AbstractXYZ impl)
 // TODO: See qcad explodable concept
 
-class SchItem: public QGraphicsObject, public IGraphicsItemObserver
+class Item: public QGraphicsObject, public IItemObserver
 {
     Q_OBJECT
 
@@ -33,12 +33,12 @@ class SchItem: public QGraphicsObject, public IGraphicsItemObserver
     Q_PROPERTY(bool yMirrored READ isYMirrored WRITE setYMirrored NOTIFY yMirroredChanged)
 
 public:
-    explicit SchItem(SchItem *parent = nullptr);
-    virtual ~SchItem();
+    explicit Item(Item *parent = nullptr);
+    virtual ~Item();
 
-    virtual SchItem *clone() = 0;
+    virtual Item *clone() = 0;
     int handleCount() const;
-    AbstractGraphicsHandle *handleAt(int idx);
+    Handle *handleAt(int idx);
 
     QPen pen() const;
     QBrush brush() const;
@@ -70,18 +70,18 @@ protected:
     QBrush m_brush;
     mutable QRectF m_boundingRect;
 
-    QMap<AbstractGraphicsHandle *, int> m_handleToId;
-    QMap<int, AbstractGraphicsHandle *> m_idToHandle;
-    GraphicsRegularHandle *addRegularHandle(int id, GraphicsHandleRole role, GraphicsHandleShape shape,
+    QMap<Handle *, int> m_handleToId;
+    QMap<int, Handle *> m_idToHandle;
+    RegularHandle *addRegularHandle(int id, GraphicsHandleRole role, GraphicsHandleShape shape,
                                             const QPointF &pos = QPointF(0, 0));
-    GraphicsBezierHandle *addBezierHandle(int id, const QPointF &pos = QPointF(0, 0));
+    BezierHandle *addBezierHandle(int id, const QPointF &pos = QPointF(0, 0));
     void removeHandle(int id);
-    void removeHandle(AbstractGraphicsHandle *handle);
+    void removeHandle(Handle *handle);
     void removeAllHandles();
-    GraphicsRegularHandle *regularHandleAt(int id) const;
-    GraphicsBezierHandle *bezierHandleAt(int id) const;
+    RegularHandle *regularHandleAt(int id) const;
+    BezierHandle *bezierHandleAt(int id) const;
 
-    void cloneTo(SchItem *dst);
+    void cloneTo(Item *dst);
     static QPainterPath shapeFromPath(const QPainterPath &path, const QPen &pen);
 
     bool m_isXMirrored;
@@ -89,7 +89,7 @@ protected:
     void updateMirroringTransform();
 
 private:
-    void addAbstractHandle(AbstractGraphicsHandle *handle);
+    void addAbstractHandle(Handle *handle);
 
 };
 

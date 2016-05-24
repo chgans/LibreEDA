@@ -5,7 +5,7 @@
 
 #include <QPointF>
 
-class SchItem;
+class Item;
 
 class CloneItemTool : public InteractiveTool
 {
@@ -13,12 +13,12 @@ public:
     CloneItemTool(QObject *parent = nullptr);
 
 protected:
-    SchItem *cloneItem(SchItem *item);
-    QList<SchItem *> cloneItems(QList<SchItem *> items);
+    Item *cloneItem(Item *item);
+    QList<Item *> cloneItems(QList<Item *> items);
 
 private:
-    QList<SchItem *> m_items;
-    QList<SchItem *> m_clonedItems;
+    QList<Item *> m_items;
+    QList<Item *> m_clonedItems;
     QPointF m_pressPosition;
     QPointF m_lastPosition;
 

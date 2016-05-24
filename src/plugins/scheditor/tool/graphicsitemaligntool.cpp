@@ -1,7 +1,7 @@
 #include "tool/graphicsitemaligntool.h"
 
 GraphicsItemAlignTool::GraphicsItemAlignTool(QObject *parent):
-    SchTool(parent)
+    Tool(parent)
 {
 
 }

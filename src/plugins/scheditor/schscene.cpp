@@ -7,21 +7,21 @@
 
 #include <QPainter>
 
-SchScene::SchScene(QObject *parent):
+Scene::Scene(QObject *parent):
     QGraphicsScene(parent)
 {
 }
 
-SchScene::~SchScene()
+Scene::~Scene()
 {
 }
 
-QList<SchItem *> SchScene::selectedObjects()
+QList<Item *> Scene::selectedObjects()
 {
-    QList<SchItem *> objects;
+    QList<Item *> objects;
     for (QGraphicsItem *item : selectedItems())
     {
-        SchItem *object = dynamic_cast<SchItem *>(item);
+        Item *object = dynamic_cast<Item *>(item);
         if (object != nullptr)
         {
             objects.append(object);
@@ -30,19 +30,19 @@ QList<SchItem *> SchScene::selectedObjects()
     return objects;
 }
 
-void SchScene::applySettings(const SchEditorSettings &settings)
+void Scene::applySettings(const Settings &settings)
 {
     Q_UNUSED(settings);
 }
 
-void SchScene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
+void Scene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
 {
     switch (item->type())
     {
         case xdl::symbol::Item::Rectangle:
         {
             auto documentItem = reinterpret_cast<const xdl::symbol::RectangleItem *>(item);
-            auto sceneItem = new GraphicsRectItem();
+            auto sceneItem = new RectangleItem();
             sceneItem->setRect(QRectF(documentItem->topLeft, documentItem->bottomRight));
             sceneItem->setPos(documentItem->position);
             sceneItem->setRoundness(1.0, 1.0);
@@ -56,7 +56,7 @@ void SchScene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
         case xdl::symbol::Item::Circle:
         {
             auto documentItem = reinterpret_cast<const xdl::symbol::CircleItem *>(item);
-            auto sceneItem = new GraphicsCircleItem;
+            auto sceneItem = new CircleItem;
             sceneItem->setPos(documentItem->position);
             sceneItem->setRadius(documentItem->radius);
             sceneItem->setPen(documentItem->pen);
@@ -73,7 +73,7 @@ void SchScene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
         case xdl::symbol::Item::Ellipse:
         {
             auto documentItem = reinterpret_cast<const xdl::symbol::EllipseItem *>(item);
-            auto sceneItem = new GraphicsEllipseItem;
+            auto sceneItem = new EllipseItem;
             sceneItem->setPos(documentItem->position);
             sceneItem->setXRadius(documentItem->xRadius);
             sceneItem->setYRadius(documentItem->yRadius);
@@ -95,7 +95,7 @@ void SchScene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
         case xdl::symbol::Item::Polygon:
         {
             auto documentItem = reinterpret_cast<const xdl::symbol::PolygonItem *>(item);
-            auto sceneItem = new GraphicsPolygonItem;
+            auto sceneItem = new PolygonItem;
             sceneItem->setPos(documentItem->position);
             sceneItem->setPen(documentItem->pen);
             sceneItem->setBrush(documentItem->brush);
@@ -121,7 +121,7 @@ void SchScene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
     }
 }
 
-void SchScene::updateDocumentItem(quint64 id, const SchEditorDocument::Item *item)
+void Scene::updateDocumentItem(quint64 id, const SchEditorDocument::Item *item)
 {
     if (!m_itemMap.contains(id))
     {
@@ -176,7 +176,7 @@ void SchScene::updateDocumentItem(quint64 id, const SchEditorDocument::Item *ite
     }
 }
 
-void SchScene::removeDocumentItem(quint64 id)
+void Scene::removeDocumentItem(quint64 id)
 {
     if (!m_itemMap.contains(id))
     {

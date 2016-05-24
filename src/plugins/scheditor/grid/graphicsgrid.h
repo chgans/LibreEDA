@@ -10,13 +10,13 @@
 
 class QPainter;
 
-class GraphicsGrid
+class Grid
 {
 public:
 
-    explicit GraphicsGrid();
-    explicit GraphicsGrid(const GraphicsGrid &other);
-    virtual ~GraphicsGrid();
+    explicit Grid();
+    explicit Grid(const Grid &other);
+    virtual ~Grid();
 
     QString label() const
     {
@@ -31,7 +31,7 @@ public:
     virtual QString typeId() const = 0; // FIXME: see Factory.typeId()
     virtual QString description() const = 0;
 
-    virtual GraphicsGrid *clone() const = 0;
+    virtual Grid *clone() const = 0;
 
     virtual void draw(const QSizeF &pixelPerMm, QPainter *painter, const QRectF &rect) const = 0;
     virtual QRectF rect() const = 0;

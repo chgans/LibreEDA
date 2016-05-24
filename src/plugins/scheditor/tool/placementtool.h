@@ -7,8 +7,8 @@
 #include <QString>
 
 class PlacementCommand;
-class AbstractGraphicsHandle;
-class SchItem;
+class Handle;
+class Item;
 class QWidget;
 class QAction;
 
@@ -25,7 +25,7 @@ public:
     ~PlacementTool();
 
     // Typ. mouse clicked, idx == 0
-    virtual SchItem *beginInsert(const QPointF &pos) = 0;
+    virtual Item *beginInsert(const QPointF &pos) = 0;
     // Typ. first mouse move after mouse clicked, idx > 0
     virtual void addPoint(int idx, const QPointF &pos) = 0;
     // Typ. mouse clicked, idx >= 0
@@ -56,7 +56,7 @@ private:
     QPointF m_movePos;
     bool m_addPointOnMouseMove;
     bool m_isActive;
-    SchItem *m_item;
+    Item *m_item;
 
     // InteractiveTool interface
 public:
@@ -67,8 +67,8 @@ public:
 
     // GraphicsTool interface
 public:
-    void activate(const QAction *which, SchView *view);
-    void desactivate(const QAction *which, SchView *view);
+    void activate(const QAction *which, View *view);
+    void desactivate(const QAction *which, View *view);
 
 
     // InteractiveTool interface

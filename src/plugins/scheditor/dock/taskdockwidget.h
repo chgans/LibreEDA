@@ -20,7 +20,7 @@ private:
 
     // DockWidget interface
 public slots:
-    void applySettings(const SchEditorSettings &settings);
+    void applySettings(const Settings &settings);
 };
 
 #endif // TASKDOCKWIDGET_H

@@ -61,18 +61,18 @@ SchEditor::~SchEditor()
 
 void SchEditor::addView()
 {
-    m_view = new SchView();
+    m_view = new View();
     m_view->setScene(m_scene);
     m_view->fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
 void SchEditor::addScene()
 {
-    m_scene = new SchScene(this);
+    m_scene = new Scene(this);
     m_scene->setSceneRect(0, 0, 297, 210);
 }
 
-void SchEditor::applySettings(const SchEditorSettings &settings)
+void SchEditor::applySettings(const Settings &settings)
 {
     m_scene->applySettings(settings);
     m_view->applySettings(settings);
@@ -104,11 +104,11 @@ bool SchEditor::open(QString *errorString, const QString &fileName)
     }
 
     connect(m_document, &SchEditorDocument::drawingItemAdded,
-            m_scene, &SchScene::addDocumentItem);
+            m_scene, &Scene::addDocumentItem);
     connect(m_document, &SchEditorDocument::drawingItemChanged,
-            m_scene, &SchScene::updateDocumentItem);
+            m_scene, &Scene::updateDocumentItem);
     connect(m_document, &SchEditorDocument::drawingItemRemoved,
-            m_scene, &SchScene::removeDocumentItem);
+            m_scene, &Scene::removeDocumentItem);
 
     m_undoDockWidget->setStack(m_undoStack);
 
@@ -170,7 +170,7 @@ void SchEditor::addInteractiveTools()
     for (auto tool : m_placementTools)
     {
         m_interactiveTools << tool;
-        connect(tool, &SchTool::finished, // TODO: rename to differentiate with taskCompleted, canceled, ...
+        connect(tool, &Tool::finished, // TODO: rename to differentiate with taskCompleted, canceled, ...
                 m_selectTool->action(), &QAction::trigger);
     }
 
@@ -183,7 +183,7 @@ void SchEditor::addInteractiveTools()
         action->setData(QVariant::fromValue<InteractiveTool *>(tool));
         m_interactiveActionGroup->addAction(action);
         m_interactiveToolBar->addAction(action);
-        connect(tool, &SchTool::taskCompleted,
+        connect(tool, &Tool::taskCompleted,
                 this, [this](UndoCommand * command)
         {
             command->setDocument(m_document);

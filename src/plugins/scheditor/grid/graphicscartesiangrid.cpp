@@ -6,8 +6,8 @@
 #include <cmath>
 
 
-GraphicsCartesianGrid::GraphicsCartesianGrid():
-    GraphicsGrid(),
+CartesianGrid::CartesianGrid():
+    Grid(),
     mRotation(0),
     mSize(100, 100),
     mStep(10, 10)
@@ -18,8 +18,8 @@ GraphicsCartesianGrid::GraphicsCartesianGrid():
     }
 }
 
-GraphicsCartesianGrid::GraphicsCartesianGrid(const GraphicsCartesianGrid &other):
-    GraphicsGrid(other),
+CartesianGrid::CartesianGrid(const CartesianGrid &other):
+    Grid(other),
     mRotation(other.mRotation),
     mSize(other.mSize),
     mStep(other.mStep)
@@ -30,18 +30,18 @@ GraphicsCartesianGrid::GraphicsCartesianGrid(const GraphicsCartesianGrid &other)
     }
 }
 
-QString GraphicsCartesianGrid::typeName() const
+QString CartesianGrid::typeName() const
 {
     return "Cartesian";
 }
 
-QString GraphicsCartesianGrid::typeId() const
+QString CartesianGrid::typeId() const
 {
     // FIXME: same as in factory
     return QStringLiteral("LibreEDA.Grid.Cartesian");
 }
 
-QString GraphicsCartesianGrid::description() const
+QString CartesianGrid::description() const
 {
     return QString("Origin(%1, %2), Size(%3, %4), Steps(%5, %6)")
            .arg(origin().x()).arg(origin().y())
@@ -49,18 +49,18 @@ QString GraphicsCartesianGrid::description() const
            .arg(step().x()).arg(step().y());
 }
 
-GraphicsGrid *GraphicsCartesianGrid::clone() const
+Grid *CartesianGrid::clone() const
 {
-    GraphicsCartesianGrid *grid = new GraphicsCartesianGrid(*this);
+    CartesianGrid *grid = new CartesianGrid(*this);
     return grid;
 }
 
-QRectF GraphicsCartesianGrid::rect() const
+QRectF CartesianGrid::rect() const
 {
     return QRectF(origin(), size());
 }
 
-QPointF GraphicsCartesianGrid::snap(const QSizeF &pixelPerMm, QPointF point) const
+QPointF CartesianGrid::snap(const QSizeF &pixelPerMm, QPointF point) const
 {
     if (point.isNull() || step().isNull())
     {
@@ -80,7 +80,7 @@ QPointF GraphicsCartesianGrid::snap(const QSizeF &pixelPerMm, QPointF point) con
     return QPointF(x, y);
 }
 
-QPainterPath GraphicsCartesianGrid::shape(const QSizeF &pixelPerMm) const
+QPainterPath CartesianGrid::shape(const QSizeF &pixelPerMm) const
 {
     QPainterPath path;
 
@@ -98,7 +98,7 @@ QPainterPath GraphicsCartesianGrid::shape(const QSizeF &pixelPerMm) const
 }
 
 
-void GraphicsCartesianGrid::draw(const QSizeF &pixelPerMm, QPainter *painter,
+void CartesianGrid::draw(const QSizeF &pixelPerMm, QPainter *painter,
                                  const QRectF &prect) const
 {
     bool drawCoarse = shouldDrawCoarse(pixelPerMm);
@@ -114,7 +114,7 @@ void GraphicsCartesianGrid::draw(const QSizeF &pixelPerMm, QPainter *painter,
 }
 
 
-void GraphicsCartesianGrid::drawQuadrantGrid(const QSizeF &pixelPerMm, QPainter *painter,
+void CartesianGrid::drawQuadrantGrid(const QSizeF &pixelPerMm, QPainter *painter,
                                              const QRectF &rect) const
 {
     bool drawFine = shouldDrawFine(pixelPerMm);
@@ -129,7 +129,7 @@ void GraphicsCartesianGrid::drawQuadrantGrid(const QSizeF &pixelPerMm, QPainter 
     }
 }
 
-void GraphicsCartesianGrid::drawGrid(QPainter *painter, const QColor &color, Qt::PenStyle style,
+void CartesianGrid::drawGrid(QPainter *painter, const QColor &color, Qt::PenStyle style,
                                      const QRectF &rect, qreal xstep, qreal ystep) const
 {
     qreal left = int((rect.left() - origin().x()) / step().x()) * step().x() + origin().x();
@@ -167,19 +167,19 @@ void GraphicsCartesianGrid::drawGrid(QPainter *painter, const QColor &color, Qt:
     }
 }
 
-bool GraphicsCartesianGrid::shouldDrawCoarse(const QSizeF &pixelPerMm) const
+bool CartesianGrid::shouldDrawCoarse(const QSizeF &pixelPerMm) const
 {
     return pixelPerMm.width() * step().x() > minimalFeatureSize() &&
            pixelPerMm.height() * step().y() > minimalFeatureSize();
 }
 
-bool GraphicsCartesianGrid::shouldDrawFine(const QSizeF &pixelPerMm) const
+bool CartesianGrid::shouldDrawFine(const QSizeF &pixelPerMm) const
 {
     return (pixelPerMm.width() * step().x() / coarseMultiplier()) > minimalFeatureSize() &&
            (pixelPerMm.height() * step().y() / coarseMultiplier()) > minimalFeatureSize();
 }
 
-QRectF GraphicsCartesianGrid::quadrantRect(GraphicsCartesianGrid::Quadrant which) const
+QRectF CartesianGrid::quadrantRect(CartesianGrid::Quadrant which) const
 {
     if (which == TopLeftQuadrant && mQuadrants[which])
         return QRectF(rect().topLeft(),

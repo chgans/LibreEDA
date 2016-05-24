@@ -35,9 +35,9 @@ void PlacePolyineTool::cancel()
 {
 }
 
-SchItem *PlacePolyineTool::beginInsert(const QPointF &pos)
+Item *PlacePolyineTool::beginInsert(const QPointF &pos)
 {
-    m_item = new GraphicsLineItem();
+    m_item = new PolylineItem();
     m_item->setPos(pos);
     m_item->setPen(m_penSettingsWidget->pen());
     return m_item;

@@ -8,15 +8,15 @@ Q_LOGGING_CATEGORY(GraphicsBezierHandleLog, "graphics.bezier.handle")
 #define DEBUG() qCDebug(GraphicsBezierHandleLog)
 #define WARNING() qCDebug(GraphicsBezierHandleLog)
 
-GraphicsBezierHandle::GraphicsBezierHandle(SchItem *parent):
-    AbstractGraphicsHandle(parent),
-    IGraphicsItemObserver(),
+BezierHandle::BezierHandle(Item *parent):
+    Handle(parent),
+    IItemObserver(),
     m_first(false),
     m_last(false),
     m_closing(false),
-    m_nodeHandle(new GraphicsRegularHandle()),
-    m_control1Handle(new GraphicsRegularHandle()),
-    m_control2Handle(new GraphicsRegularHandle()),
+    m_nodeHandle(new RegularHandle()),
+    m_control1Handle(new RegularHandle()),
+    m_control2Handle(new RegularHandle()),
     m_behaviour(NormalHandleBehaviour)
 {
     m_typeToHandle[NodeHandle] = &m_nodeHandle;
@@ -59,7 +59,7 @@ GraphicsBezierHandle::GraphicsBezierHandle(SchItem *parent):
     setVisible(false);
 }
 
-GraphicsBezierHandle::~GraphicsBezierHandle()
+BezierHandle::~BezierHandle()
 {
     // TODO: use map
     if (m_nodeHandle)
@@ -80,12 +80,12 @@ GraphicsBezierHandle::~GraphicsBezierHandle()
     // removeItemObserver(); // ?
 }
 
-QPointF GraphicsBezierHandle::pos(GraphicsBezierHandle::HandleType type) const
+QPointF BezierHandle::pos(BezierHandle::HandleType type) const
 {
     Q_ASSERT(m_handles.testFlag(type));
 
     // TODO: use map
-    AbstractGraphicsHandle *handle;
+    Handle *handle;
     switch (type)
     {
         case NodeHandle:
@@ -107,14 +107,14 @@ QPointF GraphicsBezierHandle::pos(GraphicsBezierHandle::HandleType type) const
 }
 
 // Pos is in parent coordinate
-void GraphicsBezierHandle::setPos(GraphicsBezierHandle::HandleType type, const QPointF &pos)
+void BezierHandle::setPos(BezierHandle::HandleType type, const QPointF &pos)
 {
     Q_ASSERT(m_handles.testFlag(type));
 
     blockItemNotification();
 
     // TODO: use map
-    AbstractGraphicsHandle *handle;
+    Handle *handle;
     switch (type)
     {
         case NodeHandle:
@@ -141,7 +141,7 @@ void GraphicsBezierHandle::setPos(GraphicsBezierHandle::HandleType type, const Q
     unblockItemNotification();
 }
 
-void GraphicsBezierHandle::setBehaviour(GraphicsHandleBehaviour behaviour)
+void BezierHandle::setBehaviour(GraphicsHandleBehaviour behaviour)
 {
     if (m_behaviour == behaviour)
     {
@@ -152,19 +152,19 @@ void GraphicsBezierHandle::setBehaviour(GraphicsHandleBehaviour behaviour)
     updateEnabledHandles();
 }
 
-GraphicsHandleBehaviour GraphicsBezierHandle::behaviour() const
+GraphicsHandleBehaviour BezierHandle::behaviour() const
 {
     return m_behaviour;
 }
 
-GraphicsBezierHandle::HandleTypes GraphicsBezierHandle::handlesEnabled() const
+BezierHandle::HandleTypes BezierHandle::handlesEnabled() const
 {
     return m_handles;
 }
 
-void GraphicsBezierHandle::enableHandle(GraphicsBezierHandle::HandleType type, bool set)
+void BezierHandle::enableHandle(BezierHandle::HandleType type, bool set)
 {
-    AbstractGraphicsHandle **handle = m_typeToHandle[type];
+    Handle **handle = m_typeToHandle[type];
     Q_ASSERT(handle != nullptr);
 
     if (set)
@@ -179,12 +179,12 @@ void GraphicsBezierHandle::enableHandle(GraphicsBezierHandle::HandleType type, b
     }
 }
 
-bool GraphicsBezierHandle::isFirst() const
+bool BezierHandle::isFirst() const
 {
     return m_first;
 }
 
-void GraphicsBezierHandle::setFirst(bool first)
+void BezierHandle::setFirst(bool first)
 {
     if (m_first == first)
     {
@@ -195,12 +195,12 @@ void GraphicsBezierHandle::setFirst(bool first)
     updateEnabledHandles();
 }
 
-bool GraphicsBezierHandle::isLast() const
+bool BezierHandle::isLast() const
 {
     return m_last;
 }
 
-void GraphicsBezierHandle::setLast(bool last)
+void BezierHandle::setLast(bool last)
 {
     if (m_last == last)
     {
@@ -211,12 +211,12 @@ void GraphicsBezierHandle::setLast(bool last)
     updateEnabledHandles();
 }
 
-bool GraphicsBezierHandle::isClosingPath() const
+bool BezierHandle::isClosingPath() const
 {
     return m_closing;
 }
 
-void GraphicsBezierHandle::setClosingPath(bool closing)
+void BezierHandle::setClosingPath(bool closing)
 {
     if (m_closing == closing)
     {
@@ -226,7 +226,7 @@ void GraphicsBezierHandle::setClosingPath(bool closing)
     updateEnabledHandles();
 }
 
-QString GraphicsBezierHandle::typeToString(GraphicsBezierHandle::HandleType type)
+QString BezierHandle::typeToString(BezierHandle::HandleType type)
 {
     switch (type)
     {
@@ -241,19 +241,19 @@ QString GraphicsBezierHandle::typeToString(GraphicsBezierHandle::HandleType type
     }
 }
 
-bool GraphicsBezierHandle::handleEnabled(GraphicsBezierHandle::HandleType type)
+bool BezierHandle::handleEnabled(BezierHandle::HandleType type)
 {
     return m_handles.testFlag(type);
 }
 
-void GraphicsBezierHandle::updateEnabledHandles()
+void BezierHandle::updateEnabledHandles()
 {
     enableHandle(NodeHandle, true);
     enableHandle(Control1Handle, (isFirst() && isClosingPath()) || !isFirst());
     enableHandle(Control2Handle, (isLast() && isClosingPath()) || !isLast());
 }
 
-void GraphicsBezierHandle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void BezierHandle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                                  QWidget *widget)
 {
     Q_UNUSED(option);
@@ -277,9 +277,9 @@ void GraphicsBezierHandle::paint(QPainter *painter, const QStyleOptionGraphicsIt
     painter->restore();
 }
 
-void GraphicsBezierHandle::itemNotification(IGraphicsObservableItem *item)
+void BezierHandle::itemNotification(IObservableItem *item)
 {
-    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle *>(item);
+    Handle *handle = dynamic_cast<Handle *>(item);
     Q_ASSERT(handle != nullptr);
     if (handle == m_nodeHandle)
     {
@@ -305,28 +305,28 @@ void GraphicsBezierHandle::itemNotification(IGraphicsObservableItem *item)
     update();
 }
 
-QRectF GraphicsBezierHandle::boundingRect() const
+QRectF BezierHandle::boundingRect() const
 {
     return childrenBoundingRect();
 }
 
-QPainterPath GraphicsBezierHandle::shape() const
+QPainterPath BezierHandle::shape() const
 {
     return QPainterPath();
 }
 
-void GraphicsBezierHandle::setHandleId(int id)
+void BezierHandle::setHandleId(int id)
 {
-    AbstractGraphicsHandle::setHandleId(id);
+    Handle::setHandleId(id);
     // FIXME: needed because of view->handleUnderMouse()->{parent(),id()}
     m_nodeHandle->setHandleId(id);
     m_control1Handle->setHandleId(id);
     m_control2Handle->setHandleId(id);
 }
 
-void GraphicsBezierHandle::setParentGraphicsObject(SchItem *parent)
+void BezierHandle::setParentGraphicsObject(Item *parent)
 {
-    AbstractGraphicsHandle::setParentGraphicsObject(parent);
+    Handle::setParentGraphicsObject(parent);
     // FIXME: needed because of view->handleUnderMouse()->{parent(),id()}
     m_nodeHandle->setParentGraphicsObject(parent);
     m_control1Handle->setParentGraphicsObject(parent);

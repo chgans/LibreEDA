@@ -7,13 +7,13 @@
 #include "item/igraphicsobservableitem.h"
 
 
-class GraphicsBezierHandle:
-    public AbstractGraphicsHandle,
-    public IGraphicsItemObserver
+class BezierHandle:
+    public Handle,
+    public IItemObserver
 {
 public:
-    explicit GraphicsBezierHandle(SchItem *parent = nullptr);
-    ~GraphicsBezierHandle();
+    explicit BezierHandle(Item *parent = nullptr);
+    ~BezierHandle();
 
     enum HandleType
     {
@@ -92,17 +92,17 @@ private:
     bool m_last;
     bool m_closing;
     HandleTypes m_handles;
-    AbstractGraphicsHandle *m_nodeHandle;
-    AbstractGraphicsHandle *m_control1Handle;
-    AbstractGraphicsHandle *m_control2Handle;
+    Handle *m_nodeHandle;
+    Handle *m_control1Handle;
+    Handle *m_control2Handle;
     GraphicsHandleBehaviour m_behaviour;
-    QMap<HandleType, AbstractGraphicsHandle **> m_typeToHandle;
-    IGraphicsItemObserver *m_observer;
+    QMap<HandleType, Handle **> m_typeToHandle;
+    IItemObserver *m_observer;
     QString typeToString(HandleType type);
 
     // IGraphicsHandleObserver interface
 public:
-    virtual void itemNotification(IGraphicsObservableItem *item);
+    virtual void itemNotification(IObservableItem *item);
 
     // QGraphicsItem interface
 public:
@@ -113,9 +113,9 @@ public:
     // AbstractGraphicsHandle interface
 public:
     void setHandleId(int id);
-    void setParentGraphicsObject(SchItem *parent);
+    void setParentGraphicsObject(Item *parent);
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(GraphicsBezierHandle::HandleTypes)
+Q_DECLARE_OPERATORS_FOR_FLAGS(BezierHandle::HandleTypes)
 
 #endif // GRAPHICSBEZIERHANDLE_H

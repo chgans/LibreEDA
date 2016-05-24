@@ -3,7 +3,7 @@
 
 #include "tool/placementtool.h"
 
-class GraphicsEllipseItem;
+class EllipseItem;
 class PenSettingsWidget;
 class BrushSettingsWidget;
 
@@ -18,13 +18,13 @@ public:
     ~PlaceEllipseTool();
 
 private:
-    GraphicsEllipseItem *m_item;
+    EllipseItem *m_item;
     PenSettingsWidget *m_penSettingsWidget;
     BrushSettingsWidget *m_brushSettingsWidget;
 
     // PlacementTool interface
 public:
-    virtual SchItem *beginInsert(const QPointF &pos);
+    virtual Item *beginInsert(const QPointF &pos);
     virtual void addPoint(int idx, const QPointF &pos);
     virtual void freezePoint(int idx, const QPointF &pos);
     virtual bool removePoint(int idx, const QPointF &pos);

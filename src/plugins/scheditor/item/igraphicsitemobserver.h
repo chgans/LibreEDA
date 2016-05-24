@@ -3,33 +3,33 @@
 
 #include <QList>
 
-class IGraphicsObservableItem;
+class IObservableItem;
 
-class IGraphicsItemObserver
+class IItemObserver
 {
 public:
-    IGraphicsItemObserver();
-    virtual ~IGraphicsItemObserver();
+    IItemObserver();
+    virtual ~IItemObserver();
 
-    virtual void itemNotification(IGraphicsObservableItem *item) = 0;
+    virtual void itemNotification(IObservableItem *item) = 0;
 
-    void blockItemNotification(IGraphicsObservableItem *item = nullptr);
-    void unblockItemNotification(IGraphicsObservableItem *item = nullptr);
+    void blockItemNotification(IObservableItem *item = nullptr);
+    void unblockItemNotification(IObservableItem *item = nullptr);
 
-    void addObservedItem(IGraphicsObservableItem *item);
-    void removeObservedItem(IGraphicsObservableItem *item);
+    void addObservedItem(IObservableItem *item);
+    void removeObservedItem(IObservableItem *item);
 
-    QList<IGraphicsObservableItem *> observedItems() const;
+    QList<IObservableItem *> observedItems() const;
 
 private:
     bool m_operationInProgress;
-    QList<IGraphicsObservableItem *> m_items;
-    QList<IGraphicsObservableItem *> m_blockedItems;
+    QList<IObservableItem *> m_items;
+    QList<IObservableItem *> m_blockedItems;
     bool m_blockAllItems;
 
     void beginObservedItemTransaction();
     void endObserveredItemTransaction();
-    void onItemNotification(IGraphicsObservableItem *item);
-    friend class IGraphicsObservableItem;
+    void onItemNotification(IObservableItem *item);
+    friend class IObservableItem;
 };
 #endif // IGRAPHICSITEMOBSERVER_H

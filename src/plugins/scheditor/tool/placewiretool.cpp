@@ -38,9 +38,9 @@ PlaceWireTool::~PlaceWireTool()
 {
 }
 
-SchItem *PlaceWireTool::beginInsert(const QPointF &pos)
+Item *PlaceWireTool::beginInsert(const QPointF &pos)
 {
-    m_item = new GraphicsWireItem();
+    m_item = new WireItem();
     m_item->setPos(pos);
     m_item->setPen(m_penSettingsWidget->pen());
     return m_item;

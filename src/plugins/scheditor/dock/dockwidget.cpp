@@ -6,7 +6,7 @@ DockWidget::DockWidget(QWidget *parent, Qt::WindowFlags flags):
 
 }
 
-void DockWidget::applySettings(const SchEditorSettings &settings)
+void DockWidget::applySettings(const Settings &settings)
 {
     Q_UNUSED(settings);
 }

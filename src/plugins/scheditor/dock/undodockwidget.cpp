@@ -16,7 +16,7 @@ void UndoDockWidget::setStack(QUndoStack *stack)
     m_view->setStack(stack);
 }
 
-void UndoDockWidget::applySettings(const SchEditorSettings &settings)
+void UndoDockWidget::applySettings(const Settings &settings)
 {
     Q_UNUSED(settings);
 }

@@ -5,7 +5,7 @@
 
 #include <QGraphicsTransform>
 
-SchItem::SchItem(SchItem *parent):
+Item::Item(Item *parent):
     QGraphicsObject(parent)
 {
     setPen(QPen(QBrush(QColor::fromRgb(0x80, 0x00, 0x00)), 0.5, Qt::SolidLine, Qt::RoundCap,
@@ -14,17 +14,17 @@ SchItem::SchItem(SchItem *parent):
     setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
 }
 
-SchItem::~SchItem()
+Item::~Item()
 {
 }
 
-int SchItem::handleCount() const
+int Item::handleCount() const
 {
     return m_idToHandle.count();
 }
 
 
-void SchItem::cloneTo(SchItem *dst)
+void Item::cloneTo(Item *dst)
 {
     dst->setBrush(brush());
     dst->setEnabled(isEnabled());
@@ -42,7 +42,7 @@ void SchItem::cloneTo(SchItem *dst)
 }
 
 // From Qt qgraphicsitem.cpp: qt_graphicsItem_shapeFromPath()
-QPainterPath SchItem::shapeFromPath(const QPainterPath &path, const QPen &pen)
+QPainterPath Item::shapeFromPath(const QPainterPath &path, const QPen &pen)
 {
     // We unfortunately need this hack as QPainterPathStroker will set a width of 1.0
     // if we pass a value of 0.0 to QPainterPathStroker::setWidth()
@@ -69,7 +69,7 @@ QPainterPath SchItem::shapeFromPath(const QPainterPath &path, const QPen &pen)
     return p;
 }
 
-void SchItem::updateMirroringTransform()
+void Item::updateMirroringTransform()
 {
     qreal m11 = m_isXMirrored ? -1 : 1;
     qreal m22 = m_isYMirrored ? -1 : 1;
@@ -78,7 +78,7 @@ void SchItem::updateMirroringTransform()
                             0,   0,   1));
 }
 
-void SchItem::addAbstractHandle(AbstractGraphicsHandle *handle)
+void Item::addAbstractHandle(Handle *handle)
 {
     // could be done by abstracthandle
     addObservedItem(handle);
@@ -87,37 +87,37 @@ void SchItem::addAbstractHandle(AbstractGraphicsHandle *handle)
     m_idToHandle[handle->handleId()] = handle;
 }
 
-AbstractGraphicsHandle *SchItem::handleAt(int idx)
+Handle *Item::handleAt(int idx)
 {
     Q_ASSERT(idx < handleCount());
     return m_idToHandle[idx];
 }
 
-QPen SchItem::pen() const
+QPen Item::pen() const
 {
     return m_pen;
 }
 
-QBrush SchItem::brush() const
+QBrush Item::brush() const
 {
     return m_brush;
 }
 
-bool SchItem::isXMirrored() const
+bool Item::isXMirrored() const
 {
     return m_isXMirrored;
 }
 
-bool SchItem::isYMirrored() const
+bool Item::isYMirrored() const
 {
     return m_isYMirrored;
 }
 
 // Return a list of hot spots in item's coordinate
-QList<QPointF> SchItem::hotSpots() const
+QList<QPointF> Item::hotSpots() const
 {
     QList<QPointF> points;
-    for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+    for (Handle *handle : m_handleToId.keys())
     {
         Q_ASSERT(handle->parentItem() == this);
         points.append(handle->pos());
@@ -125,28 +125,28 @@ QList<QPointF> SchItem::hotSpots() const
     return points;
 }
 
-QList<QPointF> SchItem::endPoints() const
+QList<QPointF> Item::endPoints() const
 {
     return QList<QPointF>();
 }
 
-QList<QPointF> SchItem::midPoints() const
+QList<QPointF> Item::midPoints() const
 {
     return QList<QPointF>();
 }
 
-QList<QPointF> SchItem::centerPoints() const
+QList<QPointF> Item::centerPoints() const
 {
     return QList<QPointF>();
 }
 
-QList<QPointF> SchItem::nearestPoints(QPointF pos) const
+QList<QPointF> Item::nearestPoints(QPointF pos) const
 {
     Q_UNUSED(pos);
     return QList<QPointF>();
 }
 
-QList<QLineF> SchItem::axes() const
+QList<QLineF> Item::axes() const
 {
     QList<QLineF> axes;
     for (qreal angle = 0; angle < 360.0; angle += 45)
@@ -156,7 +156,7 @@ QList<QLineF> SchItem::axes() const
     return axes;
 }
 
-void SchItem::setPen(const QPen &pen)
+void Item::setPen(const QPen &pen)
 {
     if (m_pen == pen)
     {
@@ -171,7 +171,7 @@ void SchItem::setPen(const QPen &pen)
     emit penChanged(pen);
 }
 
-void SchItem::setBrush(const QBrush &brush)
+void Item::setBrush(const QBrush &brush)
 {
     if (m_brush == brush)
     {
@@ -184,7 +184,7 @@ void SchItem::setBrush(const QBrush &brush)
     emit brushChanged(brush);
 }
 
-void SchItem::setXMirrored(bool mirrored)
+void Item::setXMirrored(bool mirrored)
 {
     if (m_isXMirrored == mirrored)
     {
@@ -195,7 +195,7 @@ void SchItem::setXMirrored(bool mirrored)
     emit xMirroredChanged();
 }
 
-void SchItem::setYMirrored(bool mirrored)
+void Item::setYMirrored(bool mirrored)
 {
     if (m_isYMirrored == mirrored)
     {
@@ -206,10 +206,10 @@ void SchItem::setYMirrored(bool mirrored)
     emit yMirroredChanged();
 }
 
-GraphicsRegularHandle *SchItem::addRegularHandle(int id, GraphicsHandleRole role,
+RegularHandle *Item::addRegularHandle(int id, GraphicsHandleRole role,
                                                  GraphicsHandleShape shape, const QPointF &pos)
 {
-    GraphicsRegularHandle *handle = new GraphicsRegularHandle(this);
+    RegularHandle *handle = new RegularHandle(this);
 
     Q_ASSERT(!m_idToHandle.keys().contains(id));
 
@@ -224,10 +224,10 @@ GraphicsRegularHandle *SchItem::addRegularHandle(int id, GraphicsHandleRole role
     return handle;
 }
 
-GraphicsBezierHandle *SchItem::addBezierHandle(int id, const QPointF &pos)
+BezierHandle *Item::addBezierHandle(int id, const QPointF &pos)
 {
     Q_UNUSED(pos);
-    GraphicsBezierHandle *handle = new GraphicsBezierHandle(this);
+    BezierHandle *handle = new BezierHandle(this);
 
     Q_ASSERT(!m_idToHandle.keys().contains(id));
 
@@ -241,14 +241,14 @@ GraphicsBezierHandle *SchItem::addBezierHandle(int id, const QPointF &pos)
     return handle;
 }
 
-void SchItem::removeHandle(int id)
+void Item::removeHandle(int id)
 {
     Q_ASSERT(m_idToHandle.keys().contains(id));
 
     removeHandle(m_idToHandle[id]);
 }
 
-void SchItem::removeHandle(AbstractGraphicsHandle *handle)
+void Item::removeHandle(Handle *handle)
 {
     Q_ASSERT(m_handleToId.keys().contains(handle));
 
@@ -262,10 +262,10 @@ void SchItem::removeHandle(AbstractGraphicsHandle *handle)
     unblockItemNotification();
 }
 
-void SchItem::removeAllHandles()
+void Item::removeAllHandles()
 {
     blockItemNotification();
-    for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+    for (Handle *handle : m_handleToId.keys())
     {
         removeObservedItem(handle);
         handle->setParentItem(nullptr);
@@ -276,14 +276,14 @@ void SchItem::removeAllHandles()
     m_idToHandle.clear();
 }
 
-GraphicsRegularHandle *SchItem::regularHandleAt(int id) const
+RegularHandle *Item::regularHandleAt(int id) const
 {
     Q_ASSERT(id < handleCount());
-    return static_cast<GraphicsRegularHandle *>(m_idToHandle[id]);
+    return static_cast<RegularHandle *>(m_idToHandle[id]);
 }
 
-GraphicsBezierHandle *SchItem::bezierHandleAt(int id) const
+BezierHandle *Item::bezierHandleAt(int id) const
 {
     Q_ASSERT(id < handleCount());
-    return static_cast<GraphicsBezierHandle *>(m_idToHandle[id]);
+    return static_cast<BezierHandle *>(m_idToHandle[id]);
 }

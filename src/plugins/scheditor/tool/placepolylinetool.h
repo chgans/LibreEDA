@@ -3,7 +3,7 @@
 
 #include "tool/placementtool.h"
 
-class GraphicsLineItem;
+class PolylineItem;
 class PenSettingsWidget;
 
 class PlacePolyineTool : public PlacementTool
@@ -14,7 +14,7 @@ public:
     explicit PlacePolyineTool(QObject *parent = nullptr);
 
 private:
-    GraphicsLineItem *m_item;
+    PolylineItem *m_item;
     PenSettingsWidget *m_penSettingsWidget;
 
 private:
@@ -27,7 +27,7 @@ public slots:
 
     // PlacementTool interface
 public:
-    SchItem *beginInsert(const QPointF &pos);
+    Item *beginInsert(const QPointF &pos);
     void addPoint(int idx, const QPointF &pos);
     void freezePoint(int idx, const QPointF &pos);
     bool removePoint(int idx, const QPointF &pos);

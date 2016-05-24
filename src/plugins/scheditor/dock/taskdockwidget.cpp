@@ -30,7 +30,7 @@ void TaskDockWidget::setTaskWidgets(const QList<QWidget *> widgets)
     }
 }
 
-void TaskDockWidget::applySettings(const SchEditorSettings &settings)
+void TaskDockWidget::applySettings(const Settings &settings)
 {
     Q_UNUSED(settings);
 }

@@ -3,7 +3,7 @@
 
 #include "item/schitem.h"
 
-class GraphicsPolygonItem : public SchItem
+class PolygonItem : public Item
 {
     Q_OBJECT
 
@@ -11,8 +11,8 @@ class GraphicsPolygonItem : public SchItem
     Q_PROPERTY(QPolygonF polygon READ polygon WRITE setPolygon NOTIFY polygonChanged)
 
 public:
-    explicit GraphicsPolygonItem(SchItem *parent = nullptr);
-    ~GraphicsPolygonItem();
+    explicit PolygonItem(Item *parent = nullptr);
+    ~PolygonItem();
 
     Qt::FillRule fillRule() const;
     QPolygonF polygon() const;
@@ -41,7 +41,7 @@ public:
 
     // SchItem interface
 public:
-    virtual SchItem *clone();
+    virtual Item *clone();
 
     //    //virtual QList<QPointF> hotSpots() const;
     //    virtual QList<QPointF> endPoints() const;
@@ -55,7 +55,7 @@ protected:
 
     // IGraphicsItemObserver interface
 public:
-    virtual void itemNotification(IGraphicsObservableItem *item);
+    virtual void itemNotification(IObservableItem *item);
 };
 
 #endif // GRAPHICSPOLYGONITEM_H

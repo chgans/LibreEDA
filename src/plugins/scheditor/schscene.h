@@ -4,27 +4,27 @@
 #include <QGraphicsScene>
 #include "scheditordocument.h"
 
-class SchItem;
-class SchEditorSettings;
+class Item;
+class Settings;
 
-class SchScene : public QGraphicsScene
+class Scene : public QGraphicsScene
 {
     Q_OBJECT
 
 public:
-    explicit SchScene(QObject *parent = nullptr);
-    ~SchScene();
+    explicit Scene(QObject *parent = nullptr);
+    ~Scene();
 
-    QList<SchItem *> selectedObjects();
+    QList<Item *> selectedObjects();
 
 public slots:
-    void applySettings(const SchEditorSettings &settings);
+    void applySettings(const Settings &settings);
     void addDocumentItem(quint64 id, const SchEditorDocument::Item *item);
     void updateDocumentItem(quint64 id, const SchEditorDocument::Item *item);
     void removeDocumentItem(quint64 id);
 
 private:
-    QMap<quint64, SchItem *> m_itemMap;
+    QMap<quint64, Item *> m_itemMap;
 };
 
 #endif // GRAPHICSSCENE_H

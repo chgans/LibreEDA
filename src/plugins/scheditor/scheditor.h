@@ -10,15 +10,15 @@ class QToolBar;
 class QComboBox;
 class QUndoStack;
 
-class SchView;
-class SchScene;
+class View;
+class Scene;
 class InteractiveTool;
 class PlacementTool;
 class SelectTool;
 class TaskDockWidget;
 class UndoDockWidget;
 class SnapManager;
-class SchEditorSettings;
+class Settings;
 
 class SchEditor : public IEditor
 {
@@ -27,15 +27,15 @@ public:
     explicit SchEditor(QObject *parent = nullptr);
     ~SchEditor();
 
-    SchView *view() const;
-    SchScene *scene() const;
+    View *view() const;
+    Scene *scene() const;
 
 private:
 
 signals:
 
 public slots:
-    void applySettings(const SchEditorSettings &settings);
+    void applySettings(const Settings &settings);
 
 private:
     SchEditorDocument *m_document = nullptr;
@@ -65,10 +65,10 @@ private:
     UndoDockWidget *m_undoDockWidget;
 
     void addView();
-    SchView *m_view = nullptr;
+    View *m_view = nullptr;
 
     void addScene();
-    SchScene *m_scene = nullptr;
+    Scene *m_scene = nullptr;
 
     // IEditor interface
 public:

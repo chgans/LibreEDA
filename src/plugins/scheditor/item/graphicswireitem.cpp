@@ -4,17 +4,17 @@
 
 #include <QGraphicsPathItem>
 
-GraphicsWireItem::GraphicsWireItem(SchItem *parent):
-    SchItem(parent)
+WireItem::WireItem(Item *parent):
+    Item(parent)
 {
 }
 
-GraphicsWireItem::~GraphicsWireItem()
+WireItem::~WireItem()
 {
 
 }
 
-QRectF GraphicsWireItem::boundingRect() const
+QRectF WireItem::boundingRect() const
 {
     if (m_boundingRect.isNull())
     {
@@ -31,13 +31,13 @@ QRectF GraphicsWireItem::boundingRect() const
     return m_boundingRect;
 }
 
-QPainterPath GraphicsWireItem::shape() const
+QPainterPath WireItem::shape() const
 {
     QPainterPath path = shapeFromPath(m_path, pen());
     return path;
 }
 
-void GraphicsWireItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void WireItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                              QWidget *widget)
 {
     Q_UNUSED(option);
@@ -47,15 +47,15 @@ void GraphicsWireItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->drawPath(m_path);
 }
 
-SchItem *GraphicsWireItem::clone()
+Item *WireItem::clone()
 {
-    GraphicsWireItem *item = new GraphicsWireItem();
+    WireItem *item = new WireItem();
     item->setPoints(points());
     cloneTo(item);
     return item;
 }
 
-QList<QPointF> GraphicsWireItem::points() const
+QList<QPointF> WireItem::points() const
 {
     QList<QPointF> result;
     for (int i = 0; i < m_path.elementCount(); i++)
@@ -66,7 +66,7 @@ QList<QPointF> GraphicsWireItem::points() const
     return result;
 }
 
-void GraphicsWireItem::addPoint(const QPointF &pos)
+void WireItem::addPoint(const QPointF &pos)
 {
     addRegularHandle(m_path.elementCount(), MoveHandleRole, CircularHandleShape, pos);
 
@@ -85,7 +85,7 @@ void GraphicsWireItem::addPoint(const QPointF &pos)
     emit pointsChanged();
 }
 
-void GraphicsWireItem::movePoint(int idx, const QPointF &pos)
+void WireItem::movePoint(int idx, const QPointF &pos)
 {
     blockItemNotification();
     m_idToHandle[idx]->setPos(pos);
@@ -99,7 +99,7 @@ void GraphicsWireItem::movePoint(int idx, const QPointF &pos)
     emit pointsChanged();
 }
 
-void GraphicsWireItem::setPoints(QList<QPointF> points)
+void WireItem::setPoints(QList<QPointF> points)
 {
     removeAllHandles();
     m_path = QPainterPath();
@@ -125,9 +125,9 @@ void GraphicsWireItem::setPoints(QList<QPointF> points)
     emit pointsChanged();
 }
 
-void GraphicsWireItem::itemNotification(IGraphicsObservableItem *item)
+void WireItem::itemNotification(IObservableItem *item)
 {
-    AbstractGraphicsHandle *handle = static_cast<AbstractGraphicsHandle *>(item);
+    Handle *handle = static_cast<Handle *>(item);
     int idx = m_handleToId[handle];
 
     prepareGeometryChange();
@@ -139,12 +139,12 @@ void GraphicsWireItem::itemNotification(IGraphicsObservableItem *item)
 }
 
 
-QVariant GraphicsWireItem::itemChange(QGraphicsItem::GraphicsItemChange change,
+QVariant WireItem::itemChange(QGraphicsItem::GraphicsItemChange change,
                                       const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged)
     {
-        for (AbstractGraphicsHandle *handle : m_idToHandle)
+        for (Handle *handle : m_idToHandle)
         {
             handle->setVisible(isSelected());
         }

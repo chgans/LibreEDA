@@ -5,59 +5,59 @@
 
 #include <QDialog>
 
-SchTool::SchTool(QObject *parent) :
+Tool::Tool(QObject *parent) :
     QObject(parent),
     m_view(nullptr)
 {
 
 }
 
-SchTool::~SchTool()
+Tool::~Tool()
 {
 
 }
 
-SchView *SchTool::view()
+View *Tool::view()
 {
     return m_view;
 }
 
-SchScene *SchTool::scene()
+Scene *Tool::scene()
 {
     return m_view->scene();
 }
 
-void SchTool::setView(SchView *view)
+void Tool::setView(View *view)
 {
     m_view = view;
 }
 
-void SchTool::setToolGroup(const QString &group)
+void Tool::setToolGroup(const QString &group)
 {
     m_toolGroup = group;
 }
 
-QString SchTool::toolGroup() const
+QString Tool::toolGroup() const
 {
     return m_toolGroup;
 }
 
-void SchTool::setAction(QAction *action)
+void Tool::setAction(QAction *action)
 {
     m_action = action;
 }
 
-QAction *SchTool::action() const
+QAction *Tool::action() const
 {
     return m_action;
 }
 
-void SchTool::cancel()
+void Tool::cancel()
 {
 
 }
 
-void SchTool::applySettings(const SchEditorSettings &settings)
+void Tool::applySettings(const Settings &settings)
 {
     Q_UNUSED(settings);
 }

@@ -10,7 +10,7 @@ class QKeyEvent;
 class QWheelEvent;
 class QWidget;
 
-class InteractiveTool: public SchTool
+class InteractiveTool: public Tool
 {
     Q_OBJECT
 

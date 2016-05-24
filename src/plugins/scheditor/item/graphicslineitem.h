@@ -6,7 +6,7 @@
 #include <QPen>
 #include <QLineF>
 
-class GraphicsLineItem : public SchItem
+class PolylineItem : public Item
 {
     Q_OBJECT
 
@@ -20,7 +20,7 @@ public:
         P2Handle,
         NbHandles
     };
-    explicit GraphicsLineItem(SchItem *parent = nullptr);
+    explicit PolylineItem(Item *parent = nullptr);
 
     QLineF line() const;
 
@@ -35,7 +35,7 @@ private:
 
     // SchItem interface
 public:
-    SchItem *clone();
+    Item *clone();
 
     //virtual QList<QPointF> hotSpots() const;
     virtual QList<QPointF> endPoints() const;
@@ -45,7 +45,7 @@ public:
 
     // IGraphicsItemObserver
 public:
-    void itemNotification(IGraphicsObservableItem *item);
+    void itemNotification(IObservableItem *item);
 
     // QGraphicsItem interface
 public:

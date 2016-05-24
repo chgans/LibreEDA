@@ -5,7 +5,7 @@
 #include <QSettings>
 #include "palette.h"
 
-class SchEditorSettings
+class Settings
 {
 public:
     Palette::Mode colorScheme = Palette::Dark;

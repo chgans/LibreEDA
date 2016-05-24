@@ -16,7 +16,7 @@ SettingsWidget::SettingsWidget(QWidget *parent) :
 {
     m_ui->setupUi(this);
 
-    auto scene = new SchScene(this);
+    auto scene = new Scene(this);
     scene->setSceneRect(-100, -100, 200, 200);
     m_ui->graphicsView->setScene(scene);
 
@@ -157,7 +157,7 @@ SettingsWidget::~SettingsWidget()
 
 void SettingsWidget::loadSettings()
 {
-    SchEditorSettings settings;
+    Settings settings;
     settings.load(Core::settings());
 
     m_ui->colorSchemeComboBox->setCurrentIndex(m_colorSchemeToIndex.value(settings.colorScheme));
@@ -179,7 +179,7 @@ void SettingsWidget::loadSettings()
 
 void SettingsWidget::saveSettings()
 {
-    SchEditorSettings settings;
+    Settings settings;
 
     settings.colorScheme = m_ui->colorSchemeComboBox->currentData().value<Palette::Mode>();
     settings.rulerEnabled = m_ui->rulerCheckBox->isChecked();
@@ -244,15 +244,15 @@ void SettingsWidget::updateViewMouseCursor()
 
     if (!m_ui->cusorCrosshairCheckBox->isChecked())
     {
-        m_ui->graphicsView->setMouseCursor(SchView::NoMouseCursor);
+        m_ui->graphicsView->setMouseCursor(View::NoMouseCursor);
     }
     else if (m_ui->largeCursorCrosshairCheckBox->isChecked())
     {
-        m_ui->graphicsView->setMouseCursor(SchView::LargeMouseCursor);
+        m_ui->graphicsView->setMouseCursor(View::LargeMouseCursor);
     }
     else
     {
-        m_ui->graphicsView->setMouseCursor(SchView::SmallMouseCursor);
+        m_ui->graphicsView->setMouseCursor(View::SmallMouseCursor);
     }
 }
 
@@ -260,15 +260,15 @@ void SettingsWidget::updateGuiMouseCursor()
 {
     switch (m_ui->graphicsView->mouseCursor())
     {
-        case SchView::NoMouseCursor:
+        case View::NoMouseCursor:
             m_ui->cusorCrosshairCheckBox->setChecked(false);
             m_ui->largeCursorCrosshairCheckBox->setChecked(false);
             break;
-        case SchView::SmallMouseCursor:
+        case View::SmallMouseCursor:
             m_ui->cusorCrosshairCheckBox->setChecked(true);
             m_ui->largeCursorCrosshairCheckBox->setChecked(false);
             break;
-        case SchView::LargeMouseCursor:
+        case View::LargeMouseCursor:
             m_ui->cusorCrosshairCheckBox->setChecked(true);
             m_ui->largeCursorCrosshairCheckBox->setChecked(true);
     }
@@ -279,15 +279,15 @@ void SettingsWidget::updateViewOriginMark()
 {
     if (!m_ui->originCheckBox->isChecked())
     {
-        m_ui->graphicsView->setOriginMark(SchView::NoOriginMark);
+        m_ui->graphicsView->setOriginMark(View::NoOriginMark);
     }
     else if (m_ui->largeOriginAxisCheckBox->isChecked())
     {
-        m_ui->graphicsView->setOriginMark(SchView::LargeOriginMark);
+        m_ui->graphicsView->setOriginMark(View::LargeOriginMark);
     }
     else
     {
-        m_ui->graphicsView->setOriginMark(SchView::SmallOriginMark);
+        m_ui->graphicsView->setOriginMark(View::SmallOriginMark);
     }
 }
 
@@ -295,15 +295,15 @@ void SettingsWidget::updateGuiOriginMark()
 {
     switch (m_ui->graphicsView->originMark())
     {
-        case SchView::NoOriginMark:
+        case View::NoOriginMark:
             m_ui->originCheckBox->setChecked(false);
             m_ui->largeOriginAxisCheckBox->setChecked(false);
             break;
-        case SchView::SmallOriginMark:
+        case View::SmallOriginMark:
             m_ui->originCheckBox->setChecked(true);
             m_ui->largeOriginAxisCheckBox->setChecked(false);
             break;
-        case SchView::LargeOriginMark:
+        case View::LargeOriginMark:
             m_ui->originCheckBox->setChecked(true);
             m_ui->largeOriginAxisCheckBox->setChecked(true);
     }

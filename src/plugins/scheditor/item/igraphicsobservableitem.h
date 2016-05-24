@@ -3,28 +3,28 @@
 
 #include <QList>
 
-class IGraphicsItemObserver;
+class IItemObserver;
 
-class IGraphicsObservableItem
+class IObservableItem
 {
 public:
-    IGraphicsObservableItem();
-    virtual ~IGraphicsObservableItem();
+    IObservableItem();
+    virtual ~IObservableItem();
 
-    void addItemObserver(IGraphicsItemObserver *observer);
-    void removeItemObserver(IGraphicsItemObserver *observer);
+    void addItemObserver(IItemObserver *observer);
+    void removeItemObserver(IItemObserver *observer);
 
-    QList<IGraphicsItemObserver *> itemObservers() const;
+    QList<IItemObserver *> itemObservers() const;
 
 protected:
     void notifyObservers();
 
 private:
-    QList<IGraphicsItemObserver *> m_observers;
+    QList<IItemObserver *> m_observers;
     bool m_transactionInProgress;
     void beginItemObserverTransaction();
     void endItemObserverTransaction();
-    friend class IGraphicsItemObserver;
+    friend class IItemObserver;
 };
 
 #endif // IGRAPHICSOBSERVABLEITEM_H

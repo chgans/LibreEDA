@@ -5,7 +5,7 @@
 
 #include <QPointF>
 
-class GraphicsBezierItem;
+class BezierItem;
 class PenSettingsWidget;
 class BrushSettingsWidget;
 
@@ -18,13 +18,13 @@ public:
     ~PlaceBezierTool();
 
 private:
-    GraphicsBezierItem *m_item;
+    BezierItem *m_item;
     PenSettingsWidget *m_penSettingsWidget;
     BrushSettingsWidget *m_brushSettingsWidget;
 
     // PlacementTool interface
 public:
-    SchItem *beginInsert(const QPointF &pos);
+    Item *beginInsert(const QPointF &pos);
     void addPoint(int idx, const QPointF &pos);
     void freezePoint(int idx, const QPointF &pos);
     bool removePoint(int idx, const QPointF &pos);

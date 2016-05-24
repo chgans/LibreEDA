@@ -17,9 +17,9 @@
 static const int OriginMarkPixelSize = 10;
 static const int CursorMarkPixelSize = 10;
 
-SchView::SchView(QWidget *parent):
+View::View(QWidget *parent):
     QGraphicsView(parent),
-    m_grid(new GraphicsCartesianGrid()),
+    m_grid(new CartesianGrid()),
     m_tool(nullptr),
     m_mousePositionChanged(true),
     m_snapManager(new SnapManager(this)),
@@ -59,17 +59,17 @@ SchView::SchView(QWidget *parent):
     setPaletteMode(Palette::Dark);
 }
 
-SchView::~SchView()
+View::~View()
 {
 
 }
 
-SchScene *SchView::scene() const
+Scene *View::scene() const
 {
-    return static_cast<SchScene *>(QGraphicsView::scene());
+    return static_cast<Scene *>(QGraphicsView::scene());
 }
 
-void SchView::setScene(SchScene *scene)
+void View::setScene(Scene *scene)
 {
     QGraphicsView::setScene(scene);
     QRectF rect = scene->sceneRect();
@@ -79,12 +79,12 @@ void SchView::setScene(SchScene *scene)
     applyPalette();
 }
 
-InteractiveTool *SchView::tool()
+InteractiveTool *View::tool()
 {
     return m_tool;
 }
 
-void SchView::setTool(InteractiveTool *tool)
+void View::setTool(InteractiveTool *tool)
 {
     m_tool = tool;
 
@@ -94,42 +94,42 @@ void SchView::setTool(InteractiveTool *tool)
     }
 }
 
-SchItem *SchView::objectAt(const QPointF &pos) const
+Item *View::objectAt(const QPointF &pos) const
 {
-    return dynamic_cast<SchItem *>(scene()->itemAt(pos, QTransform()));
+    return dynamic_cast<Item *>(scene()->itemAt(pos, QTransform()));
 }
 
-AbstractGraphicsHandle *SchView::handleAt(const QPointF &pos) const
+Handle *View::handleAt(const QPointF &pos) const
 {
-    return dynamic_cast<AbstractGraphicsHandle *>(scene()->itemAt(pos, QTransform()));
+    return dynamic_cast<Handle *>(scene()->itemAt(pos, QTransform()));
 }
 
-AbstractGraphicsHandle *SchView::handleUnderMouse() const
+Handle *View::handleUnderMouse() const
 {
     return handleAt(mousePosition());
 }
 
-SchItem *SchView::objectUnderMouse() const
+Item *View::objectUnderMouse() const
 {
     return objectAt(mousePosition());
 }
 
-QPointF SchView::mousePosition() const
+QPointF View::mousePosition() const
 {
     return m_mousePosition;
 }
 
-QPointF SchView::cursorPosition() const
+QPointF View::cursorPosition() const
 {
     return m_snapManager->snappedPosition();
 }
 
-QPointF SchView::originPosition() const
+QPointF View::originPosition() const
 {
     return QPointF(0, 0);
 }
 
-void SchView::scaleView(qreal scaleFactor)
+void View::scaleView(qreal scaleFactor)
 {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
     if (factor < 0.07 || factor > 100)
@@ -143,7 +143,7 @@ void SchView::scaleView(qreal scaleFactor)
     updateRulerCursorPositions();
 }
 
-void SchView::translateView(qreal dx, qreal dy)
+void View::translateView(qreal dx, qreal dy)
 {
     translate(dx, dy);
     updateMousePos();
@@ -151,7 +151,7 @@ void SchView::translateView(qreal dx, qreal dy)
     updateRulerCursorPositions();
 }
 
-void SchView::setPaletteMode(Palette::Mode mode)
+void View::setPaletteMode(Palette::Mode mode)
 {
     if (mode == m_palette->mode())
     {
@@ -161,17 +161,17 @@ void SchView::setPaletteMode(Palette::Mode mode)
     applyPalette();
 }
 
-Palette::Mode SchView::paletteMode() const
+Palette::Mode View::paletteMode() const
 {
     return m_palette->mode();
 }
 
-const Palette *SchView::palette() const
+const Palette *View::palette() const
 {
     return m_palette;
 }
 
-void SchView::drawBackground(QPainter *painter, const QRectF &rect)
+void View::drawBackground(QPainter *painter, const QRectF &rect)
 {
     painter->fillRect(rect, QBrush(m_palette->backgroundHighlight()));
     painter->fillRect(rect.intersected(sceneRect()), QBrush(m_palette->background()));
@@ -182,7 +182,7 @@ void SchView::drawBackground(QPainter *painter, const QRectF &rect)
     }
 }
 
-void SchView::drawForeground(QPainter *painter, const QRectF &rect)
+void View::drawForeground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
 
@@ -195,7 +195,7 @@ void SchView::drawForeground(QPainter *painter, const QRectF &rect)
     }
 }
 
-void SchView::wheelEvent(QWheelEvent *event)
+void View::wheelEvent(QWheelEvent *event)
 {
     if (!event->modifiers().testFlag(Qt::ControlModifier))
     {
@@ -217,7 +217,7 @@ void SchView::wheelEvent(QWheelEvent *event)
     zoomIn(pos, factor);
 }
 
-void SchView::mousePressEvent(QMouseEvent *event)
+void View::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::MidButton)
     {
@@ -234,7 +234,7 @@ void SchView::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void SchView::mouseMoveEvent(QMouseEvent *event)
+void View::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons().testFlag(Qt::MidButton))
     {
@@ -253,7 +253,7 @@ void SchView::mouseMoveEvent(QMouseEvent *event)
     updateForeground();
 }
 
-void SchView::mouseReleaseEvent(QMouseEvent *event)
+void View::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::MidButton)
     {
@@ -266,7 +266,7 @@ void SchView::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-void SchView::mouseDoubleClickEvent(QMouseEvent *event)
+void View::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (m_tool != nullptr)
     {
@@ -278,7 +278,7 @@ void SchView::mouseDoubleClickEvent(QMouseEvent *event)
     }
 }
 
-void SchView::keyPressEvent(QKeyEvent *event)
+void View::keyPressEvent(QKeyEvent *event)
 {
     if (m_tool != nullptr)
     {
@@ -290,7 +290,7 @@ void SchView::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void SchView::keyReleaseEvent(QKeyEvent *event)
+void View::keyReleaseEvent(QKeyEvent *event)
 {
     if (m_tool != nullptr)
     {
@@ -302,7 +302,7 @@ void SchView::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
-void SchView::resizeEvent(QResizeEvent *event)
+void View::resizeEvent(QResizeEvent *event)
 {
     QGraphicsView::resizeEvent(event);
     updateMousePos();
@@ -310,7 +310,7 @@ void SchView::resizeEvent(QResizeEvent *event)
     updateRulerCursorPositions();
 }
 
-void SchView::updateMousePos()
+void View::updateMousePos()
 {
     QPointF pos = mapToScene(viewport()->mapFromGlobal(QCursor::pos()));
     m_snapping = m_snapManager->snap(pos,
@@ -334,7 +334,7 @@ void SchView::updateMousePos()
     }
 }
 
-void SchView::updateRulerCursorRanges()
+void View::updateRulerCursorRanges()
 {
     QPointF topLeft = mapToScene(QPoint(0, 0));
     QPointF bottomRight = mapToScene(QPoint(m_horizontalRuler->width(),
@@ -343,14 +343,14 @@ void SchView::updateRulerCursorRanges()
     m_verticalRuler->setCursorRange(topLeft.y(), bottomRight.y());
 }
 
-void SchView::updateRulerCursorPositions()
+void View::updateRulerCursorPositions()
 {
     QPointF pos = cursorPosition();
     m_horizontalRuler->setCursorPosition(pos);
     m_verticalRuler->setCursorPosition(pos);
 }
 
-QMouseEvent SchView::createSnappedMouseEvent(QMouseEvent *event)
+QMouseEvent View::createSnappedMouseEvent(QMouseEvent *event)
 {
     return QMouseEvent(event->type(),
                        m_mousePosition,
@@ -359,26 +359,26 @@ QMouseEvent SchView::createSnappedMouseEvent(QMouseEvent *event)
                        event->modifiers());
 }
 
-QRectF SchView::visibleSceneRect() const
+QRectF View::visibleSceneRect() const
 {
     QPointF topLeft = mapToScene(QPoint(0, 0));
     QPointF bottomRight = mapToScene(QPoint(viewport()->width(), viewport()->height()));
     return QRectF(topLeft, bottomRight);
 }
 
-void SchView::updateForeground()
+void View::updateForeground()
 {
     invalidateScene(visibleSceneRect(), QGraphicsScene::ForegroundLayer);
     viewport()->update();
 }
 
-void SchView::updateBackground()
+void View::updateBackground()
 {
     invalidateScene(visibleSceneRect(), QGraphicsScene::BackgroundLayer);
     viewport()->update();
 }
 
-void SchView::applyPalette()
+void View::applyPalette()
 {
     m_cornerWidget->setStyleSheet(QString("background-color:%1;").arg(
                                       m_palette->backgroundHighlight().name()));
@@ -392,7 +392,7 @@ void SchView::applyPalette()
     update();
 }
 
-void SchView::drawCursor(QPainter *painter)
+void View::drawCursor(QPainter *painter)
 {
     if (mouseCursor() == NoMouseCursor)
     {
@@ -430,7 +430,7 @@ void SchView::drawCursor(QPainter *painter)
     painter->drawLine(left, right);
 }
 
-void SchView::drawOrigin(QPainter *painter)
+void View::drawOrigin(QPainter *painter)
 {
     if (originMark() == NoOriginMark)
     {
@@ -469,7 +469,7 @@ void SchView::drawOrigin(QPainter *painter)
     painter->drawLine(left, right);
 }
 
-void SchView::drawSnapDecoration(QPainter *painter)
+void View::drawSnapDecoration(QPainter *painter)
 {
     // TODO: maybe let the snapmanager paint the decoration:
     // m_snapManager->renderDecoration(painter, pos);
@@ -483,22 +483,22 @@ void SchView::drawSnapDecoration(QPainter *painter)
     painter->restore();
 }
 
-QSizeF SchView::pixelSize() const
+QSizeF View::pixelSize() const
 {
     return QSizeF(transform().m11(), transform().m22());
 }
 
-const GraphicsGrid *SchView::grid() const
+const Grid *View::grid() const
 {
     return m_grid;
 }
 
-SnapManager *SchView::snapManager()
+SnapManager *View::snapManager()
 {
     return m_snapManager;
 }
 
-void SchView::zoomIn(QPointF pos, qreal factor)
+void View::zoomIn(QPointF pos, qreal factor)
 {
     QPoint viewPos = mapFromScene(pos);
     scaleView(factor);
@@ -506,7 +506,7 @@ void SchView::zoomIn(QPointF pos, qreal factor)
     translateView(-pos.x(), -pos.y());
 }
 
-void SchView::setHardwareAccelerationEnabled(bool enabled)
+void View::setHardwareAccelerationEnabled(bool enabled)
 {
     if (m_hardwareAccelerationEnabled == enabled)
     {
@@ -529,12 +529,12 @@ void SchView::setHardwareAccelerationEnabled(bool enabled)
 #endif
 }
 
-bool SchView::hardwareAccelerationEnabled() const
+bool View::hardwareAccelerationEnabled() const
 {
     return m_hardwareAccelerationEnabled;
 }
 
-void SchView::setRulerEnabled(bool enabled)
+void View::setRulerEnabled(bool enabled)
 {
     if (m_rulerEnabled == enabled)
     {
@@ -567,12 +567,12 @@ void SchView::setRulerEnabled(bool enabled)
     }
 }
 
-bool SchView::rulerEnabled() const
+bool View::rulerEnabled() const
 {
     return m_rulerEnabled;
 }
 
-void SchView::setGridEnabled(bool enabled)
+void View::setGridEnabled(bool enabled)
 {
     if (m_gridEnabled == enabled)
     {
@@ -582,56 +582,56 @@ void SchView::setGridEnabled(bool enabled)
     updateBackground();
 }
 
-bool SchView::gridEnabled() const
+bool View::gridEnabled() const
 {
     return m_gridEnabled;
 }
 
-void SchView::setMinimalGridSize(int pixels)
+void View::setMinimalGridSize(int pixels)
 {
     m_grid->setMinimalFeatureSize(pixels);
     updateBackground();
 }
 
-int SchView::minimalGridSize() const
+int View::minimalGridSize() const
 {
     return m_grid->minimalFeatureSize();
 }
 
-void SchView::setGridCoarseMultiplier(int multiplier)
+void View::setGridCoarseMultiplier(int multiplier)
 {
     m_grid->setCoarseMultiplier(multiplier);
     updateBackground();
 }
 
-int SchView::gridCoarseMultiplier() const
+int View::gridCoarseMultiplier() const
 {
     return m_grid->coarseMultiplier();
 }
 
-void SchView::setGridCoarseLineStyle(Qt::PenStyle style)
+void View::setGridCoarseLineStyle(Qt::PenStyle style)
 {
     m_grid->setCoarseLineStyle(style);
     updateBackground();
 }
 
-Qt::PenStyle SchView::gridCoarseLineStyle() const
+Qt::PenStyle View::gridCoarseLineStyle() const
 {
     return m_grid->coarseLineStyle();
 }
 
-void SchView::setGridFineLineStyle(Qt::PenStyle style)
+void View::setGridFineLineStyle(Qt::PenStyle style)
 {
     m_grid->setFineLineStyle(style);
     updateBackground();
 }
 
-Qt::PenStyle SchView::gridFineLineStyle() const
+Qt::PenStyle View::gridFineLineStyle() const
 {
     return m_grid->fineLineStyle();
 }
 
-void SchView::setMouseCursor(SchView::MouseCursor cursor)
+void View::setMouseCursor(View::MouseCursor cursor)
 {
     if (m_mouseCursor == cursor)
     {
@@ -641,12 +641,12 @@ void SchView::setMouseCursor(SchView::MouseCursor cursor)
     updateForeground();
 }
 
-SchView::MouseCursor SchView::mouseCursor() const
+View::MouseCursor View::mouseCursor() const
 {
     return m_mouseCursor;
 }
 
-void SchView::setOriginMark(SchView::OriginMark mark)
+void View::setOriginMark(View::OriginMark mark)
 {
     if (m_originMark == mark)
     {
@@ -656,12 +656,12 @@ void SchView::setOriginMark(SchView::OriginMark mark)
     updateForeground();
 }
 
-SchView::OriginMark SchView::originMark() const
+View::OriginMark View::originMark() const
 {
     return m_originMark;
 }
 
-void SchView::applySettings(const SchEditorSettings &settings)
+void View::applySettings(const Settings &settings)
 {
     setPaletteMode(settings.colorScheme);
     setRulerEnabled(settings.rulerEnabled);
@@ -731,14 +731,14 @@ void SchView::applySettings(const SchEditorSettings &settings)
 
 }
 
-void SchView::startPanView(QMouseEvent *event)
+void View::startPanView(QMouseEvent *event)
 {
     // TODO: set cursor icon to closed hand
     m_panning = true;
     m_lastGlobalPos = event->globalPos();
 }
 
-void SchView::updatePanView(QMouseEvent *event)
+void View::updatePanView(QMouseEvent *event)
 {
     QPoint globalPos = event->globalPos();
     QPointF p1 = mapToScene(mapFromGlobal(globalPos));
@@ -748,7 +748,7 @@ void SchView::updatePanView(QMouseEvent *event)
     m_lastGlobalPos = globalPos;
 }
 
-void SchView::endPanView()
+void View::endPanView()
 {
     m_panning = false;
 }

@@ -1,22 +1,22 @@
 #include "item/igraphicsitemobserver.h"
 #include "item/igraphicsobservableitem.h"
 
-IGraphicsItemObserver::IGraphicsItemObserver():
+IItemObserver::IItemObserver():
     m_operationInProgress(false),
     m_blockAllItems(false)
 {
 
 }
 
-IGraphicsItemObserver::~IGraphicsItemObserver()
+IItemObserver::~IItemObserver()
 {
-    for (IGraphicsObservableItem *item : m_items)
+    for (IObservableItem *item : m_items)
     {
         removeObservedItem(item);
     }
 }
 
-void IGraphicsItemObserver::blockItemNotification(IGraphicsObservableItem *item)
+void IItemObserver::blockItemNotification(IObservableItem *item)
 {
     if (item == nullptr)
     {
@@ -40,7 +40,7 @@ void IGraphicsItemObserver::blockItemNotification(IGraphicsObservableItem *item)
     }
 }
 
-void IGraphicsItemObserver::unblockItemNotification(IGraphicsObservableItem *item)
+void IItemObserver::unblockItemNotification(IObservableItem *item)
 {
     if (item == nullptr)
     {
@@ -63,13 +63,13 @@ void IGraphicsItemObserver::unblockItemNotification(IGraphicsObservableItem *ite
     m_blockedItems.removeOne(item);
 }
 
-void IGraphicsItemObserver::beginObservedItemTransaction()
+void IItemObserver::beginObservedItemTransaction()
 {
     Q_ASSERT(!m_operationInProgress);
     m_operationInProgress = true;
 }
 
-void IGraphicsItemObserver::addObservedItem(IGraphicsObservableItem *item)
+void IItemObserver::addObservedItem(IObservableItem *item)
 {
     if (m_items.contains(item))
     {
@@ -85,7 +85,7 @@ void IGraphicsItemObserver::addObservedItem(IGraphicsObservableItem *item)
     }
 }
 
-void IGraphicsItemObserver::removeObservedItem(IGraphicsObservableItem *item)
+void IItemObserver::removeObservedItem(IObservableItem *item)
 {
     if (!m_items.contains(item))
     {
@@ -106,13 +106,13 @@ void IGraphicsItemObserver::removeObservedItem(IGraphicsObservableItem *item)
     }
 }
 
-void IGraphicsItemObserver::endObserveredItemTransaction()
+void IItemObserver::endObserveredItemTransaction()
 {
     Q_ASSERT(m_operationInProgress);
     m_operationInProgress = false;
 }
 
-void IGraphicsItemObserver::onItemNotification(IGraphicsObservableItem *item)
+void IItemObserver::onItemNotification(IObservableItem *item)
 {
     Q_ASSERT(!m_operationInProgress);
     if (m_blockAllItems || m_blockedItems.contains(item))

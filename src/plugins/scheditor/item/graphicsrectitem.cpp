@@ -11,8 +11,8 @@
 //       then use same roundness for both
 // FIXME: Roundness handles are missplaced when the rect is not normal
 
-GraphicsRectItem::GraphicsRectItem(SchItem *parent):
-    SchItem(parent), m_rect(QRectF(0, 0, 0, 0)),
+RectangleItem::RectangleItem(Item *parent):
+    Item(parent), m_rect(QRectF(0, 0, 0, 0)),
     m_xRoundness(33), m_yRoundness(66)
 {
     addRegularHandle(TopLeft, FDiagSizeHandleRole, DiamondedHandleShape);
@@ -25,17 +25,17 @@ GraphicsRectItem::GraphicsRectItem(SchItem *parent):
     updateRoundnessHandles();
 }
 
-GraphicsRectItem::~GraphicsRectItem()
+RectangleItem::~RectangleItem()
 {
 
 }
 
-QRectF GraphicsRectItem::rect() const
+QRectF RectangleItem::rect() const
 {
     return m_rect;
 }
 
-void GraphicsRectItem::setRect(const QRectF &rect)
+void RectangleItem::setRect(const QRectF &rect)
 {
     prepareGeometryChange();
     m_rect = rect;
@@ -45,18 +45,18 @@ void GraphicsRectItem::setRect(const QRectF &rect)
     updateRoundnessHandles();
 }
 
-void GraphicsRectItem::setRoundness(qreal xRoundness, qreal yRoundness)
+void RectangleItem::setRoundness(qreal xRoundness, qreal yRoundness)
 {
     setXRoundness(xRoundness);
     setYRoundness(yRoundness);
 }
 
-qreal GraphicsRectItem::xRoundness() const
+qreal RectangleItem::xRoundness() const
 {
     return m_xRoundness;
 }
 
-void GraphicsRectItem::setXRoundness(qreal roundness)
+void RectangleItem::setXRoundness(qreal roundness)
 {
     qreal xRoundness = qMin(qMax(roundness, 0.0), 100.0);
     if (qFuzzyCompare(xRoundness, m_xRoundness))
@@ -71,12 +71,12 @@ void GraphicsRectItem::setXRoundness(qreal roundness)
     updateRoundnessHandles();
 }
 
-qreal GraphicsRectItem::yRoundness() const
+qreal RectangleItem::yRoundness() const
 {
     return m_yRoundness;
 }
 
-void GraphicsRectItem::setYRoundness(qreal roundness)
+void RectangleItem::setYRoundness(qreal roundness)
 {
     qreal yRoundness = qMin(qMax(roundness, 0.0), 100.0);
     if (qFuzzyCompare(yRoundness, m_yRoundness))
@@ -91,7 +91,7 @@ void GraphicsRectItem::setYRoundness(qreal roundness)
     updateRoundnessHandles();
 }
 
-void GraphicsRectItem::updateSizeHandles()
+void RectangleItem::updateSizeHandles()
 {
     blockItemNotification();
     qreal midX = m_rect.right() - m_rect.width() / 2.0;
@@ -113,7 +113,7 @@ void GraphicsRectItem::updateSizeHandles()
     unblockItemNotification();
 }
 
-void GraphicsRectItem::updateRoundnessHandles()
+void RectangleItem::updateRoundnessHandles()
 {
     blockItemNotification();
     QRectF rect = m_rect.normalized();
@@ -124,19 +124,19 @@ void GraphicsRectItem::updateRoundnessHandles()
     unblockItemNotification();
 }
 
-SchItem *GraphicsRectItem::clone()
+Item *RectangleItem::clone()
 {
-    GraphicsRectItem *item = new GraphicsRectItem();
-    SchItem::cloneTo(item);
+    RectangleItem *item = new RectangleItem();
+    Item::cloneTo(item);
     item->setRect(rect());
     item->setXRoundness(m_xRoundness);
     item->setYRoundness(m_yRoundness);
     return item;
 }
 
-void GraphicsRectItem::itemNotification(IGraphicsObservableItem *item)
+void RectangleItem::itemNotification(IObservableItem *item)
 {
-    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle *>(item);
+    Handle *handle = dynamic_cast<Handle *>(item);
     Q_ASSERT(handle);
 
     int id = handle->handleId();
@@ -169,7 +169,7 @@ void GraphicsRectItem::itemNotification(IGraphicsObservableItem *item)
     setRect(rect);
 }
 
-QList<QPointF> GraphicsRectItem::endPoints() const
+QList<QPointF> RectangleItem::endPoints() const
 {
     return QList<QPointF>() << m_rect.topLeft()
            << m_rect.topRight()
@@ -177,7 +177,7 @@ QList<QPointF> GraphicsRectItem::endPoints() const
            << m_rect.bottomLeft();
 }
 
-QList<QPointF> GraphicsRectItem::midPoints() const
+QList<QPointF> RectangleItem::midPoints() const
 {
 
     return QList<QPointF>() << QPointF(m_rect.center().x(), m_rect.top())
@@ -186,12 +186,12 @@ QList<QPointF> GraphicsRectItem::midPoints() const
            << QPointF(m_rect.left(), m_rect.center().y());
 }
 
-QList<QPointF> GraphicsRectItem::centerPoints() const
+QList<QPointF> RectangleItem::centerPoints() const
 {
     return midPoints();
 }
 
-QList<QPointF> GraphicsRectItem::nearestPoints(QPointF pos) const
+QList<QPointF> RectangleItem::nearestPoints(QPointF pos) const
 {
     QRectF rect = m_rect.normalized();
     QList<QLineF> lines;
@@ -214,7 +214,7 @@ QList<QPointF> GraphicsRectItem::nearestPoints(QPointF pos) const
     return xPoints;
 }
 
-QRectF GraphicsRectItem::boundingRect() const
+QRectF RectangleItem::boundingRect() const
 {
     if (m_boundingRect.isNull())
     {
@@ -229,14 +229,14 @@ QRectF GraphicsRectItem::boundingRect() const
 
 }
 
-QPainterPath GraphicsRectItem::shape() const
+QPainterPath RectangleItem::shape() const
 {
     QPainterPath path;
     path.addRoundedRect(m_rect, m_xRoundness, m_yRoundness, Qt::RelativeSize);
     return shapeFromPath(path, pen());
 }
 
-void GraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void RectangleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                              QWidget *widget)
 {
     Q_UNUSED(option);
@@ -246,12 +246,12 @@ void GraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->drawRoundedRect(m_rect, m_xRoundness, m_yRoundness, Qt::RelativeSize);
 }
 
-QVariant GraphicsRectItem::itemChange(QGraphicsItem::GraphicsItemChange change,
+QVariant RectangleItem::itemChange(QGraphicsItem::GraphicsItemChange change,
                                       const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged)
     {
-        for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+        for (Handle *handle : m_handleToId.keys())
         {
             handle->setVisible(isSelected());
         }
@@ -260,7 +260,7 @@ QVariant GraphicsRectItem::itemChange(QGraphicsItem::GraphicsItemChange change,
 }
 
 
-bool GraphicsRectItem::contains(const QPointF &point) const
+bool RectangleItem::contains(const QPointF &point) const
 {
     // FIXME: Needed to avoid slowing down the view: default impl of contains() call
     // shape() and QPainterPath implement the rounded corner with bezier curves,

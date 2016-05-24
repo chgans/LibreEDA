@@ -45,9 +45,9 @@ PlaceCircleTool::~PlaceCircleTool()
 {
 }
 
-SchItem *PlaceCircleTool::beginInsert(const QPointF &pos)
+Item *PlaceCircleTool::beginInsert(const QPointF &pos)
 {
-    m_item = new GraphicsCircleItem();
+    m_item = new CircleItem();
     m_item->setPos(pos);
     m_item->setPen(m_penSettingsWidget->pen());
     m_item->setBrush(m_brushSettingsWidget->brush());

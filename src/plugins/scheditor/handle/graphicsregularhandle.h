@@ -4,11 +4,11 @@
 #include "handle/abstractgraphicshandle.h"
 #include <QGraphicsPathItem>
 
-class GraphicsRegularHandle : public AbstractGraphicsHandle
+class RegularHandle : public Handle
 {
 public:
-    explicit GraphicsRegularHandle(SchItem *parent = nullptr);
-    ~GraphicsRegularHandle();
+    explicit RegularHandle(Item *parent = nullptr);
+    ~RegularHandle();
 
 };
 

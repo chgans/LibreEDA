@@ -3,7 +3,7 @@
 
 #include "item/schitem.h"
 
-class GraphicsCircleItem : public SchItem
+class CircleItem : public Item
 {
     Q_OBJECT
 
@@ -16,8 +16,8 @@ public:
         NbHandles
     };
 
-    explicit GraphicsCircleItem(SchItem *parent = nullptr);
-    ~GraphicsCircleItem();
+    explicit CircleItem(Item *parent = nullptr);
+    ~CircleItem();
 
     qreal radius() const;
 
@@ -32,8 +32,8 @@ private:
 
     // SchItem interface
 public:
-    virtual SchItem *clone();
-    void itemNotification(IGraphicsObservableItem *item);
+    virtual Item *clone();
+    void itemNotification(IObservableItem *item);
 
     //virtual QList<QPointF> hotSpots() const;
     virtual QList<QPointF> endPoints() const;

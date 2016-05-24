@@ -1,33 +1,33 @@
 #include "item/igraphicsobservableitem.h"
 #include "item/igraphicsitemobserver.h"
 
-QList<IGraphicsObservableItem *> IGraphicsItemObserver::observedItems() const
+QList<IObservableItem *> IItemObserver::observedItems() const
 {
     return m_items;
 }
 
 
-IGraphicsObservableItem::IGraphicsObservableItem():
+IObservableItem::IObservableItem():
     m_transactionInProgress(false)
 {
 
 }
 
-IGraphicsObservableItem::~IGraphicsObservableItem()
+IObservableItem::~IObservableItem()
 {
-    for (IGraphicsItemObserver *observer : m_observers)
+    for (IItemObserver *observer : m_observers)
     {
         removeItemObserver(observer);
     }
 }
 
-void IGraphicsObservableItem::beginItemObserverTransaction()
+void IObservableItem::beginItemObserverTransaction()
 {
     Q_ASSERT(!m_transactionInProgress);
     m_transactionInProgress = true;
 }
 
-void IGraphicsObservableItem::addItemObserver(IGraphicsItemObserver *observer)
+void IObservableItem::addItemObserver(IItemObserver *observer)
 {
     if (m_observers.contains(observer))
     {
@@ -42,7 +42,7 @@ void IGraphicsObservableItem::addItemObserver(IGraphicsItemObserver *observer)
     }
 }
 
-void IGraphicsObservableItem::removeItemObserver(IGraphicsItemObserver *observer)
+void IObservableItem::removeItemObserver(IItemObserver *observer)
 {
     if (!m_observers.contains(observer))
     {
@@ -57,21 +57,21 @@ void IGraphicsObservableItem::removeItemObserver(IGraphicsItemObserver *observer
     }
 }
 
-void IGraphicsObservableItem::endItemObserverTransaction()
+void IObservableItem::endItemObserverTransaction()
 {
     Q_ASSERT(m_transactionInProgress);
     m_transactionInProgress = false;
 }
 
-QList<IGraphicsItemObserver *> IGraphicsObservableItem::itemObservers() const
+QList<IItemObserver *> IObservableItem::itemObservers() const
 {
     return m_observers;
 }
 
-void IGraphicsObservableItem::notifyObservers()
+void IObservableItem::notifyObservers()
 {
     Q_ASSERT(!m_transactionInProgress);
-    for (IGraphicsItemObserver *observer : m_observers)
+    for (IItemObserver *observer : m_observers)
     {
         observer->onItemNotification(this);
     }

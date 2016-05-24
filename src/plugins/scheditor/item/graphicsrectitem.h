@@ -11,7 +11,7 @@
 
 // TODO: AbstractGraphicsShape
 // TODO: add properties
-class GraphicsRectItem : public SchItem
+class RectangleItem : public Item
 {
     Q_OBJECT
 
@@ -31,8 +31,8 @@ public:
         NbHandles
     };
 
-    explicit GraphicsRectItem(SchItem *parent = nullptr);
-    ~GraphicsRectItem();
+    explicit RectangleItem(Item *parent = nullptr);
+    ~RectangleItem();
 
     QRectF rect() const;
     void setRect(const QRectF &rect);
@@ -52,8 +52,8 @@ private:
 
     // ScheItem interface
 public:
-    virtual SchItem *clone();
-    void itemNotification(IGraphicsObservableItem *item);
+    virtual Item *clone();
+    void itemNotification(IObservableItem *item);
 
     //virtual QList<QPointF> hotSpots() const;
     virtual QList<QPointF> endPoints() const;

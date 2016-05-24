@@ -9,12 +9,12 @@ PropertyEditorDockWidget::PropertyEditorDockWidget(QWidget *parent, Qt::WindowFl
     setWidget(m_editor);
 }
 
-void PropertyEditorDockWidget::setItem(SchItem *item)
+void PropertyEditorDockWidget::setItem(Item *item)
 {
     m_editor->setItem(item);
 }
 
-void PropertyEditorDockWidget::applySettings(const SchEditorSettings &settings)
+void PropertyEditorDockWidget::applySettings(const Settings &settings)
 {
     Q_UNUSED(settings);
 }

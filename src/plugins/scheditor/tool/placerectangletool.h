@@ -4,7 +4,7 @@
 #include "tool/placementtool.h"
 #include <QRectF>
 
-class GraphicsRectItem;
+class RectangleItem;
 class PenSettingsWidget;
 class BrushSettingsWidget;
 
@@ -21,7 +21,7 @@ protected:
     void setP2(const QPointF &pos);
 
 private:
-    GraphicsRectItem *m_item;
+    RectangleItem *m_item;
     PenSettingsWidget *m_penSettingsWidget;
     BrushSettingsWidget *m_brushSettingsWidget;
     QRectF m_rect;
@@ -32,7 +32,7 @@ public slots:
 
     // PlacementTool interface
 public:
-    SchItem *beginInsert(const QPointF &pos);
+    Item *beginInsert(const QPointF &pos);
     void addPoint(int idx, const QPointF &pos);
     void freezePoint(int idx, const QPointF &pos);
     bool removePoint(int idx, const QPointF &pos);

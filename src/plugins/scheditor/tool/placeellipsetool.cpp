@@ -47,9 +47,9 @@ PlaceEllipseTool::~PlaceEllipseTool()
 
 }
 
-SchItem *PlaceEllipseTool::beginInsert(const QPointF &pos)
+Item *PlaceEllipseTool::beginInsert(const QPointF &pos)
 {
-    m_item = new GraphicsEllipseItem();
+    m_item = new EllipseItem();
     m_item->setPos(pos);
     m_item->setPen(m_penSettingsWidget->pen());
     m_item->setBrush(m_brushSettingsWidget->brush());

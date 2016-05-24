@@ -19,8 +19,8 @@
  *    when enabled/disabled.
  */
 
-GraphicsTextFrameItem::GraphicsTextFrameItem(SchItem *parent):
-    SchItem(parent),
+TextFrameItem::TextFrameItem(Item *parent):
+    Item(parent),
     m_maskItem(new QGraphicsRectItem(this)),
     m_textItem(new QGraphicsTextItem(m_maskItem))
 {
@@ -44,14 +44,14 @@ GraphicsTextFrameItem::GraphicsTextFrameItem(SchItem *parent):
     m_textItem->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
     connect(m_textItem, &QGraphicsTextItem::linkActivated,
-            this, &GraphicsTextFrameItem::linkActivated);
+            this, &TextFrameItem::linkActivated);
     connect(m_textItem, &QGraphicsTextItem::linkHovered,
-            this, &GraphicsTextFrameItem::linkHovered);
+            this, &TextFrameItem::linkHovered);
     connect(document(), &QTextDocument::contentsChanged,
-            this, &GraphicsTextFrameItem::onDocumentContentChanged);
+            this, &TextFrameItem::onDocumentContentChanged);
 }
 
-void GraphicsTextFrameItem::onDocumentContentChanged()
+void TextFrameItem::onDocumentContentChanged()
 {
     if (m_sizePolicy == FixedSizePolicy)
     {
@@ -60,7 +60,7 @@ void GraphicsTextFrameItem::onDocumentContentChanged()
     adjustSize();
 }
 
-void GraphicsTextFrameItem::adjustSize()
+void TextFrameItem::adjustSize()
 {
     prepareGeometryChange();
     m_textItem->adjustSize();
@@ -73,12 +73,12 @@ void GraphicsTextFrameItem::adjustSize()
     update();
 }
 
-GraphicsTextFrameItem::SizePolicy GraphicsTextFrameItem::sizePolicy() const
+TextFrameItem::SizePolicy TextFrameItem::sizePolicy() const
 {
     return m_sizePolicy;
 }
 
-void GraphicsTextFrameItem::setSizePolicy(GraphicsTextFrameItem::SizePolicy policy)
+void TextFrameItem::setSizePolicy(TextFrameItem::SizePolicy policy)
 {
     if (m_sizePolicy == policy)
     {
@@ -92,23 +92,23 @@ void GraphicsTextFrameItem::setSizePolicy(GraphicsTextFrameItem::SizePolicy poli
     handleAt(0)->setEnabled(m_sizePolicy == FixedSizePolicy);
 }
 
-QString GraphicsTextFrameItem::toHtml() const
+QString TextFrameItem::toHtml() const
 {
     return m_textItem->toHtml();
 }
 
 // FIXME: Need same resizing behaviour as setPlainText
-void GraphicsTextFrameItem::setHtml(const QString &html)
+void TextFrameItem::setHtml(const QString &html)
 {
     m_textItem->setHtml(html);
 }
 
-QString GraphicsTextFrameItem::toPlainText() const
+QString TextFrameItem::toPlainText() const
 {
     return m_textItem->toPlainText();
 }
 
-void GraphicsTextFrameItem::setPlainText(const QString &text)
+void TextFrameItem::setPlainText(const QString &text)
 {
     m_textItem->setPlainText(text);
     m_textItem->adjustSize();
@@ -122,27 +122,27 @@ void GraphicsTextFrameItem::setPlainText(const QString &text)
     }
 }
 
-QFont GraphicsTextFrameItem::font() const
+QFont TextFrameItem::font() const
 {
     return m_textItem->font();
 }
 
-void GraphicsTextFrameItem::setFont(const QFont &font)
+void TextFrameItem::setFont(const QFont &font)
 {
     m_textItem->setFont(font);
 }
 
-void GraphicsTextFrameItem::setDefaultTextColor(const QColor &color)
+void TextFrameItem::setDefaultTextColor(const QColor &color)
 {
     m_textItem->setDefaultTextColor(color);
 }
 
-QColor GraphicsTextFrameItem::defaultTextColor() const
+QColor TextFrameItem::defaultTextColor() const
 {
     return m_textItem->defaultTextColor();
 }
 
-void GraphicsTextFrameItem::setDocument(QTextDocument *document)
+void TextFrameItem::setDocument(QTextDocument *document)
 {
     if (m_textItem->document() != nullptr)
     {
@@ -151,50 +151,50 @@ void GraphicsTextFrameItem::setDocument(QTextDocument *document)
     m_textItem->setDocument(document);
     if (document != nullptr)
         connect(document, &QTextDocument::contentsChanged,
-                this, &GraphicsTextFrameItem::onDocumentContentChanged);
+                this, &TextFrameItem::onDocumentContentChanged);
 }
 
-QTextDocument *GraphicsTextFrameItem::document() const
+QTextDocument *TextFrameItem::document() const
 {
     return m_textItem->document();
 }
 
-void GraphicsTextFrameItem::setTextInteractionFlags(Qt::TextInteractionFlags flags)
+void TextFrameItem::setTextInteractionFlags(Qt::TextInteractionFlags flags)
 {
     m_textItem->setTextInteractionFlags(flags);
 }
 
-Qt::TextInteractionFlags GraphicsTextFrameItem::textInteractionFlags() const
+Qt::TextInteractionFlags TextFrameItem::textInteractionFlags() const
 {
     return m_textItem->textInteractionFlags();
 }
 
-bool GraphicsTextFrameItem::tabChangesFocus() const
+bool TextFrameItem::tabChangesFocus() const
 {
     return m_textItem->tabChangesFocus();
 }
 
-void GraphicsTextFrameItem::setOpenExternalLinks(bool open)
+void TextFrameItem::setOpenExternalLinks(bool open)
 {
     m_textItem->setOpenExternalLinks(open);
 }
 
-bool GraphicsTextFrameItem::openExternalLinks() const
+bool TextFrameItem::openExternalLinks() const
 {
     return m_textItem->openExternalLinks();
 }
 
-void GraphicsTextFrameItem::setTextCursor(const QTextCursor &cursor)
+void TextFrameItem::setTextCursor(const QTextCursor &cursor)
 {
     m_textItem->setTextCursor(cursor);
 }
 
-QTextCursor GraphicsTextFrameItem::textCursor() const
+QTextCursor TextFrameItem::textCursor() const
 {
     return m_textItem->textCursor();
 }
 
-QRectF GraphicsTextFrameItem::boundingRect() const
+QRectF TextFrameItem::boundingRect() const
 {
     if (m_boundingRect.isNull())
     {
@@ -208,7 +208,7 @@ QRectF GraphicsTextFrameItem::boundingRect() const
     return m_boundingRect;
 }
 
-QPainterPath GraphicsTextFrameItem::shape() const
+QPainterPath TextFrameItem::shape() const
 {
     QRectF rect = m_sizePolicy == FixedSizePolicy ? m_frameRect : m_textItem->boundingRect();
     QPainterPath path;
@@ -217,12 +217,12 @@ QPainterPath GraphicsTextFrameItem::shape() const
     return path; //shapeFromPath(path, pen());
 }
 
-bool GraphicsTextFrameItem::contains(const QPointF &point) const
+bool TextFrameItem::contains(const QPointF &point) const
 {
     return boundingRect().contains(point);
 }
 
-void GraphicsTextFrameItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void TextFrameItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                                   QWidget *widget)
 {
     Q_UNUSED(option);
@@ -232,9 +232,9 @@ void GraphicsTextFrameItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     painter->drawRect(m_frameRect);
 }
 
-void GraphicsTextFrameItem::itemNotification(IGraphicsObservableItem *item)
+void TextFrameItem::itemNotification(IObservableItem *item)
 {
-    AbstractGraphicsHandle *handle = dynamic_cast<AbstractGraphicsHandle *>(item);
+    Handle *handle = dynamic_cast<Handle *>(item);
     Q_ASSERT(handle && handle->handleId() == 0);
 
     if (m_sizePolicy == ResizeToContentPolicy)
@@ -250,10 +250,10 @@ void GraphicsTextFrameItem::itemNotification(IGraphicsObservableItem *item)
     update();
 }
 
-SchItem *GraphicsTextFrameItem::clone()
+Item *TextFrameItem::clone()
 {
-    GraphicsTextFrameItem *item = new GraphicsTextFrameItem();
-    SchItem::cloneTo(item);
+    TextFrameItem *item = new TextFrameItem();
+    Item::cloneTo(item);
     item->setFont(font());
     item->setPlainText(toPlainText());
     item->setSizePolicy(sizePolicy());
@@ -264,12 +264,12 @@ SchItem *GraphicsTextFrameItem::clone()
     return item;
 }
 
-QVariant GraphicsTextFrameItem::itemChange(QGraphicsItem::GraphicsItemChange change,
+QVariant TextFrameItem::itemChange(QGraphicsItem::GraphicsItemChange change,
                                            const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged)
     {
-        for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+        for (Handle *handle : m_handleToId.keys())
         {
             handle->setVisible(isSelected());
         }

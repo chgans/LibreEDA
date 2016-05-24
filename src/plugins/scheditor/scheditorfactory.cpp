@@ -15,7 +15,7 @@ SchEditorFactory::SchEditorFactory(QObject *parent) :
 
 void SchEditorFactory::applySettings()
 {
-    SchEditorSettings settings;
+    Settings settings;
     settings.load(Core::settings());
     for (auto editor : m_editors)
     {
@@ -32,7 +32,7 @@ IEditor *SchEditorFactory::createEditor()
     {
         m_editors.removeOne(editor);
     });
-    SchEditorSettings settings;
+    Settings settings;
     settings.load(Core::settings());
     editor->applySettings(settings);
     return editor;

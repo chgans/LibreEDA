@@ -3,7 +3,7 @@
 
 #include <qtpropertybrowser/qttreepropertybrowser.h>
 
-class SchItem;
+class Item;
 class QtDoublePropertyManager;
 class QtBoolPropertyManager;
 class QtGroupPropertyManager;
@@ -15,10 +15,10 @@ public:
     explicit ItemPropertyEditor(QWidget *parent = nullptr);
     virtual ~ItemPropertyEditor();
 
-    const SchItem *item() const;
+    const Item *item() const;
 
 public slots:
-    void setItem(const SchItem *item);
+    void setItem(const Item *item);
 
 signals:
     void opacityChanged(qreal opacity);
@@ -54,7 +54,7 @@ private:
     QtProperty *m_xMirroredProperty;
     QtProperty *m_yMirroredProperty;
 
-    const SchItem *m_item;
+    const Item *m_item;
 };
 
 #endif // SCHITEMPROPERTYEDITOR_H

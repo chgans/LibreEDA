@@ -36,9 +36,9 @@ PlaceBezierTool::~PlaceBezierTool()
 
 }
 
-SchItem *PlaceBezierTool::beginInsert(const QPointF &pos)
+Item *PlaceBezierTool::beginInsert(const QPointF &pos)
 {
-    m_item = new GraphicsBezierItem();
+    m_item = new BezierItem();
     m_item->setPos(pos);
     m_item->setPen(m_penSettingsWidget->pen());
     return m_item;

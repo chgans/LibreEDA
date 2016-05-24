@@ -6,14 +6,14 @@
 #include <QIcon>
 #include <QKeySequence>
 
-class SchView;
-class SchItem;
+class View;
+class Item;
 class QAction;
 
 class SnapStrategy
 {
 public:
-    explicit SnapStrategy(SchView *view);
+    explicit SnapStrategy(View *view);
     virtual ~SnapStrategy();
 
     QString label() const;
@@ -26,13 +26,13 @@ public:
     virtual QPainterPath decoration() const;
     virtual bool snap(QPointF mousePos, qreal maxDistance);
 
-    QList<SchItem *> snappedItems() const;
+    QList<Item *> snappedItems() const;
     QPointF snappedPosition() const;
 
     bool isEnabled() const;
 
 protected:
-    SchView *view();
+    View *view();
 
     void setGroup(const QString &name);
     void setLabel(const QString &label);
@@ -42,14 +42,14 @@ protected:
     void updateAction();
 
     void setSnappedPosition(QPointF pos);
-    void setSnappedItems(const QList<SchItem *> &items);
+    void setSnappedItems(const QList<Item *> &items);
 
-    QList<SchItem *> itemsNearby(QPointF pos, qreal maxDistance);
-    QPair<SchItem *, QPointF> closestItemPoint(QPointF pos,
-                                               const QMultiMap<SchItem *, QPointF> &candidates);
+    QList<Item *> itemsNearby(QPointF pos, qreal maxDistance);
+    QPair<Item *, QPointF> closestItemPoint(QPointF pos,
+                                               const QMultiMap<Item *, QPointF> &candidates);
 
 private:
-    SchView *m_view;
+    View *m_view;
 
     QAction *m_action;
     QString m_group;
@@ -59,13 +59,13 @@ private:
     QKeySequence m_shortcut;
 
     QPointF m_snappedPosition;
-    QList<SchItem *> m_snappedItems;
+    QList<Item *> m_snappedItems;
 };
 
 class NoSnapStrategy: public SnapStrategy
 {
 public:
-    explicit NoSnapStrategy(SchView *view);
+    explicit NoSnapStrategy(View *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 };
@@ -73,7 +73,7 @@ public:
 class SnapToGridStrategy: public SnapStrategy
 {
 public:
-    explicit SnapToGridStrategy(SchView *view);
+    explicit SnapToGridStrategy(View *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 };
@@ -81,7 +81,7 @@ public:
 class SnapToItemHotSpotsStrategy:  public SnapStrategy
 {
 public:
-    explicit SnapToItemHotSpotsStrategy(SchView *view);
+    explicit SnapToItemHotSpotsStrategy(View *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 };
@@ -89,7 +89,7 @@ public:
 class SnapToItemEndPointStrategy: public SnapStrategy
 {
 public:
-    explicit SnapToItemEndPointStrategy(SchView *view);
+    explicit SnapToItemEndPointStrategy(View *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 };
@@ -97,7 +97,7 @@ public:
 class SnapToItemMidPointStrategy: public SnapStrategy
 {
 public:
-    explicit SnapToItemMidPointStrategy(SchView *view);
+    explicit SnapToItemMidPointStrategy(View *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 };
@@ -106,7 +106,7 @@ public:
 class SnapToItemShapeStrategy: public SnapStrategy
 {
 public:
-    explicit SnapToItemShapeStrategy(SchView *view);
+    explicit SnapToItemShapeStrategy(View *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 
@@ -116,7 +116,7 @@ public:
 class SnapToItemCenterStrategy: public SnapStrategy
 {
 public:
-    explicit SnapToItemCenterStrategy(SchView *view);
+    explicit SnapToItemCenterStrategy(View *view);
 
     bool snap(QPointF mousePos, qreal maxDistance);
 
@@ -130,7 +130,7 @@ class SnapManager: public QObject
     Q_OBJECT
 
 public:
-    explicit SnapManager(SchView *view);
+    explicit SnapManager(View *view);
     ~SnapManager();
 
     QList<QString> groups() const;
@@ -138,7 +138,7 @@ public:
 
     QPainterPath decoration() const;
     bool snap(QPointF mousePos, qreal maxDistance);
-    QList<SchItem *> snappedItems() const;
+    QList<Item *> snappedItems() const;
     QPointF snappedPosition() const;
     SnapStrategy *snappingStrategy() const;
 

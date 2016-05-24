@@ -2,24 +2,24 @@
 
 #include <QStyleOptionGraphicsItem>
 
-GraphicsCircleItem::GraphicsCircleItem(SchItem *parent):
-    SchItem(parent),
+CircleItem::CircleItem(Item *parent):
+    Item(parent),
     m_radius(0.0)
 {
     addRegularHandle(RadiusHandle, MoveHandleRole, DiamondedHandleShape);
 }
 
-GraphicsCircleItem::~GraphicsCircleItem()
+CircleItem::~CircleItem()
 {
 
 }
 
-qreal GraphicsCircleItem::radius() const
+qreal CircleItem::radius() const
 {
     return m_radius;
 }
 
-void GraphicsCircleItem::setRadius(qreal length)
+void CircleItem::setRadius(qreal length)
 {
     if (qFuzzyCompare(m_radius, length))
     {
@@ -38,44 +38,44 @@ void GraphicsCircleItem::setRadius(qreal length)
     emit radiusChanged();
 }
 
-SchItem *GraphicsCircleItem::clone()
+Item *CircleItem::clone()
 {
-    GraphicsCircleItem *item = new GraphicsCircleItem();
-    SchItem::cloneTo(item);
+    CircleItem *item = new CircleItem();
+    Item::cloneTo(item);
     item->setRadius(radius());
     return item;
 }
 
-void GraphicsCircleItem::itemNotification(IGraphicsObservableItem *item)
+void CircleItem::itemNotification(IObservableItem *item)
 {
-    AbstractGraphicsHandle *handle = static_cast<AbstractGraphicsHandle *>(item);
+    Handle *handle = static_cast<Handle *>(item);
 
     setRadius(qAbs(handle->pos().x()));
 }
 
-QList<QPointF> GraphicsCircleItem::endPoints() const
+QList<QPointF> CircleItem::endPoints() const
 {
     return QList<QPointF>();
 }
 
-QList<QPointF> GraphicsCircleItem::midPoints() const
+QList<QPointF> CircleItem::midPoints() const
 {
     return QList<QPointF>();
 }
 
-QList<QPointF> GraphicsCircleItem::centerPoints() const
+QList<QPointF> CircleItem::centerPoints() const
 {
     return QList<QPointF>() << QPointF(0, 0);
 }
 
-QList<QPointF> GraphicsCircleItem::nearestPoints(QPointF pos) const
+QList<QPointF> CircleItem::nearestPoints(QPointF pos) const
 {
     QLineF line(QPointF(0, 0), pos);
     line.setLength(m_radius);
     return QList<QPointF>() << line.p2();
 }
 
-QRectF GraphicsCircleItem::boundingRect() const
+QRectF CircleItem::boundingRect() const
 {
     if (m_boundingRect.isNull())
     {
@@ -94,14 +94,14 @@ QRectF GraphicsCircleItem::boundingRect() const
     return m_boundingRect;
 }
 
-QPainterPath GraphicsCircleItem::shape() const
+QPainterPath CircleItem::shape() const
 {
     QPainterPath path;
     path.addEllipse(QPointF(0, 0), m_radius, m_radius);
     return shapeFromPath(path, pen());
 }
 
-void GraphicsCircleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void CircleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                                QWidget *widget)
 {
     Q_UNUSED(widget);
@@ -117,12 +117,12 @@ void GraphicsCircleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     painter->drawEllipse(QPointF(0, 0), radius(), radius());
 }
 
-QVariant GraphicsCircleItem::itemChange(QGraphicsItem::GraphicsItemChange change,
+QVariant CircleItem::itemChange(QGraphicsItem::GraphicsItemChange change,
                                         const QVariant &value)
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged)
     {
-        for (AbstractGraphicsHandle *handle : m_handleToId.keys())
+        for (Handle *handle : m_handleToId.keys())
         {
             handle->setVisible(isSelected());
         }

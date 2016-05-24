@@ -51,9 +51,9 @@ void PlaceRectangleTool::cancel()
 {
 }
 
-SchItem *PlaceRectangleTool::beginInsert(const QPointF &pos)
+Item *PlaceRectangleTool::beginInsert(const QPointF &pos)
 {
-    m_item = new GraphicsRectItem();
+    m_item = new RectangleItem();
     m_item->setPos(pos);
     m_item->setRect(QRect());
     m_item->setPen(m_penSettingsWidget->pen());

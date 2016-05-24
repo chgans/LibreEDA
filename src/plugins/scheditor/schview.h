@@ -4,18 +4,18 @@
 #include <QGraphicsView>
 #include "palette.h"
 
-class SchScene;
+class Scene;
 class InteractiveTool;
-class SchItem;
-class AbstractGraphicsHandle;
+class Item;
+class Handle;
 class SnapManager;
 class GraphicsViewRuler;
 class Palette;
-class GraphicsCartesianGrid;
-class GraphicsGrid;
-class SchEditorSettings;
+class CartesianGrid;
+class Grid;
+class Settings;
 
-class SchView : public QGraphicsView
+class View : public QGraphicsView
 {
     Q_OBJECT
 
@@ -37,20 +37,20 @@ public:
     };
     Q_ENUM(OriginMark)
 
-    explicit SchView(QWidget *parent = nullptr);
-    ~SchView();
+    explicit View(QWidget *parent = nullptr);
+    ~View();
 
-    SchScene *scene() const;
-    void setScene(SchScene *scene);
+    Scene *scene() const;
+    void setScene(Scene *scene);
 
     InteractiveTool *tool();
     void setTool(InteractiveTool *tool);
 
-    SchItem *objectAt(const QPointF &pos) const;
-    AbstractGraphicsHandle *handleAt(const QPointF &pos) const;
+    Item *objectAt(const QPointF &pos) const;
+    Handle *handleAt(const QPointF &pos) const;
 
-    AbstractGraphicsHandle *handleUnderMouse() const;
-    SchItem *objectUnderMouse() const;
+    Handle *handleUnderMouse() const;
+    Item *objectUnderMouse() const;
     QPointF mousePosition() const;
     QPointF cursorPosition() const;
     QPointF originPosition() const;
@@ -64,7 +64,7 @@ public:
     const Palette *palette() const;
     QSizeF pixelSize() const;
 
-    const GraphicsGrid *grid() const;
+    const Grid *grid() const;
     SnapManager *snapManager();
 
     void zoomIn(QPointF pos, qreal factor);
@@ -97,7 +97,7 @@ public:
     OriginMark originMark() const;
 
 public slots:
-    void applySettings(const SchEditorSettings &settings);
+    void applySettings(const Settings &settings);
 
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
@@ -121,7 +121,7 @@ private:
     MouseCursor m_mouseCursor;
     OriginMark m_originMark;
 
-    GraphicsCartesianGrid *m_grid;
+    CartesianGrid *m_grid;
 
     QWidget *m_cornerWidget;
     GraphicsViewRuler *m_horizontalRuler;

@@ -4,7 +4,7 @@
 // See http://www.qcad.org/doc/qcad/2.2/reference/en/chapter14.html
 // for snap/constraint ideas
 
-GraphicsGrid::GraphicsGrid():
+Grid::Grid():
     m_priority(0),
     m_coarseMultiplier(5),
     m_fineLineStyle(Qt::SolidLine),
@@ -14,7 +14,7 @@ GraphicsGrid::GraphicsGrid():
 {
 }
 
-GraphicsGrid::GraphicsGrid(const GraphicsGrid &other):
+Grid::Grid(const Grid &other):
     m_label(other.m_label),
     m_priority(other.m_priority),
     m_origin(other.m_origin),
@@ -27,7 +27,7 @@ GraphicsGrid::GraphicsGrid(const GraphicsGrid &other):
 
 }
 
-GraphicsGrid::~GraphicsGrid()
+Grid::~Grid()
 {
 
 }

@@ -17,7 +17,7 @@ static const QString SolidFineGridLinesEnabledKey("SolidFineGridLinesEnabled");
 static const QString AntiAliasingEnabledKey("AntiAliasingEnabled");
 static const QString HardwareAccelerationEnabledKey("HardwareAccelerationEnabled");
 
-void SchEditorSettings::load(QSettings *settings)
+void Settings::load(QSettings *settings)
 {
     settings->beginGroup(AppearanceGroupKey);
     QString colorSchemeString = settings->value(ColorSchemeKey, QString("Dark")).toString();
@@ -46,7 +46,7 @@ void SchEditorSettings::load(QSettings *settings)
     settings->endGroup();
 }
 
-void SchEditorSettings::save(QSettings *settings) const
+void Settings::save(QSettings *settings) const
 {
     settings->beginGroup(AppearanceGroupKey);
     if (colorScheme == Palette::Dark)

@@ -3,7 +3,7 @@
 
 #include "item/schitem.h"
 
-class GraphicsEllipseItem : public SchItem
+class EllipseItem : public Item
 {
     Q_OBJECT
 
@@ -18,8 +18,8 @@ public:
         NbHandles
     };
 
-    explicit GraphicsEllipseItem(SchItem *parent = nullptr);
-    ~GraphicsEllipseItem();
+    explicit EllipseItem(Item *parent = nullptr);
+    ~EllipseItem();
 
     qreal xRadius() const;
     qreal yRadius() const;
@@ -46,7 +46,7 @@ public:
 
     // SchItem interface
 public:
-    virtual SchItem *clone();
+    virtual Item *clone();
 
     //virtual QList<QPointF> hotSpots() const;
     virtual QList<QPointF> endPoints() const;
@@ -60,7 +60,7 @@ protected:
 
     // IGraphicsItemObserver interface
 public:
-    virtual void itemNotification(IGraphicsObservableItem *item);
+    virtual void itemNotification(IObservableItem *item);
 };
 
 #endif // GRAPHICSELLIPSEITEM_H
