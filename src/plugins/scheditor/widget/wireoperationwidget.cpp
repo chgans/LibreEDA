@@ -1,7 +1,7 @@
 #include "widget/wireoperationwidget.h"
 #include "widget/coordinatewidget.h"
 #include "tool/placewiretool.h"
-#include "handle/abstractgraphicshandle.h"
+#include "handle/handle.h"
 
 #include <QDebug>
 #include <QVBoxLayout>

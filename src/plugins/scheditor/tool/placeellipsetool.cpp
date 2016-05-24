@@ -1,5 +1,5 @@
 #include "tool/placeellipsetool.h"
-#include "item/graphicsellipseitem.h"
+#include "item/ellipseitem.h"
 #include "command/placeitemcommand.h"
 
 #include "utils/widgets/pensettingswidget.h"

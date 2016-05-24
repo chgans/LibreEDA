@@ -1,8 +1,8 @@
 #include "tool/placementtool.h"
 
-#include "item/schitem.h"
-#include "schscene.h"
-#include "schview.h"
+#include "item/item.h"
+#include "scene.h"
+#include "view.h"
 
 #include <QMouseEvent>
 #include <QKeyEvent>

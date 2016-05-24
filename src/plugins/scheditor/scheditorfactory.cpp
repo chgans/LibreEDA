@@ -1,7 +1,7 @@
 #include "scheditorfactory.h"
 #include "scheditorconstants.h"
 #include "scheditor.h"
-#include "scheditorsettings.h"
+#include "settings.h"
 
 #include "core/core.h"
 

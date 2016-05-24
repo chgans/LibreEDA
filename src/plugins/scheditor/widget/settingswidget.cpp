@@ -1,10 +1,10 @@
 #include "core/core.h"
 #include "settingswidget.h"
 #include "ui_settingswidget.h"
-#include "schscene.h"
-#include "grid/graphicscartesiangrid.h"
+#include "scene.h"
+#include "grid/cartesiangrid.h"
 #include "palette.h"
-#include "scheditorsettings.h"
+#include "settings.h"
 
 #include <QScrollBar>
 #include <QOpenGLWidget>

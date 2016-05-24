@@ -1,5 +1,5 @@
 #include "tool/placearctool.h"
-#include "item/graphicsarcitem.h"
+#include "item/arcitem.h"
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
 

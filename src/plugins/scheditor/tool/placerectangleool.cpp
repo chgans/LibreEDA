@@ -1,8 +1,8 @@
 #include "tool/placerectangletool.h"
-#include "item/graphicsrectitem.h"
+#include "item/rectangleitem.h"
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
-#include "handle/abstractgraphicshandle.h"
+#include "handle/handle.h"
 #include "command/placeitemcommand.h"
 
 #include <QAction>

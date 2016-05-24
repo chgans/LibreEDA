@@ -1,8 +1,8 @@
 #include "tool/placepolylinetool.h"
-#include "item/graphicslineitem.h"
+#include "item/polylineitem.h"
 
 #include "utils/widgets/pensettingswidget.h"
-#include "handle/abstractgraphicshandle.h"
+#include "handle/handle.h"
 
 #include <QAction>
 

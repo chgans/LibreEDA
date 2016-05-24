@@ -1,5 +1,5 @@
 #include "tool/placecircletool.h"
-#include "item/graphicscircleitem.h"
+#include "item/circleitem.h"
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
 #include "command/placeitemcommand.h"

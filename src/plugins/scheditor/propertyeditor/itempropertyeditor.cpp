@@ -1,5 +1,5 @@
 #include "itempropertyeditor.h"
-#include "item/schitem.h"
+#include "item/item.h"
 
 // See https://github.com/qtproject/qttools/blob/dev/src/designer/src/
 // - lib/sdk/abstractpropertyeditor.h

@@ -1,6 +1,6 @@
 #include "cloneitemtool.h"
-#include "schscene.h"
-#include "item/schitem.h"
+#include "scene.h"
+#include "item/item.h"
 #include "command/placeitemcommand.h"
 
 #include <QMouseEvent>

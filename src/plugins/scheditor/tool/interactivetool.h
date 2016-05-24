@@ -1,7 +1,7 @@
 #ifndef INTERACTIVETOOL_H
 #define INTERACTIVETOOL_H
 
-#include "tool/schtool.h"
+#include "tool/tool.h"
 
 #include <QList>
 

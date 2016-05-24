@@ -1,9 +1,9 @@
 #include "tool/placewiretool.h"
-#include "item/graphicswireitem.h"
+#include "item/wireitem.h"
 
 #include "utils/widgets/pensettingswidget.h"
 #include "widget/wireoperationwidget.h"
-#include "handle/abstractgraphicshandle.h"
+#include "handle/handle.h"
 
 #include <QAction>
 

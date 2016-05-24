@@ -1,7 +1,7 @@
 #include "tool/placebeziertool.h"
-#include "item/graphicsbezieritem.h"
+#include "item/bezieritem.h"
 #include "utils/widgets/pensettingswidget.h"
-#include "handle/abstractgraphicshandle.h"
+#include "handle/handle.h"
 
 #include <QAction>
 

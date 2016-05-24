@@ -38,7 +38,7 @@
     </widget>
    </item>
    <item row="0" column="1" rowspan="5">
-    <widget class="SchView" name="graphicsView"/>
+    <widget class="View" name="graphicsView"/>
    </item>
    <item row="2" column="0">
     <spacer name="verticalSpacer">
@@ -62,7 +62,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="minimalGridSizeLabel">
         <property name="text">
-         <string>Minimal grid size (px)</string>
+         <string>&amp;Minimal grid size (px)</string>
         </property>
         <property name="buddy">
          <cstring>minimalGridSizeSpinBox</cstring>
@@ -151,7 +151,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="colorSchemeLabel">
         <property name="text">
-         <string>Color scheme</string>
+         <string>Co&amp;lor scheme</string>
         </property>
         <property name="buddy">
          <cstring>colorSchemeComboBox</cstring>
@@ -207,9 +207,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SchView</class>
+   <class>View</class>
    <extends>QGraphicsView</extends>
-   <header>schview.h</header>
+   <header>view.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

@@ -1,9 +1,9 @@
 #include "scheditor.h"
 #include "scheditordocument.h"
-#include "schview.h"
-#include "schscene.h"
-#include "item/schitem.h"
-#include "scheditorsettings.h"
+#include "view.h"
+#include "scene.h"
+#include "item/item.h"
+#include "settings.h"
 
 #include "tool/placebeziertool.h"
 #include "tool/selecttool.h"

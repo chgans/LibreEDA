@@ -1,5 +1,5 @@
 #include "tool/placepolygontool.h"
-#include "item/graphicspolygonitem.h"
+#include "item/polygonitem.h"
 #include "command/placeitemcommand.h"
 
 #include "utils/widgets/pensettingswidget.h"
