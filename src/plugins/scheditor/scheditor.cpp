@@ -12,7 +12,6 @@
 #include "tool/placecircletool.h"
 #include "tool/placeellipsetool.h"
 #include "tool/placepolygontool.h"
-#include "tool/placewiretool.h"
 #include "tool/placearctool.h"
 
 #include "command/placeitemcommand.h"
