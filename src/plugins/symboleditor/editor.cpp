@@ -1,9 +1,9 @@
 #include "editor.h"
 #include "document.h"
-#include "view.h"
-#include "scene.h"
+#include "view/view.h"
+#include "view/scene.h"
 #include "item/item.h"
-#include "settings.h"
+#include "settings/settings.h"
 
 #include "tool/placebeziertool.h"
 #include "tool/selecttool.h"

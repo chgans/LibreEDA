@@ -2,7 +2,7 @@
 
 #include <QtGlobal>
 #include <QSettings>
-#include "palette.h"
+#include "view/palette.h"
 
 namespace SymbolEditor
 {

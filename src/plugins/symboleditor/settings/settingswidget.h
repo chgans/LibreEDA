@@ -2,7 +2,7 @@
 
 #include <QWidget>
 #include <QMap>
-#include "palette.h"
+#include "view/palette.h"
 
 namespace SymbolEditor
 {

@@ -1,12 +1,12 @@
 #include "view.h"
 #include "scene.h"
+#include "palette.h"
+#include "rulerbarwidget.h"
 #include "item/item.h"
 #include "tool/interactivetool.h"
 #include "grid/cartesiangrid.h"
-#include "palette.h"
 #include "snap/positionsnapper.h"
-#include "widget/rulerbarwidget.h"
-#include "settings.h"
+#include "settings/settings.h"
 
 #include <QOpenGLWidget>
 #include <QMouseEvent>

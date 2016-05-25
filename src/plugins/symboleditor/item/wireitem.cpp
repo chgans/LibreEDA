@@ -1,6 +1,6 @@
 #include "item/wireitem.h"
 #include "handle/handle.h"
-#include "scene.h"
+#include "view/scene.h"
 
 #include <QGraphicsPathItem>
 

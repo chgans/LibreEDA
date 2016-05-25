@@ -1,5 +1,5 @@
 #include "cloneitemtool.h"
-#include "scene.h"
+#include "view/scene.h"
 #include "item/item.h"
 #include "command/placeitemcommand.h"
 

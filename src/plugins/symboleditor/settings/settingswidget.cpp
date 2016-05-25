@@ -1,9 +1,9 @@
 #include "core/core.h"
 #include "settingswidget.h"
 #include "ui_settingswidget.h"
-#include "scene.h"
+#include "view/scene.h"
+#include "view/palette.h"
 #include "grid/cartesiangrid.h"
-#include "palette.h"
 #include "settings.h"
 
 #include <QScrollBar>

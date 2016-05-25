@@ -1,6 +1,6 @@
 #include "plugin.h"
 #include "editorfactory.h"
-#include "appearancesettingspage.h"
+#include "settings/appearancesettingspage.h"
 
 // See Q_INIT_RESOURCE documentation for why this is done this way
 inline void SymbolEditor_InitialiseResources()

@@ -1,6 +1,6 @@
 #include "dragselecttool.h"
-#include "view.h"
-#include "scene.h"
+#include "view/view.h"
+#include "view/scene.h"
 
 #include <QRectF>
 #include <QRubberBand>

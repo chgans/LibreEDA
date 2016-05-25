@@ -1,6 +1,6 @@
 #include "snap/positionsnapper.h"
-#include "view.h"
-#include "scene.h"
+#include "view/view.h"
+#include "view/scene.h"
 #include "item/item.h"
 #include "grid/grid.h"
 

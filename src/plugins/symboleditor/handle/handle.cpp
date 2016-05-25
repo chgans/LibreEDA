@@ -1,6 +1,6 @@
 #include "item/item.h"
 #include "handle/handle.h"
-#include "palette.h"
+#include "view/palette.h"
 
 #include <QStyleOptionGraphicsItem>
 #include <QPainterPathStroker>

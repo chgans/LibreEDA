@@ -1,5 +1,5 @@
 #include "grid/grid.h"
-#include "palette.h"
+#include "view/palette.h"
 
 // See http://www.qcad.org/doc/qcad/2.2/reference/en/chapter14.html
 // for snap/constraint ideas

@@ -1,7 +1,7 @@
 #include "editorfactory.h"
 #include "constants.h"
 #include "editor.h"
-#include "settings.h"
+#include "settings/settings.h"
 
 #include "core/core.h"
 

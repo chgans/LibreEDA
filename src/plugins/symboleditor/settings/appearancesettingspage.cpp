@@ -1,5 +1,5 @@
 #include "appearancesettingspage.h"
-#include "widget/settingswidget.h"
+#include "settings/settingswidget.h"
 
 // TODO:
 //  - Add page configuring snap behaviour

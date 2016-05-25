@@ -209,7 +209,7 @@
   <customwidget>
    <class>SymbolEditor::View</class>
    <extends>QGraphicsView</extends>
-   <header>view.h</header>
+   <header>view/view.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
