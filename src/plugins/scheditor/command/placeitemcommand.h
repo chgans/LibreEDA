@@ -11,21 +11,21 @@
 namespace SymbolEditor
 {
 
-    class SchEditorDocument;
+    class Document;
 
     class UndoCommand: public QUndoCommand
     {
     public:
         UndoCommand(UndoCommand *parent = nullptr);
 
-        void setDocument(SchEditorDocument *document);
-        SchEditorDocument *document() const;
+        void setDocument(Document *document);
+        Document *document() const;
 
     protected:
         void warnItemNotFound(const QString command, quint64 id);
 
     private:
-        SchEditorDocument *m_document;
+        Document *m_document;
     };
 
     class PlacementCommand: public UndoCommand

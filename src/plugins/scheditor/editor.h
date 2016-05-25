@@ -2,7 +2,7 @@
 #define GRAPHICSEDITOR_H
 
 #include "core/editormanager/ieditor.h"
-#include "scheditordocument.h"
+#include "document.h"
 
 class QMainWindow;
 class QActionGroup;
@@ -22,12 +22,12 @@ namespace SymbolEditor
     class SnapManager;
     class Settings;
 
-    class SchEditor : public IEditor
+    class Editor : public IEditor
     {
         Q_OBJECT
     public:
-        explicit SchEditor(QObject *parent = nullptr);
-        ~SchEditor();
+        explicit Editor(QObject *parent = nullptr);
+        ~Editor();
 
         View *view() const;
         Scene *scene() const;
@@ -40,7 +40,7 @@ namespace SymbolEditor
         void applySettings(const Settings &settings);
 
     private:
-        SchEditorDocument *m_document = nullptr;
+        Document *m_document = nullptr;
         SnapManager *m_snapManager = nullptr;
         QUndoStack *m_undoStack;
 

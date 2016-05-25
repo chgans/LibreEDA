@@ -2,7 +2,7 @@
 #define GRAPHICSSCENE_H
 
 #include <QGraphicsScene>
-#include "scheditordocument.h"
+#include "document.h"
 
 namespace SymbolEditor
 {
@@ -22,8 +22,8 @@ namespace SymbolEditor
 
     public slots:
         void applySettings(const Settings &settings);
-        void addDocumentItem(quint64 id, const SchEditorDocument::Item *item);
-        void updateDocumentItem(quint64 id, const SchEditorDocument::Item *item);
+        void addDocumentItem(quint64 id, const Document::Item *item);
+        void updateDocumentItem(quint64 id, const Document::Item *item);
         void removeDocumentItem(quint64 id);
 
     private:

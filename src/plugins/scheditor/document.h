@@ -9,15 +9,14 @@
 
 namespace SymbolEditor
 {
-    class SchCommand;
 
     // TODO: investigate passing item by const reference and implement cow on item's data?
-    class SchEditorDocument : public IDocument
+    class Document : public IDocument
     {
         Q_OBJECT
     public:
         typedef xdl::symbol::Item Item;
-        explicit SchEditorDocument(QObject *parent = nullptr);
+        explicit Document(QObject *parent = nullptr);
 
         bool load(QString *errorString, const QString &fileName);
 

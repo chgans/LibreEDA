@@ -5,13 +5,13 @@
 
 namespace SymbolEditor
 {
-    class SchEditor;
+    class Editor;
 
-    class SchEditorFactory : public IEditorFactory
+    class EditorFactory : public IEditorFactory
     {
         Q_OBJECT
     public:
-        explicit SchEditorFactory(QObject *parent = nullptr);
+        explicit EditorFactory(QObject *parent = nullptr);
 
     signals:
 
@@ -19,7 +19,7 @@ namespace SymbolEditor
         void applySettings();
 
     private:
-        QList<SchEditor *> m_editors;
+        QList<Editor *> m_editors;
 
         // IEditorFactory interface
     public:

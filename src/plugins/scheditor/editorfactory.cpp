@@ -1,13 +1,13 @@
-#include "scheditorfactory.h"
-#include "scheditorconstants.h"
-#include "scheditor.h"
+#include "editorfactory.h"
+#include "constants.h"
+#include "editor.h"
 #include "settings.h"
 
 #include "core/core.h"
 
 using namespace SymbolEditor;
 
-SchEditorFactory::SchEditorFactory(QObject *parent) :
+EditorFactory::EditorFactory(QObject *parent) :
     IEditorFactory(parent)
 {
     setId(SCHEDITOR_ID);
@@ -15,7 +15,7 @@ SchEditorFactory::SchEditorFactory(QObject *parent) :
     setDisplayName("SCH editor");
 }
 
-void SchEditorFactory::applySettings()
+void EditorFactory::applySettings()
 {
     Settings settings;
     settings.load(Core::settings());
@@ -25,9 +25,9 @@ void SchEditorFactory::applySettings()
     }
 }
 
-IEditor *SchEditorFactory::createEditor()
+IEditor *EditorFactory::createEditor()
 {
-    auto editor = new SchEditor();
+    auto editor = new Editor();
     m_editors.append(editor);
     connect(editor, &QObject::destroyed,
             this, [this, editor](QObject *)

@@ -8,12 +8,12 @@ namespace SymbolEditor
 
     class SettingsWidget;
 
-    class SchSettingsPage : public ISettingsPage
+    class AppearanceSettingsPage : public ISettingsPage
     {
         Q_OBJECT
 
     public:
-        explicit SchSettingsPage(QObject *parent = nullptr);
+        explicit AppearanceSettingsPage(QObject *parent = nullptr);
 
     signals:
         void settingsChanged();

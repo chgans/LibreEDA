@@ -37,7 +37,7 @@ void Scene::applySettings(const Settings &settings)
     Q_UNUSED(settings);
 }
 
-void Scene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
+void Scene::addDocumentItem(quint64 id, const Document::Item *item)
 {
     switch (item->type())
     {
@@ -123,7 +123,7 @@ void Scene::addDocumentItem(quint64 id, const SchEditorDocument::Item *item)
     }
 }
 
-void Scene::updateDocumentItem(quint64 id, const SchEditorDocument::Item *item)
+void Scene::updateDocumentItem(quint64 id, const Document::Item *item)
 {
     if (!m_itemMap.contains(id))
     {

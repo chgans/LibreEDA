@@ -1,4 +1,4 @@
-#include "schsettingspage.h"
+#include "appearancesettingspage.h"
 #include "widget/settingswidget.h"
 
 // TODO:
@@ -8,7 +8,7 @@
 
 using namespace SymbolEditor;
 
-SchSettingsPage::SchSettingsPage(QObject *parent):
+AppearanceSettingsPage::AppearanceSettingsPage(QObject *parent):
     ISettingsPage(parent), m_widget(nullptr)
 {
     setPageName("Appearance");
@@ -16,20 +16,20 @@ SchSettingsPage::SchSettingsPage(QObject *parent):
     setCategoryIcon(QIcon(":/icons/sch.png"));
 }
 
-QWidget *SchSettingsPage::widget()
+QWidget *AppearanceSettingsPage::widget()
 {
     m_widget = new SettingsWidget;
     m_widget->loadSettings();
     return m_widget;
 }
 
-void SchSettingsPage::apply()
+void AppearanceSettingsPage::apply()
 {
     m_widget->saveSettings();
     emit settingsChanged();
 }
 
-void SchSettingsPage::finish()
+void AppearanceSettingsPage::finish()
 {
     //
 }

@@ -1,5 +1,5 @@
 #include "placeitemcommand.h"
-#include "scheditordocument.h"
+#include "document.h"
 #include <QLoggingCategory>
 
 // TODO: Private NS?
@@ -14,12 +14,12 @@ UndoCommand::UndoCommand(UndoCommand *parent):
 
 }
 
-void UndoCommand::setDocument(SchEditorDocument *document)
+void UndoCommand::setDocument(Document *document)
 {
     m_document = document;
 }
 
-SchEditorDocument *UndoCommand::document() const
+Document *UndoCommand::document() const
 {
     return m_document;
 }

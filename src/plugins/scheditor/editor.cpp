@@ -1,5 +1,5 @@
-#include "scheditor.h"
-#include "scheditordocument.h"
+#include "editor.h"
+#include "document.h"
 #include "view.h"
 #include "scene.h"
 #include "item/item.h"
@@ -34,7 +34,7 @@
 
 using namespace SymbolEditor;
 
-SchEditor::SchEditor(QObject *parent) :
+Editor::Editor(QObject *parent) :
     IEditor(parent),
     m_undoStack(new QUndoStack)
 {
@@ -48,7 +48,7 @@ SchEditor::SchEditor(QObject *parent) :
     addPathPointTools();
 }
 
-SchEditor::~SchEditor()
+Editor::~Editor()
 {
     qDeleteAll(m_pathPointToolBar->actions());
     qDeleteAll(m_snapToolBar->actions());
@@ -60,20 +60,20 @@ SchEditor::~SchEditor()
     delete m_document;
 }
 
-void SchEditor::addView()
+void Editor::addView()
 {
     m_view = new View();
     m_view->setScene(m_scene);
     m_view->fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
-void SchEditor::addScene()
+void Editor::addScene()
 {
     m_scene = new Scene(this);
     m_scene->setSceneRect(0, 0, 297, 210);
 }
 
-void SchEditor::applySettings(const Settings &settings)
+void Editor::applySettings(const Settings &settings)
 {
     m_scene->applySettings(settings);
     m_view->applySettings(settings);
@@ -82,13 +82,13 @@ void SchEditor::applySettings(const Settings &settings)
         tool->applySettings(settings);
     }
     // TODO: other tools
-    // TODO: snap manager    
+    // TODO: snap manager
     m_taskDockWidget->applySettings(settings);
 }
 
-bool SchEditor::open(QString *errorString, const QString &fileName)
+bool Editor::open(QString *errorString, const QString &fileName)
 {
-    m_document = new SchEditorDocument();
+    m_document = new Document();
     m_document->setFilePath(fileName);
     QFileInfo fileInfo(fileName);
     m_document->setDisplayName(fileInfo.baseName());
@@ -104,11 +104,11 @@ bool SchEditor::open(QString *errorString, const QString &fileName)
         m_scene->addDocumentItem(id, m_document->drawingItem(id));
     }
 
-    connect(m_document, &SchEditorDocument::drawingItemAdded,
+    connect(m_document, &Document::drawingItemAdded,
             m_scene, &Scene::addDocumentItem);
-    connect(m_document, &SchEditorDocument::drawingItemChanged,
+    connect(m_document, &Document::drawingItemChanged,
             m_scene, &Scene::updateDocumentItem);
-    connect(m_document, &SchEditorDocument::drawingItemRemoved,
+    connect(m_document, &Document::drawingItemRemoved,
             m_scene, &Scene::removeDocumentItem);
 
     m_undoDockWidget->setStack(m_undoStack);
@@ -116,22 +116,22 @@ bool SchEditor::open(QString *errorString, const QString &fileName)
     return true;
 }
 
-IDocument *SchEditor::document() const
+IDocument *Editor::document() const
 {
     return m_document;
 }
 
-QIcon SchEditor::icon() const
+QIcon Editor::icon() const
 {
     return QIcon(":/icons/sch.png");
 }
 
-QString SchEditor::displayName() const
+QString Editor::displayName() const
 {
     return m_document->displayName();
 }
 
-void SchEditor::activate(QMainWindow *win)
+void Editor::activate(QMainWindow *win)
 {
     win->addToolBar(m_interactiveToolBar);
     m_interactiveToolBar->show();
@@ -148,7 +148,7 @@ void SchEditor::activate(QMainWindow *win)
     win->tabifyDockWidget(m_taskDockWidget, m_undoDockWidget);
 }
 
-void SchEditor::desactivate(QMainWindow *win)
+void Editor::desactivate(QMainWindow *win)
 {
     win->removeDockWidget(m_undoDockWidget);
     win->removeDockWidget(m_taskDockWidget);
@@ -158,7 +158,7 @@ void SchEditor::desactivate(QMainWindow *win)
     win->removeToolBar(m_interactiveToolBar);
 }
 
-void SchEditor::addInteractiveTools()
+void Editor::addInteractiveTools()
 {
     m_selectTool = new SelectTool(this);
     m_interactiveTools << m_selectTool;
@@ -204,7 +204,7 @@ void SchEditor::addInteractiveTools()
     setInteractiveTool(m_selectTool);
 }
 
-void SchEditor::setInteractiveTool(InteractiveTool *tool)
+void Editor::setInteractiveTool(InteractiveTool *tool)
 {
     if (m_interactiveTool != nullptr)
     {
@@ -226,7 +226,7 @@ void SchEditor::setInteractiveTool(InteractiveTool *tool)
     }
 }
 
-void SchEditor::addSnapTools()
+void Editor::addSnapTools()
 {
     m_snapManager = m_view->snapManager(); //new SnapManager(m_view);
     m_snapToolBar = new QToolBar();
@@ -239,18 +239,18 @@ void SchEditor::addSnapTools()
     return;
 }
 
-void SchEditor::addPathPointTools()
+void Editor::addPathPointTools()
 {
     m_pathPointToolBar = new QToolBar();
 }
 
 // TODO: group/ungroup. send to back. front, raise, lower. align and distribute.
-void SchEditor::addArrangeTools()
+void Editor::addArrangeTools()
 {
     m_arrangeToolBar = new QToolBar();
 }
 
-void SchEditor::addDockWidgets()
+void Editor::addDockWidgets()
 {
     m_taskDockWidget = new TaskDockWidget();
     m_undoDockWidget = new UndoDockWidget();
