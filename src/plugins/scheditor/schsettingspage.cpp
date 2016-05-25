@@ -1,6 +1,11 @@
 #include "schsettingspage.h"
 #include "widget/settingswidget.h"
 
+// TODO:
+//  - Add page configuring snap behaviour
+//  - Add page for item and tool 'task widget' (property editors)
+//    - Allow to choose b/w QtAbstractPropertyBrowser (button, group box, tree)
+
 SchSettingsPage::SchSettingsPage(QObject *parent):
     ISettingsPage(parent), m_widget(nullptr)
 {
