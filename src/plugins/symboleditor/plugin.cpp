@@ -5,7 +5,7 @@
 // See Q_INIT_RESOURCE documentation for why this is done this way
 inline void SymbolEditor_InitialiseResources()
 {
-    Q_INIT_RESOURCE(scheditor);
+    Q_INIT_RESOURCE(symboleditor);
 }
 
 using namespace SymbolEditor;

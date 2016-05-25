@@ -1,23 +1,28 @@
 #pragma once
 
-#include "scheditor/tool/interactivetool.h"
+#include "tool/interactivetool.h"
 
 #include <QPointF>
-
-class QRubberBand;
 
 namespace SymbolEditor
 {
 
-    class DragSelectTool: public InteractiveTool
+    class Item;
+
+    class CloneItemTool : public InteractiveTool
     {
     public:
-        DragSelectTool(QObject *parent = nullptr);
+        CloneItemTool(QObject *parent = nullptr);
+
+    protected:
+        Item *cloneItem(Item *item);
+        QList<Item *> cloneItems(QList<Item *> items);
 
     private:
+        QList<Item *> m_items;
+        QList<Item *> m_clonedItems;
         QPointF m_pressPosition;
         QPointF m_lastPosition;
-        QRubberBand *m_rubberBand;
 
         // InteractiveTool interface
     public:

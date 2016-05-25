@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scheditor/dock/dockwidget.h"
+#include "dock/dockwidget.h"
 
 namespace SymbolEditor
 {

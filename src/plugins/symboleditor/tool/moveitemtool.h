@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scheditor/tool/interactivetool.h"
+#include "tool/interactivetool.h"
 
 #include <QPointF>
 

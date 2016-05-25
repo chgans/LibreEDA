@@ -6,7 +6,7 @@ Project {
         "filesystemnavigationview",
         "logviewer",
         "pcbeditor",
-        "scheditor",
+        "symboleditor",
         "simpletexteditor",
     ].concat(project.additionalPlugins)
 }

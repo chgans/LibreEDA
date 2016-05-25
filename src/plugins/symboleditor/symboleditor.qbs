@@ -1,8 +1,8 @@
 import qbs 1.0
 
 LedaPlugin {
-    name: "SchEditor"
-    
+    name: "SymbolEditor"
+
     Depends { name: "Qt"; submodules: ["core", "gui", "widgets", "opengl", "xml"] }
     Depends { name: "Utils" }
     Depends { name: "Core" }
@@ -77,11 +77,11 @@ LedaPlugin {
         "propertyeditor/penpropertymanager.h",
         "scene.cpp",
         "scene.h",
-        "scheditor.qmodel",
         "settings.cpp",
         "settings.h",
         "snap/positionsnapper.cpp",
         "snap/positionsnapper.h",
+        "symboleditor.qmodel",
         "tool/cloneitemtool.cpp",
         "tool/cloneitemtool.h",
         "tool/dragselecttool.cpp",
@@ -121,6 +121,6 @@ LedaPlugin {
         "widget/settingswidget.ui",
         "palette.h",
         "palette.cpp",
-        "scheditor.qrc",
+        "symboleditor.qrc",
     ]
 }

@@ -11,7 +11,7 @@ namespace SymbolEditor
     class Plugin : public IPlugin
     {
         Q_OBJECT
-        Q_PLUGIN_METADATA(IID "org.libre-eda.leda.plugin" FILE "SchEditor.json")
+        Q_PLUGIN_METADATA(IID "org.libre-eda.leda.plugin" FILE "SymbolEditor.json")
 
     public:
         explicit Plugin(QObject *parent = nullptr);
