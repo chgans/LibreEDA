@@ -5,6 +5,8 @@
 
 #include <QGraphicsTransform>
 
+using namespace SymbolEditor;
+
 Item::Item(Item *parent):
     QGraphicsObject(parent)
 {

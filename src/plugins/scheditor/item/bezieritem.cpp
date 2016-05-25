@@ -18,6 +18,9 @@ Q_LOGGING_CATEGORY(GraphicsBezierItemLog, "graphics.bezier.item")
  *  - Add a beginMove/endMove, while moving we don't have to recompute shape
  */
 
+using namespace SymbolEditor;
+
+
 BezierItem::BezierItem(Item *parent):
     Item(parent)
 {

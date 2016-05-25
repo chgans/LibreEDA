@@ -10,117 +10,122 @@
 
 class QPainter;
 
-class Grid
+namespace SymbolEditor
 {
-public:
 
-    explicit Grid();
-    explicit Grid(const Grid &other);
-    virtual ~Grid();
+    class Grid
+    {
+    public:
 
-    QString label() const
-    {
-        return m_label;
-    }
-    void setLabel(const QString &label)
-    {
-        m_label = label;
-    }
+        explicit Grid();
+        explicit Grid(const Grid &other);
+        virtual ~Grid();
 
-    virtual QString typeName() const = 0;
-    virtual QString typeId() const = 0; // FIXME: see Factory.typeId()
-    virtual QString description() const = 0;
+        QString label() const
+        {
+            return m_label;
+        }
+        void setLabel(const QString &label)
+        {
+            m_label = label;
+        }
 
-    virtual Grid *clone() const = 0;
+        virtual QString typeName() const = 0;
+        virtual QString typeId() const = 0; // FIXME: see Factory.typeId()
+        virtual QString description() const = 0;
 
-    virtual void draw(const QSizeF &pixelPerMm, QPainter *painter, const QRectF &rect) const = 0;
-    virtual QRectF rect() const = 0;
-    virtual QPainterPath shape(const QSizeF &pixelPerMm) const = 0;
+        virtual Grid *clone() const = 0;
 
-    virtual QPointF snap(const QSizeF &pixelPerMm, QPointF point) const = 0;
+        virtual void draw(const QSizeF &pixelPerMm, QPainter *painter, const QRectF &rect) const = 0;
+        virtual QRectF rect() const = 0;
+        virtual QPainterPath shape(const QSizeF &pixelPerMm) const = 0;
 
-    int priority() const
-    {
-        return m_priority;
-    }
-    void setPriority(int prio)
-    {
-        m_priority = prio;
-    }
+        virtual QPointF snap(const QSizeF &pixelPerMm, QPointF point) const = 0;
 
-    QPointF origin() const
-    {
-        return m_origin;    // Why is this needed?
-    }
-    void setOrigin(QPointF p)
-    {
-        m_origin = p;
-    }
+        int priority() const
+        {
+            return m_priority;
+        }
+        void setPriority(int prio)
+        {
+            m_priority = prio;
+        }
 
-    int minimalFeatureSize() const
-    {
-        return m_minimalFeatureSize;
-    }
-    void setMinimalFeatureSize(int pixels)
-    {
-        m_minimalFeatureSize = pixels;
-    }
+        QPointF origin() const
+        {
+            return m_origin;    // Why is this needed?
+        }
+        void setOrigin(QPointF p)
+        {
+            m_origin = p;
+        }
 
-    qreal coarseMultiplier() const
-    {
-        return m_coarseMultiplier;
-    }
-    void setCoarseMultiplier(qreal m)
-    {
-        m_coarseMultiplier = m;
-    }
+        int minimalFeatureSize() const
+        {
+            return m_minimalFeatureSize;
+        }
+        void setMinimalFeatureSize(int pixels)
+        {
+            m_minimalFeatureSize = pixels;
+        }
 
-    Qt::PenStyle fineLineStyle() const
-    {
-        return m_fineLineStyle;
-    }
-    void setFineLineStyle(Qt::PenStyle style)
-    {
-        m_fineLineStyle = style;
-    }
+        qreal coarseMultiplier() const
+        {
+            return m_coarseMultiplier;
+        }
+        void setCoarseMultiplier(qreal m)
+        {
+            m_coarseMultiplier = m;
+        }
 
-    QColor fineLineColor() const
-    {
-        return m_fineLineColor;
-    }
-    void setFineLineColor(QColor color)
-    {
-        m_fineLineColor = color;
-    }
+        Qt::PenStyle fineLineStyle() const
+        {
+            return m_fineLineStyle;
+        }
+        void setFineLineStyle(Qt::PenStyle style)
+        {
+            m_fineLineStyle = style;
+        }
 
-    Qt::PenStyle coarseLineStyle() const
-    {
-        return m_coarseLineStyle;
-    }
-    void setCoarseLineStyle(Qt::PenStyle style)
-    {
-        m_coarseLineStyle = style;
-    }
+        QColor fineLineColor() const
+        {
+            return m_fineLineColor;
+        }
+        void setFineLineColor(QColor color)
+        {
+            m_fineLineColor = color;
+        }
 
-    QColor coarseLineColor() const
-    {
-        return m_coarseLineColor;
-    }
-    void setCoarseLineColor(QColor color)
-    {
-        m_coarseLineColor = color;
-    }
+        Qt::PenStyle coarseLineStyle() const
+        {
+            return m_coarseLineStyle;
+        }
+        void setCoarseLineStyle(Qt::PenStyle style)
+        {
+            m_coarseLineStyle = style;
+        }
 
-private:
-    QString m_label;
-    int m_priority;
-    QPointF m_origin;
-    int m_minimalFeatureSize;
-    qreal m_coarseMultiplier;
-    Qt::PenStyle m_fineLineStyle;
-    QColor m_fineLineColor;
-    Qt::PenStyle m_coarseLineStyle;
-    QColor m_coarseLineColor;
-};
+        QColor coarseLineColor() const
+        {
+            return m_coarseLineColor;
+        }
+        void setCoarseLineColor(QColor color)
+        {
+            m_coarseLineColor = color;
+        }
+
+    private:
+        QString m_label;
+        int m_priority;
+        QPointF m_origin;
+        int m_minimalFeatureSize;
+        qreal m_coarseMultiplier;
+        Qt::PenStyle m_fineLineStyle;
+        QColor m_fineLineColor;
+        Qt::PenStyle m_coarseLineStyle;
+        QColor m_coarseLineColor;
+    };
+
+}
 
 #endif // IGRID_H

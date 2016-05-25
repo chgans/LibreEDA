@@ -3,34 +3,40 @@
 
 #include "tool/placementtool.h"
 
-class ArcItem;
+class QAction;
+
 class PenSettingsWidget;
 class BrushSettingsWidget;
 
-class QAction;
-
-class PlaceArcTool : public PlacementTool
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-public:
-    explicit PlaceArcTool(QObject *parent = nullptr);
-    ~PlaceArcTool();
+    class ArcItem;
 
-private:
-    ArcItem *m_item;
-    PenSettingsWidget *m_penSettingsWidget;
-    BrushSettingsWidget *m_brushSettingsWidget;
+    class PlaceArcTool : public PlacementTool
+    {
+        Q_OBJECT
 
-    // PlacementTool interface
-public:
-    virtual Item *beginInsert(const QPointF &pos);
-    virtual void addPoint(int idx, const QPointF &pos);
-    virtual void freezePoint(int idx, const QPointF &pos);
-    virtual bool removePoint(int idx, const QPointF &pos);
-    virtual void movePoint(int idx, const QPointF &pos);
-    virtual void endInsert(const QPointF &pos);
-    virtual void cancelInsert();
-};
+    public:
+        explicit PlaceArcTool(QObject *parent = nullptr);
+        ~PlaceArcTool();
+
+    private:
+        ArcItem *m_item;
+        PenSettingsWidget *m_penSettingsWidget;
+        BrushSettingsWidget *m_brushSettingsWidget;
+
+        // PlacementTool interface
+    public:
+        virtual Item *beginInsert(const QPointF &pos);
+        virtual void addPoint(int idx, const QPointF &pos);
+        virtual void freezePoint(int idx, const QPointF &pos);
+        virtual bool removePoint(int idx, const QPointF &pos);
+        virtual void movePoint(int idx, const QPointF &pos);
+        virtual void endInsert(const QPointF &pos);
+        virtual void cancelInsert();
+    };
+
+}
 
 #endif // PLACEARCTOOL_H

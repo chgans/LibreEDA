@@ -6,6 +6,8 @@
 //  - Add page for item and tool 'task widget' (property editors)
 //    - Allow to choose b/w QtAbstractPropertyBrowser (button, group box, tree)
 
+using namespace SymbolEditor;
+
 SchSettingsPage::SchSettingsPage(QObject *parent):
     ISettingsPage(parent), m_widget(nullptr)
 {

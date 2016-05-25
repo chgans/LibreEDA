@@ -2,43 +2,50 @@
 #define PLACERECTANGLETOOL_H
 
 #include "tool/placementtool.h"
+
 #include <QRectF>
 
-class RectangleItem;
 class PenSettingsWidget;
 class BrushSettingsWidget;
 
-class PlaceRectangleTool : public PlacementTool
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-public:
-    explicit PlaceRectangleTool(QObject *parent = nullptr);
-    ~PlaceRectangleTool();
+    class RectangleItem;
 
-protected:
-    void setP1(const QPointF &pos);
-    void setP2(const QPointF &pos);
+    class PlaceRectangleTool : public PlacementTool
+    {
+        Q_OBJECT
 
-private:
-    RectangleItem *m_item;
-    PenSettingsWidget *m_penSettingsWidget;
-    BrushSettingsWidget *m_brushSettingsWidget;
-    QRectF m_rect;
+    public:
+        explicit PlaceRectangleTool(QObject *parent = nullptr);
+        ~PlaceRectangleTool();
 
-    // GraphicsTool interface
-public slots:
-    virtual void cancel();
+    protected:
+        void setP1(const QPointF &pos);
+        void setP2(const QPointF &pos);
 
-    // PlacementTool interface
-public:
-    Item *beginInsert(const QPointF &pos);
-    void addPoint(int idx, const QPointF &pos);
-    void freezePoint(int idx, const QPointF &pos);
-    bool removePoint(int idx, const QPointF &pos);
-    void movePoint(int idx, const QPointF &pos);
-    void endInsert(const QPointF &pos);
-    void cancelInsert();
-};
+    private:
+        RectangleItem *m_item;
+        PenSettingsWidget *m_penSettingsWidget;
+        BrushSettingsWidget *m_brushSettingsWidget;
+        QRectF m_rect;
+
+        // GraphicsTool interface
+    public slots:
+        virtual void cancel();
+
+        // PlacementTool interface
+    public:
+        Item *beginInsert(const QPointF &pos);
+        void addPoint(int idx, const QPointF &pos);
+        void freezePoint(int idx, const QPointF &pos);
+        bool removePoint(int idx, const QPointF &pos);
+        void movePoint(int idx, const QPointF &pos);
+        void endInsert(const QPointF &pos);
+        void cancelInsert();
+    };
+
+}
 
 #endif // PLACERECTANGLETOOL_H

@@ -5,6 +5,8 @@
 
 #include <QAction>
 
+using namespace SymbolEditor;
+
 PlaceArcTool::PlaceArcTool(QObject *parent):
     PlacementTool(parent)
 {

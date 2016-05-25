@@ -14,6 +14,8 @@
 Q_DECLARE_LOGGING_CATEGORY(LogPropEditor2)
 Q_LOGGING_CATEGORY(LogPropEditor2, "leda.schematics.propeditor")
 
+using namespace SymbolEditor;
+
 ObjectPropertyEditor::ObjectPropertyEditor(QWidget *parent):
     QtTreePropertyBrowser(parent),
     m_object(nullptr), m_populatingBrowser(false)

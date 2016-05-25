@@ -3,25 +3,28 @@
 
 #include "core/editormanager/ieditorfactory.h"
 
-class SchEditor;
-
-class SchEditorFactory : public IEditorFactory
+namespace SymbolEditor
 {
-    Q_OBJECT
-public:
-    explicit SchEditorFactory(QObject *parent = nullptr);
+    class SchEditor;
 
-signals:
+    class SchEditorFactory : public IEditorFactory
+    {
+        Q_OBJECT
+    public:
+        explicit SchEditorFactory(QObject *parent = nullptr);
 
-public slots:
-    void applySettings();
+    signals:
 
-private:
-    QList<SchEditor *> m_editors;
+    public slots:
+        void applySettings();
 
-    // IEditorFactory interface
-public:
-    virtual IEditor *createEditor();
-};
+    private:
+        QList<SchEditor *> m_editors;
+
+        // IEditorFactory interface
+    public:
+        virtual IEditor *createEditor();
+    };
+}
 
 #endif // GRAPHICSEDITORFACTORY_H

@@ -1,5 +1,7 @@
 #include "item/polygonitem.h"
 
+using namespace SymbolEditor;
+
 PolygonItem::PolygonItem(Item *parent):
     Item(parent),
     m_fillRule(Qt::OddEvenFill)

@@ -6,20 +6,25 @@
 class QUndoView;
 class QUndoStack;
 
-class UndoDockWidget : public DockWidget
+namespace SymbolEditor
 {
-public:
-    UndoDockWidget(QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
-public slots:
-    void setStack(QUndoStack *stack);
+    class UndoDockWidget : public DockWidget
+    {
+    public:
+        UndoDockWidget(QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
-private:
-    QUndoView *m_view;
+    public slots:
+        void setStack(QUndoStack *stack);
 
-    // DockWidget interface
-public slots:
-    void applySettings(const Settings &settings);
-};
+    private:
+        QUndoView *m_view;
+
+        // DockWidget interface
+    public slots:
+        void applySettings(const Settings &settings);
+    };
+
+}
 
 #endif // UNDODOCKWIDGET_H

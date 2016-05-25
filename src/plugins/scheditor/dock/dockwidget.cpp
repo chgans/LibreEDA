@@ -1,5 +1,7 @@
 #include "dockwidget.h"
 
+using namespace SymbolEditor;
+
 DockWidget::DockWidget(QWidget *parent, Qt::WindowFlags flags):
     QDockWidget(parent, flags)
 {

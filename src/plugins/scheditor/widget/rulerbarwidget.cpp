@@ -9,6 +9,8 @@
 // https://kernelcoder.wordpress.com/2010/08/25/how-to-insert-ruler-scale-type-widget-into-a-qabstractscrollarea-type-widget/
 // http://stackoverflow.com/questions/10027008/separate-layers-like-feature-on-qgraphicsview
 
+using namespace SymbolEditor;
+
 const int RulerBarWidget::BREADTH = 23;
 
 RulerBarWidget::RulerBarWidget(RulerBarWidget::Alignment alignment, QWidget *parent) :

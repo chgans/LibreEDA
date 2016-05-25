@@ -3,28 +3,33 @@
 
 #include <QList>
 
-class IItemObserver;
-
-class IObservableItem
+namespace SymbolEditor
 {
-public:
-    IObservableItem();
-    virtual ~IObservableItem();
 
-    void addItemObserver(IItemObserver *observer);
-    void removeItemObserver(IItemObserver *observer);
+    class IItemObserver;
 
-    QList<IItemObserver *> itemObservers() const;
+    class IObservableItem
+    {
+    public:
+        IObservableItem();
+        virtual ~IObservableItem();
 
-protected:
-    void notifyObservers();
+        void addItemObserver(IItemObserver *observer);
+        void removeItemObserver(IItemObserver *observer);
 
-private:
-    QList<IItemObserver *> m_observers;
-    bool m_transactionInProgress;
-    void beginItemObserverTransaction();
-    void endItemObserverTransaction();
-    friend class IItemObserver;
-};
+        QList<IItemObserver *> itemObservers() const;
+
+    protected:
+        void notifyObservers();
+
+    private:
+        QList<IItemObserver *> m_observers;
+        bool m_transactionInProgress;
+        void beginItemObserverTransaction();
+        void endItemObserverTransaction();
+        friend class IItemObserver;
+    };
+
+}
 
 #endif // IGRAPHICSOBSERVABLEITEM_H

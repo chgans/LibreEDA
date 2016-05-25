@@ -3,45 +3,51 @@
 
 #include <QWidget>
 
-class RulerBarWidget : public QWidget
+namespace SymbolEditor
 {
-    Q_OBJECT
-    Q_ENUMS(Alignment)
 
-public:
-    enum Alignment { Horizontal, Vertical };
-    static const int BREADTH;
+    class RulerBarWidget : public QWidget
+    {
+        Q_OBJECT
+        Q_ENUMS(Alignment)
 
-    explicit RulerBarWidget(RulerBarWidget::Alignment alignment, QWidget *parent = nullptr);
-    ~RulerBarWidget();
+    public:
+        enum Alignment { Horizontal, Vertical };
+        static const int BREADTH;
 
-    void setCursorRange(qreal first, qreal last);
-    void setCursorPosition(const QPointF &pos);
+        explicit RulerBarWidget(RulerBarWidget::Alignment alignment, QWidget *parent = nullptr);
+        ~RulerBarWidget();
 
-    QSize minimumSizeHint() const;
-    RulerBarWidget::Alignment rulerType() const;
+        void setCursorRange(qreal first, qreal last);
+        void setCursorPosition(const QPointF &pos);
 
-    void setBackgroundColor(const QColor &color);
-    QColor backgroundColor() const;
+        QSize minimumSizeHint() const;
+        RulerBarWidget::Alignment rulerType() const;
 
-    void setForegroundColor(const QColor &color);
-    QColor foregroundColor() const;
+        void setBackgroundColor(const QColor &color);
+        QColor backgroundColor() const;
+
+        void setForegroundColor(const QColor &color);
+        QColor foregroundColor() const;
 
 
-protected:
-    void paintEvent(QPaintEvent *event);
+    protected:
+        void paintEvent(QPaintEvent *event);
 
-private:
-    Alignment m_alignment;
-    QColor m_backgroundColor;
-    QColor m_foregroundColor;
-    qreal m_firstPos;
-    qreal m_lastPos;
-    qreal m_currentPos;
-    int length();
+    private:
+        Alignment m_alignment;
+        QColor m_backgroundColor;
+        QColor m_foregroundColor;
+        qreal m_firstPos;
+        qreal m_lastPos;
+        qreal m_currentPos;
+        int length();
 
-    void drawMinorTick(QPainter &painter, int pixelPos);
-    void drawMajorTick(QPainter &painter, int pixelPos, qreal logicalPos);
-    void drawIndicator(QPainter &painter, int pixelPos);
-};
+        void drawMinorTick(QPainter &painter, int pixelPos);
+        void drawMajorTick(QPainter &painter, int pixelPos, qreal logicalPos);
+        void drawIndicator(QPainter &painter, int pixelPos);
+    };
+
+}
+
 #endif // GRAPHICSVIEWRULER_H

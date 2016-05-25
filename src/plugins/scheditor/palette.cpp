@@ -36,6 +36,7 @@ static const QColor BLUE("#268bd2");
 static const QColor CYAN("#2aa198");
 static const QColor GREEN("#859900");
 
+using namespace SymbolEditor;
 
 Palette::Palette(QObject *parent):
     QObject(parent),

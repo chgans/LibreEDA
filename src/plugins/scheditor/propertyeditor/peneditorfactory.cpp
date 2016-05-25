@@ -1,5 +1,7 @@
 #include "peneditorfactory.h"
 
+using namespace SymbolEditor;
+
 PenEditorFactory::PenEditorFactory(QObject *parent):
     QtAbstractEditorFactory<PenPropertyManager>(parent)
 {

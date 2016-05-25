@@ -5,6 +5,8 @@
 
 #include <QAction>
 
+using namespace SymbolEditor;
+
 PlaceBezierTool::PlaceBezierTool(QObject *parent):
     PlacementTool(parent),
     m_item(nullptr)

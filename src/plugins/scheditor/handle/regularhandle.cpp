@@ -1,5 +1,7 @@
 #include "handle/regularhandle.h"
 
+using namespace SymbolEditor;
+
 RegularHandle::RegularHandle(Item *parent):
     Handle(parent)
 {

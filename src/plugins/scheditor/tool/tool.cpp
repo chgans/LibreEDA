@@ -5,6 +5,8 @@
 
 #include <QDialog>
 
+using namespace SymbolEditor;
+
 Tool::Tool(QObject *parent) :
     QObject(parent),
     m_view(nullptr)

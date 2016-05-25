@@ -3,6 +3,8 @@
 #include <QStyleOptionGraphicsItem>
 #include <qmath.h>
 
+using namespace SymbolEditor;
+
 EllipseItem::EllipseItem(Item *parent):
     Item(parent),
     m_xRadius(0.0f), m_yRadius(0.0f)

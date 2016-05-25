@@ -4,6 +4,8 @@
 #include <QWheelEvent>
 #include <QKeyEvent>
 
+using namespace SymbolEditor;
+
 InteractiveTool::InteractiveTool(QObject *parent):
     Tool(parent)
 {

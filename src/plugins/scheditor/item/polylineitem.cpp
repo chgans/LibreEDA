@@ -4,6 +4,8 @@
 #include <QPainter>
 #include <QPen>
 
+using namespace SymbolEditor;
+
 PolylineItem::PolylineItem(Item *parent):
     Item(parent)
 {

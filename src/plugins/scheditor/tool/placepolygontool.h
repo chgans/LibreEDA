@@ -3,34 +3,40 @@
 
 #include "tool/placementtool.h"
 
-class PolygonItem;
+class QAction;
+
 class PenSettingsWidget;
 class BrushSettingsWidget;
 
-class QAction;
-
-class PlacePolygonTool : public PlacementTool
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-public:
-    explicit PlacePolygonTool(QObject *parent = nullptr);
-    ~PlacePolygonTool();
+    class PolygonItem;
 
-private:
-    PolygonItem *m_item;
-    PenSettingsWidget *m_penSettingsWidget;
-    BrushSettingsWidget *m_brushSettingsWidget;
+    class PlacePolygonTool : public PlacementTool
+    {
+        Q_OBJECT
 
-    // PlacementTool interface
-public:
-    virtual Item *beginInsert(const QPointF &pos);
-    virtual void addPoint(int idx, const QPointF &pos);
-    virtual void freezePoint(int idx, const QPointF &pos);
-    virtual bool removePoint(int idx, const QPointF &pos);
-    virtual void movePoint(int idx, const QPointF &pos);
-    virtual void endInsert(const QPointF &pos);
-    virtual void cancelInsert();
-};
+    public:
+        explicit PlacePolygonTool(QObject *parent = nullptr);
+        ~PlacePolygonTool();
+
+    private:
+        PolygonItem *m_item;
+        PenSettingsWidget *m_penSettingsWidget;
+        BrushSettingsWidget *m_brushSettingsWidget;
+
+        // PlacementTool interface
+    public:
+        virtual Item *beginInsert(const QPointF &pos);
+        virtual void addPoint(int idx, const QPointF &pos);
+        virtual void freezePoint(int idx, const QPointF &pos);
+        virtual bool removePoint(int idx, const QPointF &pos);
+        virtual void movePoint(int idx, const QPointF &pos);
+        virtual void endInsert(const QPointF &pos);
+        virtual void cancelInsert();
+    };
+
+}
 
 #endif // PLACEPOLYGONTOOL_H

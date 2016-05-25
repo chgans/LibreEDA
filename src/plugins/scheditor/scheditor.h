@@ -10,74 +10,76 @@ class QToolBar;
 class QComboBox;
 class QUndoStack;
 
-class View;
-class Scene;
-class InteractiveTool;
-class PlacementTool;
-class SelectTool;
-class TaskDockWidget;
-class UndoDockWidget;
-class SnapManager;
-class Settings;
-
-class SchEditor : public IEditor
+namespace SymbolEditor
 {
-    Q_OBJECT
-public:
-    explicit SchEditor(QObject *parent = nullptr);
-    ~SchEditor();
+    class View;
+    class Scene;
+    class InteractiveTool;
+    class PlacementTool;
+    class SelectTool;
+    class TaskDockWidget;
+    class UndoDockWidget;
+    class SnapManager;
+    class Settings;
 
-    View *view() const;
-    Scene *scene() const;
+    class SchEditor : public IEditor
+    {
+        Q_OBJECT
+    public:
+        explicit SchEditor(QObject *parent = nullptr);
+        ~SchEditor();
 
-private:
+        View *view() const;
+        Scene *scene() const;
 
-signals:
+    private:
 
-public slots:
-    void applySettings(const Settings &settings);
+    signals:
 
-private:
-    SchEditorDocument *m_document = nullptr;
-    SnapManager *m_snapManager = nullptr;
-    QUndoStack *m_undoStack;
+    public slots:
+        void applySettings(const Settings &settings);
 
-    void addInteractiveTools();
-    QActionGroup *m_interactiveActionGroup = nullptr;
-    QToolBar *m_interactiveToolBar = nullptr;
-    SelectTool *m_selectTool;
-    QList<PlacementTool *> m_placementTools;
-    QList<InteractiveTool *> m_interactiveTools;
-    void setInteractiveTool(InteractiveTool *tool);
-    InteractiveTool * m_interactiveTool = nullptr;
+    private:
+        SchEditorDocument *m_document = nullptr;
+        SnapManager *m_snapManager = nullptr;
+        QUndoStack *m_undoStack;
 
-    void addSnapTools();
-    QToolBar *m_snapToolBar = nullptr;
+        void addInteractiveTools();
+        QActionGroup *m_interactiveActionGroup = nullptr;
+        QToolBar *m_interactiveToolBar = nullptr;
+        SelectTool *m_selectTool;
+        QList<PlacementTool *> m_placementTools;
+        QList<InteractiveTool *> m_interactiveTools;
+        void setInteractiveTool(InteractiveTool *tool);
+        InteractiveTool * m_interactiveTool = nullptr;
 
-    void addPathPointTools();
-    QToolBar *m_pathPointToolBar = nullptr;
+        void addSnapTools();
+        QToolBar *m_snapToolBar = nullptr;
 
-    void addArrangeTools();
-    QToolBar *m_arrangeToolBar = nullptr;
+        void addPathPointTools();
+        QToolBar *m_pathPointToolBar = nullptr;
 
-    void addDockWidgets();
-    TaskDockWidget *m_taskDockWidget = nullptr;
-    UndoDockWidget *m_undoDockWidget;
+        void addArrangeTools();
+        QToolBar *m_arrangeToolBar = nullptr;
 
-    void addView();
-    View *m_view = nullptr;
+        void addDockWidgets();
+        TaskDockWidget *m_taskDockWidget = nullptr;
+        UndoDockWidget *m_undoDockWidget;
 
-    void addScene();
-    Scene *m_scene = nullptr;
+        void addView();
+        View *m_view = nullptr;
 
-    // IEditor interface
-public:
-    bool open(QString *errorString, const QString &fileName);
-    IDocument *document() const;
-    QIcon icon() const;
-    QString displayName() const;
-    void activate(QMainWindow *mainWindow);
-    void desactivate(QMainWindow *mainWindow);
-};
+        void addScene();
+        Scene *m_scene = nullptr;
 
+        // IEditor interface
+    public:
+        bool open(QString *errorString, const QString &fileName);
+        IDocument *document() const;
+        QIcon icon() const;
+        QString displayName() const;
+        void activate(QMainWindow *mainWindow);
+        void desactivate(QMainWindow *mainWindow);
+    };
+}
 #endif // GRAPHICSEDITOR_H

@@ -13,6 +13,8 @@
 #include <QKeyEvent>
 #include <QAction>
 
+using namespace SymbolEditor;
+
 SelectTool::SelectTool(QObject *parent):
     InteractiveTool(parent),
     m_state(HintState),

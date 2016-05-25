@@ -8,6 +8,8 @@
 #include <qtpropertybrowser/qtpropertymanager.h>
 #include <qtpropertybrowser/qteditorfactory.h>
 
+using namespace SymbolEditor;
+
 ItemPropertyEditor::ItemPropertyEditor(QWidget *parent) :
     QtTreePropertyBrowser (parent), m_item(nullptr)
 {

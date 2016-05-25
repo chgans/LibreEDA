@@ -1,5 +1,7 @@
 #include "tool/graphicsitemaligntool.h"
 
+using namespace SymbolEditor;
+
 GraphicsItemAlignTool::GraphicsItemAlignTool(QObject *parent):
     Tool(parent)
 {

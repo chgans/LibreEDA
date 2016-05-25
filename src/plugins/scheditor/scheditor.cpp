@@ -32,6 +32,8 @@
 #include <QFileInfo>
 #include <QTimer>
 
+using namespace SymbolEditor;
+
 SchEditor::SchEditor(QObject *parent) :
     IEditor(parent),
     m_undoStack(new QUndoStack)

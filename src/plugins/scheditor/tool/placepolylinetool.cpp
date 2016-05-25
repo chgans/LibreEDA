@@ -6,6 +6,8 @@
 
 #include <QAction>
 
+using namespace SymbolEditor;
+
 PlacePolyineTool::PlacePolyineTool(QObject *parent):
     PlacementTool(parent), m_item(nullptr)
 {

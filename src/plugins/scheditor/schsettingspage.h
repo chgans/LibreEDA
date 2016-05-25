@@ -3,26 +3,30 @@
 
 #include "core/settings/isettingspage.h"
 
-class SettingsWidget;
-
-class SchSettingsPage : public ISettingsPage
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-public:
-    explicit SchSettingsPage(QObject *parent = nullptr);
+    class SettingsWidget;
 
-signals:
-    void settingsChanged();
+    class SchSettingsPage : public ISettingsPage
+    {
+        Q_OBJECT
 
-private:
-    SettingsWidget *m_widget;
+    public:
+        explicit SchSettingsPage(QObject *parent = nullptr);
 
-    // ISettingsPage interface
-public:
-    QWidget *widget();
-    void apply();
-    void finish();
-};
+    signals:
+        void settingsChanged();
 
+    private:
+        SettingsWidget *m_widget;
+
+        // ISettingsPage interface
+    public:
+        QWidget *widget();
+        void apply();
+        void finish();
+    };
+
+}
 #endif // SCHSETTINGSPAGE_H

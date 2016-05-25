@@ -10,6 +10,8 @@
 #include <QOpenGLWidget>
 #include <QSettings>
 
+using namespace SymbolEditor;
+
 SettingsWidget::SettingsWidget(QWidget *parent) :
     QWidget(parent),
     m_ui(new Ui::SettingsWidget)

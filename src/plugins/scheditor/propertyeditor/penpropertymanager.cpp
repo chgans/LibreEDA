@@ -6,6 +6,8 @@
 
 #include <QDebug>
 
+using namespace SymbolEditor;
+
 QIcon penWidthIcon(qreal width)
 {
     QPixmap pixmap(16, 16);

@@ -8,6 +8,8 @@
 #include <QPolygonF>
 #include <QAction>
 
+using namespace SymbolEditor;
+
 PlacePolygonTool::PlacePolygonTool(QObject *parent):
     PlacementTool(parent),
     m_item(nullptr)

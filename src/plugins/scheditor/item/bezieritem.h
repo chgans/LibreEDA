@@ -5,71 +5,76 @@
 
 #include <QPen>
 
-class BezierHandle;
-
-class BezierItem : public Item
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-public:
-    explicit BezierItem(Item *parent = nullptr);
+    class BezierHandle;
 
-    QPainterPath path() const;
-    void setPath(const QPainterPath &path);
+    class BezierItem : public Item
+    {
+        Q_OBJECT
 
-    int addPoint(const QPointF &pos);
-    void removePoint(int index);
-    void movePoint(int index, const QPointF &pos);
-    QList<QPointF> points() const;
-    int pointCount() const;
-    QPointF pointAt(int idx) const;
+    public:
+        explicit BezierItem(Item *parent = nullptr);
 
-private:
-    QPainterPath m_path;
+        QPainterPath path() const;
+        void setPath(const QPainterPath &path);
 
-    void setBoundingRectDirty();
-    void computeBoundingRect() const;
-    mutable bool m_boundingRectIsDirty;
+        int addPoint(const QPointF &pos);
+        void removePoint(int index);
+        void movePoint(int index, const QPointF &pos);
+        QList<QPointF> points() const;
+        int pointCount() const;
+        QPointF pointAt(int idx) const;
 
-    void setShapeDirty();
-    void computeShape() const;
-    mutable bool m_shapeIsDirty;
-    mutable QPainterPath m_shape;
+    private:
+        QPainterPath m_path;
 
-    QPainterPath copyPath(const QPainterPath &src, int first, int last);
+        void setBoundingRectDirty();
+        void computeBoundingRect() const;
+        mutable bool m_boundingRectIsDirty;
 
-    QVector<qreal> m_px;
-    QVector<qreal> m_py;
-    QVector<qreal> m_c1x;
-    QVector<qreal> m_c1y;
-    QVector<qreal> m_c2x;
-    QVector<qreal> m_c2y;
+        void setShapeDirty();
+        void computeShape() const;
+        mutable bool m_shapeIsDirty;
+        mutable QPainterPath m_shape;
 
-    void smoothBezier();
-    void computeBezierControlPoints(const QVector<qreal> &p, QVector<qreal> &c1, QVector<qreal> &c2);
+        QPainterPath copyPath(const QPainterPath &src, int first, int last);
 
-    void bezierToHandles();
-    void bezierToHandle(int idx);
-    void handlesToBezier();
-    void handleToBezier(int idx);
+        QVector<qreal> m_px;
+        QVector<qreal> m_py;
+        QVector<qreal> m_c1x;
+        QVector<qreal> m_c1y;
+        QVector<qreal> m_c2x;
+        QVector<qreal> m_c2y;
 
-    // QGraphicsItem interface
-public:
-    virtual QRectF boundingRect() const;
-    virtual QPainterPath shape() const;
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+        void smoothBezier();
+        void computeBezierControlPoints(const QVector<qreal> &p, QVector<qreal> &c1, QVector<qreal> &c2);
 
-    // SchItem interface
-public:
-    virtual Item *clone();
+        void bezierToHandles();
+        void bezierToHandle(int idx);
+        void handlesToBezier();
+        void handleToBezier(int idx);
 
-    // IGraphicsItemObserver interface
-protected:
-    virtual void itemNotification(IObservableItem *item);
+        // QGraphicsItem interface
+    public:
+        virtual QRectF boundingRect() const;
+        virtual QPainterPath shape() const;
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    // QGraphicsItem interface
-protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-};
+        // SchItem interface
+    public:
+        virtual Item *clone();
+
+        // IGraphicsItemObserver interface
+    protected:
+        virtual void itemNotification(IObservableItem *item);
+
+        // QGraphicsItem interface
+    protected:
+        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    };
+
+}
 
 #endif // GRAPHICSBEZIERITEM_H

@@ -4,6 +4,8 @@
 // See http://www.qcad.org/doc/qcad/2.2/reference/en/chapter14.html
 // for snap/constraint ideas
 
+using namespace SymbolEditor;
+
 Grid::Grid():
     m_priority(0),
     m_coarseMultiplier(5),

@@ -3,6 +3,8 @@
 #include <QUndoView>
 #include <QUndoStack>
 
+using namespace SymbolEditor;
+
 UndoDockWidget::UndoDockWidget(QWidget *parent, Qt::WindowFlags flags):
     DockWidget(parent, flags),
     m_view(new QUndoView)

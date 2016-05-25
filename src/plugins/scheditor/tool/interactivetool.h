@@ -10,32 +10,37 @@ class QKeyEvent;
 class QWheelEvent;
 class QWidget;
 
-class InteractiveTool: public Tool
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-public:
-    explicit InteractiveTool(QObject *parent = nullptr);
-    ~InteractiveTool();
+    class InteractiveTool: public Tool
+    {
+        Q_OBJECT
 
-    QList<QWidget *> taskWidgets();
-    void setTaskWidgets(QList<QWidget *> widgets);
+    public:
+        explicit InteractiveTool(QObject *parent = nullptr);
+        ~InteractiveTool();
 
-    virtual void mousePressEvent(QMouseEvent *event);
-    virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void mouseReleaseEvent(QMouseEvent *event);
-    virtual void mouseDoubleClickEvent(QMouseEvent *event);
+        QList<QWidget *> taskWidgets();
+        void setTaskWidgets(QList<QWidget *> widgets);
 
-    virtual void keyPressEvent(QKeyEvent *event);
-    virtual void keyReleaseEvent(QKeyEvent *event);
+        virtual void mousePressEvent(QMouseEvent *event);
+        virtual void mouseMoveEvent(QMouseEvent *event);
+        virtual void mouseReleaseEvent(QMouseEvent *event);
+        virtual void mouseDoubleClickEvent(QMouseEvent *event);
 
-    virtual void wheelEvent(QWheelEvent *event);
+        virtual void keyPressEvent(QKeyEvent *event);
+        virtual void keyReleaseEvent(QKeyEvent *event);
 
-signals:
-    void taskWidgetsChanged(QList<QWidget *> widgets);
+        virtual void wheelEvent(QWheelEvent *event);
 
-protected:
-    QList<QWidget *> m_taskWidgets;
-};
+    signals:
+        void taskWidgetsChanged(QList<QWidget *> widgets);
+
+    protected:
+        QList<QWidget *> m_taskWidgets;
+    };
+
+}
 
 #endif // INTERACTIVETOOL_H

@@ -3,33 +3,39 @@
 
 #include <QList>
 
-class IObservableItem;
-
-class IItemObserver
+namespace SymbolEditor
 {
-public:
-    IItemObserver();
-    virtual ~IItemObserver();
 
-    virtual void itemNotification(IObservableItem *item) = 0;
+    class IObservableItem;
 
-    void blockItemNotification(IObservableItem *item = nullptr);
-    void unblockItemNotification(IObservableItem *item = nullptr);
+    class IItemObserver
+    {
+    public:
+        IItemObserver();
+        virtual ~IItemObserver();
 
-    void addObservedItem(IObservableItem *item);
-    void removeObservedItem(IObservableItem *item);
+        virtual void itemNotification(IObservableItem *item) = 0;
 
-    QList<IObservableItem *> observedItems() const;
+        void blockItemNotification(IObservableItem *item = nullptr);
+        void unblockItemNotification(IObservableItem *item = nullptr);
 
-private:
-    bool m_operationInProgress;
-    QList<IObservableItem *> m_items;
-    QList<IObservableItem *> m_blockedItems;
-    bool m_blockAllItems;
+        void addObservedItem(IObservableItem *item);
+        void removeObservedItem(IObservableItem *item);
 
-    void beginObservedItemTransaction();
-    void endObserveredItemTransaction();
-    void onItemNotification(IObservableItem *item);
-    friend class IObservableItem;
-};
+        QList<IObservableItem *> observedItems() const;
+
+    private:
+        bool m_operationInProgress;
+        QList<IObservableItem *> m_items;
+        QList<IObservableItem *> m_blockedItems;
+        bool m_blockAllItems;
+
+        void beginObservedItemTransaction();
+        void endObserveredItemTransaction();
+        void onItemNotification(IObservableItem *item);
+        friend class IObservableItem;
+    };
+
+}
+
 #endif // IGRAPHICSITEMOBSERVER_H

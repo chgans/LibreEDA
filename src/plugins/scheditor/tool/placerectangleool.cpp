@@ -7,6 +7,8 @@
 
 #include <QAction>
 
+using namespace SymbolEditor;
+
 PlaceRectangleTool::PlaceRectangleTool(QObject *parent):
     PlacementTool(parent), m_item(nullptr)
 {

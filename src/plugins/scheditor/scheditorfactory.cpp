@@ -5,6 +5,8 @@
 
 #include "core/core.h"
 
+using namespace SymbolEditor;
+
 SchEditorFactory::SchEditorFactory(QObject *parent) :
     IEditorFactory(parent)
 {

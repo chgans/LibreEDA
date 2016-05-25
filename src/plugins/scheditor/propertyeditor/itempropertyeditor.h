@@ -3,58 +3,64 @@
 
 #include <qtpropertybrowser/qttreepropertybrowser.h>
 
-class Item;
 class QtDoublePropertyManager;
 class QtBoolPropertyManager;
 class QtGroupPropertyManager;
 
-class ItemPropertyEditor : public QtTreePropertyBrowser
+namespace SymbolEditor
 {
-    Q_OBJECT
-public:
-    explicit ItemPropertyEditor(QWidget *parent = nullptr);
-    virtual ~ItemPropertyEditor();
 
-    const Item *item() const;
+    class Item;
 
-public slots:
-    void setItem(const Item *item);
+    class ItemPropertyEditor : public QtTreePropertyBrowser
+    {
+        Q_OBJECT
+    public:
+        explicit ItemPropertyEditor(QWidget *parent = nullptr);
+        virtual ~ItemPropertyEditor();
 
-signals:
-    void opacityChanged(qreal opacity);
-    void rotationChanged(qreal rotation);
-    void zValueChanged(qreal zValue);
-    void lockStateChanged(bool locked);
-    void visibilityChanged(bool visible);
-    void xMirroringChanged(bool mirrored);
-    void yMirroringChanged(bool mirrored);
+        const Item *item() const;
 
-protected:
-    void setupProperties();
-    void setupPropertyManagers();
-    void updatePropertyManagerValues();
-    void connectManagers();
-    void disconnectManagers();
+    public slots:
+        void setItem(const Item *item);
 
-protected slots:
-    void onRealPropertyChanged(QtProperty *property);
-    void onBooleanPropertyChanged(QtProperty *property);
+    signals:
+        void opacityChanged(qreal opacity);
+        void rotationChanged(qreal rotation);
+        void zValueChanged(qreal zValue);
+        void lockStateChanged(bool locked);
+        void visibilityChanged(bool visible);
+        void xMirroringChanged(bool mirrored);
+        void yMirroringChanged(bool mirrored);
 
-private:
-    QtGroupPropertyManager *m_groupPropertyManager;
-    QtDoublePropertyManager *m_realPropertyManager;
-    QtBoolPropertyManager *m_booleanPropertyManager;
+    protected:
+        void setupProperties();
+        void setupPropertyManagers();
+        void updatePropertyManagerValues();
+        void connectManagers();
+        void disconnectManagers();
 
-    QtProperty *m_itemGroupProperty;
-    QtProperty *m_opacityProperty;
-    QtProperty *m_rotationProperty;
-    QtProperty *m_zValueProperty;
-    QtProperty *m_lockedProperty;
-    QtProperty *m_visibleProperty;
-    QtProperty *m_xMirroredProperty;
-    QtProperty *m_yMirroredProperty;
+    protected slots:
+        void onRealPropertyChanged(QtProperty *property);
+        void onBooleanPropertyChanged(QtProperty *property);
 
-    const Item *m_item;
-};
+    private:
+        QtGroupPropertyManager *m_groupPropertyManager;
+        QtDoublePropertyManager *m_realPropertyManager;
+        QtBoolPropertyManager *m_booleanPropertyManager;
+
+        QtProperty *m_itemGroupProperty;
+        QtProperty *m_opacityProperty;
+        QtProperty *m_rotationProperty;
+        QtProperty *m_zValueProperty;
+        QtProperty *m_lockedProperty;
+        QtProperty *m_visibleProperty;
+        QtProperty *m_xMirroredProperty;
+        QtProperty *m_yMirroredProperty;
+
+        const Item *m_item;
+    };
+
+}
 
 #endif // SCHITEMPROPERTYEDITOR_H

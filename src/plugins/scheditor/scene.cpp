@@ -7,6 +7,8 @@
 
 #include <QPainter>
 
+using namespace SymbolEditor;
+
 Scene::Scene(QObject *parent):
     QGraphicsScene(parent)
 {

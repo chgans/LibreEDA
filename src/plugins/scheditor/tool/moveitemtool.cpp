@@ -5,6 +5,8 @@
 
 #include <QMouseEvent>
 
+using namespace SymbolEditor;
+
 MoveItemTool::MoveItemTool(QObject *parent):
     InteractiveTool (parent)
 {

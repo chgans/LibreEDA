@@ -3,6 +3,8 @@
 #include <qmath.h>
 #include <QStyleOptionGraphicsItem>
 
+using namespace SymbolEditor;
+
 ArcItem::ArcItem(Item *parent):
     Item(parent),
     m_xRadius(0.0), m_yRadius(0.0),

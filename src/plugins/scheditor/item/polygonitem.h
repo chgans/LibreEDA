@@ -3,59 +3,65 @@
 
 #include "item/item.h"
 
-class PolygonItem : public Item
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-    Q_PROPERTY(Qt::FillRule fillRule READ fillRule WRITE setFillRule NOTIFY fillRuleChanged)
-    Q_PROPERTY(QPolygonF polygon READ polygon WRITE setPolygon NOTIFY polygonChanged)
 
-public:
-    explicit PolygonItem(Item *parent = nullptr);
-    ~PolygonItem();
+    class PolygonItem : public Item
+    {
+        Q_OBJECT
 
-    Qt::FillRule fillRule() const;
-    QPolygonF polygon() const;
+        Q_PROPERTY(Qt::FillRule fillRule READ fillRule WRITE setFillRule NOTIFY fillRuleChanged)
+        Q_PROPERTY(QPolygonF polygon READ polygon WRITE setPolygon NOTIFY polygonChanged)
 
-public slots:
-    void setFillRule(Qt::FillRule fillRule);
-    void setPolygon(QPolygonF polygon);
-    void addPoint(const QPointF &pos);
-    void movePoint(int idx, const QPointF &pos);
+    public:
+        explicit PolygonItem(Item *parent = nullptr);
+        ~PolygonItem();
 
-signals:
-    void fillRuleChanged(Qt::FillRule fillRule);
-    void polygonChanged(QPolygonF polygon);
+        Qt::FillRule fillRule() const;
+        QPolygonF polygon() const;
 
-private:
-    Qt::FillRule m_fillRule;
-    QPolygonF m_polygon;
-    void handleToPolygon();
-    void polygonToHandle();
+    public slots:
+        void setFillRule(Qt::FillRule fillRule);
+        void setPolygon(QPolygonF polygon);
+        void addPoint(const QPointF &pos);
+        void movePoint(int idx, const QPointF &pos);
 
-    // QGraphicsItem interface
-public:
-    virtual QRectF boundingRect() const;
-    virtual QPainterPath shape() const;
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    signals:
+        void fillRuleChanged(Qt::FillRule fillRule);
+        void polygonChanged(QPolygonF polygon);
 
-    // SchItem interface
-public:
-    virtual Item *clone();
+    private:
+        Qt::FillRule m_fillRule;
+        QPolygonF m_polygon;
+        void handleToPolygon();
+        void polygonToHandle();
 
-    //    //virtual QList<QPointF> hotSpots() const;
-    //    virtual QList<QPointF> endPoints() const;
-    //    virtual QList<QPointF> midPoints() const;
-    //    virtual QList<QPointF> centerPoints() const;
-    //    virtual QList<QPointF> nearestPoints(QPointF pos) const;
+        // QGraphicsItem interface
+    public:
+        virtual QRectF boundingRect() const;
+        virtual QPainterPath shape() const;
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    // QGraphicsItem interface
-protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+        // SchItem interface
+    public:
+        virtual Item *clone();
 
-    // IGraphicsItemObserver interface
-public:
-    virtual void itemNotification(IObservableItem *item);
-};
+        //    //virtual QList<QPointF> hotSpots() const;
+        //    virtual QList<QPointF> endPoints() const;
+        //    virtual QList<QPointF> midPoints() const;
+        //    virtual QList<QPointF> centerPoints() const;
+        //    virtual QList<QPointF> nearestPoints(QPointF pos) const;
+
+        // QGraphicsItem interface
+    protected:
+        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+        // IGraphicsItemObserver interface
+    public:
+        virtual void itemNotification(IObservableItem *item);
+    };
+
+}
 
 #endif // GRAPHICSPOLYGONITEM_H

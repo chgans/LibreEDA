@@ -1,6 +1,8 @@
 #include "item/iitemobserver.h"
 #include "item/iobservableitem.h"
 
+using namespace SymbolEditor;
+
 IItemObserver::IItemObserver():
     m_operationInProgress(false),
     m_blockAllItems(false)

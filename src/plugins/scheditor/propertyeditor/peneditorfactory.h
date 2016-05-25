@@ -4,25 +4,30 @@
 #include "qtpropertybrowser/qteditorfactory.h"
 #include "penpropertymanager.h"
 
-class PenEditorFactory: public QtAbstractEditorFactory<PenPropertyManager>
+namespace SymbolEditor
 {
-    Q_OBJECT
-public:
-    explicit PenEditorFactory(QObject *parent = nullptr);
-    ~PenEditorFactory();
 
-    QtEnumEditorFactory *subEnumEditorFactory();
-    QtColorEditorFactory *subColorEditorFactory();
+    class PenEditorFactory: public QtAbstractEditorFactory<PenPropertyManager>
+    {
+        Q_OBJECT
+    public:
+        explicit PenEditorFactory(QObject *parent = nullptr);
+        ~PenEditorFactory();
 
-protected:
-    void connectPropertyManager(PenPropertyManager *manager);
-    QWidget *createEditor(PenPropertyManager *manager, QtProperty *property,
-                          QWidget *parent);
-    void disconnectPropertyManager(PenPropertyManager *manager);
+        QtEnumEditorFactory *subEnumEditorFactory();
+        QtColorEditorFactory *subColorEditorFactory();
 
-private:
-    QtEnumEditorFactory *m_comboBoxFactory;
-    QtColorEditorFactory *m_colorFactory;
-};
+    protected:
+        void connectPropertyManager(PenPropertyManager *manager);
+        QWidget *createEditor(PenPropertyManager *manager, QtProperty *property,
+                              QWidget *parent);
+        void disconnectPropertyManager(PenPropertyManager *manager);
+
+    private:
+        QtEnumEditorFactory *m_comboBoxFactory;
+        QtColorEditorFactory *m_colorFactory;
+    };
+
+}
 
 #endif // PENEDITORFACTORY_H

@@ -2,10 +2,18 @@
 #include "scheditorfactory.h"
 #include "schsettingspage.h"
 
+// See Q_INIT_RESOURCE documentation for why this is done this way
+inline void SymbolEditor_InitialiseResources()
+{
+    Q_INIT_RESOURCE(scheditor);
+}
+
+using namespace SymbolEditor;
+
 SchEditorPlugin::SchEditorPlugin(QObject *parent):
     IPlugin(parent)
 {
-    Q_INIT_RESOURCE(scheditor);
+    SymbolEditor_InitialiseResources();
 }
 
 SchEditorPlugin::~SchEditorPlugin()

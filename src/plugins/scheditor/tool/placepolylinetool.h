@@ -3,37 +3,43 @@
 
 #include "tool/placementtool.h"
 
-class PolylineItem;
 class PenSettingsWidget;
 
-class PlacePolyineTool : public PlacementTool
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-public:
-    explicit PlacePolyineTool(QObject *parent = nullptr);
+    class PolylineItem;
 
-private:
-    PolylineItem *m_item;
-    PenSettingsWidget *m_penSettingsWidget;
+    class PlacePolyineTool : public PlacementTool
+    {
+        Q_OBJECT
 
-private:
-    void setP1(const QPointF &pos);
-    void setP2(const QPointF &pos);
+    public:
+        explicit PlacePolyineTool(QObject *parent = nullptr);
 
-    // GraphicsTool interface
-public slots:
-    virtual void cancel();
+    private:
+        PolylineItem *m_item;
+        PenSettingsWidget *m_penSettingsWidget;
 
-    // PlacementTool interface
-public:
-    Item *beginInsert(const QPointF &pos);
-    void addPoint(int idx, const QPointF &pos);
-    void freezePoint(int idx, const QPointF &pos);
-    bool removePoint(int idx, const QPointF &pos);
-    void movePoint(int idx, const QPointF &pos);
-    void endInsert(const QPointF &pos);
-    void cancelInsert();
-};
+    private:
+        void setP1(const QPointF &pos);
+        void setP2(const QPointF &pos);
+
+        // GraphicsTool interface
+    public slots:
+        virtual void cancel();
+
+        // PlacementTool interface
+    public:
+        Item *beginInsert(const QPointF &pos);
+        void addPoint(int idx, const QPointF &pos);
+        void freezePoint(int idx, const QPointF &pos);
+        bool removePoint(int idx, const QPointF &pos);
+        void movePoint(int idx, const QPointF &pos);
+        void endInsert(const QPointF &pos);
+        void cancelInsert();
+    };
+
+}
 
 #endif // PLACEPOLYLINETOOL_H

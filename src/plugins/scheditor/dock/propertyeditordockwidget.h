@@ -5,27 +5,32 @@
 
 #include <QDockWidget>
 
-class ItemPropertyEditor;
-class Item;
-
-class PropertyEditorDockWidget : public DockWidget
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-public:
-    PropertyEditorDockWidget(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    class ItemPropertyEditor;
+    class Item;
 
-signals:
+    class PropertyEditorDockWidget : public DockWidget
+    {
+        Q_OBJECT
 
-public slots:
-    void setItem(Item *item);
+    public:
+        PropertyEditorDockWidget(QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
-private:
-    ItemPropertyEditor *m_editor;
+    signals:
 
-    // DockWidget interface
-public slots:
-    void applySettings(const Settings &settings);
-};
+    public slots:
+        void setItem(Item *item);
+
+    private:
+        ItemPropertyEditor *m_editor;
+
+        // DockWidget interface
+    public slots:
+        void applySettings(const Settings &settings);
+    };
+
+}
 
 #endif // PROPERTYEDITORDOCKWIDGET_H

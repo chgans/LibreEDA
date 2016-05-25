@@ -9,9 +9,11 @@
 #include <QLoggingCategory>
 
 
+// TODO: within namespace?
 Q_DECLARE_LOGGING_CATEGORY(LedaSymbolDocumentLog)
-
 Q_LOGGING_CATEGORY(LedaSymbolDocumentLog, "leda.sch.document")
+
+using namespace SymbolEditor;
 
 SchEditorDocument::SchEditorDocument(QObject *parent) :
     IDocument(parent),

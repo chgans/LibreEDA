@@ -6,6 +6,8 @@
 #include <QPainterPathStroker>
 #include <QPainter>
 
+using namespace SymbolEditor;
+
 Handle::Handle(Item *parent):
     QGraphicsPathItem(parent),
     IObservableItem(),

@@ -6,6 +6,8 @@
 #include <QRubberBand>
 #include <QMouseEvent>
 
+using namespace SymbolEditor;
+
 DragSelectTool::DragSelectTool(QObject *parent):
     InteractiveTool (parent),
     m_rubberBand(new QRubberBand(QRubberBand::Rectangle))

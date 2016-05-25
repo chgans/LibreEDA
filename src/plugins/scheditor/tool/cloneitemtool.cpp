@@ -6,6 +6,8 @@
 #include <QMouseEvent>
 #include <QGraphicsColorizeEffect>
 
+using namespace SymbolEditor;
+
 CloneItemTool::CloneItemTool(QObject *parent):
     InteractiveTool (parent)
 {

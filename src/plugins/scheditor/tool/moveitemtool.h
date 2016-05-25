@@ -5,23 +5,28 @@
 
 #include <QPointF>
 
-class Item;
-
-class MoveItemTool : public InteractiveTool
+namespace SymbolEditor
 {
-public:
-    MoveItemTool(QObject *parent = nullptr);
 
-private:
-    QList<Item *> m_items;
-    QPointF m_pressPosition;
-    QPointF m_lastPosition;
+    class Item;
 
-    // InteractiveTool interface
-public:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-};
+    class MoveItemTool : public InteractiveTool
+    {
+    public:
+        MoveItemTool(QObject *parent = nullptr);
+
+    private:
+        QList<Item *> m_items;
+        QPointF m_pressPosition;
+        QPointF m_lastPosition;
+
+        // InteractiveTool interface
+    public:
+        void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        void mouseReleaseEvent(QMouseEvent *event);
+    };
+
+}
 
 #endif // MOVEITEMTOOL_H

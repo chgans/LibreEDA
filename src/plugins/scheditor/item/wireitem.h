@@ -8,54 +8,59 @@
 
 class QGraphicsPathItem;
 
-class WireItem : public Item
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-    Q_PROPERTY(QList<QPointF> points READ points WRITE setPoints NOTIFY pointsChanged)
+    class WireItem : public Item
+    {
+        Q_OBJECT
 
-public:
-    explicit WireItem(Item *parent = nullptr);
-    ~WireItem();
+        Q_PROPERTY(QList<QPointF> points READ points WRITE setPoints NOTIFY pointsChanged)
 
-    QList<QPointF> points() const;
-    void addPoint(const QPointF &pos);
-    void movePoint(int idx, const QPointF &pos);
+    public:
+        explicit WireItem(Item *parent = nullptr);
+        ~WireItem();
 
-public slots:
-    void setPoints(QList<QPointF> points);
+        QList<QPointF> points() const;
+        void addPoint(const QPointF &pos);
+        void movePoint(int idx, const QPointF &pos);
 
-signals:
-    void pointsChanged();
+    public slots:
+        void setPoints(QList<QPointF> points);
 
-private:
-    QPainterPath m_path;
-    //void handleToPath();
-    //void pathToHandle();
+    signals:
+        void pointsChanged();
 
-    // QGraphicsItem interface
-public:
-    virtual QRectF boundingRect() const;
-    virtual QPainterPath shape() const;
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    private:
+        QPainterPath m_path;
+        //void handleToPath();
+        //void pathToHandle();
 
-    // SchItem interface
-public:
-    virtual Item *clone();
+        // QGraphicsItem interface
+    public:
+        virtual QRectF boundingRect() const;
+        virtual QPainterPath shape() const;
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    //    //virtual QList<QPointF> hotSpots() const;
-    //    virtual QList<QPointF> endPoints() const;
-    //    virtual QList<QPointF> midPoints() const;
-    //    virtual QList<QPointF> centerPoints() const;
-    //    virtual QList<QPointF> nearestPoints(QPointF pos) const;
+        // SchItem interface
+    public:
+        virtual Item *clone();
 
-    // IGraphicsItemObserver interface
-public:
-    virtual void itemNotification(IObservableItem *item);
+        //    //virtual QList<QPointF> hotSpots() const;
+        //    virtual QList<QPointF> endPoints() const;
+        //    virtual QList<QPointF> midPoints() const;
+        //    virtual QList<QPointF> centerPoints() const;
+        //    virtual QList<QPointF> nearestPoints(QPointF pos) const;
 
-    // QGraphicsItem interface
-protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-};
+        // IGraphicsItemObserver interface
+    public:
+        virtual void itemNotification(IObservableItem *item);
+
+        // QGraphicsItem interface
+    protected:
+        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    };
+
+}
 
 #endif // GRAPHICSWIREITEM_H

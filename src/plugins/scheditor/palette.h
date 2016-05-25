@@ -4,45 +4,50 @@
 #include <QObject>
 #include <QColor>
 
-class Palette: public QObject
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-    Q_ENUMS(Mode)
-
-public:
-    explicit Palette(QObject *parent = nullptr);
-    ~Palette();
-
-    enum Mode
+    class Palette: public QObject
     {
-        Dark = 0,
-        Light
+        Q_OBJECT
+
+        Q_ENUMS(Mode)
+
+    public:
+        explicit Palette(QObject *parent = nullptr);
+        ~Palette();
+
+        enum Mode
+        {
+            Dark = 0,
+            Light
+        };
+
+        void setMode(Mode mode);
+        Mode mode() const;
+
+        QColor background() const;
+        QColor backgroundHighlight() const;
+        QColor primaryContent() const;
+        QColor secondaryContent() const;
+        QColor emphasisedContent() const;
+
+        QColor yellow() const;
+        QColor orange() const;
+        QColor red() const;
+        QColor magenta() const;
+        QColor violet() const;
+        QColor blue() const;
+        QColor cyan() const;
+        QColor green() const;
+
+    private:
+        Mode m_mode;
     };
 
-    void setMode(Mode mode);
-    Mode mode() const;
+}
 
-    QColor background() const;
-    QColor backgroundHighlight() const;
-    QColor primaryContent() const;
-    QColor secondaryContent() const;
-    QColor emphasisedContent() const;
-
-    QColor yellow() const;
-    QColor orange() const;
-    QColor red() const;
-    QColor magenta() const;
-    QColor violet() const;
-    QColor blue() const;
-    QColor cyan() const;
-    QColor green() const;
-
-private:
-    Mode m_mode;
-};
-
-Q_DECLARE_METATYPE(Palette::Mode)
+Q_DECLARE_METATYPE(SymbolEditor::Palette::Mode)
 
 #endif // PALETTE_H
 

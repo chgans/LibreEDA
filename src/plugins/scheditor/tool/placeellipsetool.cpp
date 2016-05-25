@@ -7,6 +7,8 @@
 
 #include <QAction>
 
+using namespace SymbolEditor;
+
 PlaceEllipseTool::PlaceEllipseTool(QObject *parent):
     PlacementTool(parent)
 {

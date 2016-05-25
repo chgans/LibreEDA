@@ -1,5 +1,7 @@
 #include "itempropertymanager.h"
 
+using namespace SymbolEditor;
+
 ItemPropertyManager::ItemPropertyManager(QObject *parent):
     QtAbstractPropertyManager(parent)
 {

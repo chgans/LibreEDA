@@ -3,53 +3,57 @@
 
 #include <QObject>
 
-
-class View;
-class Scene;
-class Settings;
-class UndoCommand;
-
 class QWidget;
 class QAction;
 
-/* TBD:
- *  - Actions (hooked with context menu)
- *    - Esc => cancel()
- *    - Tab => options
- *  - Use case: align tool has 6 actions
- *  - replace option dialog w/ option widget: allow to dosplay widget in a QDock or something
- */
-
-class Tool : public QObject
+namespace SymbolEditor
 {
-    Q_OBJECT
-public:
-    explicit Tool(QObject *parent = nullptr);
-    ~Tool();
 
-    View *view();
-    Scene *scene();
-    void setView(View *view);
+    class View;
+    class Scene;
+    class Settings;
+    class UndoCommand;
 
-    void setToolGroup(const QString &group);
-    QString toolGroup() const;
-    void setAction(QAction *action);
-    QAction *action() const;
+    /* TBD:
+     *  - Actions (hooked with context menu)
+     *    - Esc => cancel()
+     *    - Tab => options
+     *  - Use case: align tool has 6 actions
+     *  - replace option dialog w/ option widget: allow to dosplay widget in a QDock or something
+     */
 
-signals:
-    void finished();
-    void taskCompleted(UndoCommand *command);
+    class Tool : public QObject
+    {
+        Q_OBJECT
+    public:
+        explicit Tool(QObject *parent = nullptr);
+        ~Tool();
 
-public slots:
-    virtual void cancel();
-    virtual void applySettings(const Settings &settings);
+        View *view();
+        Scene *scene();
+        void setView(View *view);
 
-private:
-    View *m_view;
-    QString m_toolGroup;
-    QAction *m_action;
-};
+        void setToolGroup(const QString &group);
+        QString toolGroup() const;
+        void setAction(QAction *action);
+        QAction *action() const;
 
-Q_DECLARE_METATYPE(Tool *)
+    signals:
+        void finished();
+        void taskCompleted(UndoCommand *command);
+
+    public slots:
+        virtual void cancel();
+        virtual void applySettings(const Settings &settings);
+
+    private:
+        View *m_view;
+        QString m_toolGroup;
+        QAction *m_action;
+    };
+
+}
+
+Q_DECLARE_METATYPE(SymbolEditor::Tool *)
 
 #endif // GRAPHICSTOOL_H

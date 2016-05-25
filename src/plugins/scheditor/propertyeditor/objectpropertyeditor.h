@@ -7,37 +7,43 @@
 
 class QtVariantPropertyManager;
 class QtVariantEditorFactory;
-class PenPropertyManager;
-class PenEditorFactory;
 class QtProperty;
 
-class ObjectPropertyEditor: public QtTreePropertyBrowser
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-public:
-    explicit ObjectPropertyEditor(QWidget *parent = nullptr);
-    ~ObjectPropertyEditor();
+    class PenPropertyManager;
+    class PenEditorFactory;
 
-public slots:
-    void setObjects(QList<QObject *> objects);
+    class ObjectPropertyEditor: public QtTreePropertyBrowser
+    {
+        Q_OBJECT
 
-private:
-    QtVariantPropertyManager *m_manager;
-    QtVariantEditorFactory *m_factory;
-    PenPropertyManager *m_penManager;
-    PenEditorFactory *m_penFactory;
-    QObject *m_object;
-    QMap<QtProperty *, int> m_propertyToMetaPropertyIndex;
+    public:
+        explicit ObjectPropertyEditor(QWidget *parent = nullptr);
+        ~ObjectPropertyEditor();
 
-    bool m_populatingBrowser;
+    public slots:
+        void setObjects(QList<QObject *> objects);
 
-    void populateBrowser(QObject *object, const QMetaObject *metaObject);
+    private:
+        QtVariantPropertyManager *m_manager;
+        QtVariantEditorFactory *m_factory;
+        PenPropertyManager *m_penManager;
+        PenEditorFactory *m_penFactory;
+        QObject *m_object;
+        QMap<QtProperty *, int> m_propertyToMetaPropertyIndex;
+
+        bool m_populatingBrowser;
+
+        void populateBrowser(QObject *object, const QMetaObject *metaObject);
 
 
-private slots:
-    void setObjectPropertyValue(QtProperty *property, const QVariant &value);
-    void setBrowserPropertyValue(QtProperty *property, const QVariant &value);
-};
+    private slots:
+        void setObjectPropertyValue(QtProperty *property, const QVariant &value);
+        void setBrowserPropertyValue(QtProperty *property, const QVariant &value);
+    };
+
+}
 
 #endif // OBJECTPROPERTYEDITOR_H

@@ -6,45 +6,50 @@
 #include <QMap>
 #include <QPen>
 
-class PenPropertyManager : public QtAbstractPropertyManager
+namespace SymbolEditor
 {
-    Q_OBJECT
-public:
-    explicit PenPropertyManager(QObject *parent = nullptr);
-    ~PenPropertyManager();
 
-    QtEnumPropertyManager *subEnumManager() const;
-    QtColorPropertyManager *subColorManager() const;
+    class PenPropertyManager : public QtAbstractPropertyManager
+    {
+        Q_OBJECT
+    public:
+        explicit PenPropertyManager(QObject *parent = nullptr);
+        ~PenPropertyManager();
 
-    QPen value(const QtProperty *property) const;
+        QtEnumPropertyManager *subEnumManager() const;
+        QtColorPropertyManager *subColorManager() const;
 
-public slots:
-    void setValue(QtProperty *property, const QPen &val);
+        QPen value(const QtProperty *property) const;
 
-signals:
-    void valueChanged(QtProperty *property, const QPen &val);
+    public slots:
+        void setValue(QtProperty *property, const QPen &val);
 
-protected:
-    QString valueText(const QtProperty *property) const;
-    virtual void initializeProperty(QtProperty *property);
-    virtual void uninitializeProperty(QtProperty *property);
+    signals:
+        void valueChanged(QtProperty *property, const QPen &val);
 
-private:
-    QtEnumPropertyManager *m_enumManager;
-    QtColorPropertyManager *m_colorManager;
+    protected:
+        QString valueText(const QtProperty *property) const;
+        virtual void initializeProperty(QtProperty *property);
+        virtual void uninitializeProperty(QtProperty *property);
 
-    QMap<const QtProperty *, QtProperty *> m_styleToPenProperty;
-    QMap<const QtProperty *, QtProperty *> m_penToStyleProperty;
-    QMap<const QtProperty *, QtProperty *> m_widthToPenProperty;
-    QMap<const QtProperty *, QtProperty *> m_penToWidthProperty;
-    QMap<const QtProperty *, QtProperty *> m_colorToPenProperty;
-    QMap<const QtProperty *, QtProperty *> m_penToColorProperty;
+    private:
+        QtEnumPropertyManager *m_enumManager;
+        QtColorPropertyManager *m_colorManager;
 
-private slots:
-    void slotEnumChanged(QtProperty *property, int val);
-    void slotColorChanged(QtProperty *property, const QColor &val);
+        QMap<const QtProperty *, QtProperty *> m_styleToPenProperty;
+        QMap<const QtProperty *, QtProperty *> m_penToStyleProperty;
+        QMap<const QtProperty *, QtProperty *> m_widthToPenProperty;
+        QMap<const QtProperty *, QtProperty *> m_penToWidthProperty;
+        QMap<const QtProperty *, QtProperty *> m_colorToPenProperty;
+        QMap<const QtProperty *, QtProperty *> m_penToColorProperty;
 
-    void slotPropertyDestroyed(QtProperty *property);
-};
+    private slots:
+        void slotEnumChanged(QtProperty *property, int val);
+        void slotColorChanged(QtProperty *property, const QColor &val);
+
+        void slotPropertyDestroyed(QtProperty *property);
+    };
+
+}
 
 #endif // PENPROPERTYMANAGER_H

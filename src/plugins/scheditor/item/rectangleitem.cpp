@@ -11,6 +11,8 @@
 //       then use same roundness for both
 // FIXME: Roundness handles are missplaced when the rect is not normal
 
+using namespace SymbolEditor;
+
 RectangleItem::RectangleItem(Item *parent):
     Item(parent), m_rect(QRectF(0, 0, 0, 0)),
     m_xRoundness(33), m_yRoundness(66)

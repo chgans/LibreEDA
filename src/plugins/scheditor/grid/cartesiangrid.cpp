@@ -5,6 +5,7 @@
 #include <QPainterPath>
 #include <cmath>
 
+using namespace SymbolEditor;
 
 CartesianGrid::CartesianGrid():
     Grid(),

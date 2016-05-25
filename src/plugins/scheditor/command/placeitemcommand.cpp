@@ -2,9 +2,11 @@
 #include "scheditordocument.h"
 #include <QLoggingCategory>
 
+// TODO: Private NS?
 Q_DECLARE_LOGGING_CATEGORY(LedaSymbolCommand)
-
 Q_LOGGING_CATEGORY(LedaSymbolCommand, "leda.sch.command")
+
+using namespace SymbolEditor;
 
 UndoCommand::UndoCommand(UndoCommand *parent):
     QUndoCommand(parent), m_document(nullptr)

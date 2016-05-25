@@ -3,6 +3,8 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
+using namespace SymbolEditor;
+
 TaskDockWidget::TaskDockWidget(QWidget *parent, Qt::WindowFlags flags) :
     DockWidget(parent, flags)
 {

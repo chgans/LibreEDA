@@ -4,17 +4,22 @@
 #include "tool/tool.h"
 #include <QtGlobal>
 
-class GraphicsItemAlignTool : public Tool
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-public:
-    explicit GraphicsItemAlignTool(QObject *parent = nullptr);
-    ~GraphicsItemAlignTool();
+    class GraphicsItemAlignTool : public Tool
+    {
+        Q_OBJECT
 
-public slots:
-    void align(Qt::AlignmentFlag alignement);
+    public:
+        explicit GraphicsItemAlignTool(QObject *parent = nullptr);
+        ~GraphicsItemAlignTool();
 
-};
+    public slots:
+        void align(Qt::AlignmentFlag alignement);
+
+    };
+
+}
 
 #endif // GRAPHICSITEMALIGNTOOL_H

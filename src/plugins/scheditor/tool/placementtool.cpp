@@ -12,6 +12,8 @@
 
 #include <QDialog>
 
+using namespace SymbolEditor;
+
 PlacementTool::PlacementTool(QObject *parent):
     InteractiveTool(parent)
 {

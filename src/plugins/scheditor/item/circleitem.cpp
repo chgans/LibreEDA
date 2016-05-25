@@ -2,6 +2,8 @@
 
 #include <QStyleOptionGraphicsItem>
 
+using namespace SymbolEditor;
+
 CircleItem::CircleItem(Item *parent):
     Item(parent),
     m_radius(0.0)

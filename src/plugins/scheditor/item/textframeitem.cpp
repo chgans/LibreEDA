@@ -19,6 +19,8 @@
  *    when enabled/disabled.
  */
 
+using namespace SymbolEditor;
+
 TextFrameItem::TextFrameItem(Item *parent):
     Item(parent),
     m_maskItem(new QGraphicsRectItem(this)),

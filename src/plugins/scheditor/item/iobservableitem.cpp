@@ -1,6 +1,8 @@
 #include "item/iobservableitem.h"
 #include "item/iitemobserver.h"
 
+using namespace SymbolEditor;
+
 QList<IObservableItem *> IItemObserver::observedItems() const
 {
     return m_items;

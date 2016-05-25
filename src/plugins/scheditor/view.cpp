@@ -14,6 +14,9 @@
 #include <QGuiApplication>
 #include <QGridLayout>
 
+using namespace SymbolEditor;
+
+// FIXME: Private NS
 static const int OriginMarkPixelSize = 10;
 static const int CursorMarkPixelSize = 10;
 

@@ -3,24 +3,29 @@
 
 #include "scheditor/dock/dockwidget.h"
 
-class TaskDockWidget : public DockWidget
+namespace SymbolEditor
 {
-    Q_OBJECT
 
-public:
-    explicit TaskDockWidget(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    class TaskDockWidget : public DockWidget
+    {
+        Q_OBJECT
 
-signals:
+    public:
+        explicit TaskDockWidget(QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
-public slots:
-    void setTaskWidgets(const QList<QWidget *> widgets);
+    signals:
 
-private:
-    QList<QWidget *> m_widgets;
+    public slots:
+        void setTaskWidgets(const QList<QWidget *> widgets);
 
-    // DockWidget interface
-public slots:
-    void applySettings(const Settings &settings);
-};
+    private:
+        QList<QWidget *> m_widgets;
+
+        // DockWidget interface
+    public slots:
+        void applySettings(const Settings &settings);
+    };
+
+}
 
 #endif // TASKDOCKWIDGET_H

@@ -4,6 +4,8 @@
 
 #include <QGraphicsPathItem>
 
+using namespace SymbolEditor;
+
 WireItem::WireItem(Item *parent):
     Item(parent)
 {

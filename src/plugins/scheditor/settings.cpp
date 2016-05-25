@@ -1,5 +1,8 @@
 #include "settings.h"
 
+using namespace SymbolEditor;
+
+// TODO: namespace Private
 static const QString AppearanceGroupKey("SchEditor/Appearance");
 static const QString ColorSchemeKey("ColorScheme");
 static const QString RulerEnabledKey("RulerEnabled");
@@ -16,6 +19,7 @@ static const QString SolidCoarseGridLinesEnabledKey("SolidCoarseGridLinesEnabled
 static const QString SolidFineGridLinesEnabledKey("SolidFineGridLinesEnabled");
 static const QString AntiAliasingEnabledKey("AntiAliasingEnabled");
 static const QString HardwareAccelerationEnabledKey("HardwareAccelerationEnabled");
+
 
 void Settings::load(QSettings *settings)
 {

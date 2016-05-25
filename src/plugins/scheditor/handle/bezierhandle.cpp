@@ -8,6 +8,8 @@ Q_LOGGING_CATEGORY(GraphicsBezierHandleLog, "graphics.bezier.handle")
 #define DEBUG() qCDebug(GraphicsBezierHandleLog)
 #define WARNING() qCDebug(GraphicsBezierHandleLog)
 
+using namespace SymbolEditor;
+
 BezierHandle::BezierHandle(Item *parent):
     Handle(parent),
     IItemObserver(),

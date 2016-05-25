@@ -1,6 +1,8 @@
 #include "propertyeditordockwidget.h"
 #include "propertyeditor/itempropertyeditor.h"
 
+using namespace SymbolEditor;
+
 PropertyEditorDockWidget::PropertyEditorDockWidget(QWidget *parent, Qt::WindowFlags flags):
     DockWidget(parent, flags)
 {
