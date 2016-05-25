@@ -1,5 +1,4 @@
-#ifndef SCHSETTINGSPAGE_H
-#define SCHSETTINGSPAGE_H
+#pragma once
 
 #include "core/settings/isettingspage.h"
 
@@ -29,4 +28,3 @@ namespace SymbolEditor
     };
 
 }
-#endif // SCHSETTINGSPAGE_H

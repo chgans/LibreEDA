@@ -1,5 +1,4 @@
-#ifndef GRAPHICSOBJECT_H
-#define GRAPHICSOBJECT_H
+#pragma once
 
 #include <QGraphicsObject>
 #include <QPointF>
@@ -97,5 +96,4 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSOBJECT_H
+#pragma once

@@ -1,5 +1,4 @@
-#ifndef IGRID_H
-#define IGRID_H
+#pragma once
 
 #include <QString>
 #include <QPointF>
@@ -127,5 +126,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // IGRID_H

@@ -1,5 +1,4 @@
-#ifndef GRAPHICSPOLYGONITEM_H
-#define GRAPHICSPOLYGONITEM_H
+#pragma once
 
 #include "item/item.h"
 
@@ -63,5 +62,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSPOLYGONITEM_H

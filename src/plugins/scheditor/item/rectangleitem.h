@@ -1,5 +1,4 @@
-#ifndef GRAPHICSRECTITEM_H
-#define GRAPHICSRECTITEM_H
+#pragma once
 
 #include "item/item.h"
 
@@ -80,5 +79,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSRECTITEM_H

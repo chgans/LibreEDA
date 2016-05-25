@@ -1,5 +1,4 @@
-#ifndef INTERACTIVETOOL_H
-#define INTERACTIVETOOL_H
+#pragma once
 
 #include "tool/tool.h"
 
@@ -42,5 +41,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // INTERACTIVETOOL_H

@@ -1,5 +1,4 @@
-#ifndef GRAPHICSCARTESIANGRID_H
-#define GRAPHICSCARTESIANGRID_H
+#pragma once
 
 #include "grid/grid.h"
 #include <QPointF>
@@ -85,5 +84,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSCARTESIANGRID_H

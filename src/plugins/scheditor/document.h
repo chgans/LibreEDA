@@ -1,5 +1,4 @@
-#ifndef SCHEDITORDOCUMENT_H
-#define SCHEDITORDOCUMENT_H
+#pragma once
 
 #include "core/editormanager/idocument.h"
 #include "xdl/symbol.h"
@@ -48,6 +47,4 @@ namespace SymbolEditor
         bool save(QString *errorString, const QString &fileName);
         void render(QPainter *painter);
     };
-
 }
-#endif // SCHEDITORDOCUMENT_H

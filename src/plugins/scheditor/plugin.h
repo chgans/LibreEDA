@@ -1,5 +1,4 @@
-#ifndef SCHEDITORPLUGIN_H
-#define SCHEDITORPLUGIN_H
+#pragma once
 
 #include "core/extension/iplugin.h"
 
@@ -31,5 +30,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // SCHEDITORPLUGIN_H

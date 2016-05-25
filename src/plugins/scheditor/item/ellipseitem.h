@@ -1,5 +1,4 @@
-#ifndef GRAPHICSELLIPSEITEM_H
-#define GRAPHICSELLIPSEITEM_H
+#pragma once
 
 #include "item/item.h"
 
@@ -67,5 +66,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSELLIPSEITEM_H

@@ -1,5 +1,4 @@
-#ifndef SCHITEMPROPERTYMANAGER_H
-#define SCHITEMPROPERTYMANAGER_H
+#pragma once
 
 #include "qtpropertybrowser/qtpropertybrowser.h"
 #include "qtpropertybrowser/qtpropertymanager.h"
@@ -20,5 +19,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // SCHITEMPROPERTYMANAGER_H

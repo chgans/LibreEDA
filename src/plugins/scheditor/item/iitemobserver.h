@@ -1,5 +1,4 @@
-#ifndef IGRAPHICSITEMOBSERVER_H
-#define IGRAPHICSITEMOBSERVER_H
+#pragma once
 
 #include <QList>
 
@@ -37,5 +36,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // IGRAPHICSITEMOBSERVER_H

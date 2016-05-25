@@ -1,5 +1,4 @@
-#ifndef GRAPHICSCIRCLEITEM_H
-#define GRAPHICSCIRCLEITEM_H
+#pragma once
 
 #include "item/item.h"
 
@@ -56,5 +55,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSCIRCLEITEM_H

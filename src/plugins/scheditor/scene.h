@@ -1,5 +1,4 @@
-#ifndef GRAPHICSSCENE_H
-#define GRAPHICSSCENE_H
+#pragma once
 
 #include <QGraphicsScene>
 #include "document.h"
@@ -31,5 +30,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSSCENE_H

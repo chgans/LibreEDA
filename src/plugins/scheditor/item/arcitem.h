@@ -1,5 +1,4 @@
-#ifndef GRAPHICSARCITEM_H
-#define GRAPHICSARCITEM_H
+#pragma once
 
 #include "item/item.h"
 
@@ -83,5 +82,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSARCITEM_H

@@ -1,5 +1,4 @@
-#ifndef SELECTTOOL_H
-#define SELECTTOOL_H
+#pragma once
 
 #include "tool/interactivetool.h"
 
@@ -65,5 +64,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // SELECTTOOL_H

@@ -1,5 +1,4 @@
-#ifndef PALETTE_H
-#define PALETTE_H
+#pragma once
 
 #include <QObject>
 #include <QColor>
@@ -48,6 +47,4 @@ namespace SymbolEditor
 }
 
 Q_DECLARE_METATYPE(SymbolEditor::Palette::Mode)
-
-#endif // PALETTE_H
 

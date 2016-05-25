@@ -1,5 +1,4 @@
-#ifndef IGRAPHICSOBSERVABLEITEM_H
-#define IGRAPHICSOBSERVABLEITEM_H
+#pragma once
 
 #include <QList>
 
@@ -31,5 +30,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // IGRAPHICSOBSERVABLEITEM_H

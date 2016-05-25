@@ -1,5 +1,4 @@
-#ifndef UNDODOCKWIDGET_H
-#define UNDODOCKWIDGET_H
+#pragma once
 
 #include "scheditor/dock/dockwidget.h"
 
@@ -26,5 +25,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // UNDODOCKWIDGET_H

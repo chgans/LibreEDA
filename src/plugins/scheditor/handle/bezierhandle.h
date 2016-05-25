@@ -1,5 +1,4 @@
-#ifndef GRAPHICSBEZIERHANDLE_H
-#define GRAPHICSBEZIERHANDLE_H
+#pragma once
 
 #include <QGraphicsItem>
 #include "handle/handle.h"
@@ -122,5 +121,3 @@ namespace SymbolEditor
     Q_DECLARE_OPERATORS_FOR_FLAGS(BezierHandle::HandleTypes)
 
 }
-
-#endif // GRAPHICSBEZIERHANDLE_H

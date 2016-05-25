@@ -1,5 +1,4 @@
-#ifndef GRAPHICSEDITOR_H
-#define GRAPHICSEDITOR_H
+#pragma once
 
 #include "core/editormanager/ieditor.h"
 #include "document.h"
@@ -82,4 +81,3 @@ namespace SymbolEditor
         void desactivate(QMainWindow *mainWindow);
     };
 }
-#endif // GRAPHICSEDITOR_H

@@ -1,5 +1,4 @@
-#ifndef PLACEARCTOOL_H
-#define PLACEARCTOOL_H
+#pragma once
 
 #include "tool/placementtool.h"
 
@@ -38,5 +37,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // PLACEARCTOOL_H

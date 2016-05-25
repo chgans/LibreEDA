@@ -1,5 +1,4 @@
-#ifndef GRAPHICSBEZIERITEM_H
-#define GRAPHICSBEZIERITEM_H
+#pragma once
 
 #include "item/item.h"
 
@@ -76,5 +75,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSBEZIERITEM_H

@@ -1,5 +1,4 @@
-#ifndef SCHEDITORSETTINGS_H
-#define SCHEDITORSETTINGS_H
+#pragma once
 
 #include <QtGlobal>
 #include <QSettings>
@@ -32,5 +31,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // SCHEDITORSETTINGS_H

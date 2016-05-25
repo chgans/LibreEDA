@@ -1,5 +1,4 @@
-#ifndef GRAPHICSVIEWRULER_H
-#define GRAPHICSVIEWRULER_H
+#pragma once
 
 #include <QWidget>
 
@@ -49,5 +48,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSVIEWRULER_H

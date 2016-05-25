@@ -1,5 +1,4 @@
-#ifndef GRAPHICSITEMALIGNTOOL_H
-#define GRAPHICSITEMALIGNTOOL_H
+#pragma once
 
 #include "tool/tool.h"
 #include <QtGlobal>
@@ -21,5 +20,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSITEMALIGNTOOL_H

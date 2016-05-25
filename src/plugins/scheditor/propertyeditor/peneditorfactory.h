@@ -1,5 +1,4 @@
-#ifndef PENEDITORFACTORY_H
-#define PENEDITORFACTORY_H
+#pragma once
 
 #include "qtpropertybrowser/qteditorfactory.h"
 #include "penpropertymanager.h"
@@ -29,5 +28,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // PENEDITORFACTORY_H

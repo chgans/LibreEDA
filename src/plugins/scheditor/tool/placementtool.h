@@ -1,5 +1,4 @@
-#ifndef PLACEMENTTOOL_H
-#define PLACEMENTTOOL_H
+#pragma once
 
 #include "tool/interactivetool.h"
 
@@ -82,5 +81,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // PLACEMENTTOOL_H

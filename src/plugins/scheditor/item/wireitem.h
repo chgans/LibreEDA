@@ -1,5 +1,4 @@
-#ifndef GRAPHICSWIREITEM_H
-#define GRAPHICSWIREITEM_H
+#pragma once
 
 #include "item/item.h"
 
@@ -62,5 +61,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSWIREITEM_H

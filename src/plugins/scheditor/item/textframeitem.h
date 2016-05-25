@@ -1,5 +1,4 @@
-#ifndef GRAPHICSTEXTFRAMEITEM_H
-#define GRAPHICSTEXTFRAMEITEM_H
+#pragma once
 
 #include "item/item.h"
 
@@ -90,5 +89,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSTEXTFRAMEITEM_H

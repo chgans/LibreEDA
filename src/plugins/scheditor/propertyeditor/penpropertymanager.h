@@ -1,5 +1,4 @@
-#ifndef PENPROPERTYMANAGER_H
-#define PENPROPERTYMANAGER_H
+#pragma once
 
 #include "qtpropertybrowser/qtpropertymanager.h"
 
@@ -51,5 +50,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // PENPROPERTYMANAGER_H

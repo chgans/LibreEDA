@@ -1,5 +1,4 @@
-#ifndef CLONEITEMTOOL_H
-#define CLONEITEMTOOL_H
+#pragma once
 
 #include "scheditor/tool/interactivetool.h"
 
@@ -33,5 +32,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // CLONEITEMTOOL_H

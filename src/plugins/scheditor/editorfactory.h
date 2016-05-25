@@ -1,5 +1,4 @@
-#ifndef GRAPHICSEDITORFACTORY_H
-#define GRAPHICSEDITORFACTORY_H
+#pragma once
 
 #include "core/editormanager/ieditorfactory.h"
 
@@ -26,5 +25,3 @@ namespace SymbolEditor
         virtual IEditor *createEditor();
     };
 }
-
-#endif // GRAPHICSEDITORFACTORY_H

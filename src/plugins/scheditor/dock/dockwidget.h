@@ -1,5 +1,4 @@
-#ifndef DOCKWIDGET_H
-#define DOCKWIDGET_H
+#pragma once
 
 #include <QDockWidget>
 
@@ -19,5 +18,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // DOCKWIDGET_H

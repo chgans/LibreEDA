@@ -1,5 +1,4 @@
-#ifndef OBJECTPROPERTYEDITOR_H
-#define OBJECTPROPERTYEDITOR_H
+#pragma once
 
 #include "qtpropertybrowser/qttreepropertybrowser.h"
 
@@ -45,5 +44,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // OBJECTPROPERTYEDITOR_H

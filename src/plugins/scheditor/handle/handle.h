@@ -1,5 +1,4 @@
-#ifndef ABSTRACTGRAPHICSHANDLE_H
-#define ABSTRACTGRAPHICSHANDLE_H
+#pragma once
 
 #include <QGraphicsPathItem>
 #include "item/iobservableitem.h"
@@ -76,5 +75,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // ABSTRACTGRAPHICSHANDLE_H

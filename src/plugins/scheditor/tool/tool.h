@@ -1,5 +1,4 @@
-#ifndef GRAPHICSTOOL_H
-#define GRAPHICSTOOL_H
+#pragma once
 
 #include <QObject>
 
@@ -55,5 +54,3 @@ namespace SymbolEditor
 }
 
 Q_DECLARE_METATYPE(SymbolEditor::Tool *)
-
-#endif // GRAPHICSTOOL_H

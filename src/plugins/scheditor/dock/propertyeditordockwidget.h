@@ -1,5 +1,4 @@
-#ifndef PROPERTYEDITORDOCKWIDGET_H
-#define PROPERTYEDITORDOCKWIDGET_H
+#pragma once
 
 #include "scheditor/dock/dockwidget.h"
 
@@ -32,5 +31,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // PROPERTYEDITORDOCKWIDGET_H

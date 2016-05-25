@@ -1,5 +1,4 @@
-#ifndef MOVEITEMTOOL_H
-#define MOVEITEMTOOL_H
+#pragma once
 
 #include "scheditor/tool/interactivetool.h"
 
@@ -28,5 +27,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // MOVEITEMTOOL_H

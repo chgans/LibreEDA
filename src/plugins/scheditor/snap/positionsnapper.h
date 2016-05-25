@@ -1,5 +1,4 @@
-#ifndef POSITIONSNAPPER_H
-#define POSITIONSNAPPER_H
+#pragma once
 
 #include <QPointF>
 #include <QPainterPath>
@@ -155,5 +154,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // POSITIONSNAPPER_H

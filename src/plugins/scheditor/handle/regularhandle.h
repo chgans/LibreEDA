@@ -1,5 +1,4 @@
-#ifndef GRAPHICSREGULARHANDLE_H
-#define GRAPHICSREGULARHANDLE_H
+#pragma once
 
 #include "handle/handle.h"
 #include <QGraphicsPathItem>
@@ -16,5 +15,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSREGULARHANDLE_H

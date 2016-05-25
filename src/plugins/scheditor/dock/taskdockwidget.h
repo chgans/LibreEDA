@@ -1,5 +1,4 @@
-#ifndef TASKDOCKWIDGET_H
-#define TASKDOCKWIDGET_H
+#pragma once
 
 #include "scheditor/dock/dockwidget.h"
 
@@ -27,5 +26,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // TASKDOCKWIDGET_H

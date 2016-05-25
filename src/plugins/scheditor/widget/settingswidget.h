@@ -1,5 +1,4 @@
-#ifndef SETTINGSWIDGET_H
-#define SETTINGSWIDGET_H
+#pragma once
 
 #include <QWidget>
 #include <QMap>
@@ -38,5 +37,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // SETTINGSWIDGET_H

@@ -1,5 +1,4 @@
-#ifndef PLACEITEMCOMMAND_H
-#define PLACEITEMCOMMAND_H
+#pragma once
 
 #include <QUndoCommand>
 #include <QPen>
@@ -361,5 +360,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // PLACEITEMCOMMAND_H

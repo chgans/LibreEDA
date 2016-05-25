@@ -1,5 +1,4 @@
-#ifndef DRAGSELECTTOOL_H
-#define DRAGSELECTTOOL_H
+#pragma once
 
 #include "scheditor/tool/interactivetool.h"
 
@@ -28,5 +27,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // DRAGSELECTTOOL_H

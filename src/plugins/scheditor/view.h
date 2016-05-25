@@ -1,5 +1,4 @@
-#ifndef GRAPHICSVIEW_H
-#define GRAPHICSVIEW_H
+#pragma once
 
 #include <QGraphicsView>
 #include "palette.h"
@@ -161,5 +160,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // GRAPHICSVIEW_H

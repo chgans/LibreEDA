@@ -1,5 +1,4 @@
-#ifndef PLACEPOLYGONTOOL_H
-#define PLACEPOLYGONTOOL_H
+#pragma once
 
 #include "tool/placementtool.h"
 
@@ -38,5 +37,3 @@ namespace SymbolEditor
     };
 
 }
-
-#endif // PLACEPOLYGONTOOL_H
