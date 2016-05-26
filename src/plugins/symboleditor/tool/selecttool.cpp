@@ -7,7 +7,7 @@
 #include "item/item.h"
 #include "handle/handle.h"
 #include "propertyeditor/itempropertyeditor.h"
-#include "command/placeitemcommand.h"
+#include "command/command.h"
 
 #include <QMouseEvent>
 #include <QKeyEvent>

@@ -14,7 +14,7 @@
 #include "tool/placepolygontool.h"
 #include "tool/placearctool.h"
 
-#include "command/placeitemcommand.h"
+#include "command/command.h"
 
 #include "snap/positionsnapper.h"
 

@@ -1,6 +1,6 @@
 #include "tool/placeellipsetool.h"
 #include "item/ellipseitem.h"
-#include "command/placeitemcommand.h"
+#include "command/placeellipsecommand.h"
 
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"

@@ -1,7 +1,7 @@
 #include "cloneitemtool.h"
 #include "view/scene.h"
 #include "item/item.h"
-#include "command/placeitemcommand.h"
+#include "command/clonecommand.h"
 
 #include <QMouseEvent>
 #include <QGraphicsColorizeEffect>

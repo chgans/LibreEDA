@@ -3,7 +3,7 @@
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
 #include "handle/handle.h"
-#include "command/placeitemcommand.h"
+#include "command/placerectanglecommand.h"
 
 #include <QAction>
 

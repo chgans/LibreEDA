@@ -1,6 +1,6 @@
 #include "tool/placepolygontool.h"
 #include "item/polygonitem.h"
-#include "command/placeitemcommand.h"
+#include "command/placepolygoncommand.h"
 
 #include "utils/widgets/pensettingswidget.h"
 #include "utils/widgets/brushsettingswidget.h"
