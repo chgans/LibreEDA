@@ -19,7 +19,6 @@
 #include "snap/positionsnapper.h"
 
 #include "dock/taskdockwidget.h"
-#include "dock/propertyeditordockwidget.h"
 #include "dock/undodockwidget.h"
 
 #include "core/core.h"

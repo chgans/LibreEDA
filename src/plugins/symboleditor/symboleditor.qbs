@@ -35,8 +35,6 @@ LedaPlugin {
         "dock/dockwidget.h",
         "dock/taskdockwidget.cpp",
         "dock/taskdockwidget.h",
-        "dock/propertyeditordockwidget.cpp",
-        "dock/propertyeditordockwidget.h",
         "dock/undodockwidget.cpp",
         "dock/undodockwidget.h",
         "document.cpp",
