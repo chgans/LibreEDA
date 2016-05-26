@@ -1,47 +1,52 @@
 #include "itempropertymanager.h"
 
+#include <qtpropertybrowser/qtpropertymanager.h>
+#include <qtpropertybrowser/qteditorfactory.h>
+
 using namespace SymbolEditor;
 
 ItemPropertyManager::ItemPropertyManager(QObject *parent):
-    QtAbstractPropertyManager(parent)
+    QObject(parent)
 {
     m_realPropertyManager = new QtDoublePropertyManager(this);
+    connect(m_realPropertyManager, &QtDoublePropertyManager::valueChanged,
+            this, &ItemPropertyManager::realValueChanged);
     m_boolPropertyManager = new QtBoolPropertyManager(this);
-
-    // opacity: real [0:0.1:1]
-    auto opacityProperty = m_realPropertyManager->addProperty("Opacity");
-    m_realPropertyManager->setMinimum(opacityProperty, 0.0);
-    m_realPropertyManager->setMaximum(opacityProperty, 1.0);
-    m_realPropertyManager->setSingleStep(opacityProperty, 0.1);
-
-    // rotation: real [0:0.1:360]
-    auto rotationProperty = m_realPropertyManager->addProperty("Rotation");
-    m_realPropertyManager->setMinimum(rotationProperty, 0.0);
-    m_realPropertyManager->setMaximum(rotationProperty, 360.0);
-    m_realPropertyManager->setSingleStep(rotationProperty, 0.1);
-
-    // zValue: real ?
-    auto zValueProperty = m_realPropertyManager->addProperty("Z Value");
-    m_realPropertyManager->setMinimum(zValueProperty, 0.0);
-    //m_realPropertyManager->setMaximum(zValueProperty, 0.0);
-    //m_realPropertyManager->setSingleStep(zValueProperty, 0.0);
-
-    // locked: bool
-    auto lockedProperty = m_boolPropertyManager->addProperty("Locked");
-
-    // visible: bool
-    auto visibleProperty = m_boolPropertyManager->addProperty("Visible");
-
-    // X Mirrored: bool
-    auto xMirroredProperty = m_boolPropertyManager->addProperty("X Mirrored");
-
-    // Y Mirrored: bool
-    auto yMirroreProperty = m_boolPropertyManager->addProperty("Y Mirrored");
-
-    // TBD: Pen and brush (per item)
+    connect(m_boolPropertyManager, &QtBoolPropertyManager::valueChanged,
+            this, &ItemPropertyManager::boolValueChanged);
 }
 
 ItemPropertyManager::~ItemPropertyManager()
 {
 
+}
+
+void ItemPropertyManager::setBrowserFactories(QtAbstractPropertyBrowser *browser)
+{
+    browser->setFactoryForManager(m_realPropertyManager, new QtDoubleSpinBoxFactory);
+    browser->setFactoryForManager(m_boolPropertyManager, new QtCheckBoxFactory);
+}
+
+QtProperty *ItemPropertyManager::addRealProperty(const QString &name, qreal start, qreal step, qreal end)
+{
+    auto property = m_realPropertyManager->addProperty(name);
+    m_realPropertyManager->setMinimum(property, start);
+    m_realPropertyManager->setSingleStep(property, step);
+    m_realPropertyManager->setMaximum(property, end - step);
+    return property;
+}
+
+QtProperty *ItemPropertyManager::addBoolProperty(const QString &name)
+{
+    return m_boolPropertyManager->addProperty(name);
+}
+
+void ItemPropertyManager::setPropertyValue(QtProperty *property, qreal value)
+{
+    m_realPropertyManager->setValue(property, value);
+}
+
+void ItemPropertyManager::setPropertyValue(QtProperty *property, bool value)
+{
+    m_boolPropertyManager->setValue(property, value);
 }

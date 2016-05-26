@@ -1,27 +1,31 @@
 #pragma once
 
-#include <qtpropertybrowser/qttreepropertybrowser.h>
+#include <QWidget>
 
 class QtDoublePropertyManager;
 class QtBoolPropertyManager;
 class QtGroupPropertyManager;
+class QtAbstractPropertyBrowser;
+class QtProperty;
 
 namespace SymbolEditor
 {
 
     class Item;
+    class ItemPropertyManager;
+    class ItemPropertyAdapter;
 
-    class ItemPropertyEditor : public QtTreePropertyBrowser
+    class ItemPropertyEditor : public QWidget
     {
         Q_OBJECT
     public:
         explicit ItemPropertyEditor(QWidget *parent = nullptr);
         virtual ~ItemPropertyEditor();
 
-        const Item *item() const;
+        Item *item() const;
 
     public slots:
-        void setItem(const Item *item);
+        void setItem(Item *item);
 
     signals:
         void opacityChanged(qreal opacity);
@@ -44,6 +48,10 @@ namespace SymbolEditor
         void onBooleanPropertyChanged(QtProperty *property);
 
     private:
+        QtAbstractPropertyBrowser *m_browser;
+        ItemPropertyManager *m_manager;
+        ItemPropertyAdapter *m_adapter;
+
         QtGroupPropertyManager *m_groupPropertyManager;
         QtDoublePropertyManager *m_realPropertyManager;
         QtBoolPropertyManager *m_booleanPropertyManager;
@@ -57,7 +65,7 @@ namespace SymbolEditor
         QtProperty *m_xMirroredProperty;
         QtProperty *m_yMirroredProperty;
 
-        const Item *m_item;
+        Item *m_item;
     };
 
 }

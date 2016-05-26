@@ -96,4 +96,3 @@ namespace SymbolEditor
     };
 
 }
-#pragma once

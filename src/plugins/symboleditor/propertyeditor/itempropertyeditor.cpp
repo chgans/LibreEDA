@@ -1,4 +1,6 @@
 #include "itempropertyeditor.h"
+#include "itempropertyadapter.h"
+#include "itempropertymanager.h"
 #include "item/item.h"
 
 // See https://github.com/qtproject/qttools/blob/dev/src/designer/src/
@@ -7,14 +9,32 @@
 // - components/propertyeditor/propertyeditor.h
 #include <qtpropertybrowser/qtpropertymanager.h>
 #include <qtpropertybrowser/qteditorfactory.h>
+#include <qtpropertybrowser/qttreepropertybrowser.h>
+#include <qtpropertybrowser/qtbuttonpropertybrowser.h>
+#include <qtpropertybrowser/qtgroupboxpropertybrowser.h>
+
+#include <QVBoxLayout>
+
 
 using namespace SymbolEditor;
 
-ItemPropertyEditor::ItemPropertyEditor(QWidget *parent) :
-    QtTreePropertyBrowser (parent), m_item(nullptr)
+ItemPropertyEditor::ItemPropertyEditor(QWidget *parent):
+    QWidget(parent), m_item(nullptr)
 {
-    setupPropertyManagers();
-    setupProperties();
+    setLayout(new QVBoxLayout);
+    //m_browser = new QtTreePropertyBrowser();
+    m_browser = new QtGroupBoxPropertyBrowser();
+    layout()->addWidget(m_browser);
+    m_manager = new ItemPropertyManager(this);
+    m_manager->setBrowserFactories(m_browser);
+    m_adapter = new ItemPropertyAdapter(this);
+    m_adapter->setManager(m_manager);
+
+    //setupPropertyManagers();
+    //setupProperties();
+
+    // TODO: Use object pool to collect ItemPropertyAdapter objects
+
 }
 
 ItemPropertyEditor::~ItemPropertyEditor()
@@ -22,11 +42,22 @@ ItemPropertyEditor::~ItemPropertyEditor()
 
 }
 
-const Item *ItemPropertyEditor::item() const
+Item *ItemPropertyEditor::item() const
 {
     return m_item;
 }
 
+void ItemPropertyEditor::setItem(Item *item)
+{
+    m_item = item;
+    m_adapter->setItem(m_item);
+    for (auto property: m_adapter->properties())
+    {
+        m_browser->addProperty(property);
+    }
+}
+
+#if 0
 // TODO: based on item type, delegate additional property groups to be added and update of tehir values
 void ItemPropertyEditor::setItem(const Item *item)
 {
@@ -41,19 +72,23 @@ void ItemPropertyEditor::setItem(const Item *item)
 
     if (m_item == nullptr)
     {
-        addProperty(m_itemGroupProperty);
+        m_browser->addProperty(m_itemGroupProperty);
     }
 
     m_item = item;
 
     if (m_item == nullptr)
     {
-        removeProperty(m_itemGroupProperty);
+        m_browser->removeProperty(m_itemGroupProperty);
         return;
     }
 
     updatePropertyManagerValues();
+
+    // NEW
+    // m_adpaterMap[item->type()]->setItem();
 }
+#endif
 
 void ItemPropertyEditor::updatePropertyManagerValues()
 {
@@ -147,13 +182,20 @@ void ItemPropertyEditor::setupProperties()
     m_yMirroredProperty = m_booleanPropertyManager->addProperty("Y Mirrored");
     m_itemGroupProperty->addSubProperty(m_yMirroredProperty);
     // TBD: Pen and brush (per item)
+
+
+    // NEW
+    // m_adpater->setupPropertyManager();
 }
 
 void ItemPropertyEditor::setupPropertyManagers()
 {
     m_groupPropertyManager = new QtGroupPropertyManager(this);
     m_realPropertyManager = new QtDoublePropertyManager(this);
-    setFactoryForManager(m_realPropertyManager, new QtDoubleSpinBoxFactory);
+    m_browser->setFactoryForManager(m_realPropertyManager, new QtDoubleSpinBoxFactory);
     m_booleanPropertyManager = new QtBoolPropertyManager(this);
-    setFactoryForManager(m_booleanPropertyManager, new QtCheckBoxFactory);
+    m_browser->setFactoryForManager(m_booleanPropertyManager, new QtCheckBoxFactory);
+
+    // NEW
+    // m_manager->setupPropertyBrowser(m_browser);
 }

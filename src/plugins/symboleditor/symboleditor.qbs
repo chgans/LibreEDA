@@ -79,6 +79,8 @@ LedaPlugin {
         "item/wireitem.h",
         "plugin.cpp",
         "plugin.h",
+        "propertyeditor/itempropertyadapter.cpp",
+        "propertyeditor/itempropertyadapter.h",
         "propertyeditor/itempropertyeditor.cpp",
         "propertyeditor/itempropertyeditor.h",
         "propertyeditor/itempropertymanager.cpp",

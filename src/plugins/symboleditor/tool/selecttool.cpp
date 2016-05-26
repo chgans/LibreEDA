@@ -253,6 +253,11 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (m_currentTool == nullptr)
     {
+        auto items = scene()->selectedObjects();
+        if (!items.isEmpty())
+        {
+            m_itemPropertyEditor->setItem(items.first());
+        }
         return;
     }
 
@@ -262,6 +267,12 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
     else
     {
         m_currentTool->mouseReleaseEvent(event);
+
+        auto items = scene()->selectedObjects();
+        if (!items.isEmpty())
+        {
+            m_itemPropertyEditor->setItem(items.first());
+        }
     }
 
 #if 0
