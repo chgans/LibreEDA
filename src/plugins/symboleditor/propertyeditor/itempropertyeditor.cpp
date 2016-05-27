@@ -1,6 +1,7 @@
 #include "itempropertyeditor.h"
 #include "itempropertyadapter.h"
 #include "itempropertymanager.h"
+#include "circlepropertyadapter.h"
 #include "item/item.h"
 
 // See https://github.com/qtproject/qttools/blob/dev/src/designer/src/
@@ -22,12 +23,14 @@ ItemPropertyEditor::ItemPropertyEditor(QWidget *parent):
     QWidget(parent), m_item(nullptr)
 {
     setLayout(new QVBoxLayout);
-    //m_browser = new QtTreePropertyBrowser();
-    m_browser = new QtGroupBoxPropertyBrowser();
+    // TODO: setBrowser();
+    m_browser = new QtTreePropertyBrowser();
     layout()->addWidget(m_browser);
+    // TODO: setManager();
     m_manager = new ItemPropertyManager(this);
     m_manager->setBrowserFactories(m_browser);
-    m_adapter = new ItemPropertyAdapter(this);
+    // TODO: setAdapterForItemType();
+    m_adapter = new CirclePropertyAdapter(this);
     m_adapter->setManager(m_manager);
 
     //setupPropertyManagers();

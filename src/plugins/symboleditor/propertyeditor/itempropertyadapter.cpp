@@ -61,23 +61,50 @@ void ItemPropertyAdapter::setItem(Item *item)
     }
 }
 
-QSet<QtProperty *> ItemPropertyAdapter::properties() const
+QList<QtProperty *> ItemPropertyAdapter::properties() const
 {
-    QSet<QtProperty *> properties;
-    properties << m_xMirrored << m_yMirrored;
+    QList<QtProperty *> properties;
+    properties << m_pos
+               << m_zValue
+               << m_opacity
+               << m_rotation
+               << m_xMirrored
+               << m_yMirrored
+               << m_locked
+               << m_visible
+               << m_pen;
     return properties;
+}
+
+Item *ItemPropertyAdapter::item() const
+{
+    return m_item;
 }
 
 void ItemPropertyAdapter::createProperties(ItemPropertyManager *manager)
 {
+    m_pos = manager->addPointProperty("Position");
+    m_zValue = manager->addRealProperty("Z order", 0, 0.1, 100); // FIXME
+    m_opacity = manager->addRealProperty("Opacity", 0, 0.1, 1);
+    m_rotation = manager->addRealProperty("Rotation", 0, 0.1, 360);
     m_xMirrored = manager->addBoolProperty("X-Mirrored");
     m_yMirrored = manager->addBoolProperty("Y-Mirrored");
+    m_locked = manager->addBoolProperty("Locked");
+    m_visible = manager->addBoolProperty("Visible");
+    m_pen = manager->addPenProperty("Pen");
 }
 
 void ItemPropertyAdapter::updateProperties(ItemPropertyManager *manager)
 {
+    manager->setPropertyValue(m_pos, m_item->pos());
+    manager->setPropertyValue(m_zValue, m_item->zValue());
+    manager->setPropertyValue(m_opacity, m_item->opacity());
+    manager->setPropertyValue(m_rotation, m_item->rotation());
     manager->setPropertyValue(m_xMirrored, m_item->isXMirrored());
     manager->setPropertyValue(m_yMirrored, m_item->isYMirrored());
+    manager->setPropertyValue(m_locked, !m_item->isEnabled());
+    manager->setPropertyValue(m_visible, m_item->isVisible());
+    manager->setPropertyValue(m_pen, m_item->pen());
 }
 
 void ItemPropertyAdapter::deleteProperties(ItemPropertyManager *manager)
@@ -91,6 +118,11 @@ void ItemPropertyAdapter::onBoolValueChanged(QtProperty *property, bool value)
 }
 
 void ItemPropertyAdapter::onRealValueChanged(QtProperty *property, qreal value)
+{
+    // FIXME: emit command
+}
+
+void ItemPropertyAdapter::onPenValueChanged(QtProperty *property, qreal value)
 {
     // FIXME: emit command
 }

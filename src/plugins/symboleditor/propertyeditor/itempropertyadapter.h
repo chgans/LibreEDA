@@ -21,7 +21,7 @@ namespace SymbolEditor
         void setManager(ItemPropertyManager *manager);
         void setItem(Item *item);
 
-        QSet<QtProperty *> properties() const;
+        virtual QList<QtProperty *> properties() const;
 
     signals:
         void taskCompleted(UndoCommand *command);
@@ -29,6 +29,7 @@ namespace SymbolEditor
     public slots:
 
     protected:
+        Item *item() const;
         virtual void createProperties(ItemPropertyManager *manager);
         virtual void updateProperties(ItemPropertyManager *manager);
         virtual void deleteProperties(ItemPropertyManager *manager);
@@ -36,13 +37,21 @@ namespace SymbolEditor
     protected slots:
         void onBoolValueChanged(QtProperty *property, bool value);
         void onRealValueChanged(QtProperty *property, qreal value);
+        void onPenValueChanged(QtProperty *property, qreal value);
 
     private:
         ItemPropertyManager *m_manager;
         Item *m_item;
 
+        QtProperty *m_pos;
+        QtProperty *m_zValue;
+        QtProperty *m_opacity;
+        QtProperty *m_rotation;
         QtProperty *m_xMirrored;
         QtProperty *m_yMirrored;
+        QtProperty *m_locked;
+        QtProperty *m_visible;
+        QtProperty *m_pen;
     };
 
 }

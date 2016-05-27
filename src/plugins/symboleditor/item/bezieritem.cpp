@@ -1,7 +1,5 @@
 #include "item/bezieritem.h"
 #include "handle/bezierhandle.h"
-#include "view/scene.h"
-#include "view/view.h"
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>

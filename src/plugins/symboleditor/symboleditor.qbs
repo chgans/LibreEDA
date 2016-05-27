@@ -79,6 +79,8 @@ LedaPlugin {
         "item/wireitem.h",
         "plugin.cpp",
         "plugin.h",
+        "propertyeditor/circlepropertyadapter.cpp",
+        "propertyeditor/circlepropertyadapter.h",
         "propertyeditor/itempropertyadapter.cpp",
         "propertyeditor/itempropertyadapter.h",
         "propertyeditor/itempropertyeditor.cpp",
