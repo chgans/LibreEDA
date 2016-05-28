@@ -13,14 +13,14 @@ void TranslateCommand::undo()
 {
     for (quint64 id : itemIdList)
     {
-        auto item = document()->drawingItem(id);
+        auto item = document()->item(id);
         if (item == nullptr)
         {
             warnItemNotFound("Translate", id);
             continue;
         }
         item->position -= amount;
-        document()->updateDrawingItem(id);
+        document()->updateItem(id);
     }
 }
 
@@ -28,14 +28,14 @@ void TranslateCommand::redo()
 {
     for (quint64 id : itemIdList)
     {
-        auto item = document()->drawingItem(id);
+        auto item = document()->item(id);
         if (item == nullptr)
         {
             warnItemNotFound("Translate", id);
             continue;
         }
         item->position += amount;
-        document()->updateDrawingItem(id);
+        document()->updateItem(id);
     }
 
     setText(QString("Move %1 item").arg(itemIdList.count()));

@@ -98,16 +98,16 @@ bool Editor::open(QString *errorString, const QString &fileName)
         return false;
     }
 
-    for (quint64 id : m_document->drawingItemIdList())
+    for (quint64 id : m_document->itemIdList())
     {
-        m_scene->addDocumentItem(id, m_document->drawingItem(id));
+        m_scene->addDocumentItem(id, m_document->item(id));
     }
 
-    connect(m_document, &Document::drawingItemAdded,
+    connect(m_document, &Document::itemAdded,
             m_scene, &Scene::addDocumentItem);
-    connect(m_document, &Document::drawingItemChanged,
+    connect(m_document, &Document::itemChanged,
             m_scene, &Scene::updateDocumentItem);
-    connect(m_document, &Document::drawingItemRemoved,
+    connect(m_document, &Document::itemRemoved,
             m_scene, &Scene::removeDocumentItem);
 
     m_undoDockWidget->setStack(m_undoStack);

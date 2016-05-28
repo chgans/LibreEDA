@@ -13,13 +13,13 @@ void CloneCommand::undo()
 {
     for (quint64 id : cloneIdList)
     {
-        auto clone = document()->drawingItem(id);
+        auto clone = document()->item(id);
         if (clone == nullptr)
         {
             warnItemNotFound("Clone", id);
             continue;
         }
-        document()->removeDrawingItem(id);
+        document()->removeItem(id);
     }
 }
 
@@ -29,16 +29,16 @@ void CloneCommand::redo()
 
     for (quint64 id : itemIdList)
     {
-        auto item = document()->drawingItem(id);
+        auto item = document()->item(id);
         if (item == nullptr)
         {
             warnItemNotFound("Clone", id);
             continue;
         }
         auto clone = item->clone();
-        quint64 cloneId = document()->addDrawingItem(clone);
+        quint64 cloneId = document()->addItem(clone);
         clone->position += translation;
-        document()->updateDrawingItem(cloneId);
+        document()->updateItem(cloneId);
         cloneIdList.append(cloneId);
     }
 

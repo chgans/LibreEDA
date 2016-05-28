@@ -15,26 +15,33 @@ namespace SymbolEditor
         Q_OBJECT
     public:
         typedef xdl::symbol::Item Item;
+        typedef xdl::symbol::ItemGroup ItemGroup;
+
         explicit Document(QObject *parent = nullptr);
 
         bool load(QString *errorString, const QString &fileName);
 
         QString symbolName() const;
         QString symbolLabel() const;
-        const Item *drawingItem(quint64 id) const;
-        Item *drawingItem(quint64 id);
-        QList<quint64> drawingItemIdList() const;
+        const Item *item(quint64 id) const;
+        Item *item(quint64 id);
+        QList<quint64> itemIdList() const;
 
-        quint64 addDrawingItem(Item *item); // takes ownership
-        void replaceDrawingItem(quint64 id, Item *item); // takes ownership
-        void removeDrawingItem(quint64 id);
-        void updateDrawingItem(quint64
+        quint64 addItem(Item *item); // takes ownership
+        void replaceItem(quint64 id, Item *item); // takes ownership
+        void removeItem(quint64 id);
+        void updateItem(quint64
                                id); // FIXME: this is actually use to notify that item have been changed externally
+        void setItemProperty(quint64 id, const QString &name, const QVariant &value);
 
     signals:
-        void drawingItemAdded(quint64 id, const Item *item);
-        void drawingItemChanged(quint64 id, const Item *item);
-        void drawingItemRemoved(quint64 id);
+        void itemAdded(quint64 id, const Item *item);
+        void itemChanged(quint64 id, const Item *item);
+        void itemRemoved(quint64 id);
+
+        void itemGroupCreated(quint64 id, const ItemGroup *group);
+        void itemGroupDestroyed(quint64 id, const ItemGroup *group); // TBD: children list
+        void itemParentChanged(quint64 id, const Item *item); /// TBD: parent changes (not grouping)
 
     private:
         QAtomicInteger<quint64> m_itemIndex;

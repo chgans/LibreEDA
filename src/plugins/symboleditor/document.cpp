@@ -38,13 +38,13 @@ bool Document::load(QString *errorString, const QString &fileName)
     m_drawingItemMap.clear();
     for (auto item : symbol->drawingItems)
     {
-        addDrawingItem(item);
+        addItem(item);
     }
 
     return true;
 }
 
-const xdl::symbol::Item *Document::drawingItem(quint64 id) const
+const xdl::symbol::Item *Document::item(quint64 id) const
 {
     if (!m_drawingItemMap.contains(id))
     {
@@ -53,7 +53,7 @@ const xdl::symbol::Item *Document::drawingItem(quint64 id) const
     return m_drawingItemMap.value(id);
 }
 
-Document::Item *Document::drawingItem(quint64 id)
+Document::Item *Document::item(quint64 id)
 {
     if (!m_drawingItemMap.contains(id))
     {
@@ -62,21 +62,21 @@ Document::Item *Document::drawingItem(quint64 id)
     return m_drawingItemMap.value(id);
 }
 
-QList<quint64> Document::drawingItemIdList() const
+QList<quint64> Document::itemIdList() const
 {
     return m_drawingItemMap.keys();
 }
 
-quint64 Document::addDrawingItem(Document::Item *item)
+quint64 Document::addItem(Document::Item *item)
 {
     m_itemIndex++;
     m_drawingItemMap.insert(m_itemIndex, item);
-    emit drawingItemAdded(m_itemIndex, item);
+    emit itemAdded(m_itemIndex, item);
     setModified(true);
     return m_itemIndex;
 }
 
-void Document::replaceDrawingItem(quint64 id, Document::Item *item)
+void Document::replaceItem(quint64 id, Document::Item *item)
 {
     if (!m_drawingItemMap.contains(id))
     {
@@ -86,12 +86,12 @@ void Document::replaceDrawingItem(quint64 id, Document::Item *item)
 
     auto oldItem = m_drawingItemMap.value(id);
     m_drawingItemMap.insert(id, item);
-    emit drawingItemChanged(id, item);
+    emit itemChanged(id, item);
     setModified(true);
     delete oldItem;
 }
 
-void Document::removeDrawingItem(quint64 id)
+void Document::removeItem(quint64 id)
 {
     if (!m_drawingItemMap.contains(id))
     {
@@ -100,12 +100,12 @@ void Document::removeDrawingItem(quint64 id)
 
     auto item = m_drawingItemMap.value(id);
     m_drawingItemMap.remove(id);
-    emit drawingItemRemoved(id);
+    emit itemRemoved(id);
     setModified(true);
     delete item;
 }
 
-void Document::updateDrawingItem(quint64 id)
+void Document::updateItem(quint64 id)
 {
     if (!m_drawingItemMap.contains(id))
     {
@@ -113,7 +113,7 @@ void Document::updateDrawingItem(quint64 id)
     }
 
     auto item = m_drawingItemMap.value(id);
-    emit drawingItemChanged(id, item);
+    emit itemChanged(id, item);
     setModified(true);
 }
 

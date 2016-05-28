@@ -11,7 +11,7 @@ PlacementCommand::PlacementCommand(UndoCommand *parent):
 
 void PlacementCommand::removeItem()
 {
-    document()->removeDrawingItem(itemId);
+    document()->removeItem(itemId);
 }
 
 void PlacementCommand::placeItem(xdl::symbol::Item *item)
@@ -26,5 +26,5 @@ void PlacementCommand::placeItem(xdl::symbol::Item *item)
     item->visible = visible;
     item->xMirrored = xMirrored;
     item->yMirrored = yMirrored;
-    itemId = document()->addDrawingItem(item);
+    itemId = document()->addItem(item);
 }
