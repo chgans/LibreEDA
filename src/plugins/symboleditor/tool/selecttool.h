@@ -7,6 +7,8 @@ namespace SymbolEditor
 
     class Handle;
     class ItemPropertyEditor;
+    class ObjectInspectorView;
+    class ObjectInspectorModel;
     class MoveItemTool;
     class CloneItemTool;
     class DragSelectTool;
@@ -41,6 +43,8 @@ namespace SymbolEditor
         InteractiveTool *m_currentTool;
 
         Handle *m_handle;
+        ObjectInspectorModel *m_objectInspectorModel;
+        ObjectInspectorView *m_objectInspectorView;
         ItemPropertyEditor *m_itemPropertyEditor;
         QList<QWidget *> m_defaultTaskWidgets;
 

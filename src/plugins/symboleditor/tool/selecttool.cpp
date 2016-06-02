@@ -2,16 +2,23 @@
 #include "tool/moveitemtool.h"
 #include "tool/cloneitemtool.h"
 #include "tool/dragselecttool.h"
+
 #include "view/scene.h"
 #include "view/view.h"
 #include "item/item.h"
 #include "handle/handle.h"
+
 #include "propertyeditor/itempropertyeditor.h"
+#include "objectinspector/objectinspectorview.h"
+#include "objectinspector/objectinspectormodel.h"
+#include "objectinspector/iconitemdelegate.h"
+
 #include "command/command.h"
 
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QAction>
+#include <QHeaderView>
 
 using namespace SymbolEditor;
 
@@ -25,6 +32,31 @@ SelectTool::SelectTool(QObject *parent):
                                   "select", nullptr);
     setAction(action);
     setToolGroup("interactive-tools");
+
+    m_objectInspectorModel = new ObjectInspectorModel(this);
+    m_objectInspectorView = new ObjectInspectorView;
+    m_defaultTaskWidgets << m_objectInspectorView;
+    // Fake data for now
+    m_objectInspectorModel->addTopLevelItem(12, "Rectangle", QIcon(":/icons/tool/graphicsrecttool.svg"));
+    m_objectInspectorModel->addTopLevelItem(16, "Rectangle", QIcon(":/icons/tool/graphicsrecttool.svg"));
+    m_objectInspectorModel->addTopLevelItem(16, "Group", QIcon());
+    m_objectInspectorModel->addChildItem(16, 28, "Circle", QIcon(":/icons/tool/graphicscircletool.svg"));
+    m_objectInspectorModel->addChildItem(16, 28, "Circle", QIcon(":/icons/tool/graphicscircletool.svg"));
+    m_objectInspectorModel->addChildItem(16, 28, "Circle", QIcon(":/icons/tool/graphicscircletool.svg"));
+    // Setup view
+    m_objectInspectorView->setModel(m_objectInspectorModel);
+    m_objectInspectorView->header()->setStretchLastSection(false);
+    m_objectInspectorView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    m_objectInspectorView->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    m_objectInspectorView->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    auto visibilityDelagate =  new IconItemDelegate(this);
+    visibilityDelagate->activeIconName = "object-visible";
+    visibilityDelagate->inactiveIconName = "object-hidden";
+    m_objectInspectorView->setItemDelegateForColumn(1, visibilityDelagate);
+    auto lockDelagate =  new IconItemDelegate(this);
+    lockDelagate->activeIconName = "object-locked";
+    lockDelagate->inactiveIconName = "object-unlocked";
+    m_objectInspectorView->setItemDelegateForColumn(2, lockDelagate);
 
     m_itemPropertyEditor = new ItemPropertyEditor;
     m_defaultTaskWidgets << m_itemPropertyEditor;
