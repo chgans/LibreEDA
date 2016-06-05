@@ -33,6 +33,7 @@ namespace SymbolEditor
         //  - grouping?
 
     private:
+        ObjectInspectorItem *itemFromModelIndex(const QModelIndex &index) const;
         QScopedPointer<ObjectInspectorItem> m_rootItem;
         QMap<quint64, ObjectInspectorItem*> m_allItems;
 

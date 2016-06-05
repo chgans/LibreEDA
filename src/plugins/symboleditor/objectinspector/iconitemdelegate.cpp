@@ -7,7 +7,8 @@ namespace SymbolEditor
 {
 
     IconItemDelegate::IconItemDelegate(QObject *parent):
-        QAbstractItemDelegate (parent)
+        QAbstractItemDelegate (parent),
+        m_size(16, 16)
     {
 
     }
@@ -55,12 +56,18 @@ namespace SymbolEditor
 
     QSize IconItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
+        Q_UNUSED(option);
+        Q_UNUSED(index);
+
         return m_size;
     }
 
-    bool IconItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
+    bool IconItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
+                                       const QStyleOptionViewItem &option, const QModelIndex &index)
     {
-        if (event->type() != QEvent::MouseButtonPress)
+        Q_UNUSED(option);
+
+        if (event->type() != QEvent::MouseButtonRelease)
         {
             return false;
         }

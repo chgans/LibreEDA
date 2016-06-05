@@ -41,16 +41,7 @@ namespace SymbolEditor
             return QModelIndex();
         }
 
-        ObjectInspectorItem *parentItem;
-        if (!parent.isValid())
-        {
-            parentItem = m_rootItem.data();
-        }
-        else
-        {
-            parentItem = static_cast<ObjectInspectorItem*>(parent.internalPointer());
-        }
-
+        auto parentItem = itemFromModelIndex(parent);
         auto childItem = parentItem->child(row);
         if (childItem != nullptr)
         {
@@ -69,7 +60,7 @@ namespace SymbolEditor
             return QModelIndex();
         }
 
-        auto *childItem = static_cast<ObjectInspectorItem*>(index.internalPointer());
+        auto *childItem = itemFromModelIndex(index);
         auto *parentItem = childItem->parent();
 
         if (parentItem == m_rootItem.data())
@@ -87,16 +78,7 @@ namespace SymbolEditor
             return 0;
         }
 
-        ObjectInspectorItem *parentItem;
-        if (!parent.isValid())
-        {
-            parentItem = m_rootItem.data();
-        }
-        else
-        {
-            parentItem = static_cast<ObjectInspectorItem*>(parent.internalPointer());
-        }
-
+        auto parentItem = itemFromModelIndex(parent);
         return parentItem->childCount();
     }
 
@@ -130,6 +112,18 @@ namespace SymbolEditor
 
     }
 
+    ObjectInspectorItem *ObjectInspectorModel::itemFromModelIndex(const QModelIndex &index) const
+    {
+        if (!index.isValid())
+        {
+            return m_rootItem.data();
+        }
+        else
+        {
+            return static_cast<ObjectInspectorItem*>(index.internalPointer());
+        }
+    }
+
     ObjectInspectorItem *ObjectInspectorModel::createItem(ObjectInspectorItem *parent,
                                                           quint64 id, const QString &text, QIcon icon)
     {
@@ -154,22 +148,21 @@ namespace SymbolEditor
                 switch (index.column())
                 {
                     case 0:
-                        return static_cast<ObjectInspectorItem*>(index.internalPointer())->m_displayData;
+                        return itemFromModelIndex(index)->m_displayData;
                     case 1:
-                        return static_cast<ObjectInspectorItem*>(index.internalPointer())->m_visible;
+                        return itemFromModelIndex(index)->m_visible;
                     case 2:
-                        return static_cast<ObjectInspectorItem*>(index.internalPointer())->m_locked;
+                        return itemFromModelIndex(index)->m_locked;
                     default:
                         return QVariant();
                 }
             case Qt::DecorationRole:
-                if (index.column() == 0)
+                switch (index.column())
                 {
-                    return static_cast<ObjectInspectorItem*>(index.internalPointer())->m_decorationData;
-                }
-                else
-                {
-                    return QVariant();
+                    case 0:
+                        return itemFromModelIndex(index)->m_decorationData;
+                    default:
+                        return QVariant();
                 }
             default:
                 return QVariant();
@@ -198,7 +191,7 @@ namespace SymbolEditor
             return false;
         }
 
-        auto item = static_cast<ObjectInspectorItem*>(index.internalPointer());
+        auto item = itemFromModelIndex(index);
         auto boolValue = value.toBool();
         if (index.column() == 1)
         {

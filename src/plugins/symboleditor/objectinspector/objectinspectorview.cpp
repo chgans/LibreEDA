@@ -8,7 +8,6 @@ namespace SymbolEditor
     ObjectInspectorView::ObjectInspectorView(QWidget *parent):
         QTreeView(parent)
     {
-        header()->show();
     }
 
 }
