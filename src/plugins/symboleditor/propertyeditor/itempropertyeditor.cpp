@@ -26,6 +26,7 @@ ItemPropertyEditor::ItemPropertyEditor(QWidget *parent):
     // TODO: setBrowser();
     m_browser = new QtTreePropertyBrowser();
     layout()->addWidget(m_browser);
+    layout()->setMargin(0);
     // TODO: setManager();
     m_manager = new ItemPropertyManager(this);
     m_manager->setBrowserFactories(m_browser);

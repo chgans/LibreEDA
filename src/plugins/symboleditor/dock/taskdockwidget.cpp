@@ -11,6 +11,7 @@ TaskDockWidget::TaskDockWidget(QWidget *parent, Qt::WindowFlags flags) :
     setWindowTitle("Task");
     QWidget *widget = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout();
+    layout->setMargin(0);
     widget->setLayout(layout);
     setWidget(widget);
 }

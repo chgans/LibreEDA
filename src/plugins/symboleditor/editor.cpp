@@ -251,6 +251,12 @@ void Editor::addArrangeTools()
 
 void Editor::addDockWidgets()
 {
+    // Task dockwidget non-movable and no dock decoration
     m_taskDockWidget = new TaskDockWidget();
+    m_taskDockWidget->setAllowedAreas(Qt::RightDockWidgetArea);
+    m_taskDockWidget->setFeatures(0);
+    m_taskDockWidget->setTitleBarWidget(new QWidget());
+
+    // Undo dockwidget movable with default decoration
     m_undoDockWidget = new UndoDockWidget();
 }
