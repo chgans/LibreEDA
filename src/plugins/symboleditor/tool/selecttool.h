@@ -1,6 +1,9 @@
 #pragma once
 
 #include "tool/interactivetool.h"
+#include "document.h"
+
+#include <QItemSelection>
 
 namespace SymbolEditor
 {
@@ -21,43 +24,26 @@ namespace SymbolEditor
         explicit SelectTool(QObject *parent = nullptr);
         ~SelectTool();
 
+    public slots:
+        void addDocumentItem(quint64 id, const Document::Item *item);
+        void updateDocumentItem(quint64 id, const Document::Item *item);
+        void removeDocumentItem(quint64 id);
+
+    private slots:
+        void onObjectInspectorSelectionChanged(const QItemSelection &selected,
+                                               const QItemSelection &deselected);
+        void onSceneSelectionChanged();
+
     private:
         void setupObjectInspector();
         void setupPropertyBrowser();
         void setupSubTools();
         void initStateMachine();
 
-        enum ToolState
-        {
-            HintState,
-            OperationState
-        };
-        enum Operation
-        {
-            DragSelect,
-            //ClickSelect,
-            MoveItem,
-            MoveHandle,
-            CloneItem
-        };
-        ToolState m_state;
-        Operation m_operation;
-        MoveItemTool *m_moveItemTool;
-        CloneItemTool *m_cloneItemTool;
-        DragSelectTool *m_dragSelectTool;
-        InteractiveTool *m_currentTool;
-
-        Handle *m_handle;
         ObjectInspectorModel *m_objectInspectorModel;
         ObjectInspectorView *m_objectInspectorView;
         ItemPropertyEditor *m_itemPropertyEditor;
-        QList<QWidget *> m_defaultTaskWidgets;
-
-        void updateOperation(Qt::KeyboardModifiers modifiers);
-        void setOperation(Operation operation);
-        void updateCursor();
-        void setCurrentTool(InteractiveTool *tool);
-        void updateTaskWidgets();
+        bool m_changingSelection = false;
 
         // GraphicsTool interface
     public slots:

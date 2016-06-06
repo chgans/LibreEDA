@@ -8,6 +8,7 @@
 #include <QBrush>
 #include <QRectF>
 #include <QFont>
+#include <QIcon>
 
 namespace xdl {
 namespace symbol {
@@ -34,6 +35,9 @@ public:
 
     virtual Type type() const = 0;
     virtual Item *clone() const = 0;
+
+    virtual QString friendlyTypeName() const = 0;
+    virtual QIcon icon() const = 0;
 
     QPen pen;
     QBrush brush;
@@ -77,6 +81,16 @@ public:
         return item;
     }
 
+    virtual QString friendlyTypeName() const
+    {
+        return "Rectangle";
+    }
+
+    virtual QIcon icon() const
+    {
+        return QIcon::fromTheme("draw-rectangle");
+    }
+
     QPointF topLeft;
     QPointF bottomRight;
 };
@@ -99,6 +113,16 @@ public:
         return item;
     }
 
+    virtual QString friendlyTypeName() const
+    {
+        return "Circle";
+    }
+
+    virtual QIcon icon() const
+    {
+        return QIcon::fromTheme("draw-circle");
+    }
+
     QPointF center;
     qreal radius = 0.0f;
 };
@@ -119,6 +143,16 @@ public:
         auto item = new CircularArcItem;
         *item = *this;
         return item;
+    }
+
+    virtual QString friendlyTypeName() const
+    {
+        return "Circuar Arc";
+    }
+
+    virtual QIcon icon() const
+    {
+        return QIcon::fromTheme("draw-halfcircle3");
     }
 
     QPointF center;
@@ -145,6 +179,16 @@ public:
         return item;
     }
 
+    virtual QString friendlyTypeName() const
+    {
+        return "Ellipse";
+    }
+
+    virtual QIcon icon() const
+    {
+        return QIcon::fromTheme("draw-ellipse");
+    }
+
     QPointF center;
     qreal xRadius;
     qreal yRadius;
@@ -166,6 +210,16 @@ public:
         auto item = new EllipticalArcItem;
         *item = *this;
         return item;
+    }
+
+    virtual QString friendlyTypeName() const
+    {
+        return "Elliptical arc";
+    }
+
+    virtual QIcon icon() const
+    {
+        return QIcon::fromTheme("draw-halfcircle3");
     }
 
     QPointF center;
@@ -193,6 +247,16 @@ public:
         return item;
     }
 
+    virtual QString friendlyTypeName() const
+    {
+        return "Polyline";
+    }
+
+    virtual QIcon icon() const
+    {
+        return QIcon::fromTheme("draw-line");
+    }
+
     QList<QPointF> vertices;
 };
 
@@ -214,6 +278,16 @@ public:
         return item;
     }
 
+    virtual QString friendlyTypeName() const
+    {
+        return "Polygon";
+    }
+
+    virtual QIcon icon() const
+    {
+        return QIcon::fromTheme("draw-polygon");
+    }
+
     QList<QPointF> vertices;
 };
 
@@ -233,6 +307,16 @@ public:
         auto item = new LabelItem;
         *item = *this;
         return item;
+    }
+
+    virtual QString friendlyTypeName() const
+    {
+        return "Label";
+    }
+
+    virtual QIcon icon() const
+    {
+        return QIcon::fromTheme("insert-text");
     }
 
     QString text;
@@ -259,6 +343,16 @@ public:
         return item;
     }
 
+    virtual QString friendlyTypeName() const
+    {
+        return "Pin";
+    }
+
+    virtual QIcon icon() const
+    {
+        return QIcon::fromTheme("network-connect");
+    }
+
     LabelItem *designator;
     LabelItem *label;
 };
@@ -280,6 +374,16 @@ public:
         auto item = new ItemGroup;
         *item = *this;
         return item;
+    }
+
+    virtual QString friendlyTypeName() const
+    {
+        return "Group";
+    }
+
+    virtual QIcon icon() const
+    {
+        return QIcon::fromTheme("object-group");
     }
 
     QList<Item *> children;

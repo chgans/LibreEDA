@@ -53,9 +53,14 @@ void ItemPropertyAdapter::setItem(Item *item)
         return;
     }
 
+    if (m_manager != nullptr)
+    {
+        deleteProperties(m_manager);
+    }
+
     m_item = item;
 
-    if (m_manager != nullptr)
+    if (m_manager != nullptr && m_item != nullptr)
     {
         updateProperties(m_manager);
     }
@@ -109,7 +114,7 @@ void ItemPropertyAdapter::updateProperties(ItemPropertyManager *manager)
 
 void ItemPropertyAdapter::deleteProperties(ItemPropertyManager *manager)
 {
-    // FIXME: not needed?
+    manager->clear();
 }
 
 void ItemPropertyAdapter::onBoolValueChanged(QtProperty *property, bool value)

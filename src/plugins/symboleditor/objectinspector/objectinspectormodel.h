@@ -28,9 +28,10 @@ namespace SymbolEditor
         void addTopLevelItem(quint64 id, const QString &text, const QIcon &icon);
         void addChildItem(quint64  parentId, quint64 id, const QString &text, const QIcon &icon);
         void removeItem(quint64 id);
-        // TBD: Inspector can change:
-        //  - visible and locked
-        //  - grouping?
+        void setItemVisibility(quint64 id, bool visible);
+        void setItemLockState(quint64 id, bool locked);
+        QModelIndex indexForDocumentId(quint64 id);
+        quint64 documentIdForIndex(const QModelIndex &index);
 
     private:
         ObjectInspectorItem *itemFromModelIndex(const QModelIndex &index) const;
@@ -42,7 +43,7 @@ namespace SymbolEditor
 
         // QAbstractItemModel interface
     public:
-        bool setData(const QModelIndex &index, const QVariant &value, int role);
+        bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     };
 
 }

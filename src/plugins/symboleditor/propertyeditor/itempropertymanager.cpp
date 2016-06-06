@@ -67,6 +67,14 @@ QtProperty *ItemPropertyManager::addPenProperty(const QString &name)
     return m_penManager->addProperty(name);
 }
 
+void ItemPropertyManager::clear()
+{
+    m_pointManager->clear();
+    m_realManager->clear();
+    m_boolManager->clear();
+    m_penManager->clear();
+}
+
 void ItemPropertyManager::setPropertyValue(QtProperty *property, qreal value)
 {
     m_realManager->setValue(property, value);

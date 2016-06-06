@@ -27,6 +27,7 @@ namespace SymbolEditor
         QtProperty *addBoolProperty(const QString &name);
         QtProperty *addPointProperty(const QString &name);
         QtProperty *addPenProperty(const QString &name);
+        void clear();
 
         void setPropertyValue(QtProperty *property, qreal value);
         void setPropertyValue(QtProperty *property, bool value);

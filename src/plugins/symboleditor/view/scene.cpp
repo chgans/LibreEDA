@@ -32,6 +32,11 @@ QList<Item *> Scene::selectedObjects()
     return objects;
 }
 
+Item *Scene::itemForDocumentId(quint64 id) const
+{
+    return m_itemMap.value(id);
+}
+
 void Scene::applySettings(const Settings &settings)
 {
     Q_UNUSED(settings);

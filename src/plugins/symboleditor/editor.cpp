@@ -74,6 +74,24 @@ void Editor::addScene()
     m_scene->setSceneRect(0, 0, 297, 210);
 }
 
+void Editor::addDocumentItem(quint64 id, const Document::Item *item)
+{
+    m_scene->addDocumentItem(id, item);
+    m_selectTool->addDocumentItem(id, item);
+}
+
+void Editor::updateDocumentItem(quint64 id, const Document::Item *item)
+{
+    m_scene->updateDocumentItem(id, item);
+    m_selectTool->updateDocumentItem(id, item);
+}
+
+void Editor::removeDocumentItem(quint64 id)
+{
+    m_scene->removeDocumentItem(id);
+    m_selectTool->removeDocumentItem(id);
+}
+
 void Editor::applySettings(const Settings &settings)
 {
     m_scene->applySettings(settings);
@@ -102,15 +120,15 @@ bool Editor::open(QString *errorString, const QString &fileName)
 
     for (quint64 id : m_document->itemIdList())
     {
-        m_scene->addDocumentItem(id, m_document->item(id));
+       addDocumentItem(id, m_document->item(id));
     }
 
     connect(m_document, &Document::itemAdded,
-            m_scene, &Scene::addDocumentItem);
+            this, &Editor::addDocumentItem);
     connect(m_document, &Document::itemChanged,
-            m_scene, &Scene::updateDocumentItem);
+            this, &Editor::updateDocumentItem);
     connect(m_document, &Document::itemRemoved,
-            m_scene, &Scene::removeDocumentItem);
+            this, &Editor::removeDocumentItem);
 
     m_undoDockWidget->setStack(m_undoStack);
 

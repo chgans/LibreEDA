@@ -101,7 +101,7 @@ namespace SymbolEditor
     {
         auto parent = m_allItems.value(parentId);
         int lastRow = parent->childCount();
-        auto parentIndex = createIndex(parent->IndexInParent(), 1, parent);
+        auto parentIndex = createIndex(parent->IndexInParent(), 0, parent);
         beginInsertRows(parentIndex, lastRow, lastRow);
         createItem(parent, id, text, icon);
         endInsertRows();
@@ -109,7 +109,49 @@ namespace SymbolEditor
 
     void ObjectInspectorModel::removeItem(quint64 id)
     {
+        auto item = m_allItems.value(id);
+        int row = item->IndexInParent();
+        auto parent = item->parent();
+        auto parentIndex = createIndex(row, 0, parent);
 
+        beginRemoveRows(parentIndex, row, row);
+        parent->removeChild(item);
+        delete item;
+        endRemoveRows();
+    }
+
+    void ObjectInspectorModel::setItemVisibility(quint64 id, bool visible)
+    {
+        auto item = m_allItems.value(id);
+
+        if (item->m_visible == visible)
+        {
+            return;
+        }
+        item->m_visible = visible;
+
+        int row = 0;
+        int column = 1;
+        auto index = createIndex(row, column, item);
+        emit dataChanged(index, index);
+    }
+
+    void ObjectInspectorModel::setItemLockState(quint64 id, bool locked)
+    {
+
+    }
+
+    QModelIndex ObjectInspectorModel::indexForDocumentId(quint64 id)
+    {
+        auto item = m_allItems.value(id);
+        int row = item->IndexInParent();
+        int column = 0;
+        return createIndex(row, column, item);
+    }
+
+    quint64 ObjectInspectorModel::documentIdForIndex(const QModelIndex &index)
+    {
+        return m_allItems.key(itemFromModelIndex(index));
     }
 
     ObjectInspectorItem *ObjectInspectorModel::itemFromModelIndex(const QModelIndex &index) const

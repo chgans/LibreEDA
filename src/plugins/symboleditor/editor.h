@@ -71,6 +71,11 @@ namespace SymbolEditor
         void addScene();
         Scene *m_scene = nullptr;
 
+    private slots:
+        void addDocumentItem(quint64 id, const Document::Item *item);
+        void updateDocumentItem(quint64 id, const Document::Item *item);
+        void removeDocumentItem(quint64 id);
+
         // IEditor interface
     public:
         bool open(QString *errorString, const QString &fileName);

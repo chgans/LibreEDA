@@ -18,6 +18,7 @@ namespace SymbolEditor
         ~Scene();
 
         QList<Item *> selectedObjects();
+        Item *itemForDocumentId(quint64 id) const;
 
     public slots:
         void applySettings(const Settings &settings);
