@@ -14,9 +14,9 @@ PlacePolygonTool::PlacePolygonTool(QObject *parent):
     PlacementTool(parent),
     m_item(nullptr)
 {
-    QAction *action = new QAction(QIcon(":/icons/tool/graphicspolygontool.svg"),
-                                  "Place a polygon", nullptr);
-    action->setShortcut(QKeySequence("i,p"));
+    QAction *action = new QAction(QIcon::fromTheme("draw-polygon"), //QIcon(":/icons/tool/graphicspolygontool.svg"),
+                                  "<b>P</b>lace a Poly<b>g</b>on <i>p,g</i>", nullptr);
+    action->setShortcut(QKeySequence("p,g"));
     setAction(action);
     setToolGroup("interactive-tools");
 
@@ -109,7 +109,7 @@ void PlacePolygonTool::endInsert(const QPointF &pos)
     command->pen = m_item->pen();
     command->brush = m_item->brush();
     command->vertices = m_item->polygon().toList();
-    emit taskCompleted(command);
+    emit commandRequested(command);
 
     delete m_item;
     m_item = nullptr;

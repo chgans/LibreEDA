@@ -12,9 +12,9 @@ using namespace SymbolEditor;
 PlaceRectangleTool::PlaceRectangleTool(QObject *parent):
     PlacementTool(parent), m_item(nullptr)
 {
-    QAction *action = new QAction(QIcon(":/icons/tool/graphicsrecttool.svg"),
-                                  "Place a rectangle", nullptr);
-    action->setShortcut(QKeySequence("i,r"));
+    QAction *action = new QAction(QIcon::fromTheme("draw-rectangle"),//QIcon(":/icons/tool/graphicsrecttool.svg"),
+                                  "<b>P</b>lace a <b>R</b>ectangle <i>p,r</i>", nullptr);
+    action->setShortcut(QKeySequence("p,r"));
     setAction(action);
     setToolGroup("interactive-tools");
 
@@ -96,7 +96,7 @@ void PlaceRectangleTool::freezePoint(int idx, const QPointF &pos)
     command->brush = m_item->brush();
     command->topLeft = m_item->rect().topLeft();
     command->bottomRight = m_item->rect().bottomRight();
-    emit taskCompleted(command);
+    emit commandRequested(command);
 
     delete m_item;
     m_item = nullptr;

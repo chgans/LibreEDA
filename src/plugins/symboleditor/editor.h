@@ -44,10 +44,10 @@ namespace SymbolEditor
         QUndoStack *m_undoStack;
 
         void addInteractiveTools();
+        void addInteractiveTool(InteractiveTool *tool);
         QActionGroup *m_interactiveActionGroup = nullptr;
         QToolBar *m_interactiveToolBar = nullptr;
         SelectTool *m_selectTool;
-        QList<PlacementTool *> m_placementTools;
         QList<InteractiveTool *> m_interactiveTools;
         void setInteractiveTool(InteractiveTool *tool);
         InteractiveTool * m_interactiveTool = nullptr;

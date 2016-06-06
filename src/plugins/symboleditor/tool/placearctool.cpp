@@ -10,9 +10,9 @@ using namespace SymbolEditor;
 PlaceArcTool::PlaceArcTool(QObject *parent):
     PlacementTool(parent)
 {
-    QAction *action = new QAction(QIcon(":/icons/tool/graphicsarctool.svg"),
-                                  "Place an arc", nullptr);
-    action->setShortcut(QKeySequence("i,a"));
+    QAction *action = new QAction(QIcon::fromTheme("draw-halfcircle3"), //QIcon(":/icons/tool/graphicsarctool.svg"),
+                                  "<b>P</b>lace an <b>A</b>rc <i>p,a</i>", nullptr);
+    action->setShortcut(QKeySequence("p,a"));
     setAction(action);
     setToolGroup("interactive-tools");
 
@@ -69,7 +69,7 @@ void PlaceArcTool::freezePoint(int idx, const QPointF &pos)
     {
         return;
     }
-    emit taskCompleted(nullptr);
+    emit commandRequested(nullptr);
 
     delete m_item;
     m_item = nullptr;

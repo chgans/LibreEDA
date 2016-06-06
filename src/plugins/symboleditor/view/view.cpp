@@ -89,11 +89,16 @@ InteractiveTool *View::tool()
 
 void View::setTool(InteractiveTool *tool)
 {
+    if (m_tool != nullptr)
+    {
+        m_tool->desactivate();
+    }
+
     m_tool = tool;
 
-    if (m_tool)
+    if (m_tool != nullptr)
     {
-        m_tool->setView(this);
+        m_tool->activate(this);
     }
 }
 

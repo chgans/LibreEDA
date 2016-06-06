@@ -11,9 +11,9 @@ PlaceBezierTool::PlaceBezierTool(QObject *parent):
     PlacementTool(parent),
     m_item(nullptr)
 {
-    QAction *action = new QAction(QIcon(":/icons/tool/graphicsbeziertool.svg"),
-                                  "Place a bezier curve", nullptr);
-    action->setShortcut(QKeySequence("i,b"));
+    QAction *action = new QAction(QIcon::fromTheme("draw-bezier-curves"), //QIcon(":/icons/tool/graphicsbeziertool.svg"),
+                                  "<b>P</b>lace a <b>B</b>ezier Curve <i>p,b</i>", nullptr);
+    action->setShortcut(QKeySequence("p,b"));
     setAction(action);
     setToolGroup("interactive-tools");
 
@@ -84,7 +84,7 @@ void PlaceBezierTool::endInsert(const QPointF &pos)
 {
     Q_UNUSED(pos);
 
-    emit taskCompleted(nullptr);
+    emit commandRequested(nullptr);
 
     delete m_item;
     m_item = nullptr;

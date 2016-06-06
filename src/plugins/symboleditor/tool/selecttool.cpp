@@ -23,56 +23,18 @@
 using namespace SymbolEditor;
 
 SelectTool::SelectTool(QObject *parent):
-    InteractiveTool(parent),
-    m_state(HintState),
-    m_operation(DragSelect),
-    m_handle(nullptr)
+    InteractiveTool(parent)
 {
     QAction *action = new QAction(QIcon::fromTheme("edit-select"),
-                                  "select", nullptr);
+                                  "Select <i>Esc</i>", nullptr);
+    action->setShortcut(QKeySequence(Qt::Key_Escape));
     setAction(action);
     setToolGroup("interactive-tools");
 
-    m_objectInspectorModel = new ObjectInspectorModel(this);
-    m_objectInspectorView = new ObjectInspectorView;
-    m_defaultTaskWidgets << m_objectInspectorView;
-    // Fake data for now
-    m_objectInspectorModel->addTopLevelItem(12, "Rectangle", QIcon(":/icons/tool/graphicsrecttool.svg"));
-    m_objectInspectorModel->addTopLevelItem(16, "Rectangle", QIcon(":/icons/tool/graphicsrecttool.svg"));
-    m_objectInspectorModel->addTopLevelItem(16, "Group", QIcon());
-    m_objectInspectorModel->addChildItem(16, 28, "Circle", QIcon(":/icons/tool/graphicscircletool.svg"));
-    m_objectInspectorModel->addChildItem(16, 28, "Circle", QIcon(":/icons/tool/graphicscircletool.svg"));
-    m_objectInspectorModel->addChildItem(16, 28, "Circle", QIcon(":/icons/tool/graphicscircletool.svg"));
-    // Setup view
-    m_objectInspectorView->setModel(m_objectInspectorModel);
-    m_objectInspectorView->header()->setStretchLastSection(false);
-    m_objectInspectorView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
-    m_objectInspectorView->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-    m_objectInspectorView->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
-    auto visibilityDelagate =  new IconItemDelegate(this);
-    visibilityDelagate->activeIconName = "object-visible";
-    visibilityDelagate->inactiveIconName = "object-hidden";
-    m_objectInspectorView->setItemDelegateForColumn(1, visibilityDelagate);
-    auto lockDelagate =  new IconItemDelegate(this);
-    lockDelagate->activeIconName = "object-locked";
-    lockDelagate->inactiveIconName = "object-unlocked";
-    m_objectInspectorView->setItemDelegateForColumn(2, lockDelagate);
-
-    m_itemPropertyEditor = new ItemPropertyEditor;
-    m_defaultTaskWidgets << m_itemPropertyEditor;
-
-    m_moveItemTool = new MoveItemTool(this);
-    connect(m_moveItemTool, &Tool::taskCompleted,
-            this, &Tool::taskCompleted);
-
-    m_cloneItemTool = new CloneItemTool(this);
-    connect(m_cloneItemTool, &Tool::taskCompleted,
-            this, &Tool::taskCompleted);
-
-    m_dragSelectTool = new DragSelectTool(this);
-
-    m_currentTool = nullptr;
-    updateTaskWidgets();
+    setupObjectInspector();
+    setupPropertyBrowser();
+    setupSubTools();
+    initStateMachine();
 }
 
 SelectTool::~SelectTool()
@@ -80,98 +42,19 @@ SelectTool::~SelectTool()
 
 }
 
-void SelectTool::updateOperation(Qt::KeyboardModifiers modifiers)
-{
-    // Could use auto handle = view()->ItemUnderMouse<AbstractGraphicsHandle>();
-    Handle *handle = view()->handleUnderMouse();
-    if (handle != nullptr)
-    {
-        m_handle = handle;
-        setOperation(MoveHandle);
-        return;
-    }
-
-    // Could use auto item = view()->ItemUnderMouse<SchItem>();
-    Item *item = view()->objectUnderMouse();
-    if (item != nullptr && item->isEnabled())
-    {
-        if (modifiers.testFlag(Qt::ControlModifier))
-        {
-            setOperation(CloneItem);
-        }
-        else
-        {
-            setOperation(MoveItem);
-        }
-        return;
-    }
-
-    setOperation(DragSelect);
-}
-
-void SelectTool::updateCursor()
-{
-    switch (m_operation)
-    {
-        case DragSelect:
-        {
-            view()->setCursor(Qt::ArrowCursor);
-            break;
-        }
-        case MoveItem:
-        {
-            view()->setCursor(Qt::SizeAllCursor);
-            break;
-        }
-        case MoveHandle:
-        {
-            view()->setCursor(m_handle->handleCursor());
-            break;
-        }
-        case CloneItem:
-        {
-            view()->setCursor(Qt::DragCopyCursor);
-            break;
-        }
-    }
-}
-
-void SelectTool::setOperation(SelectTool::Operation operation)
-{
-    m_operation = operation;
-    updateCursor();
-}
-
-void SelectTool::setCurrentTool(InteractiveTool *tool)
-{
-    if (m_currentTool != nullptr)
-    {
-        m_currentTool->setView(nullptr);
-    }
-
-    m_currentTool = tool;
-
-    if (m_currentTool != nullptr)
-    {
-        m_currentTool->setView(view());
-    }
-    updateTaskWidgets();
-}
-
-void SelectTool::updateTaskWidgets()
-{
-    if (m_currentTool != nullptr)
-    {
-        setTaskWidgets(m_currentTool->taskWidgets());
-    }
-    else
-    {
-        setTaskWidgets(m_defaultTaskWidgets);
-    }
-}
-
 void SelectTool::cancel()
 {
+}
+
+void SelectTool::activate(View *view)
+{
+    setView(view);
+    initStateMachine();
+}
+
+void SelectTool::desactivate()
+{
+
 }
 
 void SelectTool::mousePressEvent(QMouseEvent *event)
@@ -341,4 +224,155 @@ void SelectTool::keyReleaseEvent(QKeyEvent *event)
 {
     updateOperation(event->modifiers());
     event->accept();
+}
+
+void SelectTool::updateOperation(Qt::KeyboardModifiers modifiers)
+{
+    // Could use auto handle = view()->ItemUnderMouse<AbstractGraphicsHandle>();
+    Handle *handle = view()->handleUnderMouse();
+    if (handle != nullptr)
+    {
+        m_handle = handle;
+        setOperation(MoveHandle);
+        return;
+    }
+
+    // Could use auto item = view()->ItemUnderMouse<SchItem>();
+    Item *item = view()->objectUnderMouse();
+    if (item != nullptr && item->isEnabled())
+    {
+        if (modifiers.testFlag(Qt::ControlModifier))
+        {
+            setOperation(CloneItem);
+        }
+        else
+        {
+            setOperation(MoveItem);
+        }
+        return;
+    }
+
+    setOperation(DragSelect);
+}
+
+void SelectTool::updateCursor()
+{
+    switch (m_operation)
+    {
+        case DragSelect:
+        {
+            view()->setCursor(Qt::ArrowCursor);
+            break;
+        }
+        case MoveItem:
+        {
+            view()->setCursor(Qt::SizeAllCursor);
+            break;
+        }
+        case MoveHandle:
+        {
+            view()->setCursor(m_handle->handleCursor());
+            break;
+        }
+        case CloneItem:
+        {
+            view()->setCursor(Qt::DragCopyCursor);
+            break;
+        }
+    }
+}
+
+void SelectTool::setOperation(SelectTool::Operation operation)
+{
+    m_operation = operation;
+    updateCursor();
+}
+
+void SelectTool::setCurrentTool(InteractiveTool *tool)
+{
+    if (m_currentTool != nullptr)
+    {
+        m_currentTool->desactivate();
+    }
+
+    m_currentTool = tool;
+
+    if (m_currentTool != nullptr)
+    {
+        m_currentTool->activate(view());
+    }
+    updateTaskWidgets();
+}
+
+void SelectTool::updateTaskWidgets()
+{
+    if (m_currentTool != nullptr)
+    {
+        setTaskWidgets(m_currentTool->taskWidgets());
+    }
+    else
+    {
+        setTaskWidgets(m_defaultTaskWidgets);
+    }
+}
+
+void SelectTool::setupObjectInspector()
+{
+    m_objectInspectorModel = new ObjectInspectorModel(this);
+    m_objectInspectorView = new ObjectInspectorView;
+    m_defaultTaskWidgets << m_objectInspectorView;
+
+    // Fake data for now
+    m_objectInspectorModel->addTopLevelItem(12, "Bezier Curve", QIcon::fromTheme("draw-bezier-curves"));
+    m_objectInspectorModel->addTopLevelItem(16, "Rectangle", QIcon::fromTheme("draw-rectangle"));
+    m_objectInspectorModel->addTopLevelItem(18, "Group", QIcon::fromTheme("object-group"));
+    m_objectInspectorModel->addChildItem(18, 28, "Rectangle", QIcon::fromTheme("draw-rectangle"));
+    m_objectInspectorModel->addChildItem(18, 29, "Label", QIcon::fromTheme("draw-text"));
+    m_objectInspectorModel->addChildItem(18, 31, "Line", QIcon::fromTheme("draw-line"));
+    m_objectInspectorModel->addChildItem(18, 45, "Line", QIcon::fromTheme("draw-line"));
+
+    // Setup view
+    m_objectInspectorView->setModel(m_objectInspectorModel);
+    m_objectInspectorView->header()->setStretchLastSection(false);
+    m_objectInspectorView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    m_objectInspectorView->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    m_objectInspectorView->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+
+    auto visibilityDelagate =  new IconItemDelegate(this);
+    visibilityDelagate->activeIconName = "object-visible";
+    visibilityDelagate->inactiveIconName = "object-hidden";
+    m_objectInspectorView->setItemDelegateForColumn(1, visibilityDelagate);
+
+    auto lockDelagate =  new IconItemDelegate(this);
+    lockDelagate->activeIconName = "object-locked";
+    lockDelagate->inactiveIconName = "object-unlocked";
+    m_objectInspectorView->setItemDelegateForColumn(2, lockDelagate);
+}
+
+void SelectTool::setupPropertyBrowser()
+{
+    m_itemPropertyEditor = new ItemPropertyEditor;
+    m_defaultTaskWidgets << m_itemPropertyEditor;
+}
+
+void SelectTool::setupSubTools()
+{
+    m_moveItemTool = new MoveItemTool(this);
+    connect(m_moveItemTool, &Tool::commandRequested,
+            this, &Tool::commandRequested);
+
+    m_cloneItemTool = new CloneItemTool(this);
+    connect(m_cloneItemTool, &Tool::commandRequested,
+            this, &Tool::commandRequested);
+
+    m_dragSelectTool = new DragSelectTool(this);
+}
+
+void SelectTool::initStateMachine()
+{
+    m_state = HintState;
+    m_operation = DragSelect;
+    m_handle = nullptr;
+    m_currentTool = nullptr;
+    m_taskWidgets = m_defaultTaskWidgets;
 }

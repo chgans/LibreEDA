@@ -24,6 +24,11 @@ namespace SymbolEditor
         void mousePressEvent(QMouseEvent *event);
         void mouseMoveEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
+
+        // Tool interface
+    public:
+        void activate(View *view);
+        void desactivate();
     };
 
 }

@@ -12,9 +12,9 @@ using namespace SymbolEditor;
 PlaceEllipseTool::PlaceEllipseTool(QObject *parent):
     PlacementTool(parent)
 {
-    QAction *action = new QAction(QIcon(":/icons/tool/graphicsellipsetool.svg"),
-                                  "Place an ellipse", nullptr);
-    action->setShortcut(QKeySequence("i,e"));
+    QAction *action = new QAction(QIcon::fromTheme("draw-ellipse"), //QIcon(":/icons/tool/graphicsellipsetool.svg"),
+                                  "<b>P</b>lace an <b>E</b>llipse <i>p,e</i>", nullptr);
+    action->setShortcut(QKeySequence("p,e"));
     setAction(action);
     setToolGroup("interactive-tools");
 
@@ -101,7 +101,7 @@ void PlaceEllipseTool::freezePoint(int idx, const QPointF &pos)
     command->center = QPointF(0, 0);
     command->xRadius = m_item->xRadius();
     command->yRadius = m_item->yRadius();
-    emit taskCompleted(command);
+    emit commandRequested(command);
 
     delete m_item;
     m_item = nullptr;

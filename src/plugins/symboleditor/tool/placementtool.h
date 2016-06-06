@@ -67,17 +67,13 @@ namespace SymbolEditor
         void mouseMoveEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
         void mouseDoubleClickEvent(QMouseEvent *event);
-
-        // GraphicsTool interface
-    public:
-        void activate(const QAction *which, View *view);
-        void desactivate(const QAction *which, View *view);
-
-
-        // InteractiveTool interface
-    public:
         void keyPressEvent(QKeyEvent *event);
         void keyReleaseEvent(QKeyEvent *event);
+
+        // Tool interface
+    public:
+        void activate(View *view);
+        void desactivate();
     };
 
 }

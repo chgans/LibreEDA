@@ -22,6 +22,11 @@ namespace SymbolEditor
         ~SelectTool();
 
     private:
+        void setupObjectInspector();
+        void setupPropertyBrowser();
+        void setupSubTools();
+        void initStateMachine();
+
         enum ToolState
         {
             HintState,
@@ -60,6 +65,8 @@ namespace SymbolEditor
 
         // GraphicsTool interface
     public:
+        virtual void activate(View *view);
+        virtual void desactivate();
         virtual void mousePressEvent(QMouseEvent *event);
         virtual void mouseMoveEvent(QMouseEvent *event);
         virtual void mouseReleaseEvent(QMouseEvent *event);

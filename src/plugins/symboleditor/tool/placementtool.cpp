@@ -172,16 +172,14 @@ void PlacementTool::mouseDoubleClickEvent(QMouseEvent *event)
     endInsert(m_pressPos);
 }
 
-void PlacementTool::activate(const QAction *which, View *view)
+void PlacementTool::activate(View *view)
 {
-    Q_UNUSED(which);
-    Q_UNUSED(view);
+    setView(view);
+    resetTool();
 }
 
-void PlacementTool::desactivate(const QAction *which, View *view)
+void PlacementTool::desactivate()
 {
-    Q_UNUSED(which);
-    Q_UNUSED(view);
 }
 
 

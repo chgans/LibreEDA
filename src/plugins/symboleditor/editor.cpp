@@ -5,8 +5,10 @@
 #include "item/item.h"
 #include "settings/settings.h"
 
-#include "tool/placebeziertool.h"
 #include "tool/selecttool.h"
+#include "tool/moveitemtool.h"
+#include "tool/cloneitemtool.h"
+#include "tool/placebeziertool.h"
 #include "tool/placepolylinetool.h"
 #include "tool/placerectangletool.h"
 #include "tool/placecircletool.h"
@@ -159,37 +161,22 @@ void Editor::desactivate(QMainWindow *win)
 
 void Editor::addInteractiveTools()
 {
-    m_selectTool = new SelectTool(this);
-    m_interactiveTools << m_selectTool;
-
-    m_placementTools /*<< new PlacePolyineTool(this)*/
-            << new PlaceRectangleTool(this)
-            << new PlaceCircleTool(this)
-            << new PlaceEllipseTool(this)
-            << new PlacePolygonTool(this);
-    for (auto tool : m_placementTools)
-    {
-        m_interactiveTools << tool;
-        connect(tool, &Tool::finished, // TODO: rename to differentiate with taskCompleted, canceled, ...
-                m_selectTool->action(), &QAction::trigger);
-    }
+    // TBD: Select tool could use the Esc shortcut,
+    // we need to make sure that the active tool is correctly
+    // descativated/cancelled
+    // Reponsability is currently spread across Editor, View and Tools
 
     m_interactiveActionGroup = new QActionGroup(this);
     m_interactiveToolBar = new QToolBar();
-    for (auto tool : m_interactiveTools)
-    {
-        QAction *action = tool->action();
-        action->setCheckable(true);
-        action->setData(QVariant::fromValue<InteractiveTool *>(tool));
-        m_interactiveActionGroup->addAction(action);
-        m_interactiveToolBar->addAction(action);
-        connect(tool, &Tool::taskCompleted,
-                this, [this](UndoCommand * command)
-        {
-            command->setDocument(m_document);
-            m_undoStack->push(command);
-        });
-    }
+    m_selectTool = new SelectTool(this);
+
+    addInteractiveTool(m_selectTool);
+    addInteractiveTool(new MoveItemTool(this));
+    addInteractiveTool(new CloneItemTool(this));
+    addInteractiveTool(new PlaceRectangleTool(this));
+    addInteractiveTool(new PlaceCircleTool(this));
+    addInteractiveTool(new PlaceEllipseTool(this));
+    addInteractiveTool(new PlacePolygonTool(this));
 
     connect(m_interactiveActionGroup, &QActionGroup::triggered,
             this, [this](QAction * action)
@@ -201,6 +188,23 @@ void Editor::addInteractiveTools()
     m_selectTool->action()->setChecked(true);
     m_selectTool->action()->trigger();
     setInteractiveTool(m_selectTool);
+}
+
+void Editor::addInteractiveTool(InteractiveTool *tool)
+{
+    QAction *action = tool->action();
+    action->setCheckable(true);
+    action->setData(QVariant::fromValue<InteractiveTool *>(tool));
+    m_interactiveActionGroup->addAction(action);
+    m_interactiveToolBar->addAction(action);
+    connect(tool, &Tool::commandRequested,
+            this, [this](UndoCommand * command)
+    {
+        command->setDocument(m_document);
+        m_undoStack->push(command);
+    });
+    connect(tool, &Tool::finished, // TODO: rename to differentiate with taskCompleted, canceled, ...
+            m_selectTool->action(), &QAction::trigger);
 }
 
 void Editor::setInteractiveTool(InteractiveTool *tool)

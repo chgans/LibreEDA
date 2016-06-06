@@ -29,8 +29,11 @@ namespace SymbolEditor
         ~Tool();
 
         View *view();
-        Scene *scene();
         void setView(View *view);
+        Scene *scene();
+
+        virtual void activate(View *view) = 0;
+        virtual void desactivate() = 0;
 
         void setToolGroup(const QString &group);
         QString toolGroup() const;
@@ -39,7 +42,7 @@ namespace SymbolEditor
 
     signals:
         void finished();
-        void taskCompleted(UndoCommand *command);
+        void commandRequested(UndoCommand *command);
 
     public slots:
         virtual void cancel();

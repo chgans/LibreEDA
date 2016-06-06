@@ -11,9 +11,9 @@ using namespace SymbolEditor;
 PlaceCircleTool::PlaceCircleTool(QObject *parent):
     PlacementTool(parent)
 {
-    QAction *action = new QAction(QIcon(":/icons/tool/graphicscircletool.svg"),
-                                  "Place a circle", nullptr);
-    action->setShortcut(QKeySequence("i,c"));
+    QAction *action = new QAction(QIcon::fromTheme("draw-circle"), //QIcon(":/icons/tool/graphicscircletool.svg"),
+                                  "<b>P</b>lace a <b>C</b>ircle <i>p,c</i>", nullptr);
+    action->setShortcut(QKeySequence("p,c"));
     setAction(action);
     setToolGroup("interactive-tools");
 
@@ -87,7 +87,7 @@ void PlaceCircleTool::freezePoint(int idx, const QPointF &pos)
     command->brush = m_item->brush();
     command->center = QPointF(0, 0);
     command->radius = m_item->radius();
-    emit taskCompleted(command);
+    emit commandRequested(command);
 
     delete m_item;
     m_item = nullptr;
