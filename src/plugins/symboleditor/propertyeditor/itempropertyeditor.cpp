@@ -53,7 +53,19 @@ Item *ItemPropertyEditor::item() const
 
 void ItemPropertyEditor::setItem(Item *item)
 {
+    if (m_item == item)
+    {
+        return;
+    }
+
+    m_browser->clear();
     m_item = item;
+
+    if (m_item == nullptr)
+    {
+        return;
+    }
+
     m_adapter->setItem(m_item);
     for (auto property: m_adapter->properties())
     {
@@ -117,8 +129,8 @@ void ItemPropertyEditor::connectManagers()
 
 void ItemPropertyEditor::disconnectManagers()
 {
-    disconnect(m_booleanPropertyManager);
-    disconnect(m_realPropertyManager);
+    m_booleanPropertyManager->disconnect(this);
+    m_realPropertyManager->disconnect(this);
 }
 
 void ItemPropertyEditor::onRealPropertyChanged(QtProperty *property)

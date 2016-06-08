@@ -11,23 +11,24 @@ namespace SymbolEditor
         IconItemDelegate(QObject *parent = nullptr);
 
         QSize iconSize() const;
-
-        QString activeIconName;
-        QString inactiveIconName;
+        QIcon checkedIcon() const;
+        QIcon uncheckedIcon() const;
 
     public slots:
         void setIconSize(const QSize &size);
+        void setCheckedIcon(const QIcon &icon);
+        void setUncheckedIcon(const QIcon &icon);
+
 
     private:
-        QSize m_size;
+        QSize m_iconSize;
+        QIcon m_checkedIcon;
+        QIcon m_uncheckedIcon;
 
         // QAbstractItemDelegate interface
     public:
         void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
         QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
-
-        // QAbstractItemDelegate interface
-    public:
         bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
     };
 

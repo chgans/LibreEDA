@@ -204,7 +204,6 @@ void Editor::addInteractiveTools()
     });
 
     m_selectTool->action()->setChecked(true);
-    m_selectTool->action()->trigger();
     setInteractiveTool(m_selectTool);
 }
 

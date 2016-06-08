@@ -11,7 +11,6 @@
 #include "propertyeditor/itempropertyeditor.h"
 #include "objectinspector/objectinspectorview.h"
 #include "objectinspector/objectinspectormodel.h"
-#include "objectinspector/iconitemdelegate.h"
 
 #include "command/command.h"
 
@@ -19,6 +18,7 @@
 #include <QKeyEvent>
 #include <QAction>
 #include <QHeaderView>
+#include <QDebug>
 
 using namespace SymbolEditor;
 
@@ -56,6 +56,16 @@ void SelectTool::updateDocumentItem(quint64 id, const Document::Item *item)
 void SelectTool::removeDocumentItem(quint64 id)
 {
     m_objectInspectorModel->removeItem(id);
+}
+
+void SelectTool::onObjectInspectorVisibilityChangeRequested(quint64 id, bool visibility)
+{
+    qDebug() << "Set visibility" << id << visibility;
+}
+
+void SelectTool::onObjectInspectorLockStateChangeRequested(quint64 id, bool lockState)
+{
+    qDebug() << "Set Lock state" << id << lockState;
 }
 
 void SelectTool::onObjectInspectorSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
@@ -127,13 +137,18 @@ void SelectTool::activate(View *view)
             this, &SelectTool::onSceneSelectionChanged);
     connect(m_objectInspectorView->selectionModel(), &QItemSelectionModel::selectionChanged,
             this, &SelectTool::onObjectInspectorSelectionChanged);
+    connect(m_objectInspectorModel, &ObjectInspectorModel::itemVisiblityChangeRequested,
+            this, &SelectTool::onObjectInspectorVisibilityChangeRequested);
+    connect(m_objectInspectorModel, &ObjectInspectorModel::itemLockStateChangeRequested,
+            this, &SelectTool::onObjectInspectorLockStateChangeRequested);
     m_itemPropertyEditor->setItem(nullptr);
 }
 
 void SelectTool::desactivate()
 {
-    disconnect(m_objectInspectorView->selectionModel());
-    disconnect(scene());
+    m_objectInspectorModel->disconnect(this);
+    m_objectInspectorView->selectionModel()->disconnect(this);
+    scene()->disconnect(this);
 }
 
 void SelectTool::mousePressEvent(QMouseEvent *event)
@@ -175,35 +190,19 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
 
 void SelectTool::keyPressEvent(QKeyEvent *event)
 {
+    Q_UNUSED(event);
 }
 
 void SelectTool::keyReleaseEvent(QKeyEvent *event)
 {
+    Q_UNUSED(event);
 }
 
 void SelectTool::setupObjectInspector()
 {
     m_objectInspectorModel = new ObjectInspectorModel(this);
     m_objectInspectorView = new ObjectInspectorView;
-
-    // Setup view
     m_objectInspectorView->setModel(m_objectInspectorModel);
-    m_objectInspectorView->header()->setStretchLastSection(false);
-    m_objectInspectorView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
-    m_objectInspectorView->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-    m_objectInspectorView->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
-    m_objectInspectorView->setSelectionMode(QTreeView::ExtendedSelection);
-    m_objectInspectorView->setSelectionBehavior(QTreeView::SelectRows);
-
-    auto visibilityDelagate =  new IconItemDelegate(this);
-    visibilityDelagate->activeIconName = "object-visible";
-    visibilityDelagate->inactiveIconName = "object-hidden";
-    m_objectInspectorView->setItemDelegateForColumn(1, visibilityDelagate);
-
-    auto lockDelagate =  new IconItemDelegate(this);
-    lockDelagate->activeIconName = "object-locked";
-    lockDelagate->inactiveIconName = "object-unlocked";
-    m_objectInspectorView->setItemDelegateForColumn(2, lockDelagate);
 }
 
 void SelectTool::setupPropertyBrowser()

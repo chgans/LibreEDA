@@ -8,24 +8,39 @@ namespace SymbolEditor
 
     IconItemDelegate::IconItemDelegate(QObject *parent):
         QAbstractItemDelegate (parent),
-        m_size(16, 16)
+        m_iconSize(16, 16)
     {
 
-    }
-
-    QSize IconItemDelegate::iconSize() const
-    {
-        return m_size;
     }
 
     void IconItemDelegate::setIconSize(const QSize &size)
     {
-        if (m_size == size)
-        {
-            return;
-        }
+        m_iconSize = size;
+    }
 
-        m_size = size;
+    QSize IconItemDelegate::iconSize() const
+    {
+        return m_iconSize;
+    }
+
+    void IconItemDelegate::setCheckedIcon(const QIcon &icon)
+    {
+        m_checkedIcon = icon;
+    }
+
+    QIcon IconItemDelegate::checkedIcon() const
+    {
+        return m_checkedIcon;
+    }
+
+    void IconItemDelegate::setUncheckedIcon(const QIcon &icon)
+    {
+        m_uncheckedIcon = icon;
+    }
+
+    QIcon IconItemDelegate::uncheckedIcon() const
+    {
+        return m_uncheckedIcon;
     }
 
 
@@ -36,21 +51,16 @@ namespace SymbolEditor
             painter->fillRect(option.rect, option.palette.highlight());
         }
 
-        bool active = index.model()->data(index, Qt::DisplayRole).toBool();
-
-        QString name;
-        if (active)
+        painter->save();
+        bool checked = index.model()->data(index, Qt::DisplayRole).toBool();
+        if (checked)
         {
-            name = activeIconName;
+            m_checkedIcon.paint(painter, option.rect);
         }
         else
         {
-            name = inactiveIconName;
+            m_uncheckedIcon.paint(painter, option.rect);
         }
-
-        QIcon icon = QIcon::fromTheme(name);
-        painter->save();
-        icon.paint(painter, option.rect);
         painter->restore();
     }
 
@@ -59,7 +69,7 @@ namespace SymbolEditor
         Q_UNUSED(option);
         Q_UNUSED(index);
 
-        return m_size;
+        return m_iconSize;
     }
 
     bool IconItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,

@@ -138,7 +138,18 @@ namespace SymbolEditor
 
     void ObjectInspectorModel::setItemLockState(quint64 id, bool locked)
     {
+        auto item = m_allItems.value(id);
 
+        if (item->m_locked == locked)
+        {
+            return;
+        }
+        item->m_locked = locked;
+
+        int row = 0;
+        int column = 2;
+        auto index = createIndex(row, column, item);
+        emit dataChanged(index, index);
     }
 
     QModelIndex ObjectInspectorModel::indexForDocumentId(quint64 id)
@@ -233,15 +244,15 @@ namespace SymbolEditor
             return false;
         }
 
-        auto item = itemFromModelIndex(index);
+        auto id = documentIdForIndex(index);
         auto boolValue = value.toBool();
         if (index.column() == 1)
         {
-            item->m_visible = boolValue;
+            emit itemVisiblityChangeRequested(id, boolValue);
         }
         else
         {
-            item->m_locked = boolValue;
+            emit itemLockStateChangeRequested(id, boolValue);
         }
         return true;
     }

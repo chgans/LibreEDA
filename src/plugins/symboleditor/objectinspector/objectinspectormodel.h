@@ -14,16 +14,6 @@ namespace SymbolEditor
     public:
         explicit ObjectInspectorModel(QObject *parent = 0);
 
-        // Bridge to the ObjectInspectorView
-        QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-        QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-        QModelIndex index(int row, int column,
-                          const QModelIndex &parent = QModelIndex()) const override;
-        QModelIndex parent(const QModelIndex &index) const override;
-        int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-        int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-
-
         // Bridge to object holders
         void addTopLevelItem(quint64 id, const QString &text, const QIcon &icon);
         void addChildItem(quint64  parentId, quint64 id, const QString &text, const QIcon &icon);
@@ -32,6 +22,9 @@ namespace SymbolEditor
         void setItemLockState(quint64 id, bool locked);
         QModelIndex indexForDocumentId(quint64 id);
         quint64 documentIdForIndex(const QModelIndex &index);
+    signals:
+        void itemVisiblityChangeRequested(quint64 id, bool visibility);
+        void itemLockStateChangeRequested(quint64 id, bool lockState);
 
     private:
         ObjectInspectorItem *itemFromModelIndex(const QModelIndex &index) const;
@@ -43,7 +36,14 @@ namespace SymbolEditor
 
         // QAbstractItemModel interface
     public:
-        bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+        QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+        QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+        bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+        QModelIndex index(int row, int column,
+                          const QModelIndex &parent = QModelIndex()) const override;
+        QModelIndex parent(const QModelIndex &index) const override;
+        int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+        int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     };
 
 }

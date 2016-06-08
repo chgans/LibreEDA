@@ -30,6 +30,8 @@ namespace SymbolEditor
         void removeDocumentItem(quint64 id);
 
     private slots:
+        void onObjectInspectorVisibilityChangeRequested(quint64 id, bool visibility);
+        void onObjectInspectorLockStateChangeRequested(quint64 id, bool lockState);
         void onObjectInspectorSelectionChanged(const QItemSelection &selected,
                                                const QItemSelection &deselected);
         void onSceneSelectionChanged();
