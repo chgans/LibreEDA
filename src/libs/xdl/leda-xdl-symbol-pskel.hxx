@@ -716,9 +716,6 @@ namespace xdl
       // pre ();
 
       virtual void
-      center (const QPointF&);
-
-      virtual void
       radius (const qreal&);
 
       virtual CircleItem*
@@ -726,9 +723,6 @@ namespace xdl
 
       // Parser construction API.
       //
-      void
-      center_parser (::xdl::symbol::Point_pskel&);
-
       void
       radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
 
@@ -743,7 +737,6 @@ namespace xdl
                ::xml_schema::boolean_pskel& /* x-mirrored */,
                ::xml_schema::boolean_pskel& /* y-mirrored */,
                ::xml_schema::boolean_pskel& /* visible */,
-               ::xdl::symbol::Point_pskel& /* center */,
                ::xdl::symbol::NonNegativeDouble_pskel& /* radius */);
 
       // Constructor.
@@ -763,7 +756,6 @@ namespace xdl
                          const ::xml_schema::ro_string&);
 
       protected:
-      ::xdl::symbol::Point_pskel* center_parser_;
       ::xdl::symbol::NonNegativeDouble_pskel* radius_parser_;
 
       protected:
@@ -813,9 +805,6 @@ namespace xdl
       // pre ();
 
       virtual void
-      center (const QPointF&);
-
-      virtual void
       radius (const qreal&);
 
       virtual void
@@ -829,9 +818,6 @@ namespace xdl
 
       // Parser construction API.
       //
-      void
-      center_parser (::xdl::symbol::Point_pskel&);
-
       void
       radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
 
@@ -852,7 +838,6 @@ namespace xdl
                ::xml_schema::boolean_pskel& /* x-mirrored */,
                ::xml_schema::boolean_pskel& /* y-mirrored */,
                ::xml_schema::boolean_pskel& /* visible */,
-               ::xdl::symbol::Point_pskel& /* center */,
                ::xdl::symbol::NonNegativeDouble_pskel& /* radius */,
                ::xdl::symbol::Angle_pskel& /* start-angle */,
                ::xdl::symbol::Angle_pskel& /* span-angle */);
@@ -874,7 +859,6 @@ namespace xdl
                          const ::xml_schema::ro_string&);
 
       protected:
-      ::xdl::symbol::Point_pskel* center_parser_;
       ::xdl::symbol::NonNegativeDouble_pskel* radius_parser_;
       ::xdl::symbol::Angle_pskel* start_angle_parser_;
       ::xdl::symbol::Angle_pskel* span_angle_parser_;
@@ -926,9 +910,6 @@ namespace xdl
       // pre ();
 
       virtual void
-      center (const QPointF&);
-
-      virtual void
       x_radius (const qreal&);
 
       virtual void
@@ -939,9 +920,6 @@ namespace xdl
 
       // Parser construction API.
       //
-      void
-      center_parser (::xdl::symbol::Point_pskel&);
-
       void
       x_radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
 
@@ -959,7 +937,6 @@ namespace xdl
                ::xml_schema::boolean_pskel& /* x-mirrored */,
                ::xml_schema::boolean_pskel& /* y-mirrored */,
                ::xml_schema::boolean_pskel& /* visible */,
-               ::xdl::symbol::Point_pskel& /* center */,
                ::xdl::symbol::NonNegativeDouble_pskel& /* x-radius */,
                ::xdl::symbol::NonNegativeDouble_pskel& /* y-radius */);
 
@@ -980,7 +957,6 @@ namespace xdl
                          const ::xml_schema::ro_string&);
 
       protected:
-      ::xdl::symbol::Point_pskel* center_parser_;
       ::xdl::symbol::NonNegativeDouble_pskel* x_radius_parser_;
       ::xdl::symbol::NonNegativeDouble_pskel* y_radius_parser_;
 
@@ -1031,9 +1007,6 @@ namespace xdl
       // pre ();
 
       virtual void
-      center (const QPointF&);
-
-      virtual void
       x_radius (const qreal&);
 
       virtual void
@@ -1050,9 +1023,6 @@ namespace xdl
 
       // Parser construction API.
       //
-      void
-      center_parser (::xdl::symbol::Point_pskel&);
-
       void
       x_radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
 
@@ -1076,7 +1046,6 @@ namespace xdl
                ::xml_schema::boolean_pskel& /* x-mirrored */,
                ::xml_schema::boolean_pskel& /* y-mirrored */,
                ::xml_schema::boolean_pskel& /* visible */,
-               ::xdl::symbol::Point_pskel& /* center */,
                ::xdl::symbol::NonNegativeDouble_pskel& /* x-radius */,
                ::xdl::symbol::NonNegativeDouble_pskel& /* y-radius */,
                ::xdl::symbol::Angle_pskel& /* start-angle */,
@@ -1099,7 +1068,6 @@ namespace xdl
                          const ::xml_schema::ro_string&);
 
       protected:
-      ::xdl::symbol::Point_pskel* center_parser_;
       ::xdl::symbol::NonNegativeDouble_pskel* x_radius_parser_;
       ::xdl::symbol::NonNegativeDouble_pskel* y_radius_parser_;
       ::xdl::symbol::Angle_pskel* start_angle_parser_;
@@ -1152,10 +1120,10 @@ namespace xdl
       // pre ();
 
       virtual void
-      top_left (const QPointF&);
+      width (const qreal&);
 
       virtual void
-      bottom_right (const QPointF&);
+      height (const qreal&);
 
       virtual RectangleItem*
       post_Rectangle () = 0;
@@ -1163,10 +1131,10 @@ namespace xdl
       // Parser construction API.
       //
       void
-      top_left_parser (::xdl::symbol::Point_pskel&);
+      width_parser (::xdl::symbol::NonNegativeDouble_pskel&);
 
       void
-      bottom_right_parser (::xdl::symbol::Point_pskel&);
+      height_parser (::xdl::symbol::NonNegativeDouble_pskel&);
 
       void
       parsers (::xdl::symbol::Pen_pskel& /* pen */,
@@ -1179,8 +1147,8 @@ namespace xdl
                ::xml_schema::boolean_pskel& /* x-mirrored */,
                ::xml_schema::boolean_pskel& /* y-mirrored */,
                ::xml_schema::boolean_pskel& /* visible */,
-               ::xdl::symbol::Point_pskel& /* top-left */,
-               ::xdl::symbol::Point_pskel& /* bottom-right */);
+               ::xdl::symbol::NonNegativeDouble_pskel& /* width */,
+               ::xdl::symbol::NonNegativeDouble_pskel& /* height */);
 
       // Constructor.
       //
@@ -1199,8 +1167,8 @@ namespace xdl
                          const ::xml_schema::ro_string&);
 
       protected:
-      ::xdl::symbol::Point_pskel* top_left_parser_;
-      ::xdl::symbol::Point_pskel* bottom_right_parser_;
+      ::xdl::symbol::NonNegativeDouble_pskel* width_parser_;
+      ::xdl::symbol::NonNegativeDouble_pskel* height_parser_;
 
       protected:
       struct v_state_descr_
@@ -1616,7 +1584,13 @@ namespace xdl
       text (const ::std::string&);
 
       virtual void
-      font (const QFont&);
+      color (const QColor&);
+
+      virtual void
+      font_family (const ::std::string&);
+
+      virtual void
+      font_size (unsigned long long);
 
       virtual LabelItem*
       post_Label () = 0;
@@ -1627,7 +1601,13 @@ namespace xdl
       text_parser (::xml_schema::string_pskel&);
 
       void
-      font_parser (::xdl::symbol::Font_pskel&);
+      color_parser (::xdl::symbol::Color_pskel&);
+
+      void
+      font_family_parser (::xml_schema::string_pskel&);
+
+      void
+      font_size_parser (::xml_schema::non_negative_integer_pskel&);
 
       void
       parsers (::xdl::symbol::Pen_pskel& /* pen */,
@@ -1641,7 +1621,9 @@ namespace xdl
                ::xml_schema::boolean_pskel& /* y-mirrored */,
                ::xml_schema::boolean_pskel& /* visible */,
                ::xml_schema::string_pskel& /* text */,
-               ::xdl::symbol::Font_pskel& /* font */);
+               ::xdl::symbol::Color_pskel& /* color */,
+               ::xml_schema::string_pskel& /* font-family */,
+               ::xml_schema::non_negative_integer_pskel& /* font-size */);
 
       // Constructor.
       //
@@ -1661,7 +1643,9 @@ namespace xdl
 
       protected:
       ::xml_schema::string_pskel* text_parser_;
-      ::xdl::symbol::Font_pskel* font_parser_;
+      ::xdl::symbol::Color_pskel* color_parser_;
+      ::xml_schema::string_pskel* font_family_parser_;
+      ::xml_schema::non_negative_integer_pskel* font_size_parser_;
 
       protected:
       struct v_state_descr_

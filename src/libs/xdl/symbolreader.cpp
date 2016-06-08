@@ -62,8 +62,8 @@ struct ReaderPrivate
                             boolean_p,
                             boolean_p,
                             boolean_p,
-                            Point_p,
-                            Point_p);
+                            NonNegativeDouble_p,
+                            NonNegativeDouble_p);
         Circle_p.parsers(Pen_p,
                          Brush_p,
                          Point_p,
@@ -74,7 +74,6 @@ struct ReaderPrivate
                          boolean_p,
                          boolean_p,
                          boolean_p,
-                         Point_p,
                          NonNegativeDouble_p);
 
         CircularArc_p.parsers(Pen_p,
@@ -87,7 +86,6 @@ struct ReaderPrivate
                               boolean_p,
                               boolean_p,
                               boolean_p,
-                              Point_p,
                               NonNegativeDouble_p,
                               Angle_p,
                               Angle_p);
@@ -102,7 +100,6 @@ struct ReaderPrivate
                           boolean_p,
                           boolean_p,
                           boolean_p,
-                          Point_p,
                           NonNegativeDouble_p,
                           NonNegativeDouble_p);
 
@@ -116,7 +113,6 @@ struct ReaderPrivate
                                 boolean_p,
                                 boolean_p,
                                 boolean_p,
-                                Point_p,
                                 NonNegativeDouble_p,
                                 NonNegativeDouble_p,
                                 Angle_p,
@@ -133,7 +129,9 @@ struct ReaderPrivate
                         boolean_p,
                         boolean_p,
                         string_p,
-                        Font_p);
+                        Color_p,
+                        string_p,
+                        non_negative_integer_p);
 
         Pin_p.parsers(Pen_p,
                       Brush_p,

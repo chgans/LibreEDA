@@ -16,8 +16,8 @@ void PlaceEllipseCommand::undo()
 void PlaceEllipseCommand::redo()
 {
     auto ellipse = new xdl::symbol::EllipseItem;
-    ellipse->center = center;
-    ellipse->xRadius = xRadius;
-    ellipse->yRadius = yRadius;
+    //ellipse->center = center;
+    ellipse->setXRadius(xRadius);
+    ellipse->setYRadius(yRadius);
     placeItem(ellipse);
 }

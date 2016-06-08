@@ -37,7 +37,7 @@ void CloneCommand::redo()
         }
         auto clone = item->clone();
         quint64 cloneId = document()->addItem(clone);
-        clone->position += translation;
+        clone->setPosition(item->position() + translation);
         document()->updateItem(cloneId);
         cloneIdList.append(cloneId);
     }

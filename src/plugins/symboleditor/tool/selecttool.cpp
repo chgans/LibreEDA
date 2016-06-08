@@ -49,8 +49,8 @@ void SelectTool::addDocumentItem(quint64 id, const Document::Item *item)
 
 void SelectTool::updateDocumentItem(quint64 id, const Document::Item *item)
 {
-    m_objectInspectorModel->setItemVisibility(id, item->visible);
-    m_objectInspectorModel->setItemLockState(id, item->locked);
+    m_objectInspectorModel->setItemVisibility(id, item->isVisible());
+    m_objectInspectorModel->setItemLockState(id, item->isLocked());
 }
 
 void SelectTool::removeDocumentItem(quint64 id)

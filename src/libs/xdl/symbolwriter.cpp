@@ -147,7 +147,7 @@ void WriterPrivate::writePolyline(const PolylineItem *item)
 {
     xmlWriter->writeStartElement("polyline");
     writeItemContent(item);
-    writePointList("vertices", "point", item->vertices);
+    writePointList("vertices", "point", item->vertices());
     xmlWriter->writeEndElement();
 }
 
@@ -155,7 +155,7 @@ void WriterPrivate::writePolygon(const PolygonItem *item)
 {
     xmlWriter->writeStartElement("polygon");
     writeItemContent(item);
-    writePointList("vertices", "point", item->vertices);
+    writePointList("vertices", "point", item->vertices());
     xmlWriter->writeEndElement();
 }
 
@@ -163,8 +163,8 @@ void WriterPrivate::writeRectangle(const RectangleItem *item)
 {
     xmlWriter->writeStartElement("rectangle");
     writeItemContent(item);
-    writePoint("top-left", item->topLeft);
-    writePoint("bottom-right", item->bottomRight);
+    writeDouble("width", item->width());
+    writeDouble("height", item->height());
     xmlWriter->writeEndElement();
 }
 
@@ -172,8 +172,7 @@ void WriterPrivate::writeCircle(const CircleItem *item)
 {
     xmlWriter->writeStartElement("circle");
     writeItemContent(item);
-    writePoint("center", item->center);
-    writeDouble("radius", item->radius);
+    writeDouble("radius", item->radius());
     xmlWriter->writeEndElement();
 }
 
@@ -181,10 +180,9 @@ void WriterPrivate::writeCircularArc(const CircularArcItem *item)
 {
     xmlWriter->writeStartElement("circular-arc");
     writeItemContent(item);
-    writePoint("center", item->center);
-    writeDouble("radius", item->radius);
-    writeDouble("start-angle", item->startAngle);
-    writeDouble("span-angle", item->spanAngle);
+    writeDouble("radius", item->radius());
+    writeDouble("start-angle", item->startAngle());
+    writeDouble("span-angle", item->spanAngle());
     xmlWriter->writeEndElement();
 }
 
@@ -192,9 +190,8 @@ void WriterPrivate::writeEllipse(const EllipseItem *item)
 {
     xmlWriter->writeStartElement("ellipse");
     writeItemContent(item);
-    writePoint("center", item->center);
-    writeDouble("x-radius", item->xRadius);
-    writeDouble("y-radius", item->yRadius);
+    writeDouble("x-radius", item->xRadius());
+    writeDouble("y-radius", item->yRadius());
     xmlWriter->writeEndElement();
 }
 
@@ -202,11 +199,10 @@ void WriterPrivate::writeEllipticalArc(const EllipticalArcItem *item)
 {
     xmlWriter->writeStartElement("elliptical-arc");
     writeItemContent(item);
-    writePoint("center", item->center);
-    writeDouble("x-radius", item->xRadius);
-    writeDouble("y-radius", item->yRadius);
-    writeDouble("start-angle", item->startAngle);
-    writeDouble("span-angle", item->spanAngle);
+    writeDouble("x-radius", item->xRadius());
+    writeDouble("y-radius", item->yRadius());
+    writeDouble("start-angle", item->startAngle());
+    writeDouble("span-angle", item->spanAngle());
     xmlWriter->writeEndElement();
 }
 
@@ -222,8 +218,8 @@ void WriterPrivate::writePin(const PinItem *item)
 {
     xmlWriter->writeStartElement("pin");
     writeItemContent(item);
-    xmlWriter->writeTextElement("designator", item->designator->text); // FIXME
-    xmlWriter->writeTextElement("label", item->label->text); // FIXME
+    xmlWriter->writeTextElement("designator", item->designator->text()); // FIXME
+    xmlWriter->writeTextElement("label", item->label->text()); // FIXME
     xmlWriter->writeEndElement();
 }
 
@@ -237,16 +233,16 @@ void WriterPrivate::writeGroup(const ItemGroup *item)
 
 void WriterPrivate::writeItemContent(const Item *item)
 {
-    writePen("pen", item->pen);
-    writeBrush("brush", item->brush);
-    writePoint("position", item->position);
-    writeDouble("z-value", item->zValue);
-    writeDouble("rotation", item->rotation); // % 360
-    writeDouble("opacity", item->opacity);
-    writeBoolean("locked", !item->locked);
-    writeBoolean("x-mirrored", item->xMirrored);
-    writeBoolean("y-mirrored", item->yMirrored);
-    writeBoolean("visible", item->visible);
+    //writePen("pen", item->pen); // FIXME
+    //writeBrush("brush", item->brush); // FIXME
+    writePoint("position", item->position());
+    //writeDouble("z-value", item->zValue());
+    writeDouble("rotation", item->rotation()); // % 360
+    writeDouble("opacity", item->opacity());
+    writeBoolean("locked", !item->isLocked());
+    writeBoolean("x-mirrored", item->isXMirrored());
+    writeBoolean("y-mirrored", item->isYMirrored());
+    writeBoolean("visible", item->isVisible());
 }
 
 void WriterPrivate::writePen(const char *tag, const QPen &pen)

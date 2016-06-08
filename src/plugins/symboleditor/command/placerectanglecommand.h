@@ -13,8 +13,8 @@ namespace SymbolEditor
         void undo();
         void redo();
 
-        QPointF topLeft;
-        QPointF bottomRight;
+        qreal width;
+        qreal height;
     };
 
 }

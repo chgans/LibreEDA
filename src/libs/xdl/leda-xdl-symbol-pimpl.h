@@ -85,12 +85,10 @@ class Circle_pimpl: public virtual Circle_pskel,
 {
 public:
     virtual void pre();
-    virtual void center(const QPointF &);
     virtual void radius(const qreal &);
     virtual CircleItem *post_Circle();
 
 private:
-    QPointF m_center;
     qreal m_radius;
 };
 
@@ -99,14 +97,12 @@ class CircularArc_pimpl: public virtual CircularArc_pskel,
 {
 public:
     virtual void pre();
-    virtual void center(const QPointF &);
     virtual void radius(const qreal &);
     virtual void start_angle(const qreal &);
     virtual void span_angle(const qreal &);
     virtual CircularArcItem *post_CircularArc();
 
 private:
-    QPointF m_center;
     qreal m_radius;
     qreal m_startAngle;
     qreal m_spanAngle;
@@ -117,13 +113,11 @@ class Ellipse_pimpl: public virtual Ellipse_pskel,
 {
 public:
     virtual void pre();
-    virtual void center(const QPointF &);
     virtual void x_radius(const qreal &);
     virtual void y_radius(const qreal &);
     virtual EllipseItem *post_Ellipse();
 
 private:
-    QPointF m_center;
     qreal m_xRadius;
     qreal m_yRadius;
 };
@@ -133,7 +127,6 @@ class EllipticalArc_pimpl: public virtual EllipticalArc_pskel,
 {
 public:
     virtual void pre();
-    virtual void center(const QPointF &);
     virtual void x_radius(const qreal &);
     virtual void y_radius(const qreal &);
     virtual void start_angle(const qreal &);
@@ -141,7 +134,6 @@ public:
     virtual EllipticalArcItem *post_EllipticalArc();
 
 private:
-    QPointF m_center;
     qreal m_xRadius;
     qreal m_yRadius;
     qreal m_startAngle;
@@ -153,13 +145,13 @@ class Rectangle_pimpl: public virtual Rectangle_pskel,
 {
 public:
     virtual void pre();
-    virtual void top_left(const QPointF &);
-    virtual void bottom_right(const QPointF &);
+    virtual void width(const qreal &);
+    virtual void height(const qreal &);
     virtual RectangleItem *post_Rectangle();
 
 private:
-    QPointF m_topLeft;
-    QPointF m_bottomRight;
+    qreal m_width;
+    qreal m_height;
 };
 
 class Polyline_pimpl: public virtual Polyline_pskel,
@@ -220,12 +212,16 @@ class Label_pimpl: public virtual Label_pskel,
 public:
     virtual void pre();
     virtual void text(const ::std::string &);
-    virtual void font(const QFont &);
+    virtual void color(const QColor&);
+    virtual void font_family(const ::std::string &);
+    virtual void font_size(unsigned long long);
     virtual LabelItem *post_Label();
 
 private:
     QString m_text;
-    QFont m_font;
+    QString m_color;
+    QString m_fontFamily;
+    int m_fontSize;
 };
 
 class Font_pimpl: public virtual Font_pskel

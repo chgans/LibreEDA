@@ -294,12 +294,6 @@ namespace xdl
     //
 
     void Circle_pskel::
-    center_parser (::xdl::symbol::Point_pskel& p)
-    {
-      this->center_parser_ = &p;
-    }
-
-    void Circle_pskel::
     radius_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
     {
       this->radius_parser_ = &p;
@@ -316,7 +310,6 @@ namespace xdl
              ::xml_schema::boolean_pskel& x_mirrored,
              ::xml_schema::boolean_pskel& y_mirrored,
              ::xml_schema::boolean_pskel& visible,
-             ::xdl::symbol::Point_pskel& center,
              ::xdl::symbol::NonNegativeDouble_pskel& radius)
     {
       this->pen_parser_ = &pen;
@@ -329,26 +322,18 @@ namespace xdl
       this->x_mirrored_parser_ = &x_mirrored;
       this->y_mirrored_parser_ = &y_mirrored;
       this->visible_parser_ = &visible;
-      this->center_parser_ = &center;
       this->radius_parser_ = &radius;
     }
 
     Circle_pskel::
     Circle_pskel ()
-    : center_parser_ (0),
-      radius_parser_ (0),
+    : radius_parser_ (0),
       v_state_stack_ (sizeof (v_state_), &v_state_first_)
     {
     }
 
     // CircularArc_pskel
     //
-
-    void CircularArc_pskel::
-    center_parser (::xdl::symbol::Point_pskel& p)
-    {
-      this->center_parser_ = &p;
-    }
 
     void CircularArc_pskel::
     radius_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
@@ -379,7 +364,6 @@ namespace xdl
              ::xml_schema::boolean_pskel& x_mirrored,
              ::xml_schema::boolean_pskel& y_mirrored,
              ::xml_schema::boolean_pskel& visible,
-             ::xdl::symbol::Point_pskel& center,
              ::xdl::symbol::NonNegativeDouble_pskel& radius,
              ::xdl::symbol::Angle_pskel& start_angle,
              ::xdl::symbol::Angle_pskel& span_angle)
@@ -394,7 +378,6 @@ namespace xdl
       this->x_mirrored_parser_ = &x_mirrored;
       this->y_mirrored_parser_ = &y_mirrored;
       this->visible_parser_ = &visible;
-      this->center_parser_ = &center;
       this->radius_parser_ = &radius;
       this->start_angle_parser_ = &start_angle;
       this->span_angle_parser_ = &span_angle;
@@ -402,8 +385,7 @@ namespace xdl
 
     CircularArc_pskel::
     CircularArc_pskel ()
-    : center_parser_ (0),
-      radius_parser_ (0),
+    : radius_parser_ (0),
       start_angle_parser_ (0),
       span_angle_parser_ (0),
       v_state_stack_ (sizeof (v_state_), &v_state_first_)
@@ -412,12 +394,6 @@ namespace xdl
 
     // Ellipse_pskel
     //
-
-    void Ellipse_pskel::
-    center_parser (::xdl::symbol::Point_pskel& p)
-    {
-      this->center_parser_ = &p;
-    }
 
     void Ellipse_pskel::
     x_radius_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
@@ -442,7 +418,6 @@ namespace xdl
              ::xml_schema::boolean_pskel& x_mirrored,
              ::xml_schema::boolean_pskel& y_mirrored,
              ::xml_schema::boolean_pskel& visible,
-             ::xdl::symbol::Point_pskel& center,
              ::xdl::symbol::NonNegativeDouble_pskel& x_radius,
              ::xdl::symbol::NonNegativeDouble_pskel& y_radius)
     {
@@ -456,15 +431,13 @@ namespace xdl
       this->x_mirrored_parser_ = &x_mirrored;
       this->y_mirrored_parser_ = &y_mirrored;
       this->visible_parser_ = &visible;
-      this->center_parser_ = &center;
       this->x_radius_parser_ = &x_radius;
       this->y_radius_parser_ = &y_radius;
     }
 
     Ellipse_pskel::
     Ellipse_pskel ()
-    : center_parser_ (0),
-      x_radius_parser_ (0),
+    : x_radius_parser_ (0),
       y_radius_parser_ (0),
       v_state_stack_ (sizeof (v_state_), &v_state_first_)
     {
@@ -472,12 +445,6 @@ namespace xdl
 
     // EllipticalArc_pskel
     //
-
-    void EllipticalArc_pskel::
-    center_parser (::xdl::symbol::Point_pskel& p)
-    {
-      this->center_parser_ = &p;
-    }
 
     void EllipticalArc_pskel::
     x_radius_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
@@ -514,7 +481,6 @@ namespace xdl
              ::xml_schema::boolean_pskel& x_mirrored,
              ::xml_schema::boolean_pskel& y_mirrored,
              ::xml_schema::boolean_pskel& visible,
-             ::xdl::symbol::Point_pskel& center,
              ::xdl::symbol::NonNegativeDouble_pskel& x_radius,
              ::xdl::symbol::NonNegativeDouble_pskel& y_radius,
              ::xdl::symbol::Angle_pskel& start_angle,
@@ -530,7 +496,6 @@ namespace xdl
       this->x_mirrored_parser_ = &x_mirrored;
       this->y_mirrored_parser_ = &y_mirrored;
       this->visible_parser_ = &visible;
-      this->center_parser_ = &center;
       this->x_radius_parser_ = &x_radius;
       this->y_radius_parser_ = &y_radius;
       this->start_angle_parser_ = &start_angle;
@@ -539,8 +504,7 @@ namespace xdl
 
     EllipticalArc_pskel::
     EllipticalArc_pskel ()
-    : center_parser_ (0),
-      x_radius_parser_ (0),
+    : x_radius_parser_ (0),
       y_radius_parser_ (0),
       start_angle_parser_ (0),
       span_angle_parser_ (0),
@@ -552,15 +516,15 @@ namespace xdl
     //
 
     void Rectangle_pskel::
-    top_left_parser (::xdl::symbol::Point_pskel& p)
+    width_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
     {
-      this->top_left_parser_ = &p;
+      this->width_parser_ = &p;
     }
 
     void Rectangle_pskel::
-    bottom_right_parser (::xdl::symbol::Point_pskel& p)
+    height_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
     {
-      this->bottom_right_parser_ = &p;
+      this->height_parser_ = &p;
     }
 
     void Rectangle_pskel::
@@ -574,8 +538,8 @@ namespace xdl
              ::xml_schema::boolean_pskel& x_mirrored,
              ::xml_schema::boolean_pskel& y_mirrored,
              ::xml_schema::boolean_pskel& visible,
-             ::xdl::symbol::Point_pskel& top_left,
-             ::xdl::symbol::Point_pskel& bottom_right)
+             ::xdl::symbol::NonNegativeDouble_pskel& width,
+             ::xdl::symbol::NonNegativeDouble_pskel& height)
     {
       this->pen_parser_ = &pen;
       this->brush_parser_ = &brush;
@@ -587,14 +551,14 @@ namespace xdl
       this->x_mirrored_parser_ = &x_mirrored;
       this->y_mirrored_parser_ = &y_mirrored;
       this->visible_parser_ = &visible;
-      this->top_left_parser_ = &top_left;
-      this->bottom_right_parser_ = &bottom_right;
+      this->width_parser_ = &width;
+      this->height_parser_ = &height;
     }
 
     Rectangle_pskel::
     Rectangle_pskel ()
-    : top_left_parser_ (0),
-      bottom_right_parser_ (0),
+    : width_parser_ (0),
+      height_parser_ (0),
       v_state_stack_ (sizeof (v_state_), &v_state_first_)
     {
     }
@@ -786,9 +750,21 @@ namespace xdl
     }
 
     void Label_pskel::
-    font_parser (::xdl::symbol::Font_pskel& p)
+    color_parser (::xdl::symbol::Color_pskel& p)
     {
-      this->font_parser_ = &p;
+      this->color_parser_ = &p;
+    }
+
+    void Label_pskel::
+    font_family_parser (::xml_schema::string_pskel& p)
+    {
+      this->font_family_parser_ = &p;
+    }
+
+    void Label_pskel::
+    font_size_parser (::xml_schema::non_negative_integer_pskel& p)
+    {
+      this->font_size_parser_ = &p;
     }
 
     void Label_pskel::
@@ -803,7 +779,9 @@ namespace xdl
              ::xml_schema::boolean_pskel& y_mirrored,
              ::xml_schema::boolean_pskel& visible,
              ::xml_schema::string_pskel& text,
-             ::xdl::symbol::Font_pskel& font)
+             ::xdl::symbol::Color_pskel& color,
+             ::xml_schema::string_pskel& font_family,
+             ::xml_schema::non_negative_integer_pskel& font_size)
     {
       this->pen_parser_ = &pen;
       this->brush_parser_ = &brush;
@@ -816,13 +794,17 @@ namespace xdl
       this->y_mirrored_parser_ = &y_mirrored;
       this->visible_parser_ = &visible;
       this->text_parser_ = &text;
-      this->font_parser_ = &font;
+      this->color_parser_ = &color;
+      this->font_family_parser_ = &font_family;
+      this->font_size_parser_ = &font_size;
     }
 
     Label_pskel::
     Label_pskel ()
     : text_parser_ (0),
-      font_parser_ (0),
+      color_parser_ (0),
+      font_family_parser_ (0),
+      font_size_parser_ (0),
       v_state_stack_ (sizeof (v_state_), &v_state_first_)
     {
     }
@@ -1175,22 +1157,12 @@ namespace xdl
     //
 
     void Circle_pskel::
-    center (const QPointF&)
-    {
-    }
-
-    void Circle_pskel::
     radius (const qreal&)
     {
     }
 
     // CircularArc_pskel
     //
-
-    void CircularArc_pskel::
-    center (const QPointF&)
-    {
-    }
 
     void CircularArc_pskel::
     radius (const qreal&)
@@ -1211,11 +1183,6 @@ namespace xdl
     //
 
     void Ellipse_pskel::
-    center (const QPointF&)
-    {
-    }
-
-    void Ellipse_pskel::
     x_radius (const qreal&)
     {
     }
@@ -1227,11 +1194,6 @@ namespace xdl
 
     // EllipticalArc_pskel
     //
-
-    void EllipticalArc_pskel::
-    center (const QPointF&)
-    {
-    }
 
     void EllipticalArc_pskel::
     x_radius (const qreal&)
@@ -1257,12 +1219,12 @@ namespace xdl
     //
 
     void Rectangle_pskel::
-    top_left (const QPointF&)
+    width (const qreal&)
     {
     }
 
     void Rectangle_pskel::
-    bottom_right (const QPointF&)
+    height (const qreal&)
     {
     }
 
@@ -1312,7 +1274,17 @@ namespace xdl
     }
 
     void Label_pskel::
-    font (const QFont&)
+    color (const QColor&)
+    {
+    }
+
+    void Label_pskel::
+    font_family (const ::std::string&)
+    {
+    }
+
+    void Label_pskel::
+    font_size (unsigned long long)
     {
     }
 
@@ -2640,7 +2612,7 @@ namespace xdl
         {
           unsigned long s = ~0UL;
 
-          if (n == "center" &&
+          if (n == "radius" &&
               ns == "http://www.leda.org/xdl")
             s = 0UL;
 
@@ -2660,7 +2632,7 @@ namespace xdl
           {
             if (vd->count < 1UL)
               this->_expected_element (
-                "http://www.leda.org/xdl", "center",
+                "http://www.leda.org/xdl", "radius",
                 ns, n);
             return false;
           }
@@ -2729,7 +2701,7 @@ namespace xdl
 
       if (vd->count < 1UL)
         this->_expected_element (
-          "http://www.leda.org/xdl", "center");
+          "http://www.leda.org/xdl", "radius");
 
       this->v_state_stack_.pop ();
     }
@@ -2747,43 +2719,6 @@ namespace xdl
       switch (state)
       {
         case 0UL:
-        {
-          if (n == "center" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
-
-              if (this->center_parser_)
-                this->center_parser_->pre ();
-            }
-            else
-            {
-              if (this->center_parser_)
-              {
-                this->center (this->center_parser_->post_Point ());
-              }
-
-              count = 0;
-              state = 1UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            if (count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "center",
-                ns, n);
-            count = 0;
-            state = 1UL;
-            // Fall through.
-          }
-        }
-        case 1UL:
         {
           if (n == "radius" &&
               ns == "http://www.leda.org/xdl")
@@ -2863,7 +2798,7 @@ namespace xdl
         {
           unsigned long s = ~0UL;
 
-          if (n == "center" &&
+          if (n == "radius" &&
               ns == "http://www.leda.org/xdl")
             s = 0UL;
 
@@ -2883,7 +2818,7 @@ namespace xdl
           {
             if (vd->count < 1UL)
               this->_expected_element (
-                "http://www.leda.org/xdl", "center",
+                "http://www.leda.org/xdl", "radius",
                 ns, n);
             return false;
           }
@@ -2952,7 +2887,7 @@ namespace xdl
 
       if (vd->count < 1UL)
         this->_expected_element (
-          "http://www.leda.org/xdl", "center");
+          "http://www.leda.org/xdl", "radius");
 
       this->v_state_stack_.pop ();
     }
@@ -2970,43 +2905,6 @@ namespace xdl
       switch (state)
       {
         case 0UL:
-        {
-          if (n == "center" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
-
-              if (this->center_parser_)
-                this->center_parser_->pre ();
-            }
-            else
-            {
-              if (this->center_parser_)
-              {
-                this->center (this->center_parser_->post_Point ());
-              }
-
-              count = 0;
-              state = 1UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            if (count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "center",
-                ns, n);
-            count = 0;
-            state = 1UL;
-            // Fall through.
-          }
-        }
-        case 1UL:
         {
           if (n == "radius" &&
               ns == "http://www.leda.org/xdl")
@@ -3026,7 +2924,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 2UL;
+              state = 1UL;
             }
 
             break;
@@ -3039,11 +2937,11 @@ namespace xdl
                 "http://www.leda.org/xdl", "radius",
                 ns, n);
             count = 0;
-            state = 2UL;
+            state = 1UL;
             // Fall through.
           }
         }
-        case 2UL:
+        case 1UL:
         {
           if (n == "start-angle" &&
               ns == "http://www.leda.org/xdl")
@@ -3063,7 +2961,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 3UL;
+              state = 2UL;
             }
 
             break;
@@ -3076,11 +2974,11 @@ namespace xdl
                 "http://www.leda.org/xdl", "start-angle",
                 ns, n);
             count = 0;
-            state = 3UL;
+            state = 2UL;
             // Fall through.
           }
         }
-        case 3UL:
+        case 2UL:
         {
           if (n == "span-angle" &&
               ns == "http://www.leda.org/xdl")
@@ -3160,7 +3058,7 @@ namespace xdl
         {
           unsigned long s = ~0UL;
 
-          if (n == "center" &&
+          if (n == "x-radius" &&
               ns == "http://www.leda.org/xdl")
             s = 0UL;
 
@@ -3180,7 +3078,7 @@ namespace xdl
           {
             if (vd->count < 1UL)
               this->_expected_element (
-                "http://www.leda.org/xdl", "center",
+                "http://www.leda.org/xdl", "x-radius",
                 ns, n);
             return false;
           }
@@ -3249,7 +3147,7 @@ namespace xdl
 
       if (vd->count < 1UL)
         this->_expected_element (
-          "http://www.leda.org/xdl", "center");
+          "http://www.leda.org/xdl", "x-radius");
 
       this->v_state_stack_.pop ();
     }
@@ -3267,43 +3165,6 @@ namespace xdl
       switch (state)
       {
         case 0UL:
-        {
-          if (n == "center" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
-
-              if (this->center_parser_)
-                this->center_parser_->pre ();
-            }
-            else
-            {
-              if (this->center_parser_)
-              {
-                this->center (this->center_parser_->post_Point ());
-              }
-
-              count = 0;
-              state = 1UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            if (count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "center",
-                ns, n);
-            count = 0;
-            state = 1UL;
-            // Fall through.
-          }
-        }
-        case 1UL:
         {
           if (n == "x-radius" &&
               ns == "http://www.leda.org/xdl")
@@ -3323,7 +3184,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 2UL;
+              state = 1UL;
             }
 
             break;
@@ -3336,11 +3197,11 @@ namespace xdl
                 "http://www.leda.org/xdl", "x-radius",
                 ns, n);
             count = 0;
-            state = 2UL;
+            state = 1UL;
             // Fall through.
           }
         }
-        case 2UL:
+        case 1UL:
         {
           if (n == "y-radius" &&
               ns == "http://www.leda.org/xdl")
@@ -3420,7 +3281,7 @@ namespace xdl
         {
           unsigned long s = ~0UL;
 
-          if (n == "center" &&
+          if (n == "x-radius" &&
               ns == "http://www.leda.org/xdl")
             s = 0UL;
 
@@ -3440,7 +3301,7 @@ namespace xdl
           {
             if (vd->count < 1UL)
               this->_expected_element (
-                "http://www.leda.org/xdl", "center",
+                "http://www.leda.org/xdl", "x-radius",
                 ns, n);
             return false;
           }
@@ -3509,7 +3370,7 @@ namespace xdl
 
       if (vd->count < 1UL)
         this->_expected_element (
-          "http://www.leda.org/xdl", "center");
+          "http://www.leda.org/xdl", "x-radius");
 
       this->v_state_stack_.pop ();
     }
@@ -3527,43 +3388,6 @@ namespace xdl
       switch (state)
       {
         case 0UL:
-        {
-          if (n == "center" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->center_parser_;
-
-              if (this->center_parser_)
-                this->center_parser_->pre ();
-            }
-            else
-            {
-              if (this->center_parser_)
-              {
-                this->center (this->center_parser_->post_Point ());
-              }
-
-              count = 0;
-              state = 1UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            if (count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "center",
-                ns, n);
-            count = 0;
-            state = 1UL;
-            // Fall through.
-          }
-        }
-        case 1UL:
         {
           if (n == "x-radius" &&
               ns == "http://www.leda.org/xdl")
@@ -3583,7 +3407,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 2UL;
+              state = 1UL;
             }
 
             break;
@@ -3596,11 +3420,11 @@ namespace xdl
                 "http://www.leda.org/xdl", "x-radius",
                 ns, n);
             count = 0;
-            state = 2UL;
+            state = 1UL;
             // Fall through.
           }
         }
-        case 2UL:
+        case 1UL:
         {
           if (n == "y-radius" &&
               ns == "http://www.leda.org/xdl")
@@ -3620,7 +3444,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 3UL;
+              state = 2UL;
             }
 
             break;
@@ -3633,11 +3457,11 @@ namespace xdl
                 "http://www.leda.org/xdl", "y-radius",
                 ns, n);
             count = 0;
-            state = 3UL;
+            state = 2UL;
             // Fall through.
           }
         }
-        case 3UL:
+        case 2UL:
         {
           if (n == "start-angle" &&
               ns == "http://www.leda.org/xdl")
@@ -3657,7 +3481,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 4UL;
+              state = 3UL;
             }
 
             break;
@@ -3670,11 +3494,11 @@ namespace xdl
                 "http://www.leda.org/xdl", "start-angle",
                 ns, n);
             count = 0;
-            state = 4UL;
+            state = 3UL;
             // Fall through.
           }
         }
-        case 4UL:
+        case 3UL:
         {
           if (n == "span-angle" &&
               ns == "http://www.leda.org/xdl")
@@ -3754,7 +3578,7 @@ namespace xdl
         {
           unsigned long s = ~0UL;
 
-          if (n == "top-left" &&
+          if (n == "width" &&
               ns == "http://www.leda.org/xdl")
             s = 0UL;
 
@@ -3774,7 +3598,7 @@ namespace xdl
           {
             if (vd->count < 1UL)
               this->_expected_element (
-                "http://www.leda.org/xdl", "top-left",
+                "http://www.leda.org/xdl", "width",
                 ns, n);
             return false;
           }
@@ -3843,7 +3667,7 @@ namespace xdl
 
       if (vd->count < 1UL)
         this->_expected_element (
-          "http://www.leda.org/xdl", "top-left");
+          "http://www.leda.org/xdl", "width");
 
       this->v_state_stack_.pop ();
     }
@@ -3862,21 +3686,21 @@ namespace xdl
       {
         case 0UL:
         {
-          if (n == "top-left" &&
+          if (n == "width" &&
               ns == "http://www.leda.org/xdl")
           {
             if (start)
             {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->top_left_parser_;
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->width_parser_;
 
-              if (this->top_left_parser_)
-                this->top_left_parser_->pre ();
+              if (this->width_parser_)
+                this->width_parser_->pre ();
             }
             else
             {
-              if (this->top_left_parser_)
+              if (this->width_parser_)
               {
-                this->top_left (this->top_left_parser_->post_Point ());
+                this->width (this->width_parser_->post_NonNegativeDouble ());
               }
 
               count = 0;
@@ -3890,7 +3714,7 @@ namespace xdl
             assert (start);
             if (count < 1UL)
               this->_expected_element (
-                "http://www.leda.org/xdl", "top-left",
+                "http://www.leda.org/xdl", "width",
                 ns, n);
             count = 0;
             state = 1UL;
@@ -3899,21 +3723,21 @@ namespace xdl
         }
         case 1UL:
         {
-          if (n == "bottom-right" &&
+          if (n == "height" &&
               ns == "http://www.leda.org/xdl")
           {
             if (start)
             {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->bottom_right_parser_;
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->height_parser_;
 
-              if (this->bottom_right_parser_)
-                this->bottom_right_parser_->pre ();
+              if (this->height_parser_)
+                this->height_parser_->pre ();
             }
             else
             {
-              if (this->bottom_right_parser_)
+              if (this->height_parser_)
               {
-                this->bottom_right (this->bottom_right_parser_->post_Point ());
+                this->height (this->height_parser_->post_NonNegativeDouble ());
               }
 
               count = 0;
@@ -3927,7 +3751,7 @@ namespace xdl
             assert (start);
             if (count < 1UL)
               this->_expected_element (
-                "http://www.leda.org/xdl", "bottom-right",
+                "http://www.leda.org/xdl", "height",
                 ns, n);
             count = 0;
             state = ~0UL;
@@ -4903,21 +4727,87 @@ namespace xdl
         }
         case 1UL:
         {
-          if (n == "font" &&
+          if (n == "color" &&
               ns == "http://www.leda.org/xdl")
           {
             if (start)
             {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->font_parser_;
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->color_parser_;
 
-              if (this->font_parser_)
-                this->font_parser_->pre ();
+              if (this->color_parser_)
+                this->color_parser_->pre ();
             }
             else
             {
-              if (this->font_parser_)
+              if (this->color_parser_)
               {
-                this->font (this->font_parser_->post_Font ());
+                this->color (this->color_parser_->post_Color ());
+              }
+
+              count = 0;
+              state = 2UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            count = 0;
+            state = 2UL;
+            // Fall through.
+          }
+        }
+        case 2UL:
+        {
+          if (n == "font-family" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->font_family_parser_;
+
+              if (this->font_family_parser_)
+                this->font_family_parser_->pre ();
+            }
+            else
+            {
+              if (this->font_family_parser_)
+              {
+                this->font_family (this->font_family_parser_->post_string ());
+              }
+
+              count = 0;
+              state = 3UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            count = 0;
+            state = 3UL;
+            // Fall through.
+          }
+        }
+        case 3UL:
+        {
+          if (n == "font-size" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->font_size_parser_;
+
+              if (this->font_size_parser_)
+                this->font_size_parser_->pre ();
+            }
+            else
+            {
+              if (this->font_size_parser_)
+              {
+                this->font_size (this->font_size_parser_->post_non_negative_integer ());
               }
 
               count = 0;

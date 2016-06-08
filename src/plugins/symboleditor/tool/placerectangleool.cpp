@@ -89,13 +89,13 @@ void PlaceRectangleTool::freezePoint(int idx, const QPointF &pos)
     }
 
     auto command = new PlaceRectangleCommand;
-    command->position = m_item->pos();
+    command->position = m_item->rect().topLeft();
     command->opacity = m_item->opacity();
     command->zValue = m_item->zValue();
     command->pen = m_item->pen();
     command->brush = m_item->brush();
-    command->topLeft = m_item->rect().topLeft();
-    command->bottomRight = m_item->rect().bottomRight();
+    command->width = m_item->rect().width();
+    command->height = m_item->rect().height();
     emit commandRequested(command);
 
     delete m_item;

@@ -16,7 +16,7 @@ void PlaceCircleCommand::undo()
 void PlaceCircleCommand::redo()
 {
     auto circle = new xdl::symbol::CircleItem;
-    circle->center = center;
-    circle->radius = radius;
+    //circle->setcenter(center);
+    circle->setRadius(radius);
     placeItem(circle);
 }

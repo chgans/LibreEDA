@@ -16,6 +16,7 @@ void PlacePolygonCommand::undo()
 void PlacePolygonCommand::redo()
 {
     auto polygon = new xdl::symbol::PolygonItem;
-    polygon->vertices = vertices;
+    polygon->setVertices(vertices);
+    // Position should be [0, 0]
     placeItem(polygon);
 }

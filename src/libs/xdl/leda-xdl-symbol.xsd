@@ -31,12 +31,12 @@
   </xs:complexType>
   <!-- TBD: circle vs ellipse and square vs rectangle -> use a fixed ratio property?
        TBD: Similarly use an 'arc' boolean property
+       TBD: Shape option: Open, Pie, Chord
   -->
   <xs:complexType name="Circle">
     <xs:complexContent>
       <xs:extension base="xdl:Item">
         <xs:sequence>
-          <xs:element name="center" type="xdl:Point"/>
           <xs:element name="radius" type="xdl:NonNegativeDouble"/>
         </xs:sequence>
       </xs:extension>
@@ -46,7 +46,6 @@
     <xs:complexContent>
       <xs:extension base="xdl:Item">
         <xs:sequence>
-          <xs:element name="center" type="xdl:Point"/>
           <xs:element name="radius" type="xdl:NonNegativeDouble"/>
           <xs:element name="start-angle" type="xdl:Angle"/>
           <xs:element name="span-angle" type="xdl:Angle"/>
@@ -58,7 +57,6 @@
     <xs:complexContent>
       <xs:extension base="xdl:Item">
         <xs:sequence>
-          <xs:element name="center" type="xdl:Point"/>
           <xs:element name="x-radius" type="xdl:NonNegativeDouble"/>
           <xs:element name="y-radius" type="xdl:NonNegativeDouble"/>
         </xs:sequence>
@@ -69,7 +67,6 @@
     <xs:complexContent>
       <xs:extension base="xdl:Item">
         <xs:sequence>
-          <xs:element name="center" type="xdl:Point"/>
           <xs:element name="x-radius" type="xdl:NonNegativeDouble"/>
           <xs:element name="y-radius" type="xdl:NonNegativeDouble"/>
           <xs:element name="start-angle" type="xdl:Angle"/>
@@ -82,8 +79,8 @@
     <xs:complexContent>
       <xs:extension base="xdl:Item">
         <xs:sequence>
-          <xs:element name="top-left" type="xdl:Point"/>
-          <xs:element name="bottom-right" type="xdl:Point"/>
+          <xs:element name="width" type="xdl:NonNegativeDouble"/>
+          <xs:element name="height" type="xdl:NonNegativeDouble"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -131,7 +128,9 @@
       <xs:extension base="xdl:Item">
         <xs:sequence>
           <xs:element name="text" type="xs:string" />
-          <xs:element name="font" type="xdl:Font" minOccurs="0" />
+          <xs:element name="color" type="xdl:Color"  minOccurs="0" />
+          <xs:element name="font-family" type="xs:string" minOccurs="0" />
+          <xs:element name="font-size" type="xs:nonNegativeInteger" minOccurs="0" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -161,6 +160,13 @@
       <xs:element name="point" type="xdl:Point" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
+  <!--  Could replace pen and brush with
+  <xs:element name="line-style" type="xs:integer" minOccurs="0"/>
+  <xs:element name="line-width" type="xdl:NonNegativeDouble" minOccurs="0"/>
+  <xs:element name="line-color" type="xdl:Color" minOccurs="0"/>
+  <xs:element name="fill-style" type="xs:integer" minOccurs="0"/>
+  <xs:element name="fill-color" type="xdl:Color" minOccurs="0"/>
+  -->
   <xs:complexType name="Pen">
     <xs:sequence>
       <xs:element name="width" type="xdl:NonNegativeDouble"/>

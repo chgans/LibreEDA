@@ -175,16 +175,18 @@ void Item_pimpl::visible(bool visible)
 
 void Item_pimpl::post_Item()
 {
-    m_item->pen = m_pen;
-    m_item->brush = m_brush;
-    m_item->position = m_position;
-    m_item->zValue = m_zValue;
-    m_item->rotation = m_rotation;
-    m_item->opacity = m_opacity;
-    m_item->locked = m_locked;
-    m_item->xMirrored = m_xMirrored;
-    m_item->yMirrored = m_yMirrored;
-    m_item->visible = m_visible;
+    m_item->setLineStyle(LineStyle(m_pen.style()));
+    m_item->setLineWidth(MediumLine); // FIXME
+    m_item->setLineColor(m_pen.color().name());
+    m_item->setFillColor(m_brush.color().name());
+    m_item->setPosition(m_position);
+    //m_item->zValue = m_zValue;
+    m_item->setRotation(m_rotation);
+    m_item->setOpacity(m_opacity);
+    m_item->setLocked(m_locked);
+    m_item->setXMirrored(m_xMirrored);
+    m_item->setYMirrored(m_yMirrored);
+    m_item->setVisible(m_visible);
 }
 
 // Circle_pimpl
@@ -193,13 +195,7 @@ void Item_pimpl::post_Item()
 void Circle_pimpl::pre()
 {
     Item_pimpl::pre();
-    m_center = QPointF(0, 0);
     m_radius = 0.0f;
-}
-
-void Circle_pimpl::center(const QPointF &center)
-{
-    m_center = center;
 }
 
 void Circle_pimpl::radius(const qreal &radius)
@@ -212,8 +208,7 @@ CircleItem *Circle_pimpl::post_Circle()
     auto *circle = new CircleItem();
     m_item = circle;
     post_Item();
-    circle->radius = m_radius;
-    circle->center = m_center;
+    circle->setRadius(m_radius);
     return circle;
 }
 
@@ -223,15 +218,9 @@ CircleItem *Circle_pimpl::post_Circle()
 void CircularArc_pimpl::pre()
 {
     Item_pimpl::pre();
-    m_center = QPointF(0.0, 0.0);
     m_radius = 0.0;
     m_startAngle = 0.0;
     m_spanAngle = 360.0;
-}
-
-void CircularArc_pimpl::center(const QPointF &center)
-{
-    m_center = center;
 }
 
 void CircularArc_pimpl::radius(const qreal &radius)
@@ -254,10 +243,10 @@ CircularArcItem *CircularArc_pimpl::post_CircularArc()
     auto arc = new CircularArcItem();
     m_item = arc;
     post_Item();
-    arc->radius = m_radius;
-    arc->center = m_center;
-    arc->startAngle = m_startAngle;
-    arc->spanAngle = m_spanAngle;
+    arc->setRadius(m_radius);
+    //arc->center = m_center;
+    arc->setStartAngle(m_startAngle);
+    arc->setSpanAngle(m_spanAngle);
     return arc;
 }
 
@@ -267,14 +256,8 @@ CircularArcItem *CircularArc_pimpl::post_CircularArc()
 void Ellipse_pimpl::pre()
 {
     Item_pimpl::pre();
-    m_center = QPointF(0.0, 0.0);
     m_xRadius = 0.0;
     m_yRadius = 0.0;
-}
-
-void Ellipse_pimpl::center(const QPointF &center)
-{
-    m_center = center;
 }
 
 void Ellipse_pimpl::x_radius(const qreal &x_radius)
@@ -292,9 +275,9 @@ EllipseItem *Ellipse_pimpl::post_Ellipse()
     auto *ellipse = new EllipseItem();
     m_item = ellipse;
     post_Item();
-    ellipse->xRadius = m_xRadius;
-    ellipse->yRadius = m_yRadius;
-    ellipse->center = m_center;
+    ellipse->setXRadius(m_xRadius);
+    ellipse->setYRadius(m_yRadius);
+    //ellipse->center = m_center;
     return ellipse;
 }
 
@@ -304,16 +287,10 @@ EllipseItem *Ellipse_pimpl::post_Ellipse()
 void EllipticalArc_pimpl::pre()
 {
     Item_pimpl::pre();
-    m_center = QPointF(0.0, 0.0);
     m_xRadius = 0.0;
     m_yRadius = 0.0;
     m_startAngle = 0.0;
     m_spanAngle = 360.0;
-}
-
-void EllipticalArc_pimpl::center(const QPointF &center)
-{
-    m_center = center;
 }
 
 void EllipticalArc_pimpl::x_radius(const qreal &x_radius)
@@ -341,11 +318,11 @@ EllipticalArcItem *EllipticalArc_pimpl::post_EllipticalArc()
     auto *arc = new EllipticalArcItem();
     m_item = arc;
     post_Item();
-    arc->xRadius = m_xRadius;
-    arc->yRadius = m_yRadius;
-    arc->center = m_center;
-    arc->startAngle = m_startAngle;
-    arc->spanAngle = m_spanAngle;
+    arc->setXRadius(m_xRadius);
+    arc->setYRadius(m_yRadius);
+    //arc->center = m_center;
+    arc->setStartAngle(m_startAngle);
+    arc->setSpanAngle(m_spanAngle);
     return arc;
 }
 
@@ -355,27 +332,28 @@ EllipticalArcItem *EllipticalArc_pimpl::post_EllipticalArc()
 void Rectangle_pimpl::pre()
 {
     Item_pimpl::pre();
-    m_topLeft = QPointF();
-    m_bottomRight = QPointF();
+    m_width = 0.0;
+    m_height = 0.0;
 }
 
-void Rectangle_pimpl::top_left(const QPointF &top_left)
+void Rectangle_pimpl::width(const qreal &width)
 {
-    m_topLeft = top_left;
+    m_width = width;
 }
 
-void Rectangle_pimpl::bottom_right(const QPointF &bottom_right)
+void Rectangle_pimpl::height(const qreal &height)
 {
-    m_bottomRight = bottom_right;
+    m_height = height;
 }
+
 
 symbol::RectangleItem *Rectangle_pimpl::post_Rectangle()
 {
     auto rect  = new RectangleItem();
     m_item = rect;
     post_Item();
-    rect->topLeft = m_topLeft;
-    rect->bottomRight = m_bottomRight;
+    rect->setWidth(m_width);
+    rect->setHeight(m_height);
     return rect;
 }
 
@@ -398,7 +376,7 @@ PolylineItem *Polyline_pimpl::post_Polyline()
     auto *polyline = new PolylineItem();
     m_item = polyline;
     post_Item();
-    polyline->vertices = m_vertices;
+    polyline->setVertices(m_vertices);
     return polyline;
 }
 
@@ -421,7 +399,7 @@ PolygonItem *Polygon_pimpl::post_Polygon()
     auto *polygon = new PolygonItem();
     m_item = polygon;
     post_Item();
-    polygon->vertices = m_vertices;
+    polygon->setVertices(m_vertices);
     return polygon;
 }
 
@@ -451,9 +429,9 @@ PinItem *Pin_pimpl::post_Pin()
     m_item = pin;
     post_Item();
     pin->designator = new LabelItem();
-    pin->designator->text = m_designator; // FIXME
+    //pin->designator->text = m_designator; // FIXME
     pin->label = new LabelItem();
-    pin->label->text = m_label; // FIXME
+    //pin->label->text = m_label; // FIXME
     return pin;
 }
 
@@ -486,8 +464,9 @@ ItemGroup *ItemGroup_pimpl::post_ItemGroup()
 void Label_pimpl::pre()
 {
     Item_pimpl::pre();
-    m_font = QFont();
+    m_fontFamily = ""; // FIXME
     m_text.clear();
+    m_color = "#000000";
     // Override default shape pen/brush
     m_pen = QPen(Qt::NoPen);
     m_brush = QBrush(Qt::black, Qt::SolidPattern);
@@ -498,9 +477,19 @@ void Label_pimpl::text(const std::string &text)
     m_text = QString::fromStdString(text);
 }
 
-void Label_pimpl::font(const QFont &font)
+void Label_pimpl::color(const QColor &color)
 {
-    m_font = font;
+    m_color = color.name();
+}
+
+void Label_pimpl::font_family(const std::string &family)
+{
+    m_fontFamily = QString::fromStdString(family);
+}
+
+void Label_pimpl::font_size(unsigned long long size)
+{
+    m_fontSize = size;
 }
 
 LabelItem *Label_pimpl::post_Label()
@@ -508,8 +497,10 @@ LabelItem *Label_pimpl::post_Label()
     auto *label = new LabelItem();
     m_item = label;
     post_Item();
-    // FIXME: font
-    label->text = m_text;
+    label->setText(m_text);
+    label->setTextColor(m_color);
+    label->setFontFamily(m_fontFamily);
+    label->setFontSize(m_fontSize);
     return label;
 }
 

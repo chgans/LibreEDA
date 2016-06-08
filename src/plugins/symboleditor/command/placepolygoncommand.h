@@ -13,7 +13,7 @@ namespace SymbolEditor
         void undo();
         void redo();
 
-        QList<QPointF> vertices; // position is always first point?
+        QList<QPointF> vertices;
     };
 
 }

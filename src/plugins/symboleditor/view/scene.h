@@ -28,6 +28,8 @@ namespace SymbolEditor
 
     private:
         QMap<quint64, Item *> m_itemMap;
+        QPen makePen(const Document::Item *item);
+        QBrush makeBrush(const Document::Item *item);
     };
 
 }

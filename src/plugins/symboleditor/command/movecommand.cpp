@@ -19,7 +19,7 @@ void TranslateCommand::undo()
             warnItemNotFound("Translate", id);
             continue;
         }
-        item->position -= amount;
+        item->setPosition(item->position()- amount);
         document()->updateItem(id);
     }
 }
@@ -34,7 +34,7 @@ void TranslateCommand::redo()
             warnItemNotFound("Translate", id);
             continue;
         }
-        item->position += amount;
+        item->setPosition(item->position() + amount);
         document()->updateItem(id);
     }
 

@@ -16,7 +16,7 @@ void PlaceRectangleCommand::undo()
 void PlaceRectangleCommand::redo()
 {
     auto rectangle = new xdl::symbol::RectangleItem;
-    rectangle->topLeft = topLeft;
-    rectangle->bottomRight = bottomRight;
+    rectangle->setWidth(width);
+    rectangle->setHeight(height);
     placeItem(rectangle);
 }

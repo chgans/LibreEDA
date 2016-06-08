@@ -16,15 +16,17 @@ void PlacementCommand::removeItem()
 
 void PlacementCommand::placeItem(xdl::symbol::Item *item)
 {
-    item->pen = pen;
-    item->brush = brush;
-    item->position = position;
-    item->rotation = rotation;
-    item->opacity = opacity;
-    item->zValue = zValue;
-    item->locked = locked;
-    item->visible = visible;
-    item->xMirrored = xMirrored;
-    item->yMirrored = yMirrored;
+    item->setLineStyle(xdl::symbol::LineStyle(pen.style()));
+    item->setLineColor(pen.color().name());
+    item->setLineWidth(xdl::symbol::MediumLine); // FIXME
+    item->setFillColor(brush.color().name());
+    item->setPosition(position);
+    item->setRotation(rotation);
+    item->setOpacity(opacity);
+    //item->zValue = zValue;
+    item->setLocked(locked);
+    item->setVisible(visible);
+    item->setXMirrored(xMirrored);
+    item->setYMirrored(yMirrored);
     itemId = document()->addItem(item);
 }
