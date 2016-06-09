@@ -111,6 +111,8 @@ public:
     virtual QString friendlyTypeName() const = 0;
     virtual QIcon icon() const = 0;
 
+    virtual QString friendlyPropertyName(quint64 id) const;
+
     virtual QVariant property(int id);
     virtual void setProperty(int id, const QVariant &value);
 
@@ -193,6 +195,7 @@ public:
     Type type() const override;
     Item *clone() const override;
     QString friendlyTypeName() const override;
+    QString friendlyPropertyName(quint64 id) const override;
     QIcon icon() const override;
     QVariant property(int id) override;
     void setProperty(int id, const QVariant &value) override;
@@ -215,6 +218,7 @@ public:
     Type type() const override;
     Item *clone() const override;
     virtual QString friendlyTypeName() const override;
+    QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
     QVariant property(int id) override;
     void setProperty(int id, const QVariant &value) override;
@@ -244,6 +248,7 @@ public:
     Type type() const override;
     Item *clone() const override;
     virtual QString friendlyTypeName() const override;
+    QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
     QVariant property(int id) override;
     void setProperty(int id, const QVariant &value) override;
@@ -269,6 +274,7 @@ public:
     Type type() const override;
     Item *clone() const override;
     virtual QString friendlyTypeName() const override;
+    QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
     QVariant property(int id) override;
     void setProperty(int id, const QVariant &value) override;
@@ -300,6 +306,7 @@ public:
     Type type() const override;
     Item *clone() const override;
     virtual QString friendlyTypeName() const override;
+    QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
     QVariant property(int id) override;
     void setProperty(int id, const QVariant &value) override;
@@ -322,6 +329,7 @@ public:
     Type type() const override;
     Item *clone() const override;
     virtual QString friendlyTypeName() const override;
+    QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
     QVariant property(int id) override;
     void setProperty(int id, const QVariant &value) override;
@@ -344,6 +352,7 @@ public:
     Type type() const override;
     Item *clone() const override;
     virtual QString friendlyTypeName() const override;
+    QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
     QVariant property(int id) override;
     void setProperty(int id, const QVariant &value) override;
@@ -373,6 +382,7 @@ public:
     Type type() const override;
     Item *clone() const override;
     virtual QString friendlyTypeName() const override;
+    QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
     QVariant property(int id) override;
     void setProperty(int id, const QVariant &value) override;
@@ -396,6 +406,7 @@ public:
     Type type() const override;
     Item *clone() const override;
     virtual QString friendlyTypeName() const override;
+    QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
     QVariant property(int id) override;
     void setProperty(int id, const QVariant &value) override;
@@ -416,6 +427,7 @@ public:
     Type type() const override;
     Item *clone() const override;
     virtual QString friendlyTypeName() const override;
+    QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
     QVariant property(int id) override;
     void setProperty(int id, const QVariant &value) override;

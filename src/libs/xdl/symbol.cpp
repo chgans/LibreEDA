@@ -26,6 +26,37 @@ namespace xdl
 
         }
 
+        QString Item::friendlyPropertyName(quint64 id) const
+        {
+            switch (id)
+            {
+                case PositionProperty:
+                    return "Position";
+                case OpacityProperty:
+                    return "Opacity";
+                case RotationProperty:
+                    return "Rotation";
+                case LockedProperty:
+                    return "Locked";
+                case VisibilityProperty:
+                    return "Visibility";
+                case XMirroredProperty:
+                    return "X Mirroring";
+                case YMirroredProperty:
+                    return "Y Mirroring";
+                case LineStyleProperty:
+                    return "Line style";
+                case LineWidthProperty:
+                    return "Line width";
+                case LineColorProperty:
+                    return "Line Color";
+                case FillColorProperty:
+                    return "Fill color";
+                default:
+                    return "Unknown";
+            }
+        }
+
         QVariant Item::property(int id)
         {
             switch (id)
@@ -268,6 +299,19 @@ namespace xdl
             return "Rectangle";
         }
 
+        QString RectangleItem::friendlyPropertyName(quint64 id) const
+        {
+            switch (id)
+            {
+                case WidthProperty:
+                    return "Width";
+                case HeightProperty:
+                    return "Height";
+                default:
+                    return Item::friendlyPropertyName(id);
+            }
+        }
+
         QIcon RectangleItem::icon() const
         {
             return QIcon::fromTheme("draw-rectangle");
@@ -338,6 +382,17 @@ namespace xdl
         QString CircleItem::friendlyTypeName() const
         {
             return "Circle";
+        }
+
+        QString CircleItem::friendlyPropertyName(quint64 id) const
+        {
+            switch (id)
+            {
+                case RadiusProperty:
+                    return "Radius";
+                default:
+                    return Item::friendlyPropertyName(id);
+            }
         }
 
         QIcon CircleItem::icon() const
@@ -429,6 +484,21 @@ namespace xdl
             return "Circuar Arc";
         }
 
+        QString CircularArcItem::friendlyPropertyName(quint64 id) const
+        {
+            switch (id)
+            {
+                case RadiusProperty:
+                    return "Radius";
+                case StartAngleProperty:
+                    return "Start angle";
+                case SpanAngleProperty:
+                    return "Span angle";
+                default:
+                    return Item::friendlyPropertyName(id);
+            }
+        }
+
         QIcon CircularArcItem::icon() const
         {
             return QIcon::fromTheme("draw-halfcircle3");
@@ -515,6 +585,19 @@ namespace xdl
         QString EllipseItem::friendlyTypeName() const
         {
             return "Ellipse";
+        }
+
+        QString EllipseItem::friendlyPropertyName(quint64 id) const
+        {
+            switch (id)
+            {
+                case XRadiusProperty:
+                    return "X Radius";
+                case YRadiusProperty:
+                    return "Y Radius";
+                default:
+                    return Item::friendlyPropertyName(id);
+            }
         }
 
         QIcon EllipseItem::icon() const
@@ -622,6 +705,23 @@ namespace xdl
             return "Elliptical arc";
         }
 
+        QString EllipticalArcItem::friendlyPropertyName(quint64 id) const
+        {
+            switch (id)
+            {
+                case XRadiusProperty:
+                    return "X Radius";
+                case YRadiusProperty:
+                    return "Y Radius";
+                case StartAngleProperty:
+                    return "Start angle";
+                case SpanAngleProperty:
+                    return "Span angle";
+                default:
+                    return Item::friendlyPropertyName(id);
+            }
+        }
+
         QIcon EllipticalArcItem::icon() const
         {
             return QIcon::fromTheme("draw-halfcircle3");
@@ -703,6 +803,17 @@ namespace xdl
             return "Polyline";
         }
 
+        QString PolylineItem::friendlyPropertyName(quint64 id) const
+        {
+            switch (id)
+            {
+                case VerticesProperty:
+                    return "Vertices";
+                default:
+                    return Item::friendlyPropertyName(id);
+            }
+        }
+
         QIcon PolylineItem::icon() const
         {
             return QIcon::fromTheme("draw-line");
@@ -774,6 +885,17 @@ namespace xdl
         QString PolygonItem::friendlyTypeName() const
         {
             return "Polygon";
+        }
+
+        QString PolygonItem::friendlyPropertyName(quint64 id) const
+        {
+            switch (id)
+            {
+                case VerticesProperty:
+                    return "Vertices";
+                default:
+                    return Item::friendlyPropertyName(id);
+            }
         }
 
         QIcon PolygonItem::icon() const
@@ -883,6 +1005,23 @@ namespace xdl
             return "Label";
         }
 
+        QString LabelItem::friendlyPropertyName(quint64 id) const
+        {
+            switch (id)
+            {
+                case FontFamilyProperty:
+                    return "Font family";
+                case FontSizeProperty:
+                    return "Font size";
+                case TextProperty:
+                    return "Text";
+                case TextColorProperty:
+                    return "Text color";
+                default:
+                    return Item::friendlyPropertyName(id);
+            }
+        }
+
         QIcon LabelItem::icon() const
         {
             return QIcon::fromTheme("insert-text");
@@ -956,6 +1095,15 @@ namespace xdl
             return "Pin";
         }
 
+        QString PinItem::friendlyPropertyName(quint64 id) const
+        {
+            switch (id)
+            {
+                default:
+                    return Item::friendlyPropertyName(id);
+            }
+        }
+
         QIcon PinItem::icon() const
         {
             return QIcon::fromTheme("network-connect");
@@ -1006,6 +1154,15 @@ namespace xdl
         QString ItemGroup::friendlyTypeName() const
         {
             return "Group";
+        }
+
+        QString ItemGroup::friendlyPropertyName(quint64 id) const
+        {
+            switch (id)
+            {
+                default:
+                    return Item::friendlyPropertyName(id);
+            }
         }
 
         QIcon ItemGroup::icon() const
