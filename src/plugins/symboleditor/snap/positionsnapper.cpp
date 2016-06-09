@@ -6,6 +6,8 @@
 
 #include <QAction>
 
+#include <limits>
+
 namespace SymbolEditor
 {
 
@@ -93,12 +95,12 @@ namespace SymbolEditor
     {
         QPointF closestPoint;
         Item *closestItem = nullptr;
-        int minDistance = INT_MAX;
+        qreal minDistance = std::numeric_limits<qreal>::max();
         for (Item *item : candidates.keys())
         {
             for (QPointF point : candidates.values(item))
             {
-                int distance = (point - pos).manhattanLength();
+                qreal distance = (point - pos).manhattanLength();
                 if (distance < minDistance)
                 {
                     closestItem = item;
