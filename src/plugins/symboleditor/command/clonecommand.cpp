@@ -1,50 +1,53 @@
 #include "clonecommand.h"
 #include "document.h"
 
-using namespace SymbolEditor;
-
-CloneCommand::CloneCommand(UndoCommand *parent):
-    UndoCommand(parent)
+namespace SymbolEditor
 {
 
-}
-
-void CloneCommand::undo()
-{
-    for (quint64 id : cloneIdList)
+    CloneCommand::CloneCommand(UndoCommand *parent):
+        UndoCommand(parent)
     {
-        auto clone = document()->item(id);
-        if (clone == nullptr)
+
+    }
+
+    void CloneCommand::undo()
+    {
+        for (quint64 id : cloneIdList)
         {
-            warnItemNotFound("Clone", id);
-            continue;
+            auto clone = document()->item(id);
+            if (clone == nullptr)
+            {
+                warnItemNotFound("Clone", id);
+                continue;
+            }
+            document()->removeItem(id);
         }
-        document()->removeItem(id);
     }
-}
 
-void CloneCommand::redo()
-{
-    cloneIdList.clear();
-
-    for (quint64 id : itemIdList)
+    void CloneCommand::redo()
     {
-        auto item = document()->item(id);
-        if (item == nullptr)
+        cloneIdList.clear();
+
+        for (quint64 id : itemIdList)
         {
-            warnItemNotFound("Clone", id);
-            continue;
+            auto item = document()->item(id);
+            if (item == nullptr)
+            {
+                warnItemNotFound("Clone", id);
+                continue;
+            }
+            auto clone = item->clone();
+            quint64 cloneId = document()->addItem(clone);
+            auto newPosition = item->position() + translation;
+            document()->setItemProperty(cloneId, xdl::symbol::Item::PositionProperty, newPosition);
+            cloneIdList.append(cloneId);
         }
-        auto clone = item->clone();
-        quint64 cloneId = document()->addItem(clone);
-        auto newPosition = item->position() + translation;
-        document()->setItemProperty(cloneId, xdl::symbol::Item::PositionProperty, newPosition);
-        cloneIdList.append(cloneId);
+
+        setText(QString("Clone %1 item").arg(itemIdList.count()));
+        if (itemIdList.count() > 1)
+        {
+            setText(text() + "s");
+        }
     }
 
-    setText(QString("Clone %1 item").arg(itemIdList.count()));
-    if (itemIdList.count() > 1)
-    {
-        setText(text() + "s");
-    }
 }

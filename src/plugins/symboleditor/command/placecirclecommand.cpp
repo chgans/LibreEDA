@@ -1,22 +1,25 @@
 #include "placecirclecommand.h"
 
-using namespace SymbolEditor;
-
-PlaceCircleCommand::PlaceCircleCommand(UndoCommand *parent):
-    PlacementCommand(parent)
+namespace SymbolEditor
 {
-    setText("Place circle");
-}
 
-void PlaceCircleCommand::undo()
-{
-    removeItem();
-}
+    PlaceCircleCommand::PlaceCircleCommand(UndoCommand *parent):
+        PlacementCommand(parent)
+    {
+        setText("Place circle");
+    }
 
-void PlaceCircleCommand::redo()
-{
-    auto circle = new xdl::symbol::CircleItem;
-    //circle->setcenter(center);
-    circle->setRadius(radius);
-    placeItem(circle);
+    void PlaceCircleCommand::undo()
+    {
+        removeItem();
+    }
+
+    void PlaceCircleCommand::redo()
+    {
+        auto circle = new xdl::symbol::CircleItem;
+        //circle->setcenter(center);
+        circle->setRadius(radius);
+        placeItem(circle);
+    }
+
 }

@@ -1,46 +1,49 @@
 #include "peneditorfactory.h"
 
-using namespace SymbolEditor;
-
-PenEditorFactory::PenEditorFactory(QObject *parent):
-    QtAbstractEditorFactory<PenPropertyManager>(parent)
-{
-    m_comboBoxFactory = new QtEnumEditorFactory(this);
-    m_colorFactory = new QtColorEditorFactory(this);
-}
-
-PenEditorFactory::~PenEditorFactory()
+namespace SymbolEditor
 {
 
-}
+    PenEditorFactory::PenEditorFactory(QObject *parent):
+        QtAbstractEditorFactory<PenPropertyManager>(parent)
+    {
+        m_comboBoxFactory = new QtEnumEditorFactory(this);
+        m_colorFactory = new QtColorEditorFactory(this);
+    }
 
-QtEnumEditorFactory *PenEditorFactory::subEnumEditorFactory()
-{
-    return m_comboBoxFactory;
-}
+    PenEditorFactory::~PenEditorFactory()
+    {
 
-QtColorEditorFactory *PenEditorFactory::subColorEditorFactory()
-{
-    return m_colorFactory;
-}
+    }
 
-void PenEditorFactory::connectPropertyManager(PenPropertyManager *manager)
-{
-    m_comboBoxFactory->addPropertyManager(manager->subEnumManager());
-    m_colorFactory->addPropertyManager(manager->subColorManager());
-}
+    QtEnumEditorFactory *PenEditorFactory::subEnumEditorFactory()
+    {
+        return m_comboBoxFactory;
+    }
 
-QWidget *PenEditorFactory::createEditor(PenPropertyManager *manager, QtProperty *property,
-                                        QWidget *parent)
-{
-    Q_UNUSED(manager);
+    QtColorEditorFactory *PenEditorFactory::subColorEditorFactory()
+    {
+        return m_colorFactory;
+    }
 
-    QtAbstractEditorFactoryBase *factory = m_comboBoxFactory;
-    return factory->createEditor(property, parent);
-}
+    void PenEditorFactory::connectPropertyManager(PenPropertyManager *manager)
+    {
+        m_comboBoxFactory->addPropertyManager(manager->subEnumManager());
+        m_colorFactory->addPropertyManager(manager->subColorManager());
+    }
 
-void PenEditorFactory::disconnectPropertyManager(PenPropertyManager *manager)
-{
-    m_colorFactory->removePropertyManager(manager->subColorManager());
-    m_comboBoxFactory->removePropertyManager(manager->subEnumManager());
+    QWidget *PenEditorFactory::createEditor(PenPropertyManager *manager, QtProperty *property,
+                                            QWidget *parent)
+    {
+        Q_UNUSED(manager);
+
+        QtAbstractEditorFactoryBase *factory = m_comboBoxFactory;
+        return factory->createEditor(property, parent);
+    }
+
+    void PenEditorFactory::disconnectPropertyManager(PenPropertyManager *manager)
+    {
+        m_colorFactory->removePropertyManager(manager->subColorManager());
+        m_comboBoxFactory->removePropertyManager(manager->subEnumManager());
+    }
+
 }

@@ -1,19 +1,22 @@
 #include "placepolylinecommand.h"
 
-using namespace SymbolEditor;
-
-PlacePolylineCommand::PlacePolylineCommand(UndoCommand *parent):
-    PlacementCommand(parent)
-{
-    setText("Place polyline");
-}
-
-void PlacePolylineCommand::undo()
+namespace SymbolEditor
 {
 
-}
+    PlacePolylineCommand::PlacePolylineCommand(UndoCommand *parent):
+        PlacementCommand(parent)
+    {
+        setText("Place polyline");
+    }
 
-void PlacePolylineCommand::redo()
-{
+    void PlacePolylineCommand::undo()
+    {
+
+    }
+
+    void PlacePolylineCommand::redo()
+    {
+
+    }
 
 }

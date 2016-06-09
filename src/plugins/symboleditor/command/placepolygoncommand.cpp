@@ -1,22 +1,25 @@
 #include "placepolygoncommand.h"
 
-using namespace SymbolEditor;
-
-PlacePolygonCommand::PlacePolygonCommand(UndoCommand *parent):
-    PlacementCommand(parent)
+namespace SymbolEditor
 {
-    setText("Place polygon");
-}
 
-void PlacePolygonCommand::undo()
-{
-    removeItem();
-}
+    PlacePolygonCommand::PlacePolygonCommand(UndoCommand *parent):
+        PlacementCommand(parent)
+    {
+        setText("Place polygon");
+    }
 
-void PlacePolygonCommand::redo()
-{
-    auto polygon = new xdl::symbol::PolygonItem;
-    polygon->setVertices(vertices);
-    // Position should be [0, 0]
-    placeItem(polygon);
+    void PlacePolygonCommand::undo()
+    {
+        removeItem();
+    }
+
+    void PlacePolygonCommand::redo()
+    {
+        auto polygon = new xdl::symbol::PolygonItem;
+        polygon->setVertices(vertices);
+        // Position should be [0, 0]
+        placeItem(polygon);
+    }
+
 }

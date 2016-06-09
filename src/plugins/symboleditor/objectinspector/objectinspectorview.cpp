@@ -6,7 +6,6 @@
 namespace SymbolEditor
 {
 
-
     ObjectInspectorView::ObjectInspectorView(QWidget *parent):
         QTreeView(parent)
     {
@@ -34,4 +33,5 @@ namespace SymbolEditor
         setItemDelegateForColumn(1, m_visibilityItemDelegate);
         setItemDelegateForColumn(2, m_lockStateItemDelegate);
     }
+
 }

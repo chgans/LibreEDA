@@ -7,152 +7,155 @@
 
 #include <QAction>
 
-using namespace SymbolEditor;
-
-PlaceEllipseTool::PlaceEllipseTool(QObject *parent):
-    PlacementTool(parent)
+namespace SymbolEditor
 {
-    QAction *action = new QAction(QIcon::fromTheme("draw-ellipse"), //QIcon(":/icons/tool/graphicsellipsetool.svg"),
-                                  "<b>P</b>lace an <b>E</b>llipse <i>p,e</i>", nullptr);
-    action->setShortcut(QKeySequence("p,e"));
-    setAction(action);
-    setToolGroup("interactive-tools");
 
-    m_penSettingsWidget = new PenSettingsWidget();
-    connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
-            [this](const QPen & pen)
+    PlaceEllipseTool::PlaceEllipseTool(QObject *parent):
+        PlacementTool(parent)
     {
-        if (!m_item)
+        QAction *action = new QAction(QIcon::fromTheme("draw-ellipse"), //QIcon(":/icons/tool/graphicsellipsetool.svg"),
+                                      "<b>P</b>lace an <b>E</b>llipse <i>p,e</i>", nullptr);
+        action->setShortcut(QKeySequence("p,e"));
+        setAction(action);
+        setToolGroup("interactive-tools");
+
+        m_penSettingsWidget = new PenSettingsWidget();
+        connect(m_penSettingsWidget, &PenSettingsWidget::penChanged,
+                [this](const QPen & pen)
+        {
+            if (!m_item)
+            {
+                return;
+            }
+            m_item->setPen(pen);
+        });
+        m_brushSettingsWidget = new BrushSettingsWidget();
+        connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
+                [this](const QBrush & brush)
+        {
+            if (!m_item)
+            {
+                return;
+            }
+            m_item->setBrush(brush);
+        });
+
+        QList<QWidget *> widgets;
+        widgets << m_penSettingsWidget << m_brushSettingsWidget;
+        setTaskWidgets(widgets);
+    }
+
+    PlaceEllipseTool::~PlaceEllipseTool()
+    {
+
+    }
+
+    Item *PlaceEllipseTool::beginInsert(const QPointF &pos)
+    {
+        m_item = new EllipseItem();
+        m_item->setPos(pos);
+        m_item->setPen(m_penSettingsWidget->pen());
+        m_item->setBrush(m_brushSettingsWidget->brush());
+        return m_item;
+    }
+
+    void PlaceEllipseTool::addPoint(int idx, const QPointF &pos)
+    {
+        Q_ASSERT(idx < 3);
+
+        if (idx == 0)
         {
             return;
         }
-        m_item->setPen(pen);
-    });
-    m_brushSettingsWidget = new BrushSettingsWidget();
-    connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
-            [this](const QBrush & brush)
+
+        QPointF itemPos = m_item->mapFromScene(pos);
+
+        if (idx == 1)
+        {
+            QLineF radius(QPointF(0, 0), itemPos);
+            m_item->setXRadius(radius.length());
+            m_item->setYRadius(radius.length() / 2.0);
+            m_item->setRotation(-radius.angle());
+        }
+        else
+        {
+            m_item->setYRadius(qAbs(itemPos.y()));
+        }
+    }
+
+    void PlaceEllipseTool::freezePoint(int idx, const QPointF &pos)
     {
-        if (!m_item)
+        Q_UNUSED(pos);
+        Q_ASSERT(idx < 3);
+
+        if (idx != 2)
         {
             return;
         }
-        m_item->setBrush(brush);
-    });
 
-    QList<QWidget *> widgets;
-    widgets << m_penSettingsWidget << m_brushSettingsWidget;
-    setTaskWidgets(widgets);
-}
+        auto command = new PlaceEllipseCommand;
+        command->position = m_item->pos();
+        command->opacity = m_item->opacity();
+        command->zValue = m_item->zValue();
+        command->pen = m_item->pen();
+        command->brush = m_item->brush();
+        command->center = QPointF(0, 0);
+        command->xRadius = m_item->xRadius();
+        command->yRadius = m_item->yRadius();
+        emit commandRequested(command);
 
-PlaceEllipseTool::~PlaceEllipseTool()
-{
+        delete m_item;
+        m_item = nullptr;
 
-}
-
-Item *PlaceEllipseTool::beginInsert(const QPointF &pos)
-{
-    m_item = new EllipseItem();
-    m_item->setPos(pos);
-    m_item->setPen(m_penSettingsWidget->pen());
-    m_item->setBrush(m_brushSettingsWidget->brush());
-    return m_item;
-}
-
-void PlaceEllipseTool::addPoint(int idx, const QPointF &pos)
-{
-    Q_ASSERT(idx < 3);
-
-    if (idx == 0)
-    {
-        return;
+        resetTool();
     }
 
-    QPointF itemPos = m_item->mapFromScene(pos);
-
-    if (idx == 1)
+    bool PlaceEllipseTool::removePoint(int idx, const QPointF &pos)
     {
-        QLineF radius(QPointF(0, 0), itemPos);
-        m_item->setXRadius(radius.length());
-        m_item->setYRadius(radius.length() / 2.0);
-        m_item->setRotation(-radius.angle());
-    }
-    else
-    {
-        m_item->setYRadius(qAbs(itemPos.y()));
-    }
-}
-
-void PlaceEllipseTool::freezePoint(int idx, const QPointF &pos)
-{
-    Q_UNUSED(pos);
-    Q_ASSERT(idx < 3);
-
-    if (idx != 2)
-    {
-        return;
+        if (idx == 2)
+        {
+            QPointF itemPos = m_item->mapFromScene(pos);
+            m_item->setYRadius(qAbs(itemPos.y()));
+            return true; // Keep going
+        }
+        else
+        {
+            return false;    // Remove and delete ellipse
+        }
     }
 
-    auto command = new PlaceEllipseCommand;
-    command->position = m_item->pos();
-    command->opacity = m_item->opacity();
-    command->zValue = m_item->zValue();
-    command->pen = m_item->pen();
-    command->brush = m_item->brush();
-    command->center = QPointF(0, 0);
-    command->xRadius = m_item->xRadius();
-    command->yRadius = m_item->yRadius();
-    emit commandRequested(command);
-
-    delete m_item;
-    m_item = nullptr;
-
-    resetTool();
-}
-
-bool PlaceEllipseTool::removePoint(int idx, const QPointF &pos)
-{
-    if (idx == 2)
+    void PlaceEllipseTool::movePoint(int idx, const QPointF &pos)
     {
-        QPointF itemPos = m_item->mapFromScene(pos);
-        m_item->setYRadius(qAbs(itemPos.y()));
-        return true; // Keep going
-    }
-    else
-    {
-        return false;    // Remove and delete ellipse
-    }
-}
+        Q_ASSERT(idx < 3);
 
-void PlaceEllipseTool::movePoint(int idx, const QPointF &pos)
-{
-    Q_ASSERT(idx < 3);
+        if (idx == 0)
+        {
+            return;
+        }
 
-    if (idx == 0)
-    {
-        return;
+        if (idx == 1)
+        {
+            m_item->setRotation(0.0);
+            QPointF itemPos = m_item->mapFromScene(pos);
+            QLineF radius(QPointF(0, 0), itemPos);
+            m_item->setXRadius(radius.length());
+            m_item->setYRadius(radius.length() / 2.0);
+            m_item->setRotation(-radius.angle());
+        }
+        else
+        {
+            QPointF itemPos = m_item->mapFromScene(pos);
+            m_item->setYRadius(qAbs(itemPos.y()));
+        }
     }
 
-    if (idx == 1)
+    void PlaceEllipseTool::endInsert(const QPointF &pos)
     {
-        m_item->setRotation(0.0);
-        QPointF itemPos = m_item->mapFromScene(pos);
-        QLineF radius(QPointF(0, 0), itemPos);
-        m_item->setXRadius(radius.length());
-        m_item->setYRadius(radius.length() / 2.0);
-        m_item->setRotation(-radius.angle());
+        Q_UNUSED(pos);
     }
-    else
+
+    void PlaceEllipseTool::cancelInsert()
     {
-        QPointF itemPos = m_item->mapFromScene(pos);
-        m_item->setYRadius(qAbs(itemPos.y()));
     }
-}
 
-void PlaceEllipseTool::endInsert(const QPointF &pos)
-{
-    Q_UNUSED(pos);
-}
-
-void PlaceEllipseTool::cancelInsert()
-{
 }

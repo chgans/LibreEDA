@@ -1,14 +1,17 @@
 #include "dockwidget.h"
 
-using namespace SymbolEditor;
-
-DockWidget::DockWidget(QWidget *parent, Qt::WindowFlags flags):
-    QDockWidget(parent, flags)
+namespace SymbolEditor
 {
 
-}
+    DockWidget::DockWidget(QWidget *parent, Qt::WindowFlags flags):
+        QDockWidget(parent, flags)
+    {
 
-void DockWidget::applySettings(const Settings &settings)
-{
-    Q_UNUSED(settings);
+    }
+
+    void DockWidget::applySettings(const Settings &settings)
+    {
+        Q_UNUSED(settings);
+    }
+
 }

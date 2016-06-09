@@ -5,61 +5,64 @@
 
 #include <QDialog>
 
-using namespace SymbolEditor;
-
-Tool::Tool(QObject *parent) :
-    QObject(parent),
-    m_view(nullptr)
+namespace SymbolEditor
 {
 
-}
+    Tool::Tool(QObject *parent) :
+        QObject(parent),
+        m_view(nullptr)
+    {
 
-Tool::~Tool()
-{
+    }
 
-}
+    Tool::~Tool()
+    {
 
-View *Tool::view()
-{
-    return m_view;
-}
+    }
 
-Scene *Tool::scene()
-{
-    return m_view->scene();
-}
+    View *Tool::view()
+    {
+        return m_view;
+    }
 
-void Tool::setView(View *view)
-{
-    m_view = view;
-}
+    Scene *Tool::scene()
+    {
+        return m_view->scene();
+    }
 
-void Tool::setToolGroup(const QString &group)
-{
-    m_toolGroup = group;
-}
+    void Tool::setView(View *view)
+    {
+        m_view = view;
+    }
 
-QString Tool::toolGroup() const
-{
-    return m_toolGroup;
-}
+    void Tool::setToolGroup(const QString &group)
+    {
+        m_toolGroup = group;
+    }
 
-void Tool::setAction(QAction *action)
-{
-    m_action = action;
-}
+    QString Tool::toolGroup() const
+    {
+        return m_toolGroup;
+    }
 
-QAction *Tool::action() const
-{
-    return m_action;
-}
+    void Tool::setAction(QAction *action)
+    {
+        m_action = action;
+    }
 
-void Tool::cancel()
-{
+    QAction *Tool::action() const
+    {
+        return m_action;
+    }
 
-}
+    void Tool::cancel()
+    {
 
-void Tool::applySettings(const Settings &settings)
-{
-    Q_UNUSED(settings);
+    }
+
+    void Tool::applySettings(const Settings &settings)
+    {
+        Q_UNUSED(settings);
+    }
+
 }

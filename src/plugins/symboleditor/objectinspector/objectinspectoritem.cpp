@@ -48,5 +48,4 @@ namespace SymbolEditor
         return m_parent;
     }
 
-
 }
