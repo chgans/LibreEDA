@@ -73,7 +73,7 @@ namespace SymbolEditor
 
     private slots:
         void addDocumentItem(quint64 id, const Document::Item *item);
-        void updateDocumentItem(quint64 id, const Document::Item *item);
+        void updateDocumentItemProperty(quint64 itemId, quint64 propertyId, const QVariant &value);
         void removeDocumentItem(quint64 id);
 
         // IEditor interface

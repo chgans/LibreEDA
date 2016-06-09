@@ -183,6 +183,33 @@ void Scene::updateDocumentItem(quint64 id, const Document::Item *item)
     }
 }
 
+void Scene::updateDocumentItemProperty(quint64 itemId, quint64 propertyId, const QVariant &value)
+{
+    // FIXME: Scene's Item need to understand property ID by defining compatible enums
+    // This way Scene's Item are independent of xdl:symbol
+    auto item = itemForDocumentId(itemId);
+    if (item == nullptr)
+    {
+        return;
+    }
+
+    // TODO: item->setProperty(propertyId, value);
+    switch (propertyId)
+    {
+        case xdl::symbol::Item::PositionProperty:
+            item->setPos(value.toPointF());
+            break;
+        case xdl::symbol::Item::VisibilityProperty:
+            item->setVisible(value.toBool());
+            break;
+        case xdl::symbol::Item::LockedProperty:
+            item->setEnabled(!value.toBool());
+            break;
+        default:
+            break;
+    }
+}
+
 void Scene::removeDocumentItem(quint64 id)
 {
     if (!m_itemMap.contains(id))

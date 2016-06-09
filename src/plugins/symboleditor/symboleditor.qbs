@@ -30,6 +30,8 @@ LedaPlugin {
         "command/placepolylinecommand.h",
         "command/placerectanglecommand.cpp",
         "command/placerectanglecommand.h",
+        "command/setpropertycommand.cpp",
+        "command/setpropertycommand.h",
         "constants.h",
         "dock/dockwidget.cpp",
         "dock/dockwidget.h",

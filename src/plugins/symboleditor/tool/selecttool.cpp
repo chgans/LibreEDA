@@ -12,7 +12,7 @@
 #include "objectinspector/objectinspectorview.h"
 #include "objectinspector/objectinspectormodel.h"
 
-#include "command/command.h"
+#include "command/setpropertycommand.h"
 
 #include <QMouseEvent>
 #include <QKeyEvent>
@@ -44,13 +44,31 @@ SelectTool::~SelectTool()
 void SelectTool::addDocumentItem(quint64 id, const Document::Item *item)
 {
     m_objectInspectorModel->addTopLevelItem(id, item->friendlyTypeName(), item->icon());
-    updateDocumentItem(id, item);
+    m_objectInspectorModel->setItemVisibility(id, item->isVisible());
+    m_objectInspectorModel->setItemLockState(id, item->isLocked());
 }
 
 void SelectTool::updateDocumentItem(quint64 id, const Document::Item *item)
 {
     m_objectInspectorModel->setItemVisibility(id, item->isVisible());
     m_objectInspectorModel->setItemLockState(id, item->isLocked());
+}
+
+void SelectTool::updateDocumentItemProperty(quint64 itemId, quint64 propertyId, const QVariant &value)
+{
+    switch (propertyId)
+    {
+        case xdl::symbol::Item::VisibilityProperty:
+            // FIXME: Force selected to false if item is being hidden?
+            m_objectInspectorModel->setItemVisibility(itemId, value.toBool());
+            break;
+        case xdl::symbol::Item::LockedProperty:
+            // FIXME: Force selected to false if item is being locked?
+            m_objectInspectorModel->setItemLockState(itemId, value.toBool());
+            break;
+        default:
+            break;
+    }
 }
 
 void SelectTool::removeDocumentItem(quint64 id)
@@ -60,12 +78,20 @@ void SelectTool::removeDocumentItem(quint64 id)
 
 void SelectTool::onObjectInspectorVisibilityChangeRequested(quint64 id, bool visibility)
 {
-    qDebug() << "Set visibility" << id << visibility;
+    auto command = new SetPropertyCommand();
+    command->setItemId(id);
+    command->setPropertId(xdl::symbol::Item::VisibilityProperty);
+    command->setPropertyValue(visibility);
+    emit commandRequested(command);
 }
 
 void SelectTool::onObjectInspectorLockStateChangeRequested(quint64 id, bool lockState)
 {
-    qDebug() << "Set Lock state" << id << lockState;
+    auto command = new SetPropertyCommand();
+    command->setItemId(id);
+    command->setPropertId(xdl::symbol::Item::LockedProperty);
+    command->setPropertyValue(lockState);
+    emit commandRequested(command);
 }
 
 void SelectTool::onObjectInspectorSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)

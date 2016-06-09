@@ -80,10 +80,10 @@ void Editor::addDocumentItem(quint64 id, const Document::Item *item)
     m_selectTool->addDocumentItem(id, item);
 }
 
-void Editor::updateDocumentItem(quint64 id, const Document::Item *item)
+void Editor::updateDocumentItemProperty(quint64 itemId, quint64 propertyId, const QVariant &value)
 {
-    m_scene->updateDocumentItem(id, item);
-    m_selectTool->updateDocumentItem(id, item);
+    m_scene->updateDocumentItemProperty(itemId, propertyId, value);
+    m_selectTool->updateDocumentItemProperty(itemId, propertyId, value);
 }
 
 void Editor::removeDocumentItem(quint64 id)
@@ -125,8 +125,8 @@ bool Editor::open(QString *errorString, const QString &fileName)
 
     connect(m_document, &Document::itemAdded,
             this, &Editor::addDocumentItem);
-    connect(m_document, &Document::itemChanged,
-            this, &Editor::updateDocumentItem);
+    connect(m_document, &Document::itemPropertyChanged,
+            this, &Editor::updateDocumentItemProperty);
     connect(m_document, &Document::itemRemoved,
             this, &Editor::removeDocumentItem);
 

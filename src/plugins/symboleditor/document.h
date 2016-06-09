@@ -24,19 +24,20 @@ namespace SymbolEditor
         QString symbolName() const;
         QString symbolLabel() const;
         const Item *item(quint64 id) const;
-        Item *item(quint64 id);
         QList<quint64> itemIdList() const;
 
+        // TODO: quint64 cloneItem(quint64 id); ?
+        // TODO: quint64 createItem(quint64 typId); ?
         quint64 addItem(Item *item); // takes ownership
-        void replaceItem(quint64 id, Item *item); // takes ownership
         void removeItem(quint64 id);
-        void updateItem(quint64
-                               id); // FIXME: this is actually use to notify that item have been changed externally
-        void setItemProperty(quint64 id, const QString &name, const QVariant &value);
+        void setItemProperty(quint64 itemId, quint64 propertyId, const QVariant &value);
+        QVariant itemProperty(quint64 itemId, quint64 propertyId) const;
+        QString friendlyItemPropertyName(quint64 itemId, quint64 propertyId);
 
     signals:
         void itemAdded(quint64 id, const Item *item);
         void itemChanged(quint64 id, const Item *item);
+        void itemPropertyChanged(quint64 itemId, quint64 propertyId, const QVariant &value);
         void itemRemoved(quint64 id);
 
         void itemGroupCreated(quint64 id, const ItemGroup *group);

@@ -19,8 +19,8 @@ void TranslateCommand::undo()
             warnItemNotFound("Translate", id);
             continue;
         }
-        item->setPosition(item->position()- amount);
-        document()->updateItem(id);
+        auto newPosition = item->position() - amount;
+        document()->setItemProperty(id, xdl::symbol::Item::PositionProperty, newPosition);
     }
 }
 
@@ -34,8 +34,8 @@ void TranslateCommand::redo()
             warnItemNotFound("Translate", id);
             continue;
         }
-        item->setPosition(item->position() + amount);
-        document()->updateItem(id);
+        auto newPosition = item->position() + amount;
+        document()->setItemProperty(id, xdl::symbol::Item::PositionProperty, newPosition);
     }
 
     setText(QString("Move %1 item").arg(itemIdList.count()));
