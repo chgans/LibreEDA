@@ -1,38 +1,5 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>graphicssnapgrid.svg</file>
-        <file>graphicssnaplock.svg</file>
-        <file>graphicssnapobject.svg</file>
-        <file>graphicspathpointadd.svg</file>
-        <file>graphicspathpointcorner.svg</file>
-        <file>graphicspathpointdel.svg</file>
-        <file>graphicspathpointsmooth.svg</file>
-        <file>graphicspathpointsymetrical.svg</file>
-        <file>tool/graphicscircletool.svg</file>
-        <file>tool/graphicsarctool.svg</file>
-        <file>tool/graphicsbeziercurvetool.svg</file>
-        <file>tool/graphicsbeziersplinetool.svg</file>
-        <file>tool/graphicsbeziertool.svg</file>
-        <file>tool/graphicsellipsetool.svg</file>
-        <file>tool/graphicslinetool.svg</file>
-        <file>tool/graphicspolygontool.svg</file>
-        <file>tool/graphicspolylinetool.svg</file>
-        <file>tool/graphicsrecttool.svg</file>
-        <file>snap/Snap_Angle.svg</file>
-        <file>snap/Snap_Center.svg</file>
-        <file>snap/Snap_Dimensions.svg</file>
-        <file>snap/Snap_Endpoint.svg</file>
-        <file>snap/Snap_Extension.svg</file>
-        <file>snap/Snap_Grid.svg</file>
-        <file>snap/Snap_Intersection.svg</file>
-        <file>snap/Snap_Lock.svg</file>
-        <file>snap/Snap_Midpoint.svg</file>
-        <file>snap/Snap_Near.svg</file>
-        <file>snap/Snap_Ortho.svg</file>
-        <file>snap/Snap_Parallel.svg</file>
-        <file>snap/Snap_Perpendicular.svg</file>
-        <file>snap/Snap_WorkingPlane.svg</file>
-        <file>snap/Snap_Free.svg</file>
         <file>snap/snap-center.svg</file>
         <file>snap/snap-end-point.svg</file>
         <file>snap/snap-grid.svg</file>
@@ -42,10 +9,6 @@
         <file>snap/snap-free.svg</file>
     </qresource>
     <qresource prefix="/">
-        <file>icons/task_wipe.svg</file>
-        <file>icons/task_undo.svg</file>
-        <file>icons/task_finish.svg</file>
-        <file>icons/task_close_shape.svg</file>
         <file>icons/sch.png</file>
     </qresource>
 </RCC>

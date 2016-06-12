@@ -15,7 +15,7 @@ namespace SymbolEditor
         PlacementTool(editor),
         m_item(nullptr)
     {
-        QAction *action = new QAction(QIcon::fromTheme("draw-polygon"), //QIcon(":/icons/tool/graphicspolygontool.svg"),
+        QAction *action = new QAction(QIcon::fromTheme("draw-polygon"),
                                       "<b>P</b>lace a Poly<b>g</b>on <i>p,g</i>", nullptr);
         action->setShortcut(QKeySequence("p,g"));
         setAction(action);

@@ -12,7 +12,7 @@ namespace SymbolEditor
     PlaceCircleTool::PlaceCircleTool(Editor *editor):
         PlacementTool(editor)
     {
-        QAction *action = new QAction(QIcon::fromTheme("draw-circle"), //QIcon(":/icons/tool/graphicscircletool.svg"),
+        QAction *action = new QAction(QIcon::fromTheme("draw-circle"),
                                       "<b>P</b>lace a <b>C</b>ircle <i>p,c</i>", nullptr);
         action->setShortcut(QKeySequence("p,c"));
         setAction(action);

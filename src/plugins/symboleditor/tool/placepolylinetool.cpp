@@ -12,7 +12,7 @@ namespace SymbolEditor
     PlacePolyineTool::PlacePolyineTool(Editor *editor):
         PlacementTool(editor), m_item(nullptr)
     {
-        QAction *action = new QAction(QIcon::fromTheme("draw-polyline"), //QIcon(":/icons/tool/graphicslinetool.svg"),
+        QAction *action = new QAction(QIcon::fromTheme("draw-polyline"),
                                       "<b>P</b>lace a Poly<b>l</b>ine <i>p,l</i>", nullptr);
         action->setShortcut(QKeySequence("p,l"));
         setAction(action);

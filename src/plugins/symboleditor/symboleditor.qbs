@@ -128,8 +128,6 @@ LedaPlugin {
         "tool/placepolylinetool.h",
         "tool/placerectangleool.cpp",
         "tool/placerectangletool.h",
-        "tool/graphicsitemaligntool.cpp",
-        "tool/graphicsitemaligntool.h",
         "tool/selecttool.cpp",
         "tool/selecttool.h",
         "tool/tool.cpp",

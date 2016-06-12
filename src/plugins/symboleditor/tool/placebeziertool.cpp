@@ -12,7 +12,7 @@ namespace SymbolEditor
         PlacementTool(editor),
         m_item(nullptr)
     {
-        QAction *action = new QAction(QIcon::fromTheme("draw-bezier-curves"), //QIcon(":/icons/tool/graphicsbeziertool.svg"),
+        QAction *action = new QAction(QIcon::fromTheme("draw-bezier-curves"),
                                       "<b>P</b>lace a <b>B</b>ezier Curve <i>p,b</i>", nullptr);
         action->setShortcut(QKeySequence("p,b"));
         setAction(action);

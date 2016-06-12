@@ -13,7 +13,7 @@ namespace SymbolEditor
     PlaceEllipseTool::PlaceEllipseTool(Editor *editor):
         PlacementTool(editor)
     {
-        QAction *action = new QAction(QIcon::fromTheme("draw-ellipse"), //QIcon(":/icons/tool/graphicsellipsetool.svg"),
+        QAction *action = new QAction(QIcon::fromTheme("draw-ellipse"),
                                       "<b>P</b>lace an <b>E</b>llipse <i>p,e</i>", nullptr);
         action->setShortcut(QKeySequence("p,e"));
         setAction(action);

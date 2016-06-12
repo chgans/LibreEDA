@@ -13,7 +13,7 @@ namespace SymbolEditor
     PlaceRectangleTool::PlaceRectangleTool(Editor *editor):
         PlacementTool(editor), m_item(nullptr)
     {
-        QAction *action = new QAction(QIcon::fromTheme("draw-rectangle"),//QIcon(":/icons/tool/graphicsrecttool.svg"),
+        QAction *action = new QAction(QIcon::fromTheme("draw-rectangle"),
                                       "<b>P</b>lace a <b>R</b>ectangle <i>p,r</i>", nullptr);
         action->setShortcut(QKeySequence("p,r"));
         setAction(action);

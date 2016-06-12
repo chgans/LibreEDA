@@ -11,7 +11,7 @@ namespace SymbolEditor
     PlaceArcTool::PlaceArcTool(Editor *editor):
         PlacementTool(editor)
     {
-        QAction *action = new QAction(QIcon::fromTheme("draw-halfcircle3"), //QIcon(":/icons/tool/graphicsarctool.svg"),
+        QAction *action = new QAction(QIcon::fromTheme("draw-halfcircle3"),
                                       "<b>P</b>lace an <b>A</b>rc <i>p,a</i>", nullptr);
         action->setShortcut(QKeySequence("p,a"));
         setAction(action);
