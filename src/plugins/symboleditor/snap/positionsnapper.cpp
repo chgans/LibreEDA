@@ -115,7 +115,7 @@ namespace SymbolEditor
     void SnapStrategy::updateAction()
     {
         m_action->setShortcut(m_shortcut);
-        m_action->setToolTip(QString("%1 <b>%2</b>").arg(m_label).arg(m_shortcut.toString()));
+        m_action->setToolTip(QString("%1 <i>%2</i>").arg(m_label).arg(m_shortcut.toString()));
         m_action->setIcon(m_icon);
         m_action->setCheckable(true);
         m_action->setChecked(false);
@@ -173,11 +173,11 @@ namespace SymbolEditor
     NoSnapStrategy::NoSnapStrategy(View *view):
         SnapStrategy(view)
     {
-        setLabel("No snap");
+        setLabel("No <b>S</b>nap (<b>F</b>ree)");
         setName("Free");
         setGroup("leda.snap.default");
-        setShortcut(QKeySequence("S,F"));
-        setIcon(QIcon(":/icons/snap/Snap_Free.svg"));
+        setShortcut(QKeySequence("s,f"));
+        setIcon(QIcon(":/icons/snap/snap-free.svg"));
         updateAction();
     }
 
@@ -195,11 +195,11 @@ namespace SymbolEditor
     SnapToGridStrategy::SnapToGridStrategy(View *view):
         SnapStrategy(view)
     {
-        setLabel("Snap to grid");
+        setLabel("<b>S</b>nap to <b>G</b>rid");
         setName("Grid");
         setGroup("leda.snap.default");
-        setShortcut(QKeySequence("S,G"));
-        setIcon(QIcon(":/icons/snap/Snap_Grid.svg"));
+        setShortcut(QKeySequence("s,g"));
+        setIcon(QIcon(":/icons/snap/snap-grid.svg"));
         updateAction();
     }
 
@@ -223,11 +223,11 @@ namespace SymbolEditor
     SnapToItemHotSpotsStrategy::SnapToItemHotSpotsStrategy(View *view):
         SnapStrategy(view)
     {
-        setLabel("Snap to reference");
+        setLabel("<b>S</b>nap to <b>R</b>eferences");
         setName("Reference");
         setGroup("leda.snap.default");
-        setShortcut(QKeySequence("S,R"));
-        setIcon(QIcon(":/icons/snap/Snap_Angle.svg"));
+        setShortcut(QKeySequence("s,r"));
+        setIcon(QIcon(":/icons/snap/snap-reference.svg"));
         updateAction();
     }
 
@@ -264,11 +264,11 @@ namespace SymbolEditor
     SnapToItemEndPointStrategy::SnapToItemEndPointStrategy(View *view):
         SnapStrategy(view)
     {
-        setLabel("Snap to end points");
+        setLabel("<b>S</b>nap to <b>E</b>nd-points");
         setName("End point");
         setGroup("leda.snap.default");
-        setShortcut(QKeySequence("S,E"));
-        setIcon(QIcon(":/icons/snap/Snap_Endpoint.svg"));
+        setShortcut(QKeySequence("s,e"));
+        setIcon(QIcon(":/icons/snap/snap-end-point.svg"));
         updateAction();
     }
 
@@ -305,11 +305,11 @@ namespace SymbolEditor
     SnapToItemMidPointStrategy::SnapToItemMidPointStrategy(View *view):
         SnapStrategy(view)
     {
-        setLabel("Snap to mid points");
+        setLabel("<b>S</b>nap to <b>M</b>id-points");
         setName("Mid point");
         setGroup("leda.snap.default");
-        setShortcut(QKeySequence("S,M"));
-        setIcon(QIcon(":/icons/snap/Snap_Midpoint.svg"));
+        setShortcut(QKeySequence("s,m"));
+        setIcon(QIcon(":/icons/snap/snap-mid-point.svg"));
         updateAction();
     }
 
@@ -346,11 +346,11 @@ namespace SymbolEditor
     SnapToItemShapeStrategy::SnapToItemShapeStrategy(View *view):
         SnapStrategy(view)
     {
-        setLabel("Snap to shape points");
+        setLabel("<b>S</b>nap to <b>S</b>hapes");
         setName("Shape point");
         setGroup("leda.snap.default");
-        setShortcut(QKeySequence("S,S"));
-        setIcon(QIcon(":/icons/snap/Snap_WorkingPlane.svg"));
+        setShortcut(QKeySequence("s,s"));
+        setIcon(QIcon(":/icons/snap/snap-shape.svg"));
         updateAction();
     }
 
@@ -388,11 +388,11 @@ namespace SymbolEditor
     SnapToItemCenterStrategy::SnapToItemCenterStrategy(View *view):
         SnapStrategy(view)
     {
-        setLabel("Snap to center points");
+        setLabel("<b>S</b>nap to <b>C</b>enter-points");
         setName("Center point");
         setGroup("leda.snap.default");
-        setShortcut(QKeySequence("S,C"));
-        setIcon(QIcon(":/icons/snap/Snap_Center.svg"));
+        setShortcut(QKeySequence("s,c"));
+        setIcon(QIcon(":/icons/snap/snap-center.svg"));
         updateAction();
     }
 
