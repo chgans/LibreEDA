@@ -191,21 +191,39 @@ namespace xdl
     //
 
     void Item_pskel::
-    pen_parser (::xdl::symbol::Pen_pskel& p)
-    {
-      this->pen_parser_ = &p;
-    }
-
-    void Item_pskel::
-    brush_parser (::xdl::symbol::Brush_pskel& p)
-    {
-      this->brush_parser_ = &p;
-    }
-
-    void Item_pskel::
     position_parser (::xdl::symbol::Point_pskel& p)
     {
       this->position_parser_ = &p;
+    }
+
+    void Item_pskel::
+    line_style_parser (::xdl::symbol::LineStyle_pskel& p)
+    {
+      this->line_style_parser_ = &p;
+    }
+
+    void Item_pskel::
+    line_width_parser (::xdl::symbol::LineWidth_pskel& p)
+    {
+      this->line_width_parser_ = &p;
+    }
+
+    void Item_pskel::
+    line_color_parser (::xdl::symbol::Color_pskel& p)
+    {
+      this->line_color_parser_ = &p;
+    }
+
+    void Item_pskel::
+    fill_style_parser (::xdl::symbol::FillStyle_pskel& p)
+    {
+      this->fill_style_parser_ = &p;
+    }
+
+    void Item_pskel::
+    fill_color_parser (::xdl::symbol::Color_pskel& p)
+    {
+      this->fill_color_parser_ = &p;
     }
 
     void Item_pskel::
@@ -251,9 +269,12 @@ namespace xdl
     }
 
     void Item_pskel::
-    parsers (::xdl::symbol::Pen_pskel& pen,
-             ::xdl::symbol::Brush_pskel& brush,
-             ::xdl::symbol::Point_pskel& position,
+    parsers (::xdl::symbol::Point_pskel& position,
+             ::xdl::symbol::LineStyle_pskel& line_style,
+             ::xdl::symbol::LineWidth_pskel& line_width,
+             ::xdl::symbol::Color_pskel& line_color,
+             ::xdl::symbol::FillStyle_pskel& fill_style,
+             ::xdl::symbol::Color_pskel& fill_color,
              ::xml_schema::double_pskel& z_value,
              ::xdl::symbol::Angle_pskel& rotation,
              ::xdl::symbol::Opacity_pskel& opacity,
@@ -262,9 +283,12 @@ namespace xdl
              ::xml_schema::boolean_pskel& y_mirrored,
              ::xml_schema::boolean_pskel& visible)
     {
-      this->pen_parser_ = &pen;
-      this->brush_parser_ = &brush;
       this->position_parser_ = &position;
+      this->line_style_parser_ = &line_style;
+      this->line_width_parser_ = &line_width;
+      this->line_color_parser_ = &line_color;
+      this->fill_style_parser_ = &fill_style;
+      this->fill_color_parser_ = &fill_color;
       this->z_value_parser_ = &z_value;
       this->rotation_parser_ = &rotation;
       this->opacity_parser_ = &opacity;
@@ -276,9 +300,12 @@ namespace xdl
 
     Item_pskel::
     Item_pskel ()
-    : pen_parser_ (0),
-      brush_parser_ (0),
-      position_parser_ (0),
+    : position_parser_ (0),
+      line_style_parser_ (0),
+      line_width_parser_ (0),
+      line_color_parser_ (0),
+      fill_style_parser_ (0),
+      fill_color_parser_ (0),
       z_value_parser_ (0),
       rotation_parser_ (0),
       opacity_parser_ (0),
@@ -300,9 +327,12 @@ namespace xdl
     }
 
     void Circle_pskel::
-    parsers (::xdl::symbol::Pen_pskel& pen,
-             ::xdl::symbol::Brush_pskel& brush,
-             ::xdl::symbol::Point_pskel& position,
+    parsers (::xdl::symbol::Point_pskel& position,
+             ::xdl::symbol::LineStyle_pskel& line_style,
+             ::xdl::symbol::LineWidth_pskel& line_width,
+             ::xdl::symbol::Color_pskel& line_color,
+             ::xdl::symbol::FillStyle_pskel& fill_style,
+             ::xdl::symbol::Color_pskel& fill_color,
              ::xml_schema::double_pskel& z_value,
              ::xdl::symbol::Angle_pskel& rotation,
              ::xdl::symbol::Opacity_pskel& opacity,
@@ -312,9 +342,12 @@ namespace xdl
              ::xml_schema::boolean_pskel& visible,
              ::xdl::symbol::NonNegativeDouble_pskel& radius)
     {
-      this->pen_parser_ = &pen;
-      this->brush_parser_ = &brush;
       this->position_parser_ = &position;
+      this->line_style_parser_ = &line_style;
+      this->line_width_parser_ = &line_width;
+      this->line_color_parser_ = &line_color;
+      this->fill_style_parser_ = &fill_style;
+      this->fill_color_parser_ = &fill_color;
       this->z_value_parser_ = &z_value;
       this->rotation_parser_ = &rotation;
       this->opacity_parser_ = &opacity;
@@ -354,9 +387,12 @@ namespace xdl
     }
 
     void CircularArc_pskel::
-    parsers (::xdl::symbol::Pen_pskel& pen,
-             ::xdl::symbol::Brush_pskel& brush,
-             ::xdl::symbol::Point_pskel& position,
+    parsers (::xdl::symbol::Point_pskel& position,
+             ::xdl::symbol::LineStyle_pskel& line_style,
+             ::xdl::symbol::LineWidth_pskel& line_width,
+             ::xdl::symbol::Color_pskel& line_color,
+             ::xdl::symbol::FillStyle_pskel& fill_style,
+             ::xdl::symbol::Color_pskel& fill_color,
              ::xml_schema::double_pskel& z_value,
              ::xdl::symbol::Angle_pskel& rotation,
              ::xdl::symbol::Opacity_pskel& opacity,
@@ -368,9 +404,12 @@ namespace xdl
              ::xdl::symbol::Angle_pskel& start_angle,
              ::xdl::symbol::Angle_pskel& span_angle)
     {
-      this->pen_parser_ = &pen;
-      this->brush_parser_ = &brush;
       this->position_parser_ = &position;
+      this->line_style_parser_ = &line_style;
+      this->line_width_parser_ = &line_width;
+      this->line_color_parser_ = &line_color;
+      this->fill_style_parser_ = &fill_style;
+      this->fill_color_parser_ = &fill_color;
       this->z_value_parser_ = &z_value;
       this->rotation_parser_ = &rotation;
       this->opacity_parser_ = &opacity;
@@ -408,9 +447,12 @@ namespace xdl
     }
 
     void Ellipse_pskel::
-    parsers (::xdl::symbol::Pen_pskel& pen,
-             ::xdl::symbol::Brush_pskel& brush,
-             ::xdl::symbol::Point_pskel& position,
+    parsers (::xdl::symbol::Point_pskel& position,
+             ::xdl::symbol::LineStyle_pskel& line_style,
+             ::xdl::symbol::LineWidth_pskel& line_width,
+             ::xdl::symbol::Color_pskel& line_color,
+             ::xdl::symbol::FillStyle_pskel& fill_style,
+             ::xdl::symbol::Color_pskel& fill_color,
              ::xml_schema::double_pskel& z_value,
              ::xdl::symbol::Angle_pskel& rotation,
              ::xdl::symbol::Opacity_pskel& opacity,
@@ -421,9 +463,12 @@ namespace xdl
              ::xdl::symbol::NonNegativeDouble_pskel& x_radius,
              ::xdl::symbol::NonNegativeDouble_pskel& y_radius)
     {
-      this->pen_parser_ = &pen;
-      this->brush_parser_ = &brush;
       this->position_parser_ = &position;
+      this->line_style_parser_ = &line_style;
+      this->line_width_parser_ = &line_width;
+      this->line_color_parser_ = &line_color;
+      this->fill_style_parser_ = &fill_style;
+      this->fill_color_parser_ = &fill_color;
       this->z_value_parser_ = &z_value;
       this->rotation_parser_ = &rotation;
       this->opacity_parser_ = &opacity;
@@ -471,9 +516,12 @@ namespace xdl
     }
 
     void EllipticalArc_pskel::
-    parsers (::xdl::symbol::Pen_pskel& pen,
-             ::xdl::symbol::Brush_pskel& brush,
-             ::xdl::symbol::Point_pskel& position,
+    parsers (::xdl::symbol::Point_pskel& position,
+             ::xdl::symbol::LineStyle_pskel& line_style,
+             ::xdl::symbol::LineWidth_pskel& line_width,
+             ::xdl::symbol::Color_pskel& line_color,
+             ::xdl::symbol::FillStyle_pskel& fill_style,
+             ::xdl::symbol::Color_pskel& fill_color,
              ::xml_schema::double_pskel& z_value,
              ::xdl::symbol::Angle_pskel& rotation,
              ::xdl::symbol::Opacity_pskel& opacity,
@@ -486,9 +534,12 @@ namespace xdl
              ::xdl::symbol::Angle_pskel& start_angle,
              ::xdl::symbol::Angle_pskel& span_angle)
     {
-      this->pen_parser_ = &pen;
-      this->brush_parser_ = &brush;
       this->position_parser_ = &position;
+      this->line_style_parser_ = &line_style;
+      this->line_width_parser_ = &line_width;
+      this->line_color_parser_ = &line_color;
+      this->fill_style_parser_ = &fill_style;
+      this->fill_color_parser_ = &fill_color;
       this->z_value_parser_ = &z_value;
       this->rotation_parser_ = &rotation;
       this->opacity_parser_ = &opacity;
@@ -528,9 +579,12 @@ namespace xdl
     }
 
     void Rectangle_pskel::
-    parsers (::xdl::symbol::Pen_pskel& pen,
-             ::xdl::symbol::Brush_pskel& brush,
-             ::xdl::symbol::Point_pskel& position,
+    parsers (::xdl::symbol::Point_pskel& position,
+             ::xdl::symbol::LineStyle_pskel& line_style,
+             ::xdl::symbol::LineWidth_pskel& line_width,
+             ::xdl::symbol::Color_pskel& line_color,
+             ::xdl::symbol::FillStyle_pskel& fill_style,
+             ::xdl::symbol::Color_pskel& fill_color,
              ::xml_schema::double_pskel& z_value,
              ::xdl::symbol::Angle_pskel& rotation,
              ::xdl::symbol::Opacity_pskel& opacity,
@@ -541,9 +595,12 @@ namespace xdl
              ::xdl::symbol::NonNegativeDouble_pskel& width,
              ::xdl::symbol::NonNegativeDouble_pskel& height)
     {
-      this->pen_parser_ = &pen;
-      this->brush_parser_ = &brush;
       this->position_parser_ = &position;
+      this->line_style_parser_ = &line_style;
+      this->line_width_parser_ = &line_width;
+      this->line_color_parser_ = &line_color;
+      this->fill_style_parser_ = &fill_style;
+      this->fill_color_parser_ = &fill_color;
       this->z_value_parser_ = &z_value;
       this->rotation_parser_ = &rotation;
       this->opacity_parser_ = &opacity;
@@ -573,9 +630,12 @@ namespace xdl
     }
 
     void Polyline_pskel::
-    parsers (::xdl::symbol::Pen_pskel& pen,
-             ::xdl::symbol::Brush_pskel& brush,
-             ::xdl::symbol::Point_pskel& position,
+    parsers (::xdl::symbol::Point_pskel& position,
+             ::xdl::symbol::LineStyle_pskel& line_style,
+             ::xdl::symbol::LineWidth_pskel& line_width,
+             ::xdl::symbol::Color_pskel& line_color,
+             ::xdl::symbol::FillStyle_pskel& fill_style,
+             ::xdl::symbol::Color_pskel& fill_color,
              ::xml_schema::double_pskel& z_value,
              ::xdl::symbol::Angle_pskel& rotation,
              ::xdl::symbol::Opacity_pskel& opacity,
@@ -585,9 +645,12 @@ namespace xdl
              ::xml_schema::boolean_pskel& visible,
              ::xdl::symbol::PointList_pskel& vertices)
     {
-      this->pen_parser_ = &pen;
-      this->brush_parser_ = &brush;
       this->position_parser_ = &position;
+      this->line_style_parser_ = &line_style;
+      this->line_width_parser_ = &line_width;
+      this->line_color_parser_ = &line_color;
+      this->fill_style_parser_ = &fill_style;
+      this->fill_color_parser_ = &fill_color;
       this->z_value_parser_ = &z_value;
       this->rotation_parser_ = &rotation;
       this->opacity_parser_ = &opacity;
@@ -615,9 +678,12 @@ namespace xdl
     }
 
     void Polygon_pskel::
-    parsers (::xdl::symbol::Pen_pskel& pen,
-             ::xdl::symbol::Brush_pskel& brush,
-             ::xdl::symbol::Point_pskel& position,
+    parsers (::xdl::symbol::Point_pskel& position,
+             ::xdl::symbol::LineStyle_pskel& line_style,
+             ::xdl::symbol::LineWidth_pskel& line_width,
+             ::xdl::symbol::Color_pskel& line_color,
+             ::xdl::symbol::FillStyle_pskel& fill_style,
+             ::xdl::symbol::Color_pskel& fill_color,
              ::xml_schema::double_pskel& z_value,
              ::xdl::symbol::Angle_pskel& rotation,
              ::xdl::symbol::Opacity_pskel& opacity,
@@ -627,9 +693,12 @@ namespace xdl
              ::xml_schema::boolean_pskel& visible,
              ::xdl::symbol::PointList_pskel& vertices)
     {
-      this->pen_parser_ = &pen;
-      this->brush_parser_ = &brush;
       this->position_parser_ = &position;
+      this->line_style_parser_ = &line_style;
+      this->line_width_parser_ = &line_width;
+      this->line_color_parser_ = &line_color;
+      this->fill_style_parser_ = &fill_style;
+      this->fill_color_parser_ = &fill_color;
       this->z_value_parser_ = &z_value;
       this->rotation_parser_ = &rotation;
       this->opacity_parser_ = &opacity;
@@ -663,9 +732,12 @@ namespace xdl
     }
 
     void Pin_pskel::
-    parsers (::xdl::symbol::Pen_pskel& pen,
-             ::xdl::symbol::Brush_pskel& brush,
-             ::xdl::symbol::Point_pskel& position,
+    parsers (::xdl::symbol::Point_pskel& position,
+             ::xdl::symbol::LineStyle_pskel& line_style,
+             ::xdl::symbol::LineWidth_pskel& line_width,
+             ::xdl::symbol::Color_pskel& line_color,
+             ::xdl::symbol::FillStyle_pskel& fill_style,
+             ::xdl::symbol::Color_pskel& fill_color,
              ::xml_schema::double_pskel& z_value,
              ::xdl::symbol::Angle_pskel& rotation,
              ::xdl::symbol::Opacity_pskel& opacity,
@@ -676,9 +748,12 @@ namespace xdl
              ::xml_schema::string_pskel& designator,
              ::xml_schema::string_pskel& label)
     {
-      this->pen_parser_ = &pen;
-      this->brush_parser_ = &brush;
       this->position_parser_ = &position;
+      this->line_style_parser_ = &line_style;
+      this->line_width_parser_ = &line_width;
+      this->line_color_parser_ = &line_color;
+      this->fill_style_parser_ = &fill_style;
+      this->fill_color_parser_ = &fill_color;
       this->z_value_parser_ = &z_value;
       this->rotation_parser_ = &rotation;
       this->opacity_parser_ = &opacity;
@@ -708,9 +783,12 @@ namespace xdl
     }
 
     void ItemGroup_pskel::
-    parsers (::xdl::symbol::Pen_pskel& pen,
-             ::xdl::symbol::Brush_pskel& brush,
-             ::xdl::symbol::Point_pskel& position,
+    parsers (::xdl::symbol::Point_pskel& position,
+             ::xdl::symbol::LineStyle_pskel& line_style,
+             ::xdl::symbol::LineWidth_pskel& line_width,
+             ::xdl::symbol::Color_pskel& line_color,
+             ::xdl::symbol::FillStyle_pskel& fill_style,
+             ::xdl::symbol::Color_pskel& fill_color,
              ::xml_schema::double_pskel& z_value,
              ::xdl::symbol::Angle_pskel& rotation,
              ::xdl::symbol::Opacity_pskel& opacity,
@@ -720,9 +798,12 @@ namespace xdl
              ::xml_schema::boolean_pskel& visible,
              ::xdl::symbol::ItemList_pskel& children)
     {
-      this->pen_parser_ = &pen;
-      this->brush_parser_ = &brush;
       this->position_parser_ = &position;
+      this->line_style_parser_ = &line_style;
+      this->line_width_parser_ = &line_width;
+      this->line_color_parser_ = &line_color;
+      this->fill_style_parser_ = &fill_style;
+      this->fill_color_parser_ = &fill_color;
       this->z_value_parser_ = &z_value;
       this->rotation_parser_ = &rotation;
       this->opacity_parser_ = &opacity;
@@ -756,21 +837,18 @@ namespace xdl
     }
 
     void Label_pskel::
-    font_family_parser (::xml_schema::string_pskel& p)
+    size_parser (::xml_schema::non_negative_integer_pskel& p)
     {
-      this->font_family_parser_ = &p;
+      this->size_parser_ = &p;
     }
 
     void Label_pskel::
-    font_size_parser (::xml_schema::non_negative_integer_pskel& p)
-    {
-      this->font_size_parser_ = &p;
-    }
-
-    void Label_pskel::
-    parsers (::xdl::symbol::Pen_pskel& pen,
-             ::xdl::symbol::Brush_pskel& brush,
-             ::xdl::symbol::Point_pskel& position,
+    parsers (::xdl::symbol::Point_pskel& position,
+             ::xdl::symbol::LineStyle_pskel& line_style,
+             ::xdl::symbol::LineWidth_pskel& line_width,
+             ::xdl::symbol::Color_pskel& line_color,
+             ::xdl::symbol::FillStyle_pskel& fill_style,
+             ::xdl::symbol::Color_pskel& fill_color,
              ::xml_schema::double_pskel& z_value,
              ::xdl::symbol::Angle_pskel& rotation,
              ::xdl::symbol::Opacity_pskel& opacity,
@@ -780,12 +858,14 @@ namespace xdl
              ::xml_schema::boolean_pskel& visible,
              ::xml_schema::string_pskel& text,
              ::xdl::symbol::Color_pskel& color,
-             ::xml_schema::string_pskel& font_family,
-             ::xml_schema::non_negative_integer_pskel& font_size)
+             ::xml_schema::non_negative_integer_pskel& size)
     {
-      this->pen_parser_ = &pen;
-      this->brush_parser_ = &brush;
       this->position_parser_ = &position;
+      this->line_style_parser_ = &line_style;
+      this->line_width_parser_ = &line_width;
+      this->line_color_parser_ = &line_color;
+      this->fill_style_parser_ = &fill_style;
+      this->fill_color_parser_ = &fill_color;
       this->z_value_parser_ = &z_value;
       this->rotation_parser_ = &rotation;
       this->opacity_parser_ = &opacity;
@@ -795,16 +875,14 @@ namespace xdl
       this->visible_parser_ = &visible;
       this->text_parser_ = &text;
       this->color_parser_ = &color;
-      this->font_family_parser_ = &font_family;
-      this->font_size_parser_ = &font_size;
+      this->size_parser_ = &size;
     }
 
     Label_pskel::
     Label_pskel ()
     : text_parser_ (0),
       color_parser_ (0),
-      font_family_parser_ (0),
-      font_size_parser_ (0),
+      size_parser_ (0),
       v_state_stack_ (sizeof (v_state_), &v_state_first_)
     {
     }
@@ -858,162 +936,6 @@ namespace xdl
     PointList_pskel::
     PointList_pskel ()
     : point_parser_ (0),
-      v_state_stack_ (sizeof (v_state_), &v_state_first_)
-    {
-    }
-
-    // Pen_pskel
-    //
-
-    void Pen_pskel::
-    width_parser (::xdl::symbol::NonNegativeDouble_pskel& p)
-    {
-      this->width_parser_ = &p;
-    }
-
-    void Pen_pskel::
-    color_parser (::xdl::symbol::Color_pskel& p)
-    {
-      this->color_parser_ = &p;
-    }
-
-    void Pen_pskel::
-    style_parser (::xdl::symbol::PenStyle_pskel& p)
-    {
-      this->style_parser_ = &p;
-    }
-
-    void Pen_pskel::
-    cap_style_parser (::xdl::symbol::PenCapStyle_pskel& p)
-    {
-      this->cap_style_parser_ = &p;
-    }
-
-    void Pen_pskel::
-    join_style_parser (::xdl::symbol::PenJoinStyle_pskel& p)
-    {
-      this->join_style_parser_ = &p;
-    }
-
-    void Pen_pskel::
-    parsers (::xdl::symbol::NonNegativeDouble_pskel& width,
-             ::xdl::symbol::Color_pskel& color,
-             ::xdl::symbol::PenStyle_pskel& style,
-             ::xdl::symbol::PenCapStyle_pskel& cap_style,
-             ::xdl::symbol::PenJoinStyle_pskel& join_style)
-    {
-      this->width_parser_ = &width;
-      this->color_parser_ = &color;
-      this->style_parser_ = &style;
-      this->cap_style_parser_ = &cap_style;
-      this->join_style_parser_ = &join_style;
-    }
-
-    Pen_pskel::
-    Pen_pskel ()
-    : width_parser_ (0),
-      color_parser_ (0),
-      style_parser_ (0),
-      cap_style_parser_ (0),
-      join_style_parser_ (0),
-      v_state_stack_ (sizeof (v_state_), &v_state_first_)
-    {
-    }
-
-    // Brush_pskel
-    //
-
-    void Brush_pskel::
-    color_parser (::xdl::symbol::Color_pskel& p)
-    {
-      this->color_parser_ = &p;
-    }
-
-    void Brush_pskel::
-    style_parser (::xdl::symbol::BrushStyle_pskel& p)
-    {
-      this->style_parser_ = &p;
-    }
-
-    void Brush_pskel::
-    parsers (::xdl::symbol::Color_pskel& color,
-             ::xdl::symbol::BrushStyle_pskel& style)
-    {
-      this->color_parser_ = &color;
-      this->style_parser_ = &style;
-    }
-
-    Brush_pskel::
-    Brush_pskel ()
-    : color_parser_ (0),
-      style_parser_ (0),
-      v_state_stack_ (sizeof (v_state_), &v_state_first_)
-    {
-    }
-
-    // Font_pskel
-    //
-
-    void Font_pskel::
-    family_parser (::xml_schema::string_pskel& p)
-    {
-      this->family_parser_ = &p;
-    }
-
-    void Font_pskel::
-    size_parser (::xml_schema::non_negative_integer_pskel& p)
-    {
-      this->size_parser_ = &p;
-    }
-
-    void Font_pskel::
-    bold_parser (::xml_schema::boolean_pskel& p)
-    {
-      this->bold_parser_ = &p;
-    }
-
-    void Font_pskel::
-    italic_parser (::xml_schema::boolean_pskel& p)
-    {
-      this->italic_parser_ = &p;
-    }
-
-    void Font_pskel::
-    underline_parser (::xml_schema::boolean_pskel& p)
-    {
-      this->underline_parser_ = &p;
-    }
-
-    void Font_pskel::
-    strikeout_parser (::xml_schema::boolean_pskel& p)
-    {
-      this->strikeout_parser_ = &p;
-    }
-
-    void Font_pskel::
-    parsers (::xml_schema::string_pskel& family,
-             ::xml_schema::non_negative_integer_pskel& size,
-             ::xml_schema::boolean_pskel& bold,
-             ::xml_schema::boolean_pskel& italic,
-             ::xml_schema::boolean_pskel& underline,
-             ::xml_schema::boolean_pskel& strikeout)
-    {
-      this->family_parser_ = &family;
-      this->size_parser_ = &size;
-      this->bold_parser_ = &bold;
-      this->italic_parser_ = &italic;
-      this->underline_parser_ = &underline;
-      this->strikeout_parser_ = &strikeout;
-    }
-
-    Font_pskel::
-    Font_pskel ()
-    : family_parser_ (0),
-      size_parser_ (0),
-      bold_parser_ (0),
-      italic_parser_ (0),
-      underline_parser_ (0),
-      strikeout_parser_ (0),
       v_state_stack_ (sizeof (v_state_), &v_state_first_)
     {
     }
@@ -1099,17 +1021,32 @@ namespace xdl
     //
 
     void Item_pskel::
-    pen (const QPen&)
-    {
-    }
-
-    void Item_pskel::
-    brush (const QBrush&)
-    {
-    }
-
-    void Item_pskel::
     position (const QPointF&)
+    {
+    }
+
+    void Item_pskel::
+    line_style (const LineStyle&)
+    {
+    }
+
+    void Item_pskel::
+    line_width (const LineWidth&)
+    {
+    }
+
+    void Item_pskel::
+    line_color (const Color&)
+    {
+    }
+
+    void Item_pskel::
+    fill_style (const FillStyle&)
+    {
+    }
+
+    void Item_pskel::
+    fill_color (const Color&)
     {
     }
 
@@ -1274,17 +1211,12 @@ namespace xdl
     }
 
     void Label_pskel::
-    color (const QColor&)
+    color (const Color&)
     {
     }
 
     void Label_pskel::
-    font_family (const ::std::string&)
-    {
-    }
-
-    void Label_pskel::
-    font_size (unsigned long long)
+    size (unsigned long long)
     {
     }
 
@@ -1306,80 +1238,6 @@ namespace xdl
 
     void PointList_pskel::
     point (const QPointF&)
-    {
-    }
-
-    // Pen_pskel
-    //
-
-    void Pen_pskel::
-    width (const qreal&)
-    {
-    }
-
-    void Pen_pskel::
-    color (const QColor&)
-    {
-    }
-
-    void Pen_pskel::
-    style (const Qt::PenStyle&)
-    {
-    }
-
-    void Pen_pskel::
-    cap_style (const Qt::PenCapStyle&)
-    {
-    }
-
-    void Pen_pskel::
-    join_style (const Qt::PenJoinStyle&)
-    {
-    }
-
-    // Brush_pskel
-    //
-
-    void Brush_pskel::
-    color (const QColor&)
-    {
-    }
-
-    void Brush_pskel::
-    style (const Qt::BrushStyle&)
-    {
-    }
-
-    // Font_pskel
-    //
-
-    void Font_pskel::
-    family (const ::std::string&)
-    {
-    }
-
-    void Font_pskel::
-    size (unsigned long long)
-    {
-    }
-
-    void Font_pskel::
-    bold (bool)
-    {
-    }
-
-    void Font_pskel::
-    italic (bool)
-    {
-    }
-
-    void Font_pskel::
-    underline (bool)
-    {
-    }
-
-    void Font_pskel::
-    strikeout (bool)
     {
     }
   }
@@ -2127,15 +1985,9 @@ namespace xdl
         {
           unsigned long s = ~0UL;
 
-          if (n == "pen" &&
+          if (n == "position" &&
               ns == "http://www.leda.org/xdl")
             s = 0UL;
-          else if (n == "brush" &&
-                   ns == "http://www.leda.org/xdl")
-            s = 1UL;
-          else if (n == "position" &&
-                   ns == "http://www.leda.org/xdl")
-            s = 2UL;
 
           if (s != ~0UL)
           {
@@ -2153,7 +2005,7 @@ namespace xdl
           {
             if (vd->count < 1UL)
               this->_expected_element (
-                "http://www.leda.org/xdl", "pen",
+                "http://www.leda.org/xdl", "position",
                 ns, n);
             return false;
           }
@@ -2218,7 +2070,7 @@ namespace xdl
 
       if (vd->count < 1UL)
         this->_expected_element (
-          "http://www.leda.org/xdl", "pen");
+          "http://www.leda.org/xdl", "position");
 
       this->v_state_stack_.pop ();
     }
@@ -2236,72 +2088,6 @@ namespace xdl
       switch (state)
       {
         case 0UL:
-        {
-          if (n == "pen" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->pen_parser_;
-
-              if (this->pen_parser_)
-                this->pen_parser_->pre ();
-            }
-            else
-            {
-              if (this->pen_parser_)
-              {
-                this->pen (this->pen_parser_->post_Pen ());
-              }
-
-              count = 0;
-              state = 1UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            count = 0;
-            state = 1UL;
-            // Fall through.
-          }
-        }
-        case 1UL:
-        {
-          if (n == "brush" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->brush_parser_;
-
-              if (this->brush_parser_)
-                this->brush_parser_->pre ();
-            }
-            else
-            {
-              if (this->brush_parser_)
-              {
-                this->brush (this->brush_parser_->post_Brush ());
-              }
-
-              count = 0;
-              state = 2UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            count = 0;
-            state = 2UL;
-            // Fall through.
-          }
-        }
-        case 2UL:
         {
           if (n == "position" &&
               ns == "http://www.leda.org/xdl")
@@ -2321,7 +2107,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 3UL;
+              state = 1UL;
             }
 
             break;
@@ -2334,11 +2120,176 @@ namespace xdl
                 "http://www.leda.org/xdl", "position",
                 ns, n);
             count = 0;
+            state = 1UL;
+            // Fall through.
+          }
+        }
+        case 1UL:
+        {
+          if (n == "line-style" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->line_style_parser_;
+
+              if (this->line_style_parser_)
+                this->line_style_parser_->pre ();
+            }
+            else
+            {
+              if (this->line_style_parser_)
+              {
+                this->line_style (this->line_style_parser_->post_LineStyle ());
+              }
+
+              count = 0;
+              state = 2UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            count = 0;
+            state = 2UL;
+            // Fall through.
+          }
+        }
+        case 2UL:
+        {
+          if (n == "line-width" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->line_width_parser_;
+
+              if (this->line_width_parser_)
+                this->line_width_parser_->pre ();
+            }
+            else
+            {
+              if (this->line_width_parser_)
+              {
+                this->line_width (this->line_width_parser_->post_LineWidth ());
+              }
+
+              count = 0;
+              state = 3UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            count = 0;
             state = 3UL;
             // Fall through.
           }
         }
         case 3UL:
+        {
+          if (n == "line-color" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->line_color_parser_;
+
+              if (this->line_color_parser_)
+                this->line_color_parser_->pre ();
+            }
+            else
+            {
+              if (this->line_color_parser_)
+              {
+                this->line_color (this->line_color_parser_->post_Color ());
+              }
+
+              count = 0;
+              state = 4UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            count = 0;
+            state = 4UL;
+            // Fall through.
+          }
+        }
+        case 4UL:
+        {
+          if (n == "fill-style" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->fill_style_parser_;
+
+              if (this->fill_style_parser_)
+                this->fill_style_parser_->pre ();
+            }
+            else
+            {
+              if (this->fill_style_parser_)
+              {
+                this->fill_style (this->fill_style_parser_->post_FillStyle ());
+              }
+
+              count = 0;
+              state = 5UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            count = 0;
+            state = 5UL;
+            // Fall through.
+          }
+        }
+        case 5UL:
+        {
+          if (n == "fill-color" &&
+              ns == "http://www.leda.org/xdl")
+          {
+            if (start)
+            {
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->fill_color_parser_;
+
+              if (this->fill_color_parser_)
+                this->fill_color_parser_->pre ();
+            }
+            else
+            {
+              if (this->fill_color_parser_)
+              {
+                this->fill_color (this->fill_color_parser_->post_Color ());
+              }
+
+              count = 0;
+              state = 6UL;
+            }
+
+            break;
+          }
+          else
+          {
+            assert (start);
+            count = 0;
+            state = 6UL;
+            // Fall through.
+          }
+        }
+        case 6UL:
         {
           if (n == "z-value" &&
               ns == "http://www.leda.org/xdl")
@@ -2358,7 +2309,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 4UL;
+              state = 7UL;
             }
 
             break;
@@ -2367,11 +2318,11 @@ namespace xdl
           {
             assert (start);
             count = 0;
-            state = 4UL;
+            state = 7UL;
             // Fall through.
           }
         }
-        case 4UL:
+        case 7UL:
         {
           if (n == "rotation" &&
               ns == "http://www.leda.org/xdl")
@@ -2391,7 +2342,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 5UL;
+              state = 8UL;
             }
 
             break;
@@ -2400,11 +2351,11 @@ namespace xdl
           {
             assert (start);
             count = 0;
-            state = 5UL;
+            state = 8UL;
             // Fall through.
           }
         }
-        case 5UL:
+        case 8UL:
         {
           if (n == "opacity" &&
               ns == "http://www.leda.org/xdl")
@@ -2424,7 +2375,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 6UL;
+              state = 9UL;
             }
 
             break;
@@ -2433,11 +2384,11 @@ namespace xdl
           {
             assert (start);
             count = 0;
-            state = 6UL;
+            state = 9UL;
             // Fall through.
           }
         }
-        case 6UL:
+        case 9UL:
         {
           if (n == "locked" &&
               ns == "http://www.leda.org/xdl")
@@ -2457,7 +2408,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 7UL;
+              state = 10UL;
             }
 
             break;
@@ -2466,11 +2417,11 @@ namespace xdl
           {
             assert (start);
             count = 0;
-            state = 7UL;
+            state = 10UL;
             // Fall through.
           }
         }
-        case 7UL:
+        case 10UL:
         {
           if (n == "x-mirrored" &&
               ns == "http://www.leda.org/xdl")
@@ -2490,7 +2441,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 8UL;
+              state = 11UL;
             }
 
             break;
@@ -2499,11 +2450,11 @@ namespace xdl
           {
             assert (start);
             count = 0;
-            state = 8UL;
+            state = 11UL;
             // Fall through.
           }
         }
-        case 8UL:
+        case 11UL:
         {
           if (n == "y-mirrored" &&
               ns == "http://www.leda.org/xdl")
@@ -2523,7 +2474,7 @@ namespace xdl
               }
 
               count = 0;
-              state = 9UL;
+              state = 12UL;
             }
 
             break;
@@ -2532,11 +2483,11 @@ namespace xdl
           {
             assert (start);
             count = 0;
-            state = 9UL;
+            state = 12UL;
             // Fall through.
           }
         }
-        case 9UL:
+        case 12UL:
         {
           if (n == "visible" &&
               ns == "http://www.leda.org/xdl")
@@ -4760,54 +4711,21 @@ namespace xdl
         }
         case 2UL:
         {
-          if (n == "font-family" &&
+          if (n == "size" &&
               ns == "http://www.leda.org/xdl")
           {
             if (start)
             {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->font_family_parser_;
+              this->::xml_schema::complex_content::context_.top ().parser_ = this->size_parser_;
 
-              if (this->font_family_parser_)
-                this->font_family_parser_->pre ();
+              if (this->size_parser_)
+                this->size_parser_->pre ();
             }
             else
             {
-              if (this->font_family_parser_)
+              if (this->size_parser_)
               {
-                this->font_family (this->font_family_parser_->post_string ());
-              }
-
-              count = 0;
-              state = 3UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            count = 0;
-            state = 3UL;
-            // Fall through.
-          }
-        }
-        case 3UL:
-        {
-          if (n == "font-size" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->font_size_parser_;
-
-              if (this->font_size_parser_)
-                this->font_size_parser_->pre ();
-            }
-            else
-            {
-              if (this->font_size_parser_)
-              {
-                this->font_size (this->font_size_parser_->post_non_negative_integer ());
+                this->size (this->size_parser_->post_non_negative_integer ());
               }
 
               count = 0;
@@ -5201,890 +5119,6 @@ namespace xdl
               }
 
               count++;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            count = 0;
-            state = ~0UL;
-            // Fall through.
-          }
-        }
-        case ~0UL:
-          break;
-      }
-    }
-
-    // Element validation and dispatch functions for Pen_pskel.
-    //
-    bool Pen_pskel::
-    _start_element_impl (const ::xml_schema::ro_string& ns,
-                         const ::xml_schema::ro_string& n,
-                         const ::xml_schema::ro_string* t)
-    {
-      XSD_UNUSED (t);
-
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_* vd = vs.data + (vs.size - 1);
-
-      if (vd->func == 0 && vd->state == 0)
-      {
-        if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
-          return true;
-        else
-          vd->state = 1;
-      }
-
-      while (vd->func != 0)
-      {
-        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
-
-        vd = vs.data + (vs.size - 1);
-
-        if (vd->state == ~0UL)
-          vd = vs.data + (--vs.size - 1);
-        else
-          break;
-      }
-
-      if (vd->func == 0)
-      {
-        if (vd->state != ~0UL)
-        {
-          unsigned long s = ~0UL;
-
-          if (n == "width" &&
-              ns == "http://www.leda.org/xdl")
-            s = 0UL;
-
-          if (s != ~0UL)
-          {
-            vd->count++;
-            vd->state = ~0UL;
-
-            vd = vs.data + vs.size++;
-            vd->func = &Pen_pskel::sequence_0;
-            vd->state = s;
-            vd->count = 0;
-
-            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-          }
-          else
-          {
-            if (vd->count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "width",
-                ns, n);
-            return false;
-          }
-        }
-        else
-          return false;
-      }
-
-      return true;
-    }
-
-    bool Pen_pskel::
-    _end_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n)
-    {
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_& vd = vs.data[vs.size - 1];
-
-      if (vd.func == 0 && vd.state == 0)
-      {
-        if (!::xml_schema::complex_content::_end_element_impl (ns, n))
-          assert (false);
-        return true;
-      }
-
-      assert (vd.func != 0);
-      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-      if (vd.state == ~0UL)
-        vs.size--;
-
-      return true;
-    }
-
-    void Pen_pskel::
-    _pre_e_validate ()
-    {
-      this->v_state_stack_.push ();
-      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_& vd = vs.data[vs.size++];
-
-      vd.func = 0;
-      vd.state = 0;
-      vd.count = 0;
-    }
-
-    void Pen_pskel::
-    _post_e_validate ()
-    {
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_* vd = vs.data + (vs.size - 1);
-
-      ::xml_schema::ro_string empty;
-      while (vd->func != 0)
-      {
-        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-        assert (vd->state == ~0UL);
-        vd = vs.data + (--vs.size - 1);
-      }
-
-      if (vd->count < 1UL)
-        this->_expected_element (
-          "http://www.leda.org/xdl", "width");
-
-      this->v_state_stack_.pop ();
-    }
-
-    void Pen_pskel::
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start)
-    {
-      XSD_UNUSED (t);
-
-      switch (state)
-      {
-        case 0UL:
-        {
-          if (n == "width" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->width_parser_;
-
-              if (this->width_parser_)
-                this->width_parser_->pre ();
-            }
-            else
-            {
-              if (this->width_parser_)
-              {
-                this->width (this->width_parser_->post_NonNegativeDouble ());
-              }
-
-              count = 0;
-              state = 1UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            if (count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "width",
-                ns, n);
-            count = 0;
-            state = 1UL;
-            // Fall through.
-          }
-        }
-        case 1UL:
-        {
-          if (n == "color" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->color_parser_;
-
-              if (this->color_parser_)
-                this->color_parser_->pre ();
-            }
-            else
-            {
-              if (this->color_parser_)
-              {
-                this->color (this->color_parser_->post_Color ());
-              }
-
-              count = 0;
-              state = 2UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            if (count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "color",
-                ns, n);
-            count = 0;
-            state = 2UL;
-            // Fall through.
-          }
-        }
-        case 2UL:
-        {
-          if (n == "style" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->style_parser_;
-
-              if (this->style_parser_)
-                this->style_parser_->pre ();
-            }
-            else
-            {
-              if (this->style_parser_)
-              {
-                this->style (this->style_parser_->post_PenStyle ());
-              }
-
-              count = 0;
-              state = 3UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            count = 0;
-            state = 3UL;
-            // Fall through.
-          }
-        }
-        case 3UL:
-        {
-          if (n == "cap-style" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->cap_style_parser_;
-
-              if (this->cap_style_parser_)
-                this->cap_style_parser_->pre ();
-            }
-            else
-            {
-              if (this->cap_style_parser_)
-              {
-                this->cap_style (this->cap_style_parser_->post_PenCapStyle ());
-              }
-
-              count = 0;
-              state = 4UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            count = 0;
-            state = 4UL;
-            // Fall through.
-          }
-        }
-        case 4UL:
-        {
-          if (n == "join-style" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->join_style_parser_;
-
-              if (this->join_style_parser_)
-                this->join_style_parser_->pre ();
-            }
-            else
-            {
-              if (this->join_style_parser_)
-              {
-                this->join_style (this->join_style_parser_->post_PenJoinStyle ());
-              }
-
-              count = 0;
-              state = ~0UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            count = 0;
-            state = ~0UL;
-            // Fall through.
-          }
-        }
-        case ~0UL:
-          break;
-      }
-    }
-
-    // Element validation and dispatch functions for Brush_pskel.
-    //
-    bool Brush_pskel::
-    _start_element_impl (const ::xml_schema::ro_string& ns,
-                         const ::xml_schema::ro_string& n,
-                         const ::xml_schema::ro_string* t)
-    {
-      XSD_UNUSED (t);
-
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_* vd = vs.data + (vs.size - 1);
-
-      if (vd->func == 0 && vd->state == 0)
-      {
-        if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
-          return true;
-        else
-          vd->state = 1;
-      }
-
-      while (vd->func != 0)
-      {
-        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
-
-        vd = vs.data + (vs.size - 1);
-
-        if (vd->state == ~0UL)
-          vd = vs.data + (--vs.size - 1);
-        else
-          break;
-      }
-
-      if (vd->func == 0)
-      {
-        if (vd->state != ~0UL)
-        {
-          unsigned long s = ~0UL;
-
-          if (n == "color" &&
-              ns == "http://www.leda.org/xdl")
-            s = 0UL;
-
-          if (s != ~0UL)
-          {
-            vd->count++;
-            vd->state = ~0UL;
-
-            vd = vs.data + vs.size++;
-            vd->func = &Brush_pskel::sequence_0;
-            vd->state = s;
-            vd->count = 0;
-
-            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-          }
-          else
-          {
-            if (vd->count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "color",
-                ns, n);
-            return false;
-          }
-        }
-        else
-          return false;
-      }
-
-      return true;
-    }
-
-    bool Brush_pskel::
-    _end_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n)
-    {
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_& vd = vs.data[vs.size - 1];
-
-      if (vd.func == 0 && vd.state == 0)
-      {
-        if (!::xml_schema::complex_content::_end_element_impl (ns, n))
-          assert (false);
-        return true;
-      }
-
-      assert (vd.func != 0);
-      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-      if (vd.state == ~0UL)
-        vs.size--;
-
-      return true;
-    }
-
-    void Brush_pskel::
-    _pre_e_validate ()
-    {
-      this->v_state_stack_.push ();
-      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_& vd = vs.data[vs.size++];
-
-      vd.func = 0;
-      vd.state = 0;
-      vd.count = 0;
-    }
-
-    void Brush_pskel::
-    _post_e_validate ()
-    {
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_* vd = vs.data + (vs.size - 1);
-
-      ::xml_schema::ro_string empty;
-      while (vd->func != 0)
-      {
-        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-        assert (vd->state == ~0UL);
-        vd = vs.data + (--vs.size - 1);
-      }
-
-      if (vd->count < 1UL)
-        this->_expected_element (
-          "http://www.leda.org/xdl", "color");
-
-      this->v_state_stack_.pop ();
-    }
-
-    void Brush_pskel::
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start)
-    {
-      XSD_UNUSED (t);
-
-      switch (state)
-      {
-        case 0UL:
-        {
-          if (n == "color" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->color_parser_;
-
-              if (this->color_parser_)
-                this->color_parser_->pre ();
-            }
-            else
-            {
-              if (this->color_parser_)
-              {
-                this->color (this->color_parser_->post_Color ());
-              }
-
-              count = 0;
-              state = 1UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            if (count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "color",
-                ns, n);
-            count = 0;
-            state = 1UL;
-            // Fall through.
-          }
-        }
-        case 1UL:
-        {
-          if (n == "style" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->style_parser_;
-
-              if (this->style_parser_)
-                this->style_parser_->pre ();
-            }
-            else
-            {
-              if (this->style_parser_)
-              {
-                this->style (this->style_parser_->post_BrushStyle ());
-              }
-
-              count = 0;
-              state = ~0UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            count = 0;
-            state = ~0UL;
-            // Fall through.
-          }
-        }
-        case ~0UL:
-          break;
-      }
-    }
-
-    // Element validation and dispatch functions for Font_pskel.
-    //
-    bool Font_pskel::
-    _start_element_impl (const ::xml_schema::ro_string& ns,
-                         const ::xml_schema::ro_string& n,
-                         const ::xml_schema::ro_string* t)
-    {
-      XSD_UNUSED (t);
-
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_* vd = vs.data + (vs.size - 1);
-
-      if (vd->func == 0 && vd->state == 0)
-      {
-        if (this->::xml_schema::complex_content::_start_element_impl (ns, n, t))
-          return true;
-        else
-          vd->state = 1;
-      }
-
-      while (vd->func != 0)
-      {
-        (this->*vd->func) (vd->state, vd->count, ns, n, t, true);
-
-        vd = vs.data + (vs.size - 1);
-
-        if (vd->state == ~0UL)
-          vd = vs.data + (--vs.size - 1);
-        else
-          break;
-      }
-
-      if (vd->func == 0)
-      {
-        if (vd->state != ~0UL)
-        {
-          unsigned long s = ~0UL;
-
-          if (n == "family" &&
-              ns == "http://www.leda.org/xdl")
-            s = 0UL;
-
-          if (s != ~0UL)
-          {
-            vd->count++;
-            vd->state = ~0UL;
-
-            vd = vs.data + vs.size++;
-            vd->func = &Font_pskel::sequence_0;
-            vd->state = s;
-            vd->count = 0;
-
-            this->sequence_0 (vd->state, vd->count, ns, n, t, true);
-          }
-          else
-          {
-            if (vd->count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "family",
-                ns, n);
-            return false;
-          }
-        }
-        else
-          return false;
-      }
-
-      return true;
-    }
-
-    bool Font_pskel::
-    _end_element_impl (const ::xml_schema::ro_string& ns,
-                       const ::xml_schema::ro_string& n)
-    {
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_& vd = vs.data[vs.size - 1];
-
-      if (vd.func == 0 && vd.state == 0)
-      {
-        if (!::xml_schema::complex_content::_end_element_impl (ns, n))
-          assert (false);
-        return true;
-      }
-
-      assert (vd.func != 0);
-      (this->*vd.func) (vd.state, vd.count, ns, n, 0, false);
-
-      if (vd.state == ~0UL)
-        vs.size--;
-
-      return true;
-    }
-
-    void Font_pskel::
-    _pre_e_validate ()
-    {
-      this->v_state_stack_.push ();
-      static_cast< v_state_* > (this->v_state_stack_.top ())->size = 0;
-
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_& vd = vs.data[vs.size++];
-
-      vd.func = 0;
-      vd.state = 0;
-      vd.count = 0;
-    }
-
-    void Font_pskel::
-    _post_e_validate ()
-    {
-      v_state_& vs = *static_cast< v_state_* > (this->v_state_stack_.top ());
-      v_state_descr_* vd = vs.data + (vs.size - 1);
-
-      ::xml_schema::ro_string empty;
-      while (vd->func != 0)
-      {
-        (this->*vd->func) (vd->state, vd->count, empty, empty, 0, true);
-        assert (vd->state == ~0UL);
-        vd = vs.data + (--vs.size - 1);
-      }
-
-      if (vd->count < 1UL)
-        this->_expected_element (
-          "http://www.leda.org/xdl", "family");
-
-      this->v_state_stack_.pop ();
-    }
-
-    void Font_pskel::
-    sequence_0 (unsigned long& state,
-                unsigned long& count,
-                const ::xml_schema::ro_string& ns,
-                const ::xml_schema::ro_string& n,
-                const ::xml_schema::ro_string* t,
-                bool start)
-    {
-      XSD_UNUSED (t);
-
-      switch (state)
-      {
-        case 0UL:
-        {
-          if (n == "family" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->family_parser_;
-
-              if (this->family_parser_)
-                this->family_parser_->pre ();
-            }
-            else
-            {
-              if (this->family_parser_)
-              {
-                this->family (this->family_parser_->post_string ());
-              }
-
-              count = 0;
-              state = 1UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            if (count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "family",
-                ns, n);
-            count = 0;
-            state = 1UL;
-            // Fall through.
-          }
-        }
-        case 1UL:
-        {
-          if (n == "size" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->size_parser_;
-
-              if (this->size_parser_)
-                this->size_parser_->pre ();
-            }
-            else
-            {
-              if (this->size_parser_)
-              {
-                this->size (this->size_parser_->post_non_negative_integer ());
-              }
-
-              count = 0;
-              state = 2UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            if (count < 1UL)
-              this->_expected_element (
-                "http://www.leda.org/xdl", "size",
-                ns, n);
-            count = 0;
-            state = 2UL;
-            // Fall through.
-          }
-        }
-        case 2UL:
-        {
-          if (n == "bold" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->bold_parser_;
-
-              if (this->bold_parser_)
-                this->bold_parser_->pre ();
-            }
-            else
-            {
-              if (this->bold_parser_)
-              {
-                this->bold (this->bold_parser_->post_boolean ());
-              }
-
-              count = 0;
-              state = 3UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            count = 0;
-            state = 3UL;
-            // Fall through.
-          }
-        }
-        case 3UL:
-        {
-          if (n == "italic" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->italic_parser_;
-
-              if (this->italic_parser_)
-                this->italic_parser_->pre ();
-            }
-            else
-            {
-              if (this->italic_parser_)
-              {
-                this->italic (this->italic_parser_->post_boolean ());
-              }
-
-              count = 0;
-              state = 4UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            count = 0;
-            state = 4UL;
-            // Fall through.
-          }
-        }
-        case 4UL:
-        {
-          if (n == "underline" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->underline_parser_;
-
-              if (this->underline_parser_)
-                this->underline_parser_->pre ();
-            }
-            else
-            {
-              if (this->underline_parser_)
-              {
-                this->underline (this->underline_parser_->post_boolean ());
-              }
-
-              count = 0;
-              state = 5UL;
-            }
-
-            break;
-          }
-          else
-          {
-            assert (start);
-            count = 0;
-            state = 5UL;
-            // Fall through.
-          }
-        }
-        case 5UL:
-        {
-          if (n == "strikeout" &&
-              ns == "http://www.leda.org/xdl")
-          {
-            if (start)
-            {
-              this->::xml_schema::complex_content::context_.top ().parser_ = this->strikeout_parser_;
-
-              if (this->strikeout_parser_)
-                this->strikeout_parser_->pre ();
-            }
-            else
-            {
-              if (this->strikeout_parser_)
-              {
-                this->strikeout (this->strikeout_parser_->post_boolean ());
-              }
-
-              count = 0;
-              state = ~0UL;
             }
 
             break;

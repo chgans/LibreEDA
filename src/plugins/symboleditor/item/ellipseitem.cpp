@@ -1,5 +1,7 @@
 #include "item/ellipseitem.h"
 
+#include "xdl/symbol.h"
+
 #include <QStyleOptionGraphicsItem>
 #include <qmath.h>
 
@@ -44,8 +46,6 @@ namespace SymbolEditor
         blockItemNotification();
         m_idToHandle[XRadiusHandle]->setPos(m_xRadius, 0);
         unblockItemNotification();
-
-        emit xRadiusChanged(xRadius);
     }
 
     void EllipseItem::setYRadius(qreal yRadius)
@@ -63,8 +63,6 @@ namespace SymbolEditor
         blockItemNotification();
         m_idToHandle[YRadiusHandle]->setPos(0, m_yRadius);
         unblockItemNotification();
-
-        emit yRadiusChanged(yRadius);
     }
 
     QPointF EllipseItem::pointAt(int angle) const
@@ -122,6 +120,22 @@ namespace SymbolEditor
         item->setYRadius(yRadius());
         Item::cloneTo(item);
         return item;
+    }
+
+    void EllipseItem::setProperty(quint64 id, const QVariant &value)
+    {
+        switch (id)
+        {
+            case xdl::symbol::Item::XRadiusProperty:
+                setXRadius(value.toReal());
+                break;
+            case xdl::symbol::Item::YRadiusProperty:
+                setYRadius(value.toReal());
+                break;
+            default:
+                Item::setProperty(id, value);
+                break;
+        }
     }
 
     QList<QPointF> EllipseItem::endPoints() const

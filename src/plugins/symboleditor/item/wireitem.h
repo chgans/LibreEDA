@@ -12,23 +12,15 @@ namespace SymbolEditor
 
     class WireItem : public Item
     {
-        Q_OBJECT
-
-        Q_PROPERTY(QList<QPointF> points READ points WRITE setPoints NOTIFY pointsChanged)
-
     public:
         explicit WireItem(Item *parent = nullptr);
         ~WireItem();
 
         QList<QPointF> points() const;
-        void addPoint(const QPointF &pos);
-        void movePoint(int idx, const QPointF &pos);
-
-    public slots:
         void setPoints(QList<QPointF> points);
 
-    signals:
-        void pointsChanged();
+        void addPoint(const QPointF &pos);
+        void movePoint(int idx, const QPointF &pos);
 
     private:
         QPainterPath m_path;
@@ -44,6 +36,7 @@ namespace SymbolEditor
         // SchItem interface
     public:
         virtual Item *clone();
+        void setProperty(quint64 id, const QVariant &value);
 
         //    //virtual QList<QPointF> hotSpots() const;
         //    virtual QList<QPointF> endPoints() const;

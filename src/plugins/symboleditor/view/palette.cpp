@@ -162,4 +162,37 @@ $green:     #859900;
         return GREEN;
     }
 
+    QColor Palette::color(Palette::ColorId id) const
+    {
+        switch (id)
+        {
+            case SymbolEditor::Palette::EmphasisedContent:
+                return emphasisedContent();
+            case SymbolEditor::Palette::PrimaryContent:
+                return primaryContent();
+            case SymbolEditor::Palette::SecondaryContent:
+                return secondaryContent();
+            case SymbolEditor::Palette::BackgroundHighlight:
+                return backgroundHighlight();
+            case SymbolEditor::Palette::Background:
+                return background();
+            case SymbolEditor::Palette::Yellow:
+                return yellow();
+            case SymbolEditor::Palette::Orange:
+                return orange();
+            case SymbolEditor::Palette::Red:
+                return red();
+            case SymbolEditor::Palette::Magenta:
+                return magenta();
+            case SymbolEditor::Palette::Violet:
+                return violet();
+            case SymbolEditor::Palette::Blue:
+                return blue();
+            case SymbolEditor::Palette::Cyan:
+                return cyan();
+            case SymbolEditor::Palette::Green:
+                return green();
+        }
+    }
+
 }

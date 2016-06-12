@@ -9,8 +9,8 @@
 namespace SymbolEditor
 {
 
-    PlacePolyineTool::PlacePolyineTool(QObject *parent):
-        PlacementTool(parent), m_item(nullptr)
+    PlacePolyineTool::PlacePolyineTool(Editor *editor):
+        PlacementTool(editor), m_item(nullptr)
     {
         QAction *action = new QAction(QIcon::fromTheme("draw-polyline"), //QIcon(":/icons/tool/graphicslinetool.svg"),
                                       "<b>P</b>lace a Poly<b>l</b>ine <i>p,l</i>", nullptr);
@@ -26,7 +26,7 @@ namespace SymbolEditor
             {
                 return;
             }
-            m_item->setPen(pen);
+            //m_item->setPen(pen);
         });
 
         QList<QWidget *> widgets;
@@ -42,7 +42,7 @@ namespace SymbolEditor
     {
         m_item = new PolylineItem();
         m_item->setPos(pos);
-        m_item->setPen(m_penSettingsWidget->pen());
+        //m_item->setPen(m_penSettingsWidget->pen());
         return m_item;
     }
 

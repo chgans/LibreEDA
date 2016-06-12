@@ -17,7 +17,7 @@ namespace SymbolEditor
         Q_OBJECT
 
     public:
-        explicit PlaceBezierTool(QObject *parent = nullptr);
+        explicit PlaceBezierTool(Editor *editor);
         ~PlaceBezierTool();
 
     private:

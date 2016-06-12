@@ -8,27 +8,17 @@ namespace SymbolEditor
 
     class PolygonItem : public Item
     {
-        Q_OBJECT
-
-        Q_PROPERTY(Qt::FillRule fillRule READ fillRule WRITE setFillRule NOTIFY fillRuleChanged)
-        Q_PROPERTY(QPolygonF polygon READ polygon WRITE setPolygon NOTIFY polygonChanged)
-
     public:
         explicit PolygonItem(Item *parent = nullptr);
         ~PolygonItem();
 
         Qt::FillRule fillRule() const;
-        QPolygonF polygon() const;
-
-    public slots:
         void setFillRule(Qt::FillRule fillRule);
+        QPolygonF polygon() const;
         void setPolygon(QPolygonF polygon);
+
         void addPoint(const QPointF &pos);
         void movePoint(int idx, const QPointF &pos);
-
-    signals:
-        void fillRuleChanged(Qt::FillRule fillRule);
-        void polygonChanged(QPolygonF polygon);
 
     private:
         Qt::FillRule m_fillRule;
@@ -45,6 +35,7 @@ namespace SymbolEditor
         // SchItem interface
     public:
         virtual Item *clone();
+        void setProperty(quint64 id, const QVariant &value);
 
         //    //virtual QList<QPointF> hotSpots() const;
         //    virtual QList<QPointF> endPoints() const;

@@ -62,6 +62,16 @@ namespace SymbolEditor
         delete m_document;
     }
 
+    View *Editor::view() const
+    {
+        return m_view;
+    }
+
+    Scene *Editor::scene() const
+    {
+        return m_scene;
+    }
+
     void Editor::addView()
     {
         m_view = new View();

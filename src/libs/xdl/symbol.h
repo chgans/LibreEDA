@@ -4,17 +4,13 @@
 #include "xdl_global.h"
 
 #include <QtGlobal>
-#include <QPen>
-#include <QBrush>
-#include <QRectF>
-#include <QFont>
 #include <QIcon>
 #include <QVariant>
 
 namespace xdl {
 namespace symbol {
 
-    enum LineStyle
+    typedef enum
     {
         NoLine = 0,
         SolidLine = 1,
@@ -22,9 +18,9 @@ namespace symbol {
         DotLine = 3,
         DashDotLine = 4,
         DashDotDotLine = 5
-    };
+    } LineStyle;
 
-    enum LineWidth
+    typedef enum
     {
         ThinestLine = 0, // 0.13mm
         ThinerLine = 1, // 0.18mm
@@ -35,14 +31,20 @@ namespace symbol {
         ThickLine = 6, // 1.0mm
         ThickerLine = 7, // 1.40mm
         ThickestLine = 8 // 2.00mm
-    };
+    } LineWidth;
 
-    enum Color
+    typedef enum
+    {
+        NoFill = 0,
+        SolidFill = 1
+    } FillStyle;
+
+    typedef enum
     {
         EmphasisedContent = 0,
         PrimaryContent = 1,
         SecondaryContent = 2,
-        BackgroundHighLight = 3,
+        BackgroundHighlight = 3,
         Background = 4,
         Yellow = 5,
         Orange = 6,
@@ -52,7 +54,7 @@ namespace symbol {
         Blue = 10,
         Cyan = 11,
         Green = 12
-    };
+    } Color;
 
 class XDL_EXPORT Item
 {
@@ -84,6 +86,7 @@ public:
         LineStyleProperty,
         LineWidthProperty,
         LineColorProperty,
+        FillStyleProperty,
         FillColorProperty,
 
         RadiusProperty,
@@ -102,6 +105,18 @@ public:
         FontSizeProperty,
     };
 
+    // TBD: Content, measurement, quantity, value, phenomenon, feature, subject, role
+//    enum RoleId
+//    {
+//        Coordinate = 0,
+//        Length,
+//        Angle,
+//        Color,
+//        Percentage,
+//        Bistate,
+//        Text,
+//    };
+
     Item();
     virtual ~Item();
 
@@ -113,8 +128,11 @@ public:
 
     virtual QString friendlyPropertyName(quint64 id) const;
 
-    virtual QVariant property(int id);
-    virtual void setProperty(int id, const QVariant &value);
+    virtual QVariant property(quint64 id) const;
+    virtual void setProperty(quint64 id, const QVariant &value);
+
+    quint64 id() const;
+    void setId(quint64 id);
 
     void setPosition(const QPointF &pos);
     QPointF position() const;
@@ -143,17 +161,22 @@ public:
     void setLineWidth(LineWidth width);
     LineWidth lineWidth() const;
 
-    void setLineColor(const QString &color);
-    QString lineColor() const;
+    void setLineColor(Color color);
+    Color lineColor() const;
 
-    void setFillColor(const QString &color);
-    QString fillColor() const;
+    void setFillStyle(FillStyle style);
+    FillStyle fillStyle() const;
+
+    void setFillColor(Color color);
+    Color fillColor() const;
 
 private:
+    quint64 m_id;
     LineStyle m_lineStyle;
     LineWidth m_lineWidth;
-    QString m_lineColor;
-    QString m_fillColor;
+    Color m_lineColor;
+    FillStyle m_fillStyle;
+    Color m_fillColor;
     qreal m_opacity;
     QPointF m_position;
     qreal m_rotation;
@@ -197,8 +220,8 @@ public:
     QString friendlyTypeName() const override;
     QString friendlyPropertyName(quint64 id) const override;
     QIcon icon() const override;
-    QVariant property(int id) override;
-    void setProperty(int id, const QVariant &value) override;
+    QVariant property(quint64 id) const override;
+    void setProperty(quint64 id, const QVariant &value) override;
 };
 
 class XDL_EXPORT CircleItem: public Item
@@ -220,8 +243,8 @@ public:
     virtual QString friendlyTypeName() const override;
     QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
-    QVariant property(int id) override;
-    void setProperty(int id, const QVariant &value) override;
+    QVariant property(quint64 id) const override;
+    void setProperty(quint64 id, const QVariant &value) override;
 
 };
 
@@ -250,8 +273,8 @@ public:
     virtual QString friendlyTypeName() const override;
     QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
-    QVariant property(int id) override;
-    void setProperty(int id, const QVariant &value) override;
+    QVariant property(quint64 id) const override;
+    void setProperty(quint64 id, const QVariant &value) override;
 };
 
 class XDL_EXPORT EllipseItem: public Item
@@ -276,8 +299,8 @@ public:
     virtual QString friendlyTypeName() const override;
     QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
-    QVariant property(int id) override;
-    void setProperty(int id, const QVariant &value) override;
+    QVariant property(quint64 id) const override;
+    void setProperty(quint64 id, const QVariant &value) override;
 };
 
 class XDL_EXPORT EllipticalArcItem: public Item
@@ -308,8 +331,8 @@ public:
     virtual QString friendlyTypeName() const override;
     QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
-    QVariant property(int id) override;
-    void setProperty(int id, const QVariant &value) override;
+    QVariant property(quint64 id) const override;
+    void setProperty(quint64 id, const QVariant &value) override;
 };
 
 class XDL_EXPORT PolylineItem: public Item
@@ -331,8 +354,8 @@ public:
     virtual QString friendlyTypeName() const override;
     QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
-    QVariant property(int id) override;
-    void setProperty(int id, const QVariant &value) override;
+    QVariant property(quint64 id) const override;
+    void setProperty(quint64 id, const QVariant &value) override;
 };
 
 class XDL_EXPORT PolygonItem: public Item
@@ -354,8 +377,8 @@ public:
     virtual QString friendlyTypeName() const override;
     QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
-    QVariant property(int id) override;
-    void setProperty(int id, const QVariant &value) override;
+    QVariant property(quint64 id) const override;
+    void setProperty(quint64 id, const QVariant &value) override;
 };
 
 // TBD: Text color
@@ -384,8 +407,8 @@ public:
     virtual QString friendlyTypeName() const override;
     QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
-    QVariant property(int id) override;
-    void setProperty(int id, const QVariant &value) override;
+    QVariant property(quint64 id) const override;
+    void setProperty(quint64 id, const QVariant &value) override;
 
     QString m_text;
     QString m_textColor;
@@ -408,8 +431,8 @@ public:
     virtual QString friendlyTypeName() const override;
     QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
-    QVariant property(int id) override;
-    void setProperty(int id, const QVariant &value) override;
+    QVariant property(quint64 id) const override;
+    void setProperty(quint64 id, const QVariant &value) override;
 
     LabelItem *designator;
     LabelItem *label;
@@ -429,8 +452,8 @@ public:
     virtual QString friendlyTypeName() const override;
     QString friendlyPropertyName(quint64 id) const override;
     virtual QIcon icon() const override;
-    QVariant property(int id) override;
-    void setProperty(int id, const QVariant &value) override;
+    QVariant property(quint64 id) const override;
+    void setProperty(quint64 id, const QVariant &value) override;
 
     QList<Item *> children;
 };

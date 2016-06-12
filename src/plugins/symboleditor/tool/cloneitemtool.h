@@ -12,7 +12,7 @@ namespace SymbolEditor
     class CloneItemTool : public InteractiveTool
     {
     public:
-        CloneItemTool(QObject *parent = nullptr);
+        CloneItemTool(Editor *editor);
 
     protected:
         Item *cloneItem(Item *item);
@@ -41,7 +41,7 @@ namespace SymbolEditor
 
         // Tool interface
     public:
-        void activate(View *view);
+        void activate();
         void desactivate();
     };
 

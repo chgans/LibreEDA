@@ -35,8 +35,6 @@ namespace SymbolEditor
         m_idToHandle[P1Handle]->setPos(m_line.p1());
         m_idToHandle[P2Handle]->setPos(m_line.p2());
         unblockItemNotification();
-
-        emit lineChanged();
     }
 
     Item *PolylineItem::clone()
@@ -45,6 +43,11 @@ namespace SymbolEditor
         Item::cloneTo(item);
         item->setLine(line());
         return item;
+    }
+
+    void PolylineItem::setProperty(quint64 id, const QVariant &value)
+    {
+        Item::setProperty(id, value);
     }
 
     QList<QPointF> PolylineItem::endPoints() const

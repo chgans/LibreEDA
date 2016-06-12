@@ -11,8 +11,6 @@ namespace SymbolEditor
 
     class BezierItem : public Item
     {
-        Q_OBJECT
-
     public:
         explicit BezierItem(Item *parent = nullptr);
 
@@ -64,6 +62,7 @@ namespace SymbolEditor
         // SchItem interface
     public:
         virtual Item *clone();
+        void setProperty(quint64 id, const QVariant &value);
 
         // IGraphicsItemObserver interface
     protected:

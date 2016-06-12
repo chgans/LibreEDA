@@ -11,7 +11,7 @@ namespace SymbolEditor
         Q_OBJECT
 
     public:
-        explicit GraphicsItemAlignTool(QObject *parent = nullptr);
+        explicit GraphicsItemAlignTool(Editor *editor);
         ~GraphicsItemAlignTool();
 
     public slots:

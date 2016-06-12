@@ -11,8 +11,8 @@
 namespace SymbolEditor
 {
 
-    CloneItemTool::CloneItemTool(QObject *parent):
-        InteractiveTool (parent)
+    CloneItemTool::CloneItemTool(Editor *editor):
+        InteractiveTool (editor)
     {
         QAction *action = new QAction(QIcon::fromTheme("edit-copy"), // FIXME
                                       "<b>C</b>lone items <i>e,c</i>", nullptr);
@@ -118,9 +118,8 @@ namespace SymbolEditor
         m_items.clear();
     }
 
-    void CloneItemTool::activate(View *view)
+    void CloneItemTool::activate()
     {
-        setView(view);
         resetTool();
     }
 

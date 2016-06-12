@@ -12,7 +12,7 @@ namespace SymbolEditor
     class DragSelectTool: public InteractiveTool
     {
     public:
-        DragSelectTool(QObject *parent = nullptr);
+        DragSelectTool(Editor *editor);
 
     private:
         QPointF m_pressPosition;
@@ -27,7 +27,7 @@ namespace SymbolEditor
 
         // Tool interface
     public:
-        void activate(View *view);
+        void activate();
         void desactivate();
     };
 

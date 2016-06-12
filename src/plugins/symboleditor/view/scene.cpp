@@ -38,6 +38,11 @@ namespace SymbolEditor
         return m_itemMap.value(id);
     }
 
+    quint64 Scene::documentIdForItem(Item *item) const
+    {
+        return m_itemMap.key(item);
+    }
+
     void Scene::applySettings(const Settings &settings)
     {
         Q_UNUSED(settings);
@@ -54,8 +59,11 @@ namespace SymbolEditor
                 sceneItem->setRect(QRectF(0, 0, documentItem->width(), documentItem->height()));
                 sceneItem->setPos(documentItem->position());
                 sceneItem->setRoundness(1.0, 1.0);
-                sceneItem->setPen(makePen(documentItem));
-                sceneItem->setBrush(makeBrush(documentItem));
+                sceneItem->setLineStyle(documentItem->lineStyle());
+                sceneItem->setLineWidth(documentItem->lineWidth());
+                sceneItem->setLineColor(documentItem->lineColor());
+                sceneItem->setFillStyle(documentItem->fillStyle());
+                sceneItem->setFillColor(documentItem->fillColor());
                 sceneItem->setData(0, QVariant::fromValue<quint64>(id));
                 m_itemMap.insert(id, sceneItem);
                 addItem(sceneItem);
@@ -67,8 +75,11 @@ namespace SymbolEditor
                 auto sceneItem = new CircleItem;
                 sceneItem->setPos(documentItem->position());
                 sceneItem->setRadius(documentItem->radius());
-                sceneItem->setPen(makePen(documentItem));
-                sceneItem->setBrush(makeBrush(documentItem));
+                sceneItem->setLineStyle(documentItem->lineStyle());
+                sceneItem->setLineWidth(documentItem->lineWidth());
+                sceneItem->setLineColor(documentItem->lineColor());
+                sceneItem->setFillStyle(documentItem->fillStyle());
+                sceneItem->setFillColor(documentItem->fillColor());
                 sceneItem->setData(0, QVariant::fromValue<quint64>(id));
                 m_itemMap.insert(id, sceneItem);
                 addItem(sceneItem);
@@ -85,8 +96,11 @@ namespace SymbolEditor
                 sceneItem->setPos(documentItem->position());
                 sceneItem->setXRadius(documentItem->xRadius());
                 sceneItem->setYRadius(documentItem->yRadius());
-                sceneItem->setPen(makePen(documentItem));
-                sceneItem->setBrush(makeBrush(documentItem));
+                sceneItem->setLineStyle(documentItem->lineStyle());
+                sceneItem->setLineWidth(documentItem->lineWidth());
+                sceneItem->setLineColor(documentItem->lineColor());
+                sceneItem->setFillStyle(documentItem->fillStyle());
+                sceneItem->setFillColor(documentItem->fillColor());
                 sceneItem->setData(0, QVariant::fromValue<quint64>(id));
                 m_itemMap.insert(id, sceneItem);
                 addItem(sceneItem);
@@ -105,8 +119,11 @@ namespace SymbolEditor
                 auto documentItem = reinterpret_cast<const xdl::symbol::PolygonItem *>(item);
                 auto sceneItem = new PolygonItem;
                 sceneItem->setPos(documentItem->position());
-                sceneItem->setPen(makePen(documentItem));
-                sceneItem->setBrush(makeBrush(documentItem));
+                sceneItem->setLineStyle(documentItem->lineStyle());
+                sceneItem->setLineWidth(documentItem->lineWidth());
+                sceneItem->setLineColor(documentItem->lineColor());
+                sceneItem->setFillStyle(documentItem->fillStyle());
+                sceneItem->setFillColor(documentItem->fillColor());
                 sceneItem->setPolygon(QPolygonF(
                                           documentItem->vertices().toVector())); // FIXME: use QVector in xdl too?
                 sceneItem->setData(0, QVariant::fromValue<quint64>(id));
@@ -129,86 +146,14 @@ namespace SymbolEditor
         }
     }
 
-    void Scene::updateDocumentItem(quint64 id, const Document::Item *item)
-    {
-        if (!m_itemMap.contains(id))
-        {
-            return;
-        }
-
-        auto sceneItem = m_itemMap.value(id);
-        sceneItem->setPos(item->position());
-
-        switch (item->type())
-        {
-            case xdl::symbol::Item::Rectangle:
-            {
-                break;
-            }
-            case xdl::symbol::Item::Circle:
-            {
-                break;
-            }
-            case xdl::symbol::Item::CircularArc:
-            {
-                return;
-            }
-            case xdl::symbol::Item::Ellipse:
-            {
-                break;
-            }
-            case xdl::symbol::Item::EllipticalArc:
-            {
-                return;
-            }
-            case xdl::symbol::Item::Polyline:
-            {
-                return;
-            }
-            case xdl::symbol::Item::Polygon:
-            {
-                break;
-            }
-            case xdl::symbol::Item::Label:
-            {
-                return;
-            }
-            case xdl::symbol::Item::Pin:
-            {
-                return;
-            }
-            case xdl::symbol::Item::Group:
-            {
-                return;
-            }
-        }
-    }
-
     void Scene::updateDocumentItemProperty(quint64 itemId, quint64 propertyId, const QVariant &value)
     {
-        // FIXME: Scene's Item need to understand property ID by defining compatible enums
-        // This way Scene's Item are independent of xdl:symbol
         auto item = itemForDocumentId(itemId);
         if (item == nullptr)
         {
             return;
         }
-
-        // TODO: item->setProperty(propertyId, value);
-        switch (propertyId)
-        {
-            case xdl::symbol::Item::PositionProperty:
-                item->setPos(value.toPointF());
-                break;
-            case xdl::symbol::Item::VisibilityProperty:
-                item->setVisible(value.toBool());
-                break;
-            case xdl::symbol::Item::LockedProperty:
-                item->setEnabled(!value.toBool());
-                break;
-            default:
-                break;
-        }
+        item->setProperty(propertyId, value);
     }
 
     void Scene::removeDocumentItem(quint64 id)

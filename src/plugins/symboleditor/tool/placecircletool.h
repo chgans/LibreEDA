@@ -15,7 +15,7 @@ namespace SymbolEditor
         Q_OBJECT
 
     public:
-        explicit PlaceCircleTool(QObject *parent = nullptr);
+        explicit PlaceCircleTool(Editor *editor);
         ~PlaceCircleTool();
 
     private:

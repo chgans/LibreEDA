@@ -7,10 +7,6 @@ namespace SymbolEditor
 
     class CircleItem : public Item
     {
-        Q_OBJECT
-
-        Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusChanged)
-
     public:
         enum HandleId
         {
@@ -22,12 +18,7 @@ namespace SymbolEditor
         ~CircleItem();
 
         qreal radius() const;
-
-    public slots:
         void setRadius(qreal length);
-
-    signals:
-        void radiusChanged();
 
     private:
         qreal m_radius;
@@ -36,6 +27,7 @@ namespace SymbolEditor
     public:
         virtual Item *clone();
         void itemNotification(IObservableItem *item);
+        void setProperty(quint64 id, const QVariant &value);
 
         //virtual QList<QPointF> hotSpots() const;
         virtual QList<QPointF> endPoints() const;

@@ -1,6 +1,8 @@
 #include "item/rectangleitem.h"
 #include "handle/handle.h"
 
+#include "xdl/symbol.h"
+
 #include <QBrush>
 #include <QPen>
 #include <QRectF>
@@ -170,6 +172,23 @@ namespace SymbolEditor
                 return;
         }
         setRect(rect);
+    }
+
+    void RectangleItem::setProperty(quint64 id, const QVariant &value)
+    {
+        switch (id)
+        {
+            case xdl::symbol::Item::WidthProperty:
+                setRect(QRectF(0.0, 0.0, value.toReal(), m_rect.height()));
+                break;
+            case xdl::symbol::Item::HeightProperty:
+                setRect(QRectF(0.0, 0.0, m_rect.width(), value.toReal()));
+                break;
+            default:
+                Item::setProperty(id, value);
+                break;
+        }
+
     }
 
     QList<QPointF> RectangleItem::endPoints() const

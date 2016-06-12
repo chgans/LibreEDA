@@ -8,8 +8,8 @@
 namespace SymbolEditor
 {
 
-    PlaceArcTool::PlaceArcTool(QObject *parent):
-        PlacementTool(parent)
+    PlaceArcTool::PlaceArcTool(Editor *editor):
+        PlacementTool(editor)
     {
         QAction *action = new QAction(QIcon::fromTheme("draw-halfcircle3"), //QIcon(":/icons/tool/graphicsarctool.svg"),
                                       "<b>P</b>lace an <b>A</b>rc <i>p,a</i>", nullptr);
@@ -25,7 +25,7 @@ namespace SymbolEditor
             {
                 return;
             }
-            m_item->setPen(pen);
+            //m_item->setPen(pen);
         });
         m_brushSettingsWidget = new BrushSettingsWidget();
         connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
@@ -35,7 +35,7 @@ namespace SymbolEditor
             {
                 return;
             }
-            m_item->setBrush(brush);
+            //m_item->setBrush(brush);
         });
 
         QList<QWidget *> widgets;
@@ -52,8 +52,8 @@ namespace SymbolEditor
     {
         m_item = new ArcItem();
         m_item->setPos(pos);
-        m_item->setPen(m_penSettingsWidget->pen());
-        m_item->setBrush(m_brushSettingsWidget->brush());
+        //m_item->setPen(m_penSettingsWidget->pen());
+        //m_item->setBrush(m_brushSettingsWidget->brush());
         return m_item;
     }
 

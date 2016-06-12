@@ -2,6 +2,8 @@
 #include "handle/handle.h"
 #include "handle/regularhandle.h"
 #include "handle/bezierhandle.h"
+#include "view/palette.h"
+#include "xdl/symbol.h"
 
 #include <QGraphicsTransform>
 
@@ -9,11 +11,13 @@ namespace SymbolEditor
 {
 
     Item::Item(Item *parent):
-        QGraphicsObject(parent)
+        QGraphicsItem(parent)
     {
-        setPen(QPen(QBrush(QColor::fromRgb(0x80, 0x00, 0x00)), 0.5, Qt::SolidLine, Qt::RoundCap,
-                    Qt::RoundJoin));
-        setBrush(QBrush(QColor::fromRgb(0xff, 0xff, 0xb0)));
+        setLineStyle(xdl::symbol::SolidLine);
+        setLineWidth(xdl::symbol::MediumLine);
+        setLineColor(xdl::symbol::PrimaryContent);
+        setFillStyle(xdl::symbol::SolidFill);
+        setFillColor(xdl::symbol::Background);
         setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
     }
 
@@ -28,12 +32,15 @@ namespace SymbolEditor
 
 
     void Item::cloneTo(Item *dst)
-    {
-        dst->setBrush(brush());
+    {        
+        dst->setLineStyle(lineStyle());
+        dst->setLineWidth(lineWidth());
+        dst->setLineColor(lineColor());
+        dst->setFillStyle(fillStyle());
+        dst->setFillColor(fillColor());
         dst->setEnabled(isEnabled());
         dst->setFlags(flags());
         dst->setOpacity(opacity());
-        dst->setPen(pen());
         dst->setPos(pos());
         dst->setRotation(rotation());
         dst->setSelected(isSelected());
@@ -96,14 +103,86 @@ namespace SymbolEditor
         return m_idToHandle[idx];
     }
 
-    QPen Item::pen() const
+    void Item::setLineStyle(Item::LineStyle style)
     {
-        return m_pen;
+        if (m_lineStyle == style)
+        {
+            return;
+        }
+
+        m_lineStyle = style;
+        update();
     }
 
-    QBrush Item::brush() const
+    Item::LineStyle Item::lineStyle() const
     {
-        return m_brush;
+        return m_lineStyle;
+    }
+
+    void Item::setLineWidth(Item::LineWidth width)
+    {
+        if (m_lineWidth == width)
+        {
+            return;
+        }
+
+        prepareGeometryChange();
+        m_lineWidth = width;
+        m_boundingRect = QRectF();
+        update();
+    }
+
+    Item::LineWidth Item::lineWidth() const
+    {
+        return m_lineWidth;
+    }
+
+    void Item::setLineColor(Item::Color color)
+    {
+        if (m_lineColor == color)
+        {
+            return;
+        }
+
+        m_lineColor = color;
+        update();
+    }
+
+    Item::Color Item::lineColor() const
+    {
+        return m_lineColor;
+    }
+
+    void Item::setFillStyle(Item::FillStyle style)
+    {
+        if (m_fillStyle == style)
+        {
+            return;
+        }
+
+        m_fillStyle = style;
+        update();
+    }
+
+    Item::FillStyle Item::fillStyle() const
+    {
+        return m_fillStyle;
+    }
+
+    void Item::setFillColor(Item::Color color)
+    {
+        if (m_fillColor == color)
+        {
+            return;
+        }
+
+        m_fillColor = color;
+        update();
+    }
+
+    Item::Color Item::fillColor() const
+    {
+        return m_fillColor;
     }
 
     bool Item::isXMirrored() const
@@ -159,32 +238,119 @@ namespace SymbolEditor
         return axes;
     }
 
-    void Item::setPen(const QPen &pen)
+    void Item::setProperty(quint64 id, const QVariant &value)
     {
-        if (m_pen == pen)
+        switch (id)
         {
-            return;
+            case xdl::symbol::Item::PositionProperty:
+                setPos(value.toPointF());
+                break;
+            case xdl::symbol::Item::XMirroredProperty:
+                setXMirrored(value.toBool());
+                break;
+            case xdl::symbol::Item::YMirroredProperty:
+                setYMirrored(value.toBool());
+                break;
+            case xdl::symbol::Item::LockedProperty:
+                setEnabled(!value.toBool());
+                break;
+            case xdl::symbol::Item::VisibilityProperty:
+                setVisible(value.toBool());
+                break;
+            case xdl::symbol::Item::LineStyleProperty:
+                setLineStyle(LineStyle(value.toInt()));
+                break;
+            case xdl::symbol::Item::LineWidthProperty:
+                setLineWidth(LineWidth(value.toInt()));
+                break;
+            case xdl::symbol::Item::LineColorProperty:
+                setLineColor(Color(value.toInt()));
+                break;
+            case xdl::symbol::Item::FillStyleProperty:
+                setFillStyle(FillStyle(value.toInt()));
+                break;
+            case xdl::symbol::Item::FillColorProperty:
+                setFillColor(Color(value.toInt()));
+                break;
+            default:
+                break;
         }
-
-        m_pen = pen;
-        prepareGeometryChange();
-        m_boundingRect = QRectF();
-        update();
-
-        emit penChanged(pen);
     }
 
-    void Item::setBrush(const QBrush &brush)
+    QPen Item::pen() const
     {
-        if (m_brush == brush)
+        QPen pen;
+        switch (m_lineStyle)
         {
-            return;
+            case xdl::symbol::NoLine:
+                pen.setStyle(Qt::NoPen);
+                break;
+            case xdl::symbol::SolidLine:
+                pen.setStyle(Qt::SolidLine);
+                break;
+            case xdl::symbol::DotLine:
+                pen.setStyle(Qt::DotLine);
+                break;
+            case xdl::symbol::DashLine:
+                pen.setStyle(Qt::DashLine);
+                break;
+            case xdl::symbol::DashDotLine:
+                pen.setStyle(Qt::DashDotLine);
+                break;
+            case xdl::symbol::DashDotDotLine:
+                pen.setStyle(Qt::DashDotDotLine);
+                break;
         }
+        switch (m_lineWidth)
+        {
+            case xdl::symbol::ThinestLine:
+                pen.setWidthF(0.13);
+                break;
+            case xdl::symbol::ThinerLine:
+                pen.setWidthF(0.18);
+                break;
+            case xdl::symbol::ThinLine:
+                pen.setWidthF(0.25);
+                break;
+            case xdl::symbol::SlightlyThinLine:
+                pen.setWidthF(0.35);
+                break;
+            case xdl::symbol::MediumLine:
+                pen.setWidthF(0.5);
+                break;
+            case xdl::symbol::SlightlyThickLine:
+                pen.setWidthF(0.7);
+                break;
+            case xdl::symbol::ThickLine:
+                pen.setWidthF(1.0);
+                break;
+            case xdl::symbol::ThickerLine:
+                pen.setWidthF(1.4);
+                break;
+            case xdl::symbol::ThickestLine:
+                pen.setWidthF(2.0);
+                break;
+        }
+        Palette palette;
+        pen.setColor(palette.color(Palette::ColorId(m_lineColor)));
+        return pen;
+    }
 
-        m_brush = brush;
-        update();
-
-        emit brushChanged(brush);
+    QBrush Item::brush() const
+    {
+        QBrush brush;
+        switch (m_fillStyle)
+        {
+            case xdl::symbol::NoFill:
+                brush.setStyle(Qt::NoBrush);
+                break;
+            case xdl::symbol::SolidFill:
+                brush.setStyle(Qt::SolidPattern);
+                break;
+        }
+        Palette palette;
+        brush.setColor(palette.color(Palette::ColorId(m_fillColor)));
+        return brush;
     }
 
     void Item::setXMirrored(bool mirrored)
@@ -195,7 +361,6 @@ namespace SymbolEditor
         }
         m_isXMirrored = mirrored;
         updateMirroringTransform();
-        emit xMirroredChanged();
     }
 
     void Item::setYMirrored(bool mirrored)
@@ -206,7 +371,6 @@ namespace SymbolEditor
         }
         m_isYMirrored = mirrored;
         updateMirroringTransform();
-        emit yMirroredChanged();
     }
 
     RegularHandle *Item::addRegularHandle(int id, GraphicsHandleRole role,

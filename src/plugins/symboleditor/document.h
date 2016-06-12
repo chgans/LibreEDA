@@ -26,9 +26,9 @@ namespace SymbolEditor
         const Item *item(quint64 id) const;
         QList<quint64> itemIdList() const;
 
-        // TODO: quint64 cloneItem(quint64 id); ?
         // TODO: quint64 createItem(quint64 typId); ?
         quint64 addItem(Item *item); // takes ownership
+        quint64 cloneItem(quint64 id);
         void removeItem(quint64 id);
         void setItemProperty(quint64 itemId, quint64 propertyId, const QVariant &value);
         QVariant itemProperty(quint64 itemId, quint64 propertyId) const;

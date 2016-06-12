@@ -34,7 +34,6 @@ namespace SymbolEditor
 
         m_fillRule = fillRule;
         update();
-        emit fillRuleChanged(fillRule);
     }
 
     void PolygonItem::setPolygon(QPolygonF polygon)
@@ -54,8 +53,6 @@ namespace SymbolEditor
         }
         m_boundingRect = QRectF();
         update();
-
-        emit polygonChanged(polygon);
     }
 
     void PolygonItem::addPoint(const QPointF &pos)
@@ -63,8 +60,6 @@ namespace SymbolEditor
         addRegularHandle(m_polygon.count(), MoveHandleRole, CircularHandleShape, pos);
         m_polygon.append(pos);
         handleToPolygon();
-
-        emit polygonChanged(m_polygon);
     }
 
     void PolygonItem::movePoint(int idx, const QPointF &pos)
@@ -73,8 +68,6 @@ namespace SymbolEditor
         m_idToHandle[idx]->setPos(pos);
         unblockItemNotification();
         handleToPolygon();
-
-        emit polygonChanged(m_polygon);
     }
 
     void PolygonItem::handleToPolygon()
@@ -141,6 +134,11 @@ namespace SymbolEditor
         item->setFillRule(fillRule());
         Item::cloneTo(item);
         return item;
+    }
+
+    void PolygonItem::setProperty(quint64 id, const QVariant &value)
+    {
+        Item::setProperty(id, value);
     }
 
     QVariant PolygonItem::itemChange(GraphicsItemChange change, const QVariant &value)

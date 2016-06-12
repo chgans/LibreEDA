@@ -12,7 +12,7 @@ namespace SymbolEditor
     class MoveItemTool : public InteractiveTool
     {
     public:
-        MoveItemTool(QObject *parent = nullptr);
+        MoveItemTool(Editor *editor);
 
     private:
         void resetTool();
@@ -36,7 +36,7 @@ namespace SymbolEditor
 
         // Tool interface
     public:
-        void activate(View *view);
+        void activate();
         void desactivate();
     };
 

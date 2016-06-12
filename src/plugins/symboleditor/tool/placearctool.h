@@ -17,7 +17,7 @@ namespace SymbolEditor
         Q_OBJECT
 
     public:
-        explicit PlaceArcTool(QObject *parent = nullptr);
+        explicit PlaceArcTool(Editor *editor);
         ~PlaceArcTool();
 
     private:

@@ -7,8 +7,8 @@
 namespace SymbolEditor
 {
 
-    InteractiveTool::InteractiveTool(QObject *parent):
-        Tool(parent)
+    InteractiveTool::InteractiveTool(Editor *editor):
+        Tool(editor)
     {
 
     }

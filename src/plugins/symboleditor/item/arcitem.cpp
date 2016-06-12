@@ -14,23 +14,6 @@ namespace SymbolEditor
         addHandles();
     }
 
-    ArcItem::ArcItem(qreal xRadius, qreal yRadius, Item *parent):
-        Item(parent),
-        m_xRadius(xRadius), m_yRadius(yRadius),
-        m_startAngle(0.0), m_spanAngle(360.0 * 16)
-    {
-        addHandles();
-    }
-
-    ArcItem::ArcItem(qreal xRadius, qreal yRadius,
-                     int startAngle, int spanAngle, Item *parent):
-        Item(parent),
-        m_xRadius(xRadius), m_yRadius(yRadius),
-        m_startAngle(startAngle), m_spanAngle(spanAngle)
-    {
-        addHandles();
-    }
-
     ArcItem::~ArcItem()
     {
 
@@ -249,6 +232,11 @@ namespace SymbolEditor
         item->setSpanAngle(m_spanAngle);
         Item::cloneTo(item);
         return item;
+    }
+
+    void ArcItem::setProperty(quint64 id, const QVariant &value)
+    {
+        Item::setProperty(id, value);
     }
 
     QList<QPointF> ArcItem::endPoints() const

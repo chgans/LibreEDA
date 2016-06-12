@@ -17,7 +17,7 @@ namespace SymbolEditor
         Q_OBJECT
 
     public:
-        explicit PlacePolygonTool(QObject *parent = nullptr);
+        explicit PlacePolygonTool(Editor *editor);
         ~PlacePolygonTool();
 
     private:

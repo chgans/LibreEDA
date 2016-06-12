@@ -9,8 +9,8 @@
 namespace SymbolEditor
 {
 
-    PlaceCircleTool::PlaceCircleTool(QObject *parent):
-        PlacementTool(parent)
+    PlaceCircleTool::PlaceCircleTool(Editor *editor):
+        PlacementTool(editor)
     {
         QAction *action = new QAction(QIcon::fromTheme("draw-circle"), //QIcon(":/icons/tool/graphicscircletool.svg"),
                                       "<b>P</b>lace a <b>C</b>ircle <i>p,c</i>", nullptr);
@@ -26,7 +26,7 @@ namespace SymbolEditor
             {
                 return;
             }
-            m_item->setPen(pen);
+            //m_item->setPen(pen);
         });
         m_brushSettingsWidget = new BrushSettingsWidget();
         connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
@@ -36,7 +36,7 @@ namespace SymbolEditor
             {
                 return;
             }
-            m_item->setBrush(brush);
+            //m_item->setBrush(brush);
         });
 
         QList<QWidget *> widgets;
@@ -52,8 +52,8 @@ namespace SymbolEditor
     {
         m_item = new CircleItem();
         m_item->setPos(pos);
-        m_item->setPen(m_penSettingsWidget->pen());
-        m_item->setBrush(m_brushSettingsWidget->brush());
+        //m_item->setPen(m_penSettingsWidget->pen());
+        //m_item->setBrush(m_brushSettingsWidget->brush());
         return m_item;
     }
 
@@ -84,8 +84,11 @@ namespace SymbolEditor
         command->position = m_item->pos();
         command->opacity = m_item->opacity();
         command->zValue = m_item->zValue();
-        command->pen = m_item->pen();
-        command->brush = m_item->brush();
+        command->lineStyle = m_item->lineStyle();
+        command->lineWidth = m_item->lineWidth();
+        command->lineColor = m_item->lineColor();
+        command->fillStyle = m_item->fillStyle();
+        command->fillColor = m_item->fillColor();
         command->center = QPointF(0, 0);
         command->radius = m_item->radius();
         emit commandRequested(command);

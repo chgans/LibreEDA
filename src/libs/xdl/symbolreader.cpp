@@ -28,9 +28,12 @@ struct ReaderPrivate
                            ItemGroup_p);
 
 
-        Polyline_p.parsers(Pen_p,
-                           Brush_p,
-                           Point_p,
+        Polyline_p.parsers(Point_p,
+                           LineStyle_p,
+                           LineWidth_p,
+                           Color_p,
+                           FillStyle_p,
+                           Color_p,
                            double_p,
                            Angle_p,
                            Opacity_p,
@@ -40,9 +43,12 @@ struct ReaderPrivate
                            boolean_p,
                            PointList_p);
 
-        Polygon_p.parsers(Pen_p,
-                          Brush_p,
-                          Point_p,
+        Polygon_p.parsers(Point_p,
+                          LineStyle_p,
+                          LineWidth_p,
+                          Color_p,
+                          FillStyle_p,
+                          Color_p,
                           double_p,
                           Angle_p,
                           Opacity_p,
@@ -52,9 +58,12 @@ struct ReaderPrivate
                           boolean_p,
                           PointList_p);
 
-        Rectangle_p.parsers(Pen_p,
-                            Brush_p,
-                            Point_p,
+        Rectangle_p.parsers(Point_p,
+                            LineStyle_p,
+                            LineWidth_p,
+                            Color_p,
+                            FillStyle_p,
+                            Color_p,
                             double_p,
                             Angle_p,
                             Opacity_p,
@@ -64,9 +73,12 @@ struct ReaderPrivate
                             boolean_p,
                             NonNegativeDouble_p,
                             NonNegativeDouble_p);
-        Circle_p.parsers(Pen_p,
-                         Brush_p,
-                         Point_p,
+        Circle_p.parsers(Point_p,
+                         LineStyle_p,
+                         LineWidth_p,
+                         Color_p,
+                         FillStyle_p,
+                         Color_p,
                          double_p,
                          Angle_p,
                          Opacity_p,
@@ -76,9 +88,12 @@ struct ReaderPrivate
                          boolean_p,
                          NonNegativeDouble_p);
 
-        CircularArc_p.parsers(Pen_p,
-                              Brush_p,
-                              Point_p,
+        CircularArc_p.parsers(Point_p,
+                              LineStyle_p,
+                              LineWidth_p,
+                              Color_p,
+                              FillStyle_p,
+                              Color_p,
                               double_p,
                               Angle_p,
                               Opacity_p,
@@ -90,9 +105,12 @@ struct ReaderPrivate
                               Angle_p,
                               Angle_p);
 
-        Ellipse_p.parsers(Pen_p,
-                          Brush_p,
-                          Point_p,
+        Ellipse_p.parsers(Point_p,
+                          LineStyle_p,
+                          LineWidth_p,
+                          Color_p,
+                          FillStyle_p,
+                          Color_p,
                           double_p,
                           Angle_p,
                           Opacity_p,
@@ -103,9 +121,12 @@ struct ReaderPrivate
                           NonNegativeDouble_p,
                           NonNegativeDouble_p);
 
-        EllipticalArc_p.parsers(Pen_p,
-                                Brush_p,
-                                Point_p,
+        EllipticalArc_p.parsers(Point_p,
+                                LineStyle_p,
+                                LineWidth_p,
+                                Color_p,
+                                FillStyle_p,
+                                Color_p,
                                 double_p,
                                 Angle_p,
                                 Opacity_p,
@@ -118,9 +139,12 @@ struct ReaderPrivate
                                 Angle_p,
                                 Angle_p);
 
-        Label_p.parsers(Pen_p,
-                        Brush_p,
-                        Point_p,
+        Label_p.parsers(Point_p,
+                        LineStyle_p,
+                        LineWidth_p,
+                        Color_p,
+                        FillStyle_p,
+                        Color_p,
                         double_p,
                         Angle_p,
                         Opacity_p,
@@ -130,12 +154,14 @@ struct ReaderPrivate
                         boolean_p,
                         string_p,
                         Color_p,
-                        string_p,
                         non_negative_integer_p);
 
-        Pin_p.parsers(Pen_p,
-                      Brush_p,
-                      Point_p,
+        Pin_p.parsers(Point_p,
+                      LineStyle_p,
+                      LineWidth_p,
+                      Color_p,
+                      FillStyle_p,
+                      Color_p,
                       double_p,
                       Angle_p,
                       Opacity_p,
@@ -146,9 +172,12 @@ struct ReaderPrivate
                       string_p,
                       string_p);
 
-        ItemGroup_p.parsers(Pen_p,
-                            Brush_p,
-                            Point_p,
+        ItemGroup_p.parsers(Point_p,
+                            LineStyle_p,
+                            LineWidth_p,
+                            Color_p,
+                            FillStyle_p,
+                            Color_p,
                             double_p,
                             Angle_p,
                             Opacity_p,
@@ -162,23 +191,7 @@ struct ReaderPrivate
         Point_p.parsers(double_p,
                         double_p);
 
-        Pen_p.parsers(NonNegativeDouble_p,
-                      Color_p,
-                      PenStyle_p,
-                      PenCapStyle_p,
-                      PenJoinStyle_p);
-
-        Brush_p.parsers(Color_p,
-                        BrushStyle_p);
-
         PointList_p.parsers(Point_p);
-
-        Font_p.parsers(string_p,
-                       non_negative_integer_p,
-                       boolean_p,
-                       boolean_p,
-                       boolean_p,
-                       boolean_p);
     }
 
     // Instantiate individual parsers.
@@ -191,14 +204,11 @@ struct ReaderPrivate
     Angle_pimpl Angle_p;
     Opacity_pimpl Opacity_p;
     ::xml_schema::boolean_pimpl boolean_p;
-    Pen_pimpl Pen_p;
     NonNegativeDouble_pimpl NonNegativeDouble_p;
     Color_pimpl Color_p;
-    PenStyle_pimpl PenStyle_p;
-    PenCapStyle_pimpl PenCapStyle_p;
-    PenJoinStyle_pimpl PenJoinStyle_p;
-    Brush_pimpl Brush_p;
-    BrushStyle_pimpl BrushStyle_p;
+    LineStyle_pimpl LineStyle_p;
+    LineWidth_pimpl LineWidth_p;
+    FillStyle_pimpl FillStyle_p;
     Polyline_pimpl Polyline_p;
     Polygon_pimpl Polygon_p;
     PointList_pimpl PointList_p;
@@ -210,7 +220,6 @@ struct ReaderPrivate
     EllipticalArc_pimpl EllipticalArc_p;
     ItemGroup_pimpl ItemGroup_p;
     Label_pimpl Label_p;
-    Font_pimpl Font_p;
     ::xml_schema::non_negative_integer_pimpl non_negative_integer_p;
 };
 

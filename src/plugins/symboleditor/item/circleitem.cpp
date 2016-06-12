@@ -1,5 +1,7 @@
 #include "item/circleitem.h"
 
+#include "xdl/symbol.h"
+
 #include <QStyleOptionGraphicsItem>
 
 namespace SymbolEditor
@@ -37,8 +39,6 @@ namespace SymbolEditor
         blockItemNotification();
         m_idToHandle[RadiusHandle]->setPos(m_radius, 0);
         unblockItemNotification();
-
-        emit radiusChanged();
     }
 
     Item *CircleItem::clone()
@@ -54,6 +54,19 @@ namespace SymbolEditor
         Handle *handle = static_cast<Handle *>(item);
 
         setRadius(qAbs(handle->pos().x()));
+    }
+
+    void CircleItem::setProperty(quint64 id, const QVariant &value)
+    {
+        switch (id)
+        {
+            case xdl::symbol::Item::RadiusProperty:
+                setRadius(value.toReal());
+                break;
+            default:
+                Item::setProperty(id, value);
+                break;
+        }
     }
 
     QList<QPointF> CircleItem::endPoints() const

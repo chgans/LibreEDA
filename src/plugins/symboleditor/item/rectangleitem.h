@@ -15,12 +15,6 @@ namespace SymbolEditor
     // TODO: add properties
     class RectangleItem : public Item
     {
-        Q_OBJECT
-
-        Q_PROPERTY(qreal xRoundness READ xRoundness WRITE setXRoundness)
-        Q_PROPERTY(qreal yRoundness READ yRoundness WRITE setYRoundness)
-        Q_PROPERTY(QRectF rect READ rect WRITE setRect)
-
     public:
         enum HandleId
         {
@@ -56,6 +50,7 @@ namespace SymbolEditor
     public:
         virtual Item *clone();
         void itemNotification(IObservableItem *item);
+        virtual void setProperty(quint64 id, const QVariant &value);
 
         //virtual QList<QPointF> hotSpots() const;
         virtual QList<QPointF> endPoints() const;

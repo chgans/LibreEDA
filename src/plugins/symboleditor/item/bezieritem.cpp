@@ -422,6 +422,11 @@ namespace SymbolEditor
         return item;
     }
 
+    void BezierItem::setProperty(quint64 id, const QVariant &value)
+    {
+        Item::setProperty(id, value);
+    }
+
     void BezierItem::itemNotification(IObservableItem *item)
     {
         Q_UNUSED(item);

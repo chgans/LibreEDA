@@ -5,23 +5,20 @@
 
 #include <QItemSelection>
 
+
 namespace SymbolEditor
 {
 
-    class Handle;
     class ItemPropertyEditor;
     class ObjectInspectorView;
     class ObjectInspectorModel;
-    class MoveItemTool;
-    class CloneItemTool;
-    class DragSelectTool;
 
     class SelectTool : public InteractiveTool
     {
         Q_OBJECT
 
     public:
-        explicit SelectTool(QObject *parent = nullptr);
+        explicit SelectTool(Editor *editor);
         ~SelectTool();
 
     public slots:
@@ -43,9 +40,11 @@ namespace SymbolEditor
         void setupSubTools();
         void initStateMachine();
 
+        // TODO: Move these 2 to ObjectInspectorWidget (SymbolEditor specific)
         ObjectInspectorModel *m_objectInspectorModel;
         ObjectInspectorView *m_objectInspectorView;
-        ItemPropertyEditor *m_itemPropertyEditor;
+        ItemPropertyEditor *m_propertyEditor;
+
         bool m_changingSelection = false;
 
         // GraphicsTool interface
@@ -54,7 +53,7 @@ namespace SymbolEditor
 
         // GraphicsTool interface
     public:
-        virtual void activate(View *view);
+        virtual void activate();
         virtual void desactivate();
         virtual void mousePressEvent(QMouseEvent *event);
         virtual void mouseMoveEvent(QMouseEvent *event);

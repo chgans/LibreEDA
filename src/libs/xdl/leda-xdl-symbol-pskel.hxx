@@ -72,17 +72,13 @@ namespace xdl
     class Label_pskel;
     class Point_pskel;
     class PointList_pskel;
-    class Pen_pskel;
-    class Brush_pskel;
-    class PenStyle_pskel;
-    class PenCapStyle_pskel;
-    class PenJoinStyle_pskel;
-    class BrushStyle_pskel;
+    class LineWidth_pskel;
+    class LineStyle_pskel;
+    class FillStyle_pskel;
     class Color_pskel;
     class Angle_pskel;
     class Opacity_pskel;
     class NonNegativeDouble_pskel;
-    class Font_pskel;
   }
 }
 
@@ -108,11 +104,7 @@ namespace xdl
 #include <QtGlobal>
 #include <QString>
 #include <QPointF>
-#include <QPen>
 #include <QList>
-#include <QFont>
-#include <QColor>
-#include <QBrush>
 #include "symbol.h"
 
 namespace xml_schema
@@ -565,13 +557,22 @@ namespace xdl
       // pre ();
 
       virtual void
-      pen (const QPen&);
-
-      virtual void
-      brush (const QBrush&);
-
-      virtual void
       position (const QPointF&);
+
+      virtual void
+      line_style (const LineStyle&);
+
+      virtual void
+      line_width (const LineWidth&);
+
+      virtual void
+      line_color (const Color&);
+
+      virtual void
+      fill_style (const FillStyle&);
+
+      virtual void
+      fill_color (const Color&);
 
       virtual void
       z_value (double);
@@ -600,13 +601,22 @@ namespace xdl
       // Parser construction API.
       //
       void
-      pen_parser (::xdl::symbol::Pen_pskel&);
-
-      void
-      brush_parser (::xdl::symbol::Brush_pskel&);
-
-      void
       position_parser (::xdl::symbol::Point_pskel&);
+
+      void
+      line_style_parser (::xdl::symbol::LineStyle_pskel&);
+
+      void
+      line_width_parser (::xdl::symbol::LineWidth_pskel&);
+
+      void
+      line_color_parser (::xdl::symbol::Color_pskel&);
+
+      void
+      fill_style_parser (::xdl::symbol::FillStyle_pskel&);
+
+      void
+      fill_color_parser (::xdl::symbol::Color_pskel&);
 
       void
       z_value_parser (::xml_schema::double_pskel&);
@@ -630,9 +640,12 @@ namespace xdl
       visible_parser (::xml_schema::boolean_pskel&);
 
       void
-      parsers (::xdl::symbol::Pen_pskel& /* pen */,
-               ::xdl::symbol::Brush_pskel& /* brush */,
-               ::xdl::symbol::Point_pskel& /* position */,
+      parsers (::xdl::symbol::Point_pskel& /* position */,
+               ::xdl::symbol::LineStyle_pskel& /* line-style */,
+               ::xdl::symbol::LineWidth_pskel& /* line-width */,
+               ::xdl::symbol::Color_pskel& /* line-color */,
+               ::xdl::symbol::FillStyle_pskel& /* fill-style */,
+               ::xdl::symbol::Color_pskel& /* fill-color */,
                ::xml_schema::double_pskel& /* z-value */,
                ::xdl::symbol::Angle_pskel& /* rotation */,
                ::xdl::symbol::Opacity_pskel& /* opacity */,
@@ -658,9 +671,12 @@ namespace xdl
                          const ::xml_schema::ro_string&);
 
       protected:
-      ::xdl::symbol::Pen_pskel* pen_parser_;
-      ::xdl::symbol::Brush_pskel* brush_parser_;
       ::xdl::symbol::Point_pskel* position_parser_;
+      ::xdl::symbol::LineStyle_pskel* line_style_parser_;
+      ::xdl::symbol::LineWidth_pskel* line_width_parser_;
+      ::xdl::symbol::Color_pskel* line_color_parser_;
+      ::xdl::symbol::FillStyle_pskel* fill_style_parser_;
+      ::xdl::symbol::Color_pskel* fill_color_parser_;
       ::xml_schema::double_pskel* z_value_parser_;
       ::xdl::symbol::Angle_pskel* rotation_parser_;
       ::xdl::symbol::Opacity_pskel* opacity_parser_;
@@ -727,9 +743,12 @@ namespace xdl
       radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
 
       void
-      parsers (::xdl::symbol::Pen_pskel& /* pen */,
-               ::xdl::symbol::Brush_pskel& /* brush */,
-               ::xdl::symbol::Point_pskel& /* position */,
+      parsers (::xdl::symbol::Point_pskel& /* position */,
+               ::xdl::symbol::LineStyle_pskel& /* line-style */,
+               ::xdl::symbol::LineWidth_pskel& /* line-width */,
+               ::xdl::symbol::Color_pskel& /* line-color */,
+               ::xdl::symbol::FillStyle_pskel& /* fill-style */,
+               ::xdl::symbol::Color_pskel& /* fill-color */,
                ::xml_schema::double_pskel& /* z-value */,
                ::xdl::symbol::Angle_pskel& /* rotation */,
                ::xdl::symbol::Opacity_pskel& /* opacity */,
@@ -828,9 +847,12 @@ namespace xdl
       span_angle_parser (::xdl::symbol::Angle_pskel&);
 
       void
-      parsers (::xdl::symbol::Pen_pskel& /* pen */,
-               ::xdl::symbol::Brush_pskel& /* brush */,
-               ::xdl::symbol::Point_pskel& /* position */,
+      parsers (::xdl::symbol::Point_pskel& /* position */,
+               ::xdl::symbol::LineStyle_pskel& /* line-style */,
+               ::xdl::symbol::LineWidth_pskel& /* line-width */,
+               ::xdl::symbol::Color_pskel& /* line-color */,
+               ::xdl::symbol::FillStyle_pskel& /* fill-style */,
+               ::xdl::symbol::Color_pskel& /* fill-color */,
                ::xml_schema::double_pskel& /* z-value */,
                ::xdl::symbol::Angle_pskel& /* rotation */,
                ::xdl::symbol::Opacity_pskel& /* opacity */,
@@ -927,9 +949,12 @@ namespace xdl
       y_radius_parser (::xdl::symbol::NonNegativeDouble_pskel&);
 
       void
-      parsers (::xdl::symbol::Pen_pskel& /* pen */,
-               ::xdl::symbol::Brush_pskel& /* brush */,
-               ::xdl::symbol::Point_pskel& /* position */,
+      parsers (::xdl::symbol::Point_pskel& /* position */,
+               ::xdl::symbol::LineStyle_pskel& /* line-style */,
+               ::xdl::symbol::LineWidth_pskel& /* line-width */,
+               ::xdl::symbol::Color_pskel& /* line-color */,
+               ::xdl::symbol::FillStyle_pskel& /* fill-style */,
+               ::xdl::symbol::Color_pskel& /* fill-color */,
                ::xml_schema::double_pskel& /* z-value */,
                ::xdl::symbol::Angle_pskel& /* rotation */,
                ::xdl::symbol::Opacity_pskel& /* opacity */,
@@ -1036,9 +1061,12 @@ namespace xdl
       span_angle_parser (::xdl::symbol::Angle_pskel&);
 
       void
-      parsers (::xdl::symbol::Pen_pskel& /* pen */,
-               ::xdl::symbol::Brush_pskel& /* brush */,
-               ::xdl::symbol::Point_pskel& /* position */,
+      parsers (::xdl::symbol::Point_pskel& /* position */,
+               ::xdl::symbol::LineStyle_pskel& /* line-style */,
+               ::xdl::symbol::LineWidth_pskel& /* line-width */,
+               ::xdl::symbol::Color_pskel& /* line-color */,
+               ::xdl::symbol::FillStyle_pskel& /* fill-style */,
+               ::xdl::symbol::Color_pskel& /* fill-color */,
                ::xml_schema::double_pskel& /* z-value */,
                ::xdl::symbol::Angle_pskel& /* rotation */,
                ::xdl::symbol::Opacity_pskel& /* opacity */,
@@ -1137,9 +1165,12 @@ namespace xdl
       height_parser (::xdl::symbol::NonNegativeDouble_pskel&);
 
       void
-      parsers (::xdl::symbol::Pen_pskel& /* pen */,
-               ::xdl::symbol::Brush_pskel& /* brush */,
-               ::xdl::symbol::Point_pskel& /* position */,
+      parsers (::xdl::symbol::Point_pskel& /* position */,
+               ::xdl::symbol::LineStyle_pskel& /* line-style */,
+               ::xdl::symbol::LineWidth_pskel& /* line-width */,
+               ::xdl::symbol::Color_pskel& /* line-color */,
+               ::xdl::symbol::FillStyle_pskel& /* fill-style */,
+               ::xdl::symbol::Color_pskel& /* fill-color */,
                ::xml_schema::double_pskel& /* z-value */,
                ::xdl::symbol::Angle_pskel& /* rotation */,
                ::xdl::symbol::Opacity_pskel& /* opacity */,
@@ -1228,9 +1259,12 @@ namespace xdl
       vertices_parser (::xdl::symbol::PointList_pskel&);
 
       void
-      parsers (::xdl::symbol::Pen_pskel& /* pen */,
-               ::xdl::symbol::Brush_pskel& /* brush */,
-               ::xdl::symbol::Point_pskel& /* position */,
+      parsers (::xdl::symbol::Point_pskel& /* position */,
+               ::xdl::symbol::LineStyle_pskel& /* line-style */,
+               ::xdl::symbol::LineWidth_pskel& /* line-width */,
+               ::xdl::symbol::Color_pskel& /* line-color */,
+               ::xdl::symbol::FillStyle_pskel& /* fill-style */,
+               ::xdl::symbol::Color_pskel& /* fill-color */,
                ::xml_schema::double_pskel& /* z-value */,
                ::xdl::symbol::Angle_pskel& /* rotation */,
                ::xdl::symbol::Opacity_pskel& /* opacity */,
@@ -1317,9 +1351,12 @@ namespace xdl
       vertices_parser (::xdl::symbol::PointList_pskel&);
 
       void
-      parsers (::xdl::symbol::Pen_pskel& /* pen */,
-               ::xdl::symbol::Brush_pskel& /* brush */,
-               ::xdl::symbol::Point_pskel& /* position */,
+      parsers (::xdl::symbol::Point_pskel& /* position */,
+               ::xdl::symbol::LineStyle_pskel& /* line-style */,
+               ::xdl::symbol::LineWidth_pskel& /* line-width */,
+               ::xdl::symbol::Color_pskel& /* line-color */,
+               ::xdl::symbol::FillStyle_pskel& /* fill-style */,
+               ::xdl::symbol::Color_pskel& /* fill-color */,
                ::xml_schema::double_pskel& /* z-value */,
                ::xdl::symbol::Angle_pskel& /* rotation */,
                ::xdl::symbol::Opacity_pskel& /* opacity */,
@@ -1412,9 +1449,12 @@ namespace xdl
       label_parser (::xml_schema::string_pskel&);
 
       void
-      parsers (::xdl::symbol::Pen_pskel& /* pen */,
-               ::xdl::symbol::Brush_pskel& /* brush */,
-               ::xdl::symbol::Point_pskel& /* position */,
+      parsers (::xdl::symbol::Point_pskel& /* position */,
+               ::xdl::symbol::LineStyle_pskel& /* line-style */,
+               ::xdl::symbol::LineWidth_pskel& /* line-width */,
+               ::xdl::symbol::Color_pskel& /* line-color */,
+               ::xdl::symbol::FillStyle_pskel& /* fill-style */,
+               ::xdl::symbol::Color_pskel& /* fill-color */,
                ::xml_schema::double_pskel& /* z-value */,
                ::xdl::symbol::Angle_pskel& /* rotation */,
                ::xdl::symbol::Opacity_pskel& /* opacity */,
@@ -1503,9 +1543,12 @@ namespace xdl
       children_parser (::xdl::symbol::ItemList_pskel&);
 
       void
-      parsers (::xdl::symbol::Pen_pskel& /* pen */,
-               ::xdl::symbol::Brush_pskel& /* brush */,
-               ::xdl::symbol::Point_pskel& /* position */,
+      parsers (::xdl::symbol::Point_pskel& /* position */,
+               ::xdl::symbol::LineStyle_pskel& /* line-style */,
+               ::xdl::symbol::LineWidth_pskel& /* line-width */,
+               ::xdl::symbol::Color_pskel& /* line-color */,
+               ::xdl::symbol::FillStyle_pskel& /* fill-style */,
+               ::xdl::symbol::Color_pskel& /* fill-color */,
                ::xml_schema::double_pskel& /* z-value */,
                ::xdl::symbol::Angle_pskel& /* rotation */,
                ::xdl::symbol::Opacity_pskel& /* opacity */,
@@ -1584,13 +1627,10 @@ namespace xdl
       text (const ::std::string&);
 
       virtual void
-      color (const QColor&);
+      color (const Color&);
 
       virtual void
-      font_family (const ::std::string&);
-
-      virtual void
-      font_size (unsigned long long);
+      size (unsigned long long);
 
       virtual LabelItem*
       post_Label () = 0;
@@ -1604,15 +1644,15 @@ namespace xdl
       color_parser (::xdl::symbol::Color_pskel&);
 
       void
-      font_family_parser (::xml_schema::string_pskel&);
+      size_parser (::xml_schema::non_negative_integer_pskel&);
 
       void
-      font_size_parser (::xml_schema::non_negative_integer_pskel&);
-
-      void
-      parsers (::xdl::symbol::Pen_pskel& /* pen */,
-               ::xdl::symbol::Brush_pskel& /* brush */,
-               ::xdl::symbol::Point_pskel& /* position */,
+      parsers (::xdl::symbol::Point_pskel& /* position */,
+               ::xdl::symbol::LineStyle_pskel& /* line-style */,
+               ::xdl::symbol::LineWidth_pskel& /* line-width */,
+               ::xdl::symbol::Color_pskel& /* line-color */,
+               ::xdl::symbol::FillStyle_pskel& /* fill-style */,
+               ::xdl::symbol::Color_pskel& /* fill-color */,
                ::xml_schema::double_pskel& /* z-value */,
                ::xdl::symbol::Angle_pskel& /* rotation */,
                ::xdl::symbol::Opacity_pskel& /* opacity */,
@@ -1622,8 +1662,7 @@ namespace xdl
                ::xml_schema::boolean_pskel& /* visible */,
                ::xml_schema::string_pskel& /* text */,
                ::xdl::symbol::Color_pskel& /* color */,
-               ::xml_schema::string_pskel& /* font-family */,
-               ::xml_schema::non_negative_integer_pskel& /* font-size */);
+               ::xml_schema::non_negative_integer_pskel& /* size */);
 
       // Constructor.
       //
@@ -1644,8 +1683,7 @@ namespace xdl
       protected:
       ::xml_schema::string_pskel* text_parser_;
       ::xdl::symbol::Color_pskel* color_parser_;
-      ::xml_schema::string_pskel* font_family_parser_;
-      ::xml_schema::non_negative_integer_pskel* font_size_parser_;
+      ::xml_schema::non_negative_integer_pskel* size_parser_;
 
       protected:
       struct v_state_descr_
@@ -1851,7 +1889,7 @@ namespace xdl
                   bool start);
     };
 
-    class Pen_pskel: public ::xml_schema::complex_content
+    class LineWidth_pskel: public virtual ::xml_schema::string_pskel
     {
       public:
       // Parser callbacks. Override them in your implementation.
@@ -1859,110 +1897,11 @@ namespace xdl
       // virtual void
       // pre ();
 
-      virtual void
-      width (const qreal&);
-
-      virtual void
-      color (const QColor&);
-
-      virtual void
-      style (const Qt::PenStyle&);
-
-      virtual void
-      cap_style (const Qt::PenCapStyle&);
-
-      virtual void
-      join_style (const Qt::PenJoinStyle&);
-
-      virtual QPen
-      post_Pen () = 0;
-
-      // Parser construction API.
-      //
-      void
-      width_parser (::xdl::symbol::NonNegativeDouble_pskel&);
-
-      void
-      color_parser (::xdl::symbol::Color_pskel&);
-
-      void
-      style_parser (::xdl::symbol::PenStyle_pskel&);
-
-      void
-      cap_style_parser (::xdl::symbol::PenCapStyle_pskel&);
-
-      void
-      join_style_parser (::xdl::symbol::PenJoinStyle_pskel&);
-
-      void
-      parsers (::xdl::symbol::NonNegativeDouble_pskel& /* width */,
-               ::xdl::symbol::Color_pskel& /* color */,
-               ::xdl::symbol::PenStyle_pskel& /* style */,
-               ::xdl::symbol::PenCapStyle_pskel& /* cap-style */,
-               ::xdl::symbol::PenJoinStyle_pskel& /* join-style */);
-
-      // Constructor.
-      //
-      Pen_pskel ();
-
-      // Implementation.
-      //
-      protected:
-      virtual bool
-      _start_element_impl (const ::xml_schema::ro_string&,
-                           const ::xml_schema::ro_string&,
-                           const ::xml_schema::ro_string*);
-
-      virtual bool
-      _end_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&);
-
-      protected:
-      ::xdl::symbol::NonNegativeDouble_pskel* width_parser_;
-      ::xdl::symbol::Color_pskel* color_parser_;
-      ::xdl::symbol::PenStyle_pskel* style_parser_;
-      ::xdl::symbol::PenCapStyle_pskel* cap_style_parser_;
-      ::xdl::symbol::PenJoinStyle_pskel* join_style_parser_;
-
-      protected:
-      struct v_state_descr_
-      {
-        void (::xdl::symbol::Pen_pskel::*func) (
-          unsigned long&,
-          unsigned long&,
-          const ::xml_schema::ro_string&,
-          const ::xml_schema::ro_string&,
-          const ::xml_schema::ro_string*,
-          bool);
-        unsigned long state;
-        unsigned long count;
-      };
-
-      struct v_state_
-      {
-        v_state_descr_ data[2UL];
-        unsigned long size;
-      };
-
-      v_state_ v_state_first_;
-      ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-      virtual void
-      _pre_e_validate ();
-
-      virtual void
-      _post_e_validate ();
-
-      void
-      sequence_0 (unsigned long& state,
-                  unsigned long& count,
-                  const ::xml_schema::ro_string& ns,
-                  const ::xml_schema::ro_string& n,
-                  const ::xml_schema::ro_string* t,
-                  bool start);
+      virtual LineWidth
+      post_LineWidth () = 0;
     };
 
-    class Brush_pskel: public ::xml_schema::complex_content
+    class LineStyle_pskel: public virtual ::xml_schema::string_pskel
     {
       public:
       // Parser callbacks. Override them in your implementation.
@@ -1970,86 +1909,11 @@ namespace xdl
       // virtual void
       // pre ();
 
-      virtual void
-      color (const QColor&);
-
-      virtual void
-      style (const Qt::BrushStyle&);
-
-      virtual QBrush
-      post_Brush () = 0;
-
-      // Parser construction API.
-      //
-      void
-      color_parser (::xdl::symbol::Color_pskel&);
-
-      void
-      style_parser (::xdl::symbol::BrushStyle_pskel&);
-
-      void
-      parsers (::xdl::symbol::Color_pskel& /* color */,
-               ::xdl::symbol::BrushStyle_pskel& /* style */);
-
-      // Constructor.
-      //
-      Brush_pskel ();
-
-      // Implementation.
-      //
-      protected:
-      virtual bool
-      _start_element_impl (const ::xml_schema::ro_string&,
-                           const ::xml_schema::ro_string&,
-                           const ::xml_schema::ro_string*);
-
-      virtual bool
-      _end_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&);
-
-      protected:
-      ::xdl::symbol::Color_pskel* color_parser_;
-      ::xdl::symbol::BrushStyle_pskel* style_parser_;
-
-      protected:
-      struct v_state_descr_
-      {
-        void (::xdl::symbol::Brush_pskel::*func) (
-          unsigned long&,
-          unsigned long&,
-          const ::xml_schema::ro_string&,
-          const ::xml_schema::ro_string&,
-          const ::xml_schema::ro_string*,
-          bool);
-        unsigned long state;
-        unsigned long count;
-      };
-
-      struct v_state_
-      {
-        v_state_descr_ data[2UL];
-        unsigned long size;
-      };
-
-      v_state_ v_state_first_;
-      ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-      virtual void
-      _pre_e_validate ();
-
-      virtual void
-      _post_e_validate ();
-
-      void
-      sequence_0 (unsigned long& state,
-                  unsigned long& count,
-                  const ::xml_schema::ro_string& ns,
-                  const ::xml_schema::ro_string& n,
-                  const ::xml_schema::ro_string* t,
-                  bool start);
+      virtual LineStyle
+      post_LineStyle () = 0;
     };
 
-    class PenStyle_pskel: public virtual ::xml_schema::string_pskel
+    class FillStyle_pskel: public virtual ::xml_schema::string_pskel
     {
       public:
       // Parser callbacks. Override them in your implementation.
@@ -2057,44 +1921,8 @@ namespace xdl
       // virtual void
       // pre ();
 
-      virtual Qt::PenStyle
-      post_PenStyle () = 0;
-    };
-
-    class PenCapStyle_pskel: public virtual ::xml_schema::string_pskel
-    {
-      public:
-      // Parser callbacks. Override them in your implementation.
-      //
-      // virtual void
-      // pre ();
-
-      virtual Qt::PenCapStyle
-      post_PenCapStyle () = 0;
-    };
-
-    class PenJoinStyle_pskel: public virtual ::xml_schema::string_pskel
-    {
-      public:
-      // Parser callbacks. Override them in your implementation.
-      //
-      // virtual void
-      // pre ();
-
-      virtual Qt::PenJoinStyle
-      post_PenJoinStyle () = 0;
-    };
-
-    class BrushStyle_pskel: public virtual ::xml_schema::string_pskel
-    {
-      public:
-      // Parser callbacks. Override them in your implementation.
-      //
-      // virtual void
-      // pre ();
-
-      virtual Qt::BrushStyle
-      post_BrushStyle () = 0;
+      virtual FillStyle
+      post_FillStyle () = 0;
     };
 
     class Color_pskel: public virtual ::xml_schema::string_pskel
@@ -2105,7 +1933,7 @@ namespace xdl
       // virtual void
       // pre ();
 
-      virtual QColor
+      virtual Color
       post_Color () = 0;
     };
 
@@ -2143,125 +1971,6 @@ namespace xdl
 
       virtual qreal
       post_NonNegativeDouble () = 0;
-    };
-
-    class Font_pskel: public ::xml_schema::complex_content
-    {
-      public:
-      // Parser callbacks. Override them in your implementation.
-      //
-      // virtual void
-      // pre ();
-
-      virtual void
-      family (const ::std::string&);
-
-      virtual void
-      size (unsigned long long);
-
-      virtual void
-      bold (bool);
-
-      virtual void
-      italic (bool);
-
-      virtual void
-      underline (bool);
-
-      virtual void
-      strikeout (bool);
-
-      virtual QFont
-      post_Font () = 0;
-
-      // Parser construction API.
-      //
-      void
-      family_parser (::xml_schema::string_pskel&);
-
-      void
-      size_parser (::xml_schema::non_negative_integer_pskel&);
-
-      void
-      bold_parser (::xml_schema::boolean_pskel&);
-
-      void
-      italic_parser (::xml_schema::boolean_pskel&);
-
-      void
-      underline_parser (::xml_schema::boolean_pskel&);
-
-      void
-      strikeout_parser (::xml_schema::boolean_pskel&);
-
-      void
-      parsers (::xml_schema::string_pskel& /* family */,
-               ::xml_schema::non_negative_integer_pskel& /* size */,
-               ::xml_schema::boolean_pskel& /* bold */,
-               ::xml_schema::boolean_pskel& /* italic */,
-               ::xml_schema::boolean_pskel& /* underline */,
-               ::xml_schema::boolean_pskel& /* strikeout */);
-
-      // Constructor.
-      //
-      Font_pskel ();
-
-      // Implementation.
-      //
-      protected:
-      virtual bool
-      _start_element_impl (const ::xml_schema::ro_string&,
-                           const ::xml_schema::ro_string&,
-                           const ::xml_schema::ro_string*);
-
-      virtual bool
-      _end_element_impl (const ::xml_schema::ro_string&,
-                         const ::xml_schema::ro_string&);
-
-      protected:
-      ::xml_schema::string_pskel* family_parser_;
-      ::xml_schema::non_negative_integer_pskel* size_parser_;
-      ::xml_schema::boolean_pskel* bold_parser_;
-      ::xml_schema::boolean_pskel* italic_parser_;
-      ::xml_schema::boolean_pskel* underline_parser_;
-      ::xml_schema::boolean_pskel* strikeout_parser_;
-
-      protected:
-      struct v_state_descr_
-      {
-        void (::xdl::symbol::Font_pskel::*func) (
-          unsigned long&,
-          unsigned long&,
-          const ::xml_schema::ro_string&,
-          const ::xml_schema::ro_string&,
-          const ::xml_schema::ro_string*,
-          bool);
-        unsigned long state;
-        unsigned long count;
-      };
-
-      struct v_state_
-      {
-        v_state_descr_ data[2UL];
-        unsigned long size;
-      };
-
-      v_state_ v_state_first_;
-      ::xsd::cxx::parser::pod_stack v_state_stack_;
-
-      virtual void
-      _pre_e_validate ();
-
-      virtual void
-      _post_e_validate ();
-
-      void
-      sequence_0 (unsigned long& state,
-                  unsigned long& count,
-                  const ::xml_schema::ro_string& ns,
-                  const ::xml_schema::ro_string& n,
-                  const ::xml_schema::ro_string* t,
-                  bool start);
     };
   }
 }

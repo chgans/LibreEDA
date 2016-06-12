@@ -13,7 +13,7 @@ namespace SymbolEditor
     // TODO: Wrap mode: QTextOption::WrapMode of item's document
     class TextFrameItem: public Item
     {
-        Q_OBJECT
+//        Q_OBJECT
 
     public:
         enum SizePolicy
@@ -32,7 +32,7 @@ namespace SymbolEditor
         QGraphicsTextItem *m_textItem;
         SizePolicy m_sizePolicy;
 
-    private slots:
+    private /*slots*/:
         void onDocumentContentChanged();
 
         // Facade pattern to QGraphicsTextItem
@@ -63,9 +63,9 @@ namespace SymbolEditor
         bool openExternalLinks() const;
         void setTextCursor(const QTextCursor &cursor);
         QTextCursor textCursor() const;
-    signals:
-        void linkActivated(const QString &);
-        void linkHovered(const QString &);
+//    signals:
+//        void linkActivated(const QString &);
+//        void linkHovered(const QString &);
 
 
         // QGraphicsItem interface
@@ -82,6 +82,7 @@ namespace SymbolEditor
         // SchItem interface
     public:
         virtual Item *clone();
+        void setProperty(quint64 id, const QVariant &value);
 
         // QGraphicsItem interface
     protected:

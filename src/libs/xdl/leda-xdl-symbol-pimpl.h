@@ -52,8 +52,6 @@ class Item_pimpl: public virtual Item_pskel
 {
 public:
     virtual void pre();
-    virtual void pen(const QPen &);
-    virtual void brush(const QBrush &);
     virtual void position(const QPointF &);
     virtual void z_value(double);
     virtual void rotation(const qreal &);
@@ -68,8 +66,11 @@ protected:
     Item *m_item;
 
 protected:
-    QPen m_pen;
-    QBrush m_brush;
+    LineStyle m_lineStyle;
+    LineWidth m_lineWidth;
+    Color m_lineColor;
+    FillStyle m_fillStyle;
+    Color m_fillColor;
     QPointF m_position;
     qreal m_zValue;
     qreal m_rotation;
@@ -224,22 +225,6 @@ private:
     int m_fontSize;
 };
 
-class Font_pimpl: public virtual Font_pskel
-{
-public:
-    virtual void pre();
-    virtual void family(const ::std::string &);
-    virtual void size(unsigned long long);
-    virtual void bold(bool);
-    virtual void italic(bool);
-    virtual void underline(bool);
-    virtual void strikeout(bool);
-    virtual QFont post_Font();
-
-private:
-    QFont m_font;
-};
-
 class Point_pimpl: public virtual Point_pskel
 {
 public:
@@ -264,71 +249,37 @@ private:
     QList<QPointF> m_points;
 };
 
-class Pen_pimpl: public virtual Pen_pskel
-{
-public:
-    virtual void pre();
-    virtual void width(const qreal &);
-    virtual void color(const QColor &);
-    virtual void style(const Qt::PenStyle &);
-    virtual void cap_style(const Qt::PenCapStyle &);
-    virtual void join_style(const Qt::PenJoinStyle &);
-    virtual QPen post_Pen();
-
-private:
-    QPen m_pen;
-};
-
-class Brush_pimpl: public virtual Brush_pskel
-{
-public:
-    virtual void pre();
-    virtual void color(const QColor &);
-    virtual void style(const Qt::BrushStyle &);
-    virtual QBrush post_Brush();
-
-private:
-    QBrush m_brush;
-};
-
-class PenStyle_pimpl: public virtual PenStyle_pskel,
+class LineStyle_pimpl: public virtual LineStyle_pskel,
     public ::xml_schema::string_pimpl
 {
 public:
     virtual void pre();
-    virtual Qt::PenStyle post_PenStyle();
+    virtual LineStyle post_LineStyle();
 };
 
-class PenCapStyle_pimpl: public virtual PenCapStyle_pskel,
+class LineWidth_pimpl: public virtual LineWidth_pskel,
     public ::xml_schema::string_pimpl
 {
 public:
     virtual void pre();
-    virtual Qt::PenCapStyle post_PenCapStyle();
+    virtual LineWidth post_LineWidth();
 };
 
-class PenJoinStyle_pimpl: public virtual PenJoinStyle_pskel,
+class FillStyle_pimpl: public virtual FillStyle_pskel,
     public ::xml_schema::string_pimpl
 {
 public:
     virtual void pre();
-    virtual Qt::PenJoinStyle post_PenJoinStyle();
+    virtual FillStyle post_FillStyle();
 };
 
-class BrushStyle_pimpl: public virtual BrushStyle_pskel,
-    public ::xml_schema::string_pimpl
-{
-public:
-    virtual void pre();
-    virtual Qt::BrushStyle post_BrushStyle();
-};
 
 class Color_pimpl: public virtual Color_pskel,
     public ::xml_schema::string_pimpl
 {
 public:
     virtual void pre();
-    virtual QColor post_Color();
+    virtual Color post_Color();
 };
 class Angle_pimpl: public virtual Angle_pskel,
     public ::xml_schema::double_pimpl

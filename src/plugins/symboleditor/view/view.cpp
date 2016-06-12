@@ -99,7 +99,7 @@ namespace SymbolEditor
 
         if (m_tool != nullptr)
         {
-            m_tool->activate(this);
+            m_tool->activate();
         }
     }
 

@@ -31,13 +31,7 @@ namespace SymbolEditor
         for (quint64 id : itemIdList)
         {
             auto item = document()->item(id);
-            if (item == nullptr)
-            {
-                warnItemNotFound("Clone", id);
-                continue;
-            }
-            auto clone = item->clone();
-            quint64 cloneId = document()->addItem(clone);
+            quint64 cloneId = document()->cloneItem(id);
             auto newPosition = item->position() + translation;
             document()->setItemProperty(cloneId, xdl::symbol::Item::PositionProperty, newPosition);
             cloneIdList.append(cloneId);

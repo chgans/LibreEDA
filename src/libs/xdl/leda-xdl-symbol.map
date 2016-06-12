@@ -6,10 +6,6 @@ namespace http://www.leda.org/xdl
     include <QString>;
     include <QList>;
     include <QPointF>;
-    include <QPen>;
-    include <QBrush>;
-    include <QColor>;
-    include <QFont>;
 
     include "symbol.h";
 
@@ -30,16 +26,13 @@ namespace http://www.leda.org/xdl
     Opacity qreal;
     NonNegativeDouble qreal;
 
-    Pen QPen;
-    PenStyle Qt::PenStyle;
-    PenCapStyle Qt::PenCapStyle;
-    PenJoinStyle Qt::PenJoinStyle;
-    Brush QBrush;
-    BrushStyle Qt::BrushStyle;
     Point QPointF;
     PointList QList<QPointF>;
-    Color QColor;
-    Font QFont;
+
+    LineStyle LineStyle;
+    LineWidth LineWidth;
+    FillStyle FillStyle;
+    Color Color;
 }
 
 namespace http://www.w3.org/2001/XMLSchema

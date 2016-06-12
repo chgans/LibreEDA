@@ -9,6 +9,7 @@
 #include "handle/handle.h"
 
 #include "propertyeditor/itempropertyeditor.h"
+
 #include "objectinspector/objectinspectorview.h"
 #include "objectinspector/objectinspectormodel.h"
 
@@ -23,8 +24,8 @@
 namespace SymbolEditor
 {
 
-    SelectTool::SelectTool(QObject *parent):
-        InteractiveTool(parent)
+    SelectTool::SelectTool(Editor *editor):
+        InteractiveTool(editor)
     {
         QAction *action = new QAction(QIcon::fromTheme("edit-select"),
                                       "Select <i>Esc</i>", nullptr);
@@ -34,7 +35,7 @@ namespace SymbolEditor
 
         setupObjectInspector();
         setupPropertyBrowser();
-        setTaskWidgets(QList<QWidget*>() << m_objectInspectorView << m_itemPropertyEditor);
+        setTaskWidgets(QList<QWidget*>() << m_objectInspectorView << m_propertyEditor);
     }
 
     SelectTool::~SelectTool()
@@ -69,6 +70,12 @@ namespace SymbolEditor
                 break;
             default:
                 break;
+        }
+
+
+        if (m_propertyEditor->item() != nullptr && m_propertyEditor->item()->id() == itemId)
+        {
+            m_propertyEditor->updateProperty(propertyId, value);
         }
     }
 
@@ -123,11 +130,11 @@ namespace SymbolEditor
 
     void SelectTool::onSceneSelectionChanged()
     {
-        m_itemPropertyEditor->setItem(nullptr); // or m_itemPropertyEditor->clear();
+        m_propertyEditor->setItem(nullptr);
         for (auto item: scene()->selectedObjects())
         {
-            // FIXME: only one item for now
-            m_itemPropertyEditor->setItem(item);
+            quint64 id = scene()->documentIdForItem(item);
+            m_propertyEditor->setItem(document()->item(id));
             break;
         }
 
@@ -156,9 +163,8 @@ namespace SymbolEditor
     {
     }
 
-    void SelectTool::activate(View *view)
+    void SelectTool::activate()
     {
-        setView(view);
         onSceneSelectionChanged();
         connect(scene(), &Scene::selectionChanged,
                 this, &SelectTool::onSceneSelectionChanged);
@@ -168,11 +174,13 @@ namespace SymbolEditor
                 this, &SelectTool::onObjectInspectorVisibilityChangeRequested);
         connect(m_objectInspectorModel, &ObjectInspectorModel::itemLockStateChangeRequested,
                 this, &SelectTool::onObjectInspectorLockStateChangeRequested);
-        m_itemPropertyEditor->setItem(nullptr);
+        connect(m_propertyEditor, &ItemPropertyEditor::commandRequested,
+                this, &SelectTool::commandRequested);
     }
 
     void SelectTool::desactivate()
     {
+        m_propertyEditor->disconnect(this);
         m_objectInspectorModel->disconnect(this);
         m_objectInspectorView->selectionModel()->disconnect(this);
         scene()->disconnect(this);
@@ -234,7 +242,7 @@ namespace SymbolEditor
 
     void SelectTool::setupPropertyBrowser()
     {
-        m_itemPropertyEditor = new ItemPropertyEditor;
+        m_propertyEditor = new ItemPropertyEditor();
     }
 
 }

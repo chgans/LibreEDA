@@ -10,11 +10,6 @@ namespace SymbolEditor
 
     class PolylineItem : public Item
     {
-        Q_OBJECT
-
-        Q_PROPERTY(QLineF line READ line WRITE setLine NOTIFY lineChanged)
-
-        // GraphicsLineItem
     public:
         enum HandleId
         {
@@ -25,12 +20,7 @@ namespace SymbolEditor
         explicit PolylineItem(Item *parent = nullptr);
 
         QLineF line() const;
-
-    public slots:
         void setLine(const QLineF &line);
-
-    signals:
-        void lineChanged();
 
     private:
         QLineF m_line;
@@ -38,6 +28,7 @@ namespace SymbolEditor
         // SchItem interface
     public:
         Item *clone();
+        void setProperty(quint64 id, const QVariant &value);
 
         //virtual QList<QPointF> hotSpots() const;
         virtual QList<QPointF> endPoints() const;

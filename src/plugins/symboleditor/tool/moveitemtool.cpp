@@ -10,8 +10,8 @@
 namespace SymbolEditor
 {
 
-    MoveItemTool::MoveItemTool(QObject *parent):
-        InteractiveTool (parent)
+    MoveItemTool::MoveItemTool(Editor *editor):
+        InteractiveTool (editor)
     {
         QAction *action = new QAction(QIcon::fromTheme("transform-move"),
                                       "<b>M</b>ove items <i>e,m</i>", nullptr);
@@ -86,9 +86,8 @@ namespace SymbolEditor
         m_items.clear();
     }
 
-    void MoveItemTool::activate(View *view)
+    void MoveItemTool::activate()
     {
-        setView(view);
         resetTool();
     }
 

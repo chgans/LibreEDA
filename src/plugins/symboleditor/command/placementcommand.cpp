@@ -17,10 +17,11 @@ namespace SymbolEditor
 
     void PlacementCommand::placeItem(xdl::symbol::Item *item)
     {
-        item->setLineStyle(xdl::symbol::LineStyle(pen.style()));
-        item->setLineColor(pen.color().name());
-        item->setLineWidth(xdl::symbol::MediumLine); // FIXME
-        item->setFillColor(brush.color().name());
+        item->setLineStyle(lineStyle);
+        item->setLineWidth(lineWidth);
+        item->setLineColor(lineColor);
+        item->setFillStyle(fillStyle);
+        item->setFillColor(fillColor);
         item->setPosition(position);
         item->setRotation(rotation);
         item->setOpacity(opacity);

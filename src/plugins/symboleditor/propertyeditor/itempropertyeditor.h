@@ -1,19 +1,16 @@
 #pragma once
 
+#include "document.h"
+
 #include <QWidget>
 
-class QtDoublePropertyManager;
-class QtBoolPropertyManager;
-class QtGroupPropertyManager;
 class QtAbstractPropertyBrowser;
-class QtProperty;
 
 namespace SymbolEditor
 {
 
-    class Item;
-    class ItemPropertyManager;
-    class ItemPropertyAdapter;
+    class UndoCommand;
+    class PropertyManager;
 
     class ItemPropertyEditor : public QWidget
     {
@@ -22,50 +19,36 @@ namespace SymbolEditor
         explicit ItemPropertyEditor(QWidget *parent = nullptr);
         virtual ~ItemPropertyEditor();
 
-        Item *item() const;
-
-    public slots:
-        void setItem(Item *item);
+        const Document::Item *item() const;
 
     signals:
-        void opacityChanged(qreal opacity);
-        void rotationChanged(qreal rotation);
-        void zValueChanged(qreal zValue);
-        void lockStateChanged(bool locked);
-        void visibilityChanged(bool visible);
-        void xMirroringChanged(bool mirrored);
-        void yMirroringChanged(bool mirrored);
+        void commandRequested(UndoCommand *command);
 
-    protected:
-        void setupProperties();
-        void setupPropertyManagers();
-        void updatePropertyManagerValues();
-        void connectManagers();
-        void disconnectManagers();
+    public slots:
+        void setItem(const Document::Item *item);
+        void updateProperty(quint64 id, const QVariant &value);
+        void clear();
 
-    protected slots:
-        void onRealPropertyChanged(QtProperty *property);
-        void onBooleanPropertyChanged(QtProperty *property);
+    private slots:
+        void onValueChanged(quint64 id, const QVariant &value);
 
     private:
+        void load();
+        bool m_updatingProperties;
         QtAbstractPropertyBrowser *m_browser;
-        ItemPropertyManager *m_manager;
-        ItemPropertyAdapter *m_adapter;
+        PropertyManager *m_manager;
+        const Document::Item *m_item;
 
-        QtGroupPropertyManager *m_groupPropertyManager;
-        QtDoublePropertyManager *m_realPropertyManager;
-        QtBoolPropertyManager *m_booleanPropertyManager;
-
-        QtProperty *m_itemGroupProperty;
-        QtProperty *m_opacityProperty;
-        QtProperty *m_rotationProperty;
-        QtProperty *m_zValueProperty;
-        QtProperty *m_lockedProperty;
-        QtProperty *m_visibleProperty;
-        QtProperty *m_xMirroredProperty;
-        QtProperty *m_yMirroredProperty;
-
-        Item *m_item;
+        void addCoordinate(quint64 id);
+        void addLength(quint64 id);
+        void addAngle(quint64 id);
+        void addPercentage(quint64 id);
+        void addColor(quint64 id);
+        void addBistate(quint64 id);
+        void addText(quint64 id);
+        void addLineStyle(quint64 id);
+        void addLineWidth(quint64 id);
+        void addFillStyle(quint64 id);
     };
 
 }

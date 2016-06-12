@@ -15,8 +15,8 @@
 namespace SymbolEditor
 {
 
-    PlacementTool::PlacementTool(QObject *parent):
-        InteractiveTool(parent)
+    PlacementTool::PlacementTool(Editor *editor):
+        InteractiveTool(editor)
     {
         resetTool();
     }
@@ -173,9 +173,8 @@ namespace SymbolEditor
         endInsert(m_pressPos);
     }
 
-    void PlacementTool::activate(View *view)
+    void PlacementTool::activate()
     {
-        setView(view);
         resetTool();
     }
 

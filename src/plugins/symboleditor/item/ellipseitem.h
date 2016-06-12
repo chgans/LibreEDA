@@ -7,11 +7,6 @@ namespace SymbolEditor
 
     class EllipseItem : public Item
     {
-        Q_OBJECT
-
-        Q_PROPERTY(qreal xRadius READ xRadius WRITE setXRadius NOTIFY xRadiusChanged)
-        Q_PROPERTY(qreal yRadius READ yRadius WRITE setYRadius NOTIFY yRadiusChanged)
-
     public:
         enum HandleId
         {
@@ -24,15 +19,9 @@ namespace SymbolEditor
         ~EllipseItem();
 
         qreal xRadius() const;
-        qreal yRadius() const;
-
-    public slots:
         void setXRadius(qreal xRadius);
+        qreal yRadius() const;
         void setYRadius(qreal yRadius);
-
-    signals:
-        void xRadiusChanged(qreal xRadius);
-        void yRadiusChanged(qreal yRadius);
 
     private:
         QPointF pointAt(int angle) const;
@@ -49,6 +38,7 @@ namespace SymbolEditor
         // SchItem interface
     public:
         virtual Item *clone();
+        virtual void setProperty(quint64 id, const QVariant &value);
 
         //virtual QList<QPointF> hotSpots() const;
         virtual QList<QPointF> endPoints() const;

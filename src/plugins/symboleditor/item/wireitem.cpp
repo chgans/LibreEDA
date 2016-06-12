@@ -57,6 +57,11 @@ namespace SymbolEditor
         return item;
     }
 
+    void WireItem::setProperty(quint64 id, const QVariant &value)
+    {
+        Item::setProperty(id, value);
+    }
+
     QList<QPointF> WireItem::points() const
     {
         QList<QPointF> result;
@@ -83,8 +88,6 @@ namespace SymbolEditor
         }
         m_boundingRect = QRectF();
         update();
-
-        emit pointsChanged();
     }
 
     void WireItem::movePoint(int idx, const QPointF &pos)
@@ -97,8 +100,6 @@ namespace SymbolEditor
         m_path.setElementPositionAt(idx, pos.x(), pos.y());
         m_boundingRect = QRectF();
         update();
-
-        emit pointsChanged();
     }
 
     void WireItem::setPoints(QList<QPointF> points)
@@ -123,8 +124,6 @@ namespace SymbolEditor
         }
         m_boundingRect = QRectF();
         update();
-
-        emit pointsChanged();
     }
 
     void WireItem::itemNotification(IObservableItem *item)
@@ -136,8 +135,6 @@ namespace SymbolEditor
         m_path.setElementPositionAt(idx, handle->pos().x(), handle->pos().y());
         m_boundingRect = QRectF();
         update();
-
-        emit pointsChanged();
     }
 
 

@@ -17,7 +17,7 @@ namespace SymbolEditor
         Q_OBJECT
 
     public:
-        explicit InteractiveTool(QObject *parent = nullptr);
+        explicit InteractiveTool(Editor *editor = nullptr);
         ~InteractiveTool();
 
         QList<QWidget *> taskWidgets();

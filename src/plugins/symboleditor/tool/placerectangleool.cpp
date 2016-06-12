@@ -10,8 +10,8 @@
 namespace SymbolEditor
 {
 
-    PlaceRectangleTool::PlaceRectangleTool(QObject *parent):
-        PlacementTool(parent), m_item(nullptr)
+    PlaceRectangleTool::PlaceRectangleTool(Editor *editor):
+        PlacementTool(editor), m_item(nullptr)
     {
         QAction *action = new QAction(QIcon::fromTheme("draw-rectangle"),//QIcon(":/icons/tool/graphicsrecttool.svg"),
                                       "<b>P</b>lace a <b>R</b>ectangle <i>p,r</i>", nullptr);
@@ -27,7 +27,7 @@ namespace SymbolEditor
             {
                 return;
             }
-            m_item->setPen(pen);
+            //m_item->setPen(pen);
         });
         m_brushSettingsWidget = new BrushSettingsWidget();
         connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
@@ -37,7 +37,7 @@ namespace SymbolEditor
             {
                 return;
             }
-            m_item->setBrush(brush);
+            //m_item->setBrush(brush);
         });
 
         QList<QWidget *> widgets;
@@ -59,8 +59,8 @@ namespace SymbolEditor
         m_item = new RectangleItem();
         m_item->setPos(pos);
         m_item->setRect(QRect());
-        m_item->setPen(m_penSettingsWidget->pen());
-        m_item->setBrush(m_brushSettingsWidget->brush());
+        //m_item->setPen(m_penSettingsWidget->pen());
+        //m_item->setBrush(m_brushSettingsWidget->brush());
         return m_item;
     }
 
@@ -93,8 +93,11 @@ namespace SymbolEditor
         command->position = m_item->rect().topLeft();
         command->opacity = m_item->opacity();
         command->zValue = m_item->zValue();
-        command->pen = m_item->pen();
-        command->brush = m_item->brush();
+        command->lineStyle = m_item->lineStyle();
+        command->lineWidth = m_item->lineWidth();
+        command->lineColor = m_item->lineColor();
+        command->fillStyle = m_item->fillStyle();
+        command->fillColor = m_item->fillColor();
         command->width = m_item->rect().width();
         command->height = m_item->rect().height();
         emit commandRequested(command);

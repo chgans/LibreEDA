@@ -14,7 +14,7 @@ namespace SymbolEditor
         Q_OBJECT
 
     public:
-        explicit PlacePolyineTool(QObject *parent = nullptr);
+        explicit PlacePolyineTool(Editor *editor);
 
     private:
         PolylineItem *m_item;

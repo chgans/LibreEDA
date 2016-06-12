@@ -11,8 +11,8 @@
 namespace SymbolEditor
 {
 
-    PlacePolygonTool::PlacePolygonTool(QObject *parent):
-        PlacementTool(parent),
+    PlacePolygonTool::PlacePolygonTool(Editor *editor):
+        PlacementTool(editor),
         m_item(nullptr)
     {
         QAction *action = new QAction(QIcon::fromTheme("draw-polygon"), //QIcon(":/icons/tool/graphicspolygontool.svg"),
@@ -29,7 +29,7 @@ namespace SymbolEditor
             {
                 return;
             }
-            m_item->setPen(pen);
+            //m_item->setPen(pen);
         });
         m_brushSettingsWidget = new BrushSettingsWidget();
         connect(m_brushSettingsWidget, &BrushSettingsWidget::brushChanged,
@@ -39,7 +39,7 @@ namespace SymbolEditor
             {
                 return;
             }
-            m_item->setBrush(brush);
+            //m_item->setBrush(brush);
         });
 
         QList<QWidget *> widgets;
@@ -56,8 +56,8 @@ namespace SymbolEditor
     {
         m_item = new PolygonItem();
         m_item->setPos(pos);
-        m_item->setPen(m_penSettingsWidget->pen());
-        m_item->setBrush(m_brushSettingsWidget->brush());
+        //m_item->setPen(m_penSettingsWidget->pen());
+        //m_item->setBrush(m_brushSettingsWidget->brush());
         return m_item;
     }
 
@@ -107,8 +107,11 @@ namespace SymbolEditor
         command->position = m_item->pos();
         command->opacity = m_item->opacity();
         command->zValue = m_item->zValue();
-        command->pen = m_item->pen();
-        command->brush = m_item->brush();
+        command->lineStyle = m_item->lineStyle();
+        command->lineWidth = m_item->lineWidth();
+        command->lineColor = m_item->lineColor();
+        command->fillStyle = m_item->fillStyle();
+        command->fillColor = m_item->fillColor();
         command->vertices = m_item->polygon().toList();
         emit commandRequested(command);
 

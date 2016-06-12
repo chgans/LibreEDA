@@ -62,10 +62,18 @@ namespace SymbolEditor
     quint64 Document::addItem(Document::Item *item)
     {
         m_itemIndex++;
+        item->setId(m_itemIndex);
         m_drawingItemMap.insert(m_itemIndex, item);
         emit itemAdded(m_itemIndex, item);
         setModified(true);
         return m_itemIndex;
+    }
+
+    quint64 Document::cloneItem(quint64 id)
+    {
+        auto item = m_drawingItemMap.value(id);
+        auto clone = item->clone();
+        return addItem(clone);
     }
 
     void Document::removeItem(quint64 id)

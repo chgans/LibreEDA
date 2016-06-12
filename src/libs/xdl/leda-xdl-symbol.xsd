@@ -17,10 +17,13 @@
   <xs:complexType name="Item">
     <!-- FIXME: not all items need a pen and a brush -->
     <xs:sequence>
-        <xs:element name="pen" type="xdl:Pen" minOccurs="0"/>
-        <xs:element name="brush" type="xdl:Brush" minOccurs="0"/>
     	<xs:element name="position" type="xdl:Point" />
-    	<xs:element name="z-value" type="xs:double" minOccurs="0" />
+        <xs:element name="line-style" type="xdl:LineStyle" minOccurs="0"/>
+        <xs:element name="line-width" type="xdl:LineWidth" minOccurs="0"/>
+        <xs:element name="line-color" type="xdl:Color" minOccurs="0"/>
+        <xs:element name="fill-style" type="xdl:FillStyle" minOccurs="0"/>
+        <xs:element name="fill-color" type="xdl:Color" minOccurs="0"/>
+        <xs:element name="z-value" type="xs:double" minOccurs="0" />
     	<xs:element name="rotation" type="xdl:Angle" minOccurs="0" />
     	<xs:element name="opacity" type="xdl:Opacity" minOccurs="0" />
     	<xs:element name="locked" type="xs:boolean" minOccurs="0" />
@@ -129,8 +132,7 @@
         <xs:sequence>
           <xs:element name="text" type="xs:string" />
           <xs:element name="color" type="xdl:Color"  minOccurs="0" />
-          <xs:element name="font-family" type="xs:string" minOccurs="0" />
-          <xs:element name="font-size" type="xs:nonNegativeInteger" minOccurs="0" />
+          <xs:element name="size" type="xs:nonNegativeInteger" minOccurs="0" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -160,68 +162,50 @@
       <xs:element name="point" type="xdl:Point" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
-  <!--  Could replace pen and brush with
-  <xs:element name="line-style" type="xs:integer" minOccurs="0"/>
-  <xs:element name="line-width" type="xdl:NonNegativeDouble" minOccurs="0"/>
-  <xs:element name="line-color" type="xdl:Color" minOccurs="0"/>
-  <xs:element name="fill-style" type="xs:integer" minOccurs="0"/>
-  <xs:element name="fill-color" type="xdl:Color" minOccurs="0"/>
-  -->
-  <xs:complexType name="Pen">
-    <xs:sequence>
-      <xs:element name="width" type="xdl:NonNegativeDouble"/>
-      <xs:element name="color" type="xdl:Color"/>
-      <!-- QPen defaults -->
-      <xs:element name="style" type="xdl:PenStyle" minOccurs="0"/>
-      <xs:element name="cap-style" type="xdl:PenCapStyle" minOccurs="0"/>
-      <xs:element name="join-style" type="xdl:PenJoinStyle" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="Brush">
-    <xs:sequence>
-      <xs:element name="color" type="xdl:Color"/>
-      <xs:element name="style" type="xdl:BrushStyle" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:simpleType name="PenStyle">
+  <xs:simpleType name="LineWidth">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="NoPen"/>
-      <xs:enumeration value="SolidLine"/>
-      <xs:enumeration value="DashLine"/>
-      <xs:enumeration value="DotLine"/>
-      <xs:enumeration value="DashDotLine"/>
-      <xs:enumeration value="DashDotDotLine"/>
+      <xs:enumeration value="Thinest"/>
+      <xs:enumeration value="Thiner"/>
+      <xs:enumeration value="Thin"/>
+      <xs:enumeration value="SlightlyThin"/>
+      <xs:enumeration value="Medium"/>
+      <xs:enumeration value="SlightlyThick"/>
+      <xs:enumeration value="Thick"/>
+      <xs:enumeration value="Thicker"/>
+      <xs:enumeration value="Thickest"/>
     </xs:restriction>
   </xs:simpleType>
-  <xs:simpleType name="PenCapStyle">
+  <xs:simpleType name="LineStyle">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Flat"/>
-      <xs:enumeration value="Square"/>
-      <xs:enumeration value="Round"/>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="PenJoinStyle">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Miter"/>
-      <xs:enumeration value="Bevel"/>
-      <xs:enumeration value="Round"/>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="BrushStyle">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="NoBrush"/>
+      <xs:enumeration value="None"/>
       <xs:enumeration value="Solid"/>
-      <xs:enumeration value="Horizontal"/>
-      <xs:enumeration value="Vertival"/>
-      <xs:enumeration value="Cross"/>
-      <xs:enumeration value="BDiagonal"/>
-      <xs:enumeration value="FDiagonal"/>
-      <xs:enumeration value="CrossDiagonal"/>
+      <xs:enumeration value="Dash"/>
+      <xs:enumeration value="Dot"/>
+      <xs:enumeration value="DashDot"/>
+      <xs:enumeration value="DashDotDot"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="FillStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None"/>
+      <xs:enumeration value="Solid"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="Color">
     <xs:restriction base="xs:string">
-      <xs:pattern value="#[0-9a-fA-F]{6}"/>
+    <xs:enumeration value="PrimaryContent"/>
+    <xs:enumeration value="SecondaryContent"/>
+    <xs:enumeration value="EmphasisedContent"/>
+    <xs:enumeration value="Background"/>
+    <xs:enumeration value="BackgroundHighlight"/>
+    <xs:enumeration value="Yellow"/>
+    <xs:enumeration value="Orange"/>
+    <xs:enumeration value="Red"/>
+    <xs:enumeration value="Magenta"/>
+    <xs:enumeration value="Violet"/>
+    <xs:enumeration value="Blue"/>
+    <xs:enumeration value="Cyan"/>
+    <xs:enumeration value="Green"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="Angle">
@@ -243,15 +227,4 @@
   		<xs:minInclusive value="0.0"></xs:minInclusive>
   	</xs:restriction>
   </xs:simpleType>
-  <!-- TBD: just serialise familiy and size? italic and co are actually part of the (rich) text itself -->
-  <xs:complexType name="Font">
-  	<xs:sequence>
-  		<xs:element name="family" type="xs:string"></xs:element>
-  		<xs:element name="size" type="xs:nonNegativeInteger"></xs:element>
-  		<xs:element name="bold" type="xs:boolean" maxOccurs="1" minOccurs="0"></xs:element>
-  		<xs:element name="italic" type="xs:boolean" maxOccurs="1" minOccurs="0"></xs:element>
-  		<xs:element name="underline" type="xs:boolean" maxOccurs="1" minOccurs="0"></xs:element>
-  		<xs:element name="strikeout" type="xs:boolean" maxOccurs="1" minOccurs="0"></xs:element>
-  	</xs:sequence>
-  </xs:complexType>
 </xs:schema>

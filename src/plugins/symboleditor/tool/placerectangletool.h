@@ -17,7 +17,7 @@ namespace SymbolEditor
         Q_OBJECT
 
     public:
-        explicit PlaceRectangleTool(QObject *parent = nullptr);
+        explicit PlaceRectangleTool(Editor *editor);
         ~PlaceRectangleTool();
 
     protected:

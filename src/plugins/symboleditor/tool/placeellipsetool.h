@@ -18,7 +18,7 @@ namespace SymbolEditor
         Q_OBJECT
 
     public:
-        explicit PlaceEllipseTool(QObject *parent = nullptr);
+        explicit PlaceEllipseTool(Editor *editor);
         ~PlaceEllipseTool();
 
     private:

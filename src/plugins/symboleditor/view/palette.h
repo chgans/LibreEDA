@@ -22,6 +22,24 @@ namespace SymbolEditor
             Light
         };
 
+        // Match xdl::symbol::Color enum
+        enum ColorId
+        {
+            EmphasisedContent = 0,
+            PrimaryContent = 1,
+            SecondaryContent = 2,
+            BackgroundHighlight = 3,
+            Background = 4,
+            Yellow = 5,
+            Orange = 6,
+            Red = 7,
+            Magenta = 8,
+            Violet = 9,
+            Blue = 10,
+            Cyan = 11,
+            Green = 12
+        };
+
         void setMode(Mode mode);
         Mode mode() const;
 
@@ -40,6 +58,7 @@ namespace SymbolEditor
         QColor cyan() const;
         QColor green() const;
 
+        QColor color(ColorId id) const;
     private:
         Mode m_mode;
     };

@@ -9,8 +9,8 @@
 namespace SymbolEditor
 {
 
-    DragSelectTool::DragSelectTool(QObject *parent):
-        InteractiveTool (parent),
+    DragSelectTool::DragSelectTool(Editor *editor):
+        InteractiveTool (editor),
         m_rubberBand(new QRubberBand(QRubberBand::Rectangle))
     {
 
@@ -45,9 +45,8 @@ namespace SymbolEditor
     }
 
 
-    void DragSelectTool::activate(View *view)
+    void DragSelectTool::activate()
     {
-        setView(view);
     }
 
     void DragSelectTool::desactivate()

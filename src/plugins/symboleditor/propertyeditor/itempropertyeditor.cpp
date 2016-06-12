@@ -1,18 +1,13 @@
-#include "itempropertyeditor.h"
-#include "itempropertyadapter.h"
-#include "itempropertymanager.h"
-#include "circlepropertyadapter.h"
-#include "item/item.h"
-
 // See https://github.com/qtproject/qttools/blob/dev/src/designer/src/
 // - lib/sdk/abstractpropertyeditor.h
 // - lib/shared/qdesigner_propertyeditor_p.h
 // - components/propertyeditor/propertyeditor.h
-#include <qtpropertybrowser/qtpropertymanager.h>
-#include <qtpropertybrowser/qteditorfactory.h>
-#include <qtpropertybrowser/qttreepropertybrowser.h>
-#include <qtpropertybrowser/qtbuttonpropertybrowser.h>
-#include <qtpropertybrowser/qtgroupboxpropertybrowser.h>
+
+#include "itempropertyeditor.h"
+#include "propertybrowser.h"
+#include "propertymanager.h"
+
+#include "command/setpropertycommand.h"
 
 #include <QVBoxLayout>
 
@@ -23,21 +18,21 @@ namespace SymbolEditor
         QWidget(parent), m_item(nullptr)
     {
         setLayout(new QVBoxLayout);
+
         // TODO: setBrowser();
-        m_browser = new QtTreePropertyBrowser();
+        m_browser = new TreePropertyBrowser();
         layout()->addWidget(m_browser);
         layout()->setMargin(0);
+
         // TODO: setManager();
-        m_manager = new ItemPropertyManager(this);
+        m_manager = new PropertyManager(this);
         m_manager->setBrowserFactories(m_browser);
-        // TODO: setAdapterForItemType();
-        m_adapter = new CirclePropertyAdapter(this);
-        m_adapter->setManager(m_manager);
 
-        //setupPropertyManagers();
-        //setupProperties();
+        connect(m_manager, &PropertyManager::propertyAdded,
+                m_browser, &TreePropertyBrowser::addProperty);
 
-        // TODO: Use object pool to collect ItemPropertyAdapter objects
+        connect(m_manager, &PropertyManager::valueChanged,
+                this, &ItemPropertyEditor::onValueChanged);
 
     }
 
@@ -46,174 +41,202 @@ namespace SymbolEditor
 
     }
 
-    Item *ItemPropertyEditor::item() const
+    const Document::Item *ItemPropertyEditor::item() const
     {
         return m_item;
     }
 
-    void ItemPropertyEditor::setItem(Item *item)
+    void ItemPropertyEditor::onValueChanged(quint64 id, const QVariant &value)
+    {
+        if (m_updatingProperties)
+        {
+            return;
+        }
+
+        auto command = new SetPropertyCommand();
+        command->setItemId(m_item->id());
+        command->setPropertId(id);
+        command->setPropertyValue(value);
+        emit commandRequested(command);
+    }
+
+    void ItemPropertyEditor::setItem(const Document::Item *item)
     {
         if (m_item == item)
         {
             return;
         }
 
+        clear();
+        m_item = item;
+        load();
+    }
+
+    void ItemPropertyEditor::updateProperty(quint64 id, const QVariant &value)
+    {
+        m_updatingProperties = true;
+        m_manager->setValue(id, value);
+        m_updatingProperties = false;
+    }
+
+    void ItemPropertyEditor::clear()
+    {
         m_browser->clear();
-        m_item = item;
+        m_manager->clear();
+    }
 
+    void ItemPropertyEditor::load()
+    {
         if (m_item == nullptr)
         {
             return;
         }
 
-        m_adapter->setItem(m_item);
-        for (auto property: m_adapter->properties())
+        m_updatingProperties = true;
+
+        switch (m_item->type())
         {
-            m_browser->addProperty(property);
+            case xdl::symbol::Item::Circle:
+                addCoordinate(xdl::symbol::Item::PositionProperty);
+                addLength(xdl::symbol::Item::RadiusProperty);
+                addLineStyle(xdl::symbol::Item::LineStyleProperty);
+                addLineWidth(xdl::symbol::Item::LineWidthProperty);
+                addColor(xdl::symbol::Item::LineColorProperty);
+                addFillStyle(xdl::symbol::Item::FillStyleProperty);
+                addColor(xdl::symbol::Item::FillColorProperty);
+                break;
+            case xdl::symbol::Item::CircularArc:
+                addCoordinate(xdl::symbol::Item::PositionProperty);
+                addLength(xdl::symbol::Item::RadiusProperty);
+                addAngle(xdl::symbol::Item::StartAngleProperty);
+                addAngle(xdl::symbol::Item::SpanAngleProperty);
+                addLineStyle(xdl::symbol::Item::LineStyleProperty);
+                addLineWidth(xdl::symbol::Item::LineWidthProperty);
+                addColor(xdl::symbol::Item::LineColorProperty);
+                addFillStyle(xdl::symbol::Item::FillStyleProperty);
+                addColor(xdl::symbol::Item::FillColorProperty);
+                break;
+            case xdl::symbol::Item::Ellipse:
+                addCoordinate(xdl::symbol::Item::PositionProperty);
+                addLength(xdl::symbol::Item::XRadiusProperty);
+                addLength(xdl::symbol::Item::YRadiusProperty);
+                addLineStyle(xdl::symbol::Item::LineStyleProperty);
+                addLineWidth(xdl::symbol::Item::LineWidthProperty);
+                addColor(xdl::symbol::Item::LineColorProperty);
+                addFillStyle(xdl::symbol::Item::FillStyleProperty);
+                addColor(xdl::symbol::Item::FillColorProperty);
+                break;
+            case xdl::symbol::Item::EllipticalArc:
+                addCoordinate(xdl::symbol::Item::PositionProperty);
+                addLength(xdl::symbol::Item::XRadiusProperty);
+                addLength(xdl::symbol::Item::YRadiusProperty);
+                addAngle(xdl::symbol::Item::StartAngleProperty);
+                addAngle(xdl::symbol::Item::SpanAngleProperty);
+                addLineStyle(xdl::symbol::Item::LineStyleProperty);
+                addLineWidth(xdl::symbol::Item::LineWidthProperty);
+                addColor(xdl::symbol::Item::LineColorProperty);
+                addFillStyle(xdl::symbol::Item::FillStyleProperty);
+                addColor(xdl::symbol::Item::FillColorProperty);
+                break;
+            case xdl::symbol::Item::Polyline:
+                addLineStyle(xdl::symbol::Item::LineStyleProperty);
+                addLineWidth(xdl::symbol::Item::LineWidthProperty);
+                addColor(xdl::symbol::Item::LineColorProperty);
+                addFillStyle(xdl::symbol::Item::FillStyleProperty);
+                addColor(xdl::symbol::Item::FillColorProperty);
+                break;
+            case xdl::symbol::Item::Polygon:
+                addLineStyle(xdl::symbol::Item::LineStyleProperty);
+                addLineWidth(xdl::symbol::Item::LineWidthProperty);
+                addColor(xdl::symbol::Item::LineColorProperty);
+                addFillStyle(xdl::symbol::Item::FillStyleProperty);
+                addColor(xdl::symbol::Item::FillColorProperty);
+                break;
+            case xdl::symbol::Item::Label:
+                break;
+            case xdl::symbol::Item::Pin:
+                break;
+            case xdl::symbol::Item::Group:
+                break;
+            case xdl::symbol::Item::Rectangle:
+                addCoordinate(xdl::symbol::Item::PositionProperty);
+                addLength(xdl::symbol::Item::WidthProperty);
+                addLength(xdl::symbol::Item::HeightProperty);
+                addLineStyle(xdl::symbol::Item::LineStyleProperty);
+                addLineWidth(xdl::symbol::Item::LineWidthProperty);
+                addColor(xdl::symbol::Item::LineColorProperty);
+                addFillStyle(xdl::symbol::Item::FillStyleProperty);
+                addColor(xdl::symbol::Item::FillColorProperty);
+                break;
         }
+        addAngle(xdl::symbol::Item::RotationProperty);
+        addBistate(xdl::symbol::Item::XMirroredProperty);
+        addBistate(xdl::symbol::Item::YMirroredProperty);
+        addBistate(xdl::symbol::Item::LockedProperty);
+        addBistate(xdl::symbol::Item::VisibilityProperty);
+        addPercentage(xdl::symbol::Item::OpacityProperty);
+
+        m_updatingProperties = false;
     }
 
-#if 0
-    // TODO: based on item type, delegate additional property groups to be added and update of tehir values
-    void ItemPropertyEditor::setItem(const Item *item)
+    void ItemPropertyEditor::addCoordinate(quint64 id)
     {
-        if (item == m_item)
-        {
-            if (m_item != nullptr)
-            {
-                updatePropertyManagerValues();
-            }
-            return;
-        }
-
-        if (m_item == nullptr)
-        {
-            m_browser->addProperty(m_itemGroupProperty);
-        }
-
-        m_item = item;
-
-        if (m_item == nullptr)
-        {
-            m_browser->removeProperty(m_itemGroupProperty);
-            return;
-        }
-
-        updatePropertyManagerValues();
-
-        // NEW
-        // m_adpaterMap[item->type()]->setItem();
-    }
-#endif
-
-    void ItemPropertyEditor::updatePropertyManagerValues()
-    {
-        disconnectManagers();
-        m_realPropertyManager->setValue(m_opacityProperty, m_item->opacity());
-        m_realPropertyManager->setValue(m_rotationProperty, m_item->rotation());
-        m_realPropertyManager->setValue(m_zValueProperty, m_item->zValue());
-        m_booleanPropertyManager->setValue(m_lockedProperty, !m_item->isEnabled());
-        m_booleanPropertyManager->setValue(m_visibleProperty, m_item->isVisible());
-        m_booleanPropertyManager->setValue(m_xMirroredProperty, m_item->isXMirrored());
-        m_booleanPropertyManager->setValue(m_yMirroredProperty, m_item->isYMirrored());
-        connectManagers();
+        m_manager->addCoordinate(id, m_item->friendlyPropertyName(id));
+        m_manager->setValue(id, m_item->property(id));
     }
 
-    void ItemPropertyEditor::connectManagers()
+    void ItemPropertyEditor::addLength(quint64 id)
     {
-        connect(m_realPropertyManager, &QtDoublePropertyManager::propertyChanged,
-                this, &ItemPropertyEditor::onRealPropertyChanged);
-        connect(m_booleanPropertyManager, &QtBoolPropertyManager::propertyChanged,
-                this, &ItemPropertyEditor::onBooleanPropertyChanged);
+        m_manager->addLength(id, m_item->friendlyPropertyName(id));
+        m_manager->setValue(id, m_item->property(id));
     }
 
-    void ItemPropertyEditor::disconnectManagers()
+    void ItemPropertyEditor::addAngle(quint64 id)
     {
-        m_booleanPropertyManager->disconnect(this);
-        m_realPropertyManager->disconnect(this);
+        m_manager->addAngle(id, m_item->friendlyPropertyName(id));
+        m_manager->setValue(id, m_item->property(id));
     }
 
-    void ItemPropertyEditor::onRealPropertyChanged(QtProperty *property)
+    void ItemPropertyEditor::addPercentage(quint64 id)
     {
-        qreal value = m_realPropertyManager->value(property);
-        if (property == m_opacityProperty)
-        {
-            emit opacityChanged(value);
-        }
-        else if (property == m_rotationProperty)
-        {
-            emit rotationChanged(value);
-        }
-        else if (property == m_zValueProperty)
-        {
-            emit zValueChanged(value);
-        }
+        m_manager->addPercentage(id, m_item->friendlyPropertyName(id));
+        m_manager->setValue(id, m_item->property(id));
     }
 
-    void ItemPropertyEditor::onBooleanPropertyChanged(QtProperty *property)
+    void ItemPropertyEditor::addColor(quint64 id)
     {
-        bool value = m_booleanPropertyManager->value(property);
-        if (property == m_lockedProperty)
-        {
-            emit lockStateChanged(value);
-        }
-        else if (property == m_visibleProperty)
-        {
-            emit visibilityChanged(value);
-        }
-        else if (property == m_xMirroredProperty)
-        {
-            emit xMirroringChanged(value);
-        }
-        else if (property == m_yMirroredProperty)
-        {
-            emit yMirroringChanged(value);
-        }
+        m_manager->addColor(id, m_item->friendlyPropertyName(id));
+        m_manager->setValue(id, m_item->property(id));
     }
 
-    void ItemPropertyEditor::setupProperties()
+    void ItemPropertyEditor::addBistate(quint64 id)
     {
-        m_itemGroupProperty = m_groupPropertyManager->addProperty("Drawing Item");
-        m_opacityProperty = m_realPropertyManager->addProperty("Opacity");
-        m_itemGroupProperty->addSubProperty(m_opacityProperty);
-        m_realPropertyManager->setMinimum(m_opacityProperty, 0.0);
-        m_realPropertyManager->setMaximum(m_opacityProperty, 1.0);
-        m_realPropertyManager->setSingleStep(m_opacityProperty, 0.1);
-        m_rotationProperty = m_realPropertyManager->addProperty("Rotation");
-        m_itemGroupProperty->addSubProperty(m_rotationProperty);
-        m_realPropertyManager->setMinimum(m_rotationProperty, 0.0);
-        m_realPropertyManager->setMaximum(m_rotationProperty, 360.0);
-        m_realPropertyManager->setSingleStep(m_rotationProperty, 5.0);
-        m_zValueProperty = m_realPropertyManager->addProperty("Z Value");
-        m_itemGroupProperty->addSubProperty(m_zValueProperty);
-        m_realPropertyManager->setMinimum(m_zValueProperty, 0.0);
-        //m_realPropertyManager->setMaximum(zValueProperty, 0.0);
-        //m_realPropertyManager->setSingleStep(zValueProperty, 0.0);
-        m_lockedProperty = m_booleanPropertyManager->addProperty("Locked");
-        m_itemGroupProperty->addSubProperty(m_lockedProperty);
-        m_visibleProperty = m_booleanPropertyManager->addProperty("Visible");
-        m_itemGroupProperty->addSubProperty(m_visibleProperty);
-        m_xMirroredProperty = m_booleanPropertyManager->addProperty("X Mirrored");
-        m_itemGroupProperty->addSubProperty(m_xMirroredProperty);
-        m_yMirroredProperty = m_booleanPropertyManager->addProperty("Y Mirrored");
-        m_itemGroupProperty->addSubProperty(m_yMirroredProperty);
-        // TBD: Pen and brush (per item)
-
-
-        // NEW
-        // m_adpater->setupPropertyManager();
+        m_manager->addBistate(id, m_item->friendlyPropertyName(id));
+        m_manager->setValue(id, m_item->property(id));
     }
 
-    void ItemPropertyEditor::setupPropertyManagers()
+    void ItemPropertyEditor::addText(quint64 id)
     {
-        m_groupPropertyManager = new QtGroupPropertyManager(this);
-        m_realPropertyManager = new QtDoublePropertyManager(this);
-        m_browser->setFactoryForManager(m_realPropertyManager, new QtDoubleSpinBoxFactory);
-        m_booleanPropertyManager = new QtBoolPropertyManager(this);
-        m_browser->setFactoryForManager(m_booleanPropertyManager, new QtCheckBoxFactory);
+        m_manager->addText(id, m_item->friendlyPropertyName(id));
+        m_manager->setValue(id, m_item->property(id));
+    }
 
-        // NEW
-        // m_manager->setupPropertyBrowser(m_browser);
+    void ItemPropertyEditor::addLineStyle(quint64 id)
+    {
+        m_manager->addLineStyle(id, m_item->friendlyPropertyName(id));
+        m_manager->setValue(id, m_item->property(id));
+    }
+
+    void ItemPropertyEditor::addLineWidth(quint64 id)
+    {
+        m_manager->addLineWidth(id, m_item->friendlyPropertyName(id));
+        m_manager->setValue(id, m_item->property(id));
+    }
+
+    void ItemPropertyEditor::addFillStyle(quint64 id)
+    {
+        m_manager->addFillStyle(id, m_item->friendlyPropertyName(id));
+        m_manager->setValue(id, m_item->property(id));
     }
 
 }

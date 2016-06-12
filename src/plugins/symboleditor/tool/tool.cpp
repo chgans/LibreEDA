@@ -2,15 +2,16 @@
 
 #include "view/scene.h"
 #include "view/view.h"
-
+#include "document.h"
+#include "editor.h"
 #include <QDialog>
 
 namespace SymbolEditor
 {
 
-    Tool::Tool(QObject *parent) :
-        QObject(parent),
-        m_view(nullptr)
+    Tool::Tool(Editor *editor) :
+        QObject(editor),
+        m_editor(editor)
     {
 
     }
@@ -22,17 +23,17 @@ namespace SymbolEditor
 
     View *Tool::view()
     {
-        return m_view;
+        return m_editor->view();
     }
 
     Scene *Tool::scene()
     {
-        return m_view->scene();
+        return m_editor->scene();
     }
 
-    void Tool::setView(View *view)
+    const Document *Tool::document()
     {
-        m_view = view;
+        return static_cast<const Document*>(m_editor->document());
     }
 
     void Tool::setToolGroup(const QString &group)

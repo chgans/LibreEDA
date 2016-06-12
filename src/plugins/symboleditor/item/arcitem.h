@@ -10,13 +10,6 @@ namespace SymbolEditor
 
     class ArcItem : public Item
     {
-        Q_OBJECT
-
-        Q_PROPERTY(qreal xRadius READ xRadius WRITE setXRadius)
-        Q_PROPERTY(qreal yRadius READ yRadius WRITE setYRadius)
-        Q_PROPERTY(qreal startAngle READ startAngle WRITE setStartAngle)
-        Q_PROPERTY(qreal spanAngle READ spanAngle WRITE setSpanAngle)
-
     public:
         enum HandleId
         {
@@ -27,20 +20,15 @@ namespace SymbolEditor
         };
 
         explicit ArcItem(Item *parent = nullptr);
-        explicit ArcItem(qreal xRadius, qreal yRadius, Item *parent = nullptr);
-        explicit ArcItem(qreal xRadius, qreal yRadius, int startAngle, int spanAngle,
-                         Item *parent = nullptr);
         ~ArcItem();
 
         qreal xRadius() const;
-        qreal yRadius() const;
-        int startAngle() const;
-        int spanAngle() const;
-
-    public slots:
         void setXRadius(qreal radius);
+        qreal yRadius() const;
         void setYRadius(qreal radius);
+        int startAngle() const;
         void setStartAngle(int angle);
+        int spanAngle() const;
         void setSpanAngle(int angle);
 
     private:
@@ -73,6 +61,7 @@ namespace SymbolEditor
         // SchItem interface
     public:
         virtual Item *clone();
+        void setProperty(quint64 id, const QVariant &value);
 
         //virtual QList<QPointF> hotSpots() const;
         virtual QList<QPointF> endPoints() const;

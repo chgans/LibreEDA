@@ -25,8 +25,11 @@ namespace SymbolEditor
         quint64 itemId;
 
         // 1 - Visual
-        QPen pen;
-        QBrush brush;
+        xdl::symbol::LineStyle lineStyle;
+        xdl::symbol::LineWidth lineWidth;
+        xdl::symbol::Color lineColor;
+        xdl::symbol::FillStyle fillStyle;
+        xdl::symbol::Color fillColor;
         qreal opacity;
         // 2 - Geometry
         QPointF position;

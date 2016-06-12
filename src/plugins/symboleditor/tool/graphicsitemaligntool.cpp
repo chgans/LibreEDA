@@ -3,8 +3,8 @@
 namespace SymbolEditor
 {
 
-    GraphicsItemAlignTool::GraphicsItemAlignTool(QObject *parent):
-        Tool(parent)
+    GraphicsItemAlignTool::GraphicsItemAlignTool(Editor *editor):
+        Tool(editor)
     {
 
     }

@@ -24,7 +24,7 @@ namespace SymbolEditor
         Q_OBJECT
 
     public:
-        explicit PlacementTool(QObject *parent = nullptr);
+        explicit PlacementTool(Editor *editor);
         ~PlacementTool();
 
         // Typ. mouse clicked, idx == 0
@@ -72,7 +72,7 @@ namespace SymbolEditor
 
         // Tool interface
     public:
-        void activate(View *view);
+        void activate();
         void desactivate();
     };
 

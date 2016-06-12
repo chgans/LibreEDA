@@ -1,14 +1,14 @@
 #pragma once
 
-#include <QGraphicsObject>
+#include "handle/handle.h"
+#include "item/iitemobserver.h"
+#include "xdl/symbol.h"
+#include <QGraphicsItem>
 #include <QPointF>
 #include <QRectF>
 #include <QPainterPath>
 #include <QVector>
 
-#include "handle/handle.h"
-
-#include "item/iitemobserver.h"
 
 class QGraphicsItem;
 class QPainter;
@@ -25,16 +25,15 @@ namespace SymbolEditor
     // TODO: AbstractPath and AbstractShape (allow to morph between AbstractXYZ impl)
     // TODO: See qcad explodable concept
 
-    class Item: public QGraphicsObject, public IItemObserver
+    class Item: public QGraphicsItem, public IItemObserver
     {
-        Q_OBJECT
-
-        Q_PROPERTY(QPen pen READ pen WRITE setPen NOTIFY penChanged)
-        Q_PROPERTY(QBrush brush READ brush WRITE setBrush NOTIFY brushChanged)
-        Q_PROPERTY(bool xMirrored READ isXMirrored WRITE setXMirrored NOTIFY xMirroredChanged)
-        Q_PROPERTY(bool yMirrored READ isYMirrored WRITE setYMirrored NOTIFY yMirroredChanged)
 
     public:
+        typedef xdl::symbol::LineStyle LineStyle;
+        typedef xdl::symbol::LineWidth LineWidth;
+        typedef xdl::symbol::FillStyle FillStyle;
+        typedef xdl::symbol::Color Color;
+
         explicit Item(Item *parent = nullptr);
         virtual ~Item();
 
@@ -42,10 +41,20 @@ namespace SymbolEditor
         int handleCount() const;
         Handle *handleAt(int idx);
 
-        QPen pen() const;
-        QBrush brush() const;
+        void setLineStyle(LineStyle style);
+        LineStyle lineStyle() const;
+        void setLineWidth(LineWidth width);
+        LineWidth lineWidth() const;
+        void setLineColor(Color color);
+        Color lineColor() const;
+        void setFillStyle(FillStyle style);
+        FillStyle fillStyle() const;
+        void setFillColor(Color color);
+        Color fillColor() const;
         bool isXMirrored() const;
+        void setXMirrored(bool mirrored);
         bool isYMirrored() const;
+        void setYMirrored(bool mirrored);
 
         virtual QList<QPointF> hotSpots() const;
         virtual QList<QPointF> endPoints() const;
@@ -55,21 +64,18 @@ namespace SymbolEditor
 
         virtual QList<QLineF> axes() const;
 
-    public slots:
-        void setPen(const QPen &pen);
-        void setBrush(const QBrush &brush);
-        void setXMirrored(bool mirrored);
-        void setYMirrored(bool mirrored);
-
-    signals:
-        void penChanged(QPen pen);
-        void brushChanged(QBrush brush);
-        bool xMirroredChanged();
-        bool yMirroredChanged();
+        virtual void setProperty(quint64 id, const QVariant &value);
 
     protected:
-        QPen m_pen;
-        QBrush m_brush;
+        LineStyle m_lineStyle;
+        LineWidth m_lineWidth;
+        Color m_lineColor;
+        FillStyle m_fillStyle;
+        Color m_fillColor;
+
+        QPen pen() const;
+        QBrush brush() const;
+
         mutable QRectF m_boundingRect;
 
         QMap<Handle *, int> m_handleToId;

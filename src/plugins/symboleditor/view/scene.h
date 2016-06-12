@@ -19,11 +19,11 @@ namespace SymbolEditor
 
         QList<Item *> selectedObjects();
         Item *itemForDocumentId(quint64 id) const;
+        quint64 documentIdForItem(Item *item) const;
 
     public slots:
         void applySettings(const Settings &settings);
         void addDocumentItem(quint64 id, const Document::Item *item);
-        void updateDocumentItem(quint64 id, const Document::Item *item);
         void updateDocumentItemProperty(quint64 itemId, quint64 propertyId, const QVariant &value);
         void removeDocumentItem(quint64 id);
 

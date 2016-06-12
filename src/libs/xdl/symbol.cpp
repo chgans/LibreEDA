@@ -8,8 +8,8 @@ namespace xdl
         Item::Item():
             m_lineStyle(SolidLine),
             m_lineWidth(MediumLine),
-            m_lineColor("#000000"),
-            m_fillColor("#000000"), // FIXME: No fill
+            m_lineColor(PrimaryContent),
+            m_fillColor(Background),
             m_opacity(1.0),
             m_position(QPointF(0.0, 0.0)),
             m_rotation(0.0),
@@ -50,6 +50,8 @@ namespace xdl
                     return "Line width";
                 case LineColorProperty:
                     return "Line Color";
+                case FillStyleProperty:
+                    return "Fill style";
                 case FillColorProperty:
                     return "Fill color";
                 default:
@@ -57,7 +59,7 @@ namespace xdl
             }
         }
 
-        QVariant Item::property(int id)
+        QVariant Item::property(quint64 id) const
         {
             switch (id)
             {
@@ -81,6 +83,8 @@ namespace xdl
                     return m_lineWidth;
                 case LineColorProperty:
                     return m_lineColor;
+                case FillStyleProperty:
+                    return m_fillStyle;
                 case FillColorProperty:
                     return m_fillColor;
                 default:
@@ -88,7 +92,7 @@ namespace xdl
             }
         }
 
-        void Item::setProperty(int id, const QVariant &value)
+        void Item::setProperty(quint64 id, const QVariant &value)
         {
             switch (id)
             {
@@ -120,14 +124,27 @@ namespace xdl
                     m_lineWidth = LineWidth(value.toInt());
                     break;
                 case LineColorProperty:
-                    m_lineColor = value.toString();
+                    m_lineColor = Color(value.toInt());
+                    break;
+                case FillStyleProperty:
+                    m_fillStyle = FillStyle(value.toInt());
                     break;
                 case FillColorProperty:
-                    m_fillColor = value.toString();
+                    m_fillColor = Color(value.toInt());
                     break;
                 default:
                     break;
             }
+        }
+
+        quint64 Item::id() const
+        {
+            return m_id;
+        }
+
+        void Item::setId(quint64 id)
+        {
+            m_id = id;
         }
 
         void Item::setPosition(const QPointF &pos)
@@ -220,22 +237,32 @@ namespace xdl
             return m_lineWidth;
         }
 
-        void Item::setLineColor(const QString &color)
+        void Item::setLineColor(Color color)
         {
             m_lineColor = color;
         }
 
-        QString Item::lineColor() const
+        Color Item::lineColor() const
         {
             return m_lineColor;
         }
 
-        void Item::setFillColor(const QString &color)
+        void Item::setFillStyle(FillStyle style)
+        {
+            m_fillStyle = style;
+        }
+
+        FillStyle Item::fillStyle() const
+        {
+            return m_fillStyle;
+        }
+
+        void Item::setFillColor(Color color)
         {
             m_fillColor = color;
         }
 
-        QString Item::fillColor() const
+        Color Item::fillColor() const
         {
             return m_fillColor;
         }
@@ -303,6 +330,8 @@ namespace xdl
         {
             switch (id)
             {
+                case PositionProperty:
+                    return "Top left";
                 case WidthProperty:
                     return "Width";
                 case HeightProperty:
@@ -317,7 +346,7 @@ namespace xdl
             return QIcon::fromTheme("draw-rectangle");
         }
 
-        QVariant RectangleItem::property(int id)
+        QVariant RectangleItem::property(quint64 id) const
         {
             switch (id)
             {
@@ -330,7 +359,7 @@ namespace xdl
             }
         }
 
-        void RectangleItem::setProperty(int id, const QVariant &value)
+        void RectangleItem::setProperty(quint64 id, const QVariant &value)
         {
             switch (id)
             {
@@ -400,10 +429,12 @@ namespace xdl
             return QIcon::fromTheme("draw-circle");
         }
 
-        QVariant CircleItem::property(int id)
+        QVariant CircleItem::property(quint64 id) const
         {
             switch (id)
             {
+                case PositionProperty:
+                    return "Center";
                 case RadiusProperty:
                     return m_radius;
                 default:
@@ -411,7 +442,7 @@ namespace xdl
             }
         }
 
-        void CircleItem::setProperty(int id, const QVariant &value)
+        void CircleItem::setProperty(quint64 id, const QVariant &value)
         {
             switch (id)
             {
@@ -488,6 +519,8 @@ namespace xdl
         {
             switch (id)
             {
+                case PositionProperty:
+                    return "Center";
                 case RadiusProperty:
                     return "Radius";
                 case StartAngleProperty:
@@ -504,7 +537,7 @@ namespace xdl
             return QIcon::fromTheme("draw-halfcircle3");
         }
 
-        QVariant CircularArcItem::property(int id)
+        QVariant CircularArcItem::property(quint64 id) const
         {
             switch (id)
             {
@@ -519,7 +552,7 @@ namespace xdl
             }
         }
 
-        void CircularArcItem::setProperty(int id, const QVariant &value)
+        void CircularArcItem::setProperty(quint64 id, const QVariant &value)
         {
             switch (id)
             {
@@ -591,6 +624,8 @@ namespace xdl
         {
             switch (id)
             {
+                case PositionProperty:
+                    return "Center";
                 case XRadiusProperty:
                     return "X Radius";
                 case YRadiusProperty:
@@ -605,7 +640,7 @@ namespace xdl
             return QIcon::fromTheme("draw-ellipse");
         }
 
-        QVariant EllipseItem::property(int id)
+        QVariant EllipseItem::property(quint64 id) const
         {
             switch (id)
             {
@@ -618,7 +653,7 @@ namespace xdl
             }
         }
 
-        void EllipseItem::setProperty(int id, const QVariant &value)
+        void EllipseItem::setProperty(quint64 id, const QVariant &value)
         {
             switch (id)
             {
@@ -709,6 +744,8 @@ namespace xdl
         {
             switch (id)
             {
+                case PositionProperty:
+                    return "Center";
                 case XRadiusProperty:
                     return "X Radius";
                 case YRadiusProperty:
@@ -727,7 +764,7 @@ namespace xdl
             return QIcon::fromTheme("draw-halfcircle3");
         }
 
-        QVariant EllipticalArcItem::property(int id)
+        QVariant EllipticalArcItem::property(quint64 id) const
         {
             switch (id)
             {
@@ -744,7 +781,7 @@ namespace xdl
             }
         }
 
-        void EllipticalArcItem::setProperty(int id, const QVariant &value)
+        void EllipticalArcItem::setProperty(quint64 id, const QVariant &value)
         {
             switch (id)
             {
@@ -819,7 +856,7 @@ namespace xdl
             return QIcon::fromTheme("draw-line");
         }
 
-        QVariant PolylineItem::property(int id)
+        QVariant PolylineItem::property(quint64 id) const
         {
             switch (id)
             {
@@ -830,7 +867,7 @@ namespace xdl
             }
         }
 
-        void PolylineItem::setProperty(int id, const QVariant &value)
+        void PolylineItem::setProperty(quint64 id, const QVariant &value)
         {
             switch (id)
             {
@@ -903,7 +940,7 @@ namespace xdl
             return QIcon::fromTheme("draw-polygon");
         }
 
-        QVariant PolygonItem::property(int id)
+        QVariant PolygonItem::property(quint64 id) const
         {
             switch (id)
             {
@@ -914,7 +951,7 @@ namespace xdl
             }
         }
 
-        void PolygonItem::setProperty(int id, const QVariant &value)
+        void PolygonItem::setProperty(quint64 id, const QVariant &value)
         {
             switch (id)
             {
@@ -1027,7 +1064,7 @@ namespace xdl
             return QIcon::fromTheme("insert-text");
         }
 
-        QVariant LabelItem::property(int id)
+        QVariant LabelItem::property(quint64 id) const
         {
             switch (id)
             {
@@ -1044,7 +1081,7 @@ namespace xdl
             }
         }
 
-        void LabelItem::setProperty(int id, const QVariant &value)
+        void LabelItem::setProperty(quint64 id, const QVariant &value)
         {
             switch (id)
             {
@@ -1109,7 +1146,7 @@ namespace xdl
             return QIcon::fromTheme("network-connect");
         }
 
-        QVariant PinItem::property(int id)
+        QVariant PinItem::property(quint64 id) const
         {
             switch (id)
             {
@@ -1118,7 +1155,7 @@ namespace xdl
             }
         }
 
-        void PinItem::setProperty(int id, const QVariant &value)
+        void PinItem::setProperty(quint64 id, const QVariant &value)
         {
             switch (id)
             {
@@ -1170,7 +1207,7 @@ namespace xdl
             return QIcon::fromTheme("object-group");
         }
 
-        QVariant ItemGroup::property(int id)
+        QVariant ItemGroup::property(quint64 id) const
         {
             switch (id)
             {
@@ -1179,7 +1216,7 @@ namespace xdl
             }
         }
 
-        void ItemGroup::setProperty(int id, const QVariant &value)
+        void ItemGroup::setProperty(quint64 id, const QVariant &value)
         {
             switch (id)
             {

@@ -46,12 +46,12 @@ namespace SymbolEditor
         m_textItem->document()->setDefaultTextOption(textOption);
         m_textItem->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
-        connect(m_textItem, &QGraphicsTextItem::linkActivated,
-                this, &TextFrameItem::linkActivated);
-        connect(m_textItem, &QGraphicsTextItem::linkHovered,
-                this, &TextFrameItem::linkHovered);
-        connect(document(), &QTextDocument::contentsChanged,
-                this, &TextFrameItem::onDocumentContentChanged);
+//        connect(m_textItem, &QGraphicsTextItem::linkActivated,
+//                this, &TextFrameItem::linkActivated);
+//        connect(m_textItem, &QGraphicsTextItem::linkHovered,
+//                this, &TextFrameItem::linkHovered);
+//        connect(document(), &QTextDocument::contentsChanged,
+//                this, &TextFrameItem::onDocumentContentChanged);
     }
 
     void TextFrameItem::onDocumentContentChanged()
@@ -147,14 +147,14 @@ namespace SymbolEditor
 
     void TextFrameItem::setDocument(QTextDocument *document)
     {
-        if (m_textItem->document() != nullptr)
-        {
-            disconnect(m_textItem->document());
-        }
+//        if (m_textItem->document() != nullptr)
+//        {
+//            disconnect(m_textItem->document());
+//        }
         m_textItem->setDocument(document);
-        if (document != nullptr)
-            connect(document, &QTextDocument::contentsChanged,
-                    this, &TextFrameItem::onDocumentContentChanged);
+//        if (document != nullptr)
+//            connect(document, &QTextDocument::contentsChanged,
+//                    this, &TextFrameItem::onDocumentContentChanged);
     }
 
     QTextDocument *TextFrameItem::document() const
@@ -265,6 +265,11 @@ namespace SymbolEditor
         //item->setTabChangesFocus(tabChangesFocus());
 
         return item;
+    }
+
+    void TextFrameItem::setProperty(quint64 id, const QVariant &value)
+    {
+        Item::setProperty(id, value);
     }
 
     QVariant TextFrameItem::itemChange(QGraphicsItem::GraphicsItemChange change,

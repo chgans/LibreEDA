@@ -10,6 +10,8 @@ namespace SymbolEditor
 
     class View;
     class Scene;
+    class Document;
+    class Editor;
     class Settings;
     class UndoCommand;
 
@@ -25,14 +27,14 @@ namespace SymbolEditor
     {
         Q_OBJECT
     public:
-        explicit Tool(QObject *parent = nullptr);
+        explicit Tool(Editor *editor);
         ~Tool();
 
         View *view();
-        void setView(View *view);
         Scene *scene();
+        const Document* document();
 
-        virtual void activate(View *view) = 0;
+        virtual void activate() = 0;
         virtual void desactivate() = 0;
 
         void setToolGroup(const QString &group);
@@ -49,7 +51,7 @@ namespace SymbolEditor
         virtual void applySettings(const Settings &settings);
 
     private:
-        View *m_view;
+        Editor *m_editor;
         QString m_toolGroup;
         QAction *m_action;
     };

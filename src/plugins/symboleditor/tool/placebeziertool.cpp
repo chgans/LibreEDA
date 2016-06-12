@@ -8,8 +8,8 @@
 namespace SymbolEditor
 {
 
-    PlaceBezierTool::PlaceBezierTool(QObject *parent):
-        PlacementTool(parent),
+    PlaceBezierTool::PlaceBezierTool(Editor *editor):
+        PlacementTool(editor),
         m_item(nullptr)
     {
         QAction *action = new QAction(QIcon::fromTheme("draw-bezier-curves"), //QIcon(":/icons/tool/graphicsbeziertool.svg"),
@@ -26,7 +26,7 @@ namespace SymbolEditor
             {
                 return;
             }
-            m_item->setPen(pen);
+            //m_item->setPen(pen);
         });
 
         QList<QWidget *> widgets;
@@ -43,7 +43,7 @@ namespace SymbolEditor
     {
         m_item = new BezierItem();
         m_item->setPos(pos);
-        m_item->setPen(m_penSettingsWidget->pen());
+        //m_item->setPen(m_penSettingsWidget->pen());
         return m_item;
     }
 
