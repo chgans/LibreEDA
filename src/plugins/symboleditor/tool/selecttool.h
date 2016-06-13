@@ -2,6 +2,7 @@
 
 #include "tool/interactivetool.h"
 #include "document.h"
+#include "view/palette.h"
 
 #include <QItemSelection>
 
@@ -21,6 +22,9 @@ namespace SymbolEditor
         explicit SelectTool(Editor *editor);
         ~SelectTool();
 
+        void setPalette(Palette palette);
+        Palette palette() const;
+
     public slots:
         void addDocumentItem(quint64 id, const Document::Item *item);
         void updateDocumentItem(quint64 id, const Document::Item *item);
@@ -39,6 +43,8 @@ namespace SymbolEditor
         void setupPropertyBrowser();
         void setupSubTools();
         void initStateMachine();
+
+        Palette m_palette;
 
         // TODO: Move these 2 to ObjectInspectorWidget (SymbolEditor specific)
         ObjectInspectorModel *m_objectInspectorModel;

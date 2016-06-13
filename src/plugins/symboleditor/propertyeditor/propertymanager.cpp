@@ -104,39 +104,9 @@ namespace SymbolEditor
         auto manager = m_enumManager;
         auto property = manager->addProperty(name);
 
-        // TODO: have a slot to reload palette or through settings
-        Palette palette;
-        QMap<int, QString> enumNames;
-        enumNames.insert(xdl::symbol::Background, "Background");
-        enumNames.insert(xdl::symbol::BackgroundHighlight, "Background highlight");
-        enumNames.insert(xdl::symbol::PrimaryContent, "Primary content");
-        enumNames.insert(xdl::symbol::SecondaryContent, "Secondary content");
-        enumNames.insert(xdl::symbol::EmphasisedContent, "Emphasised content");
-        enumNames.insert(xdl::symbol::Yellow, "Yellow");
-        enumNames.insert(xdl::symbol::Orange, "Orange");
-        enumNames.insert(xdl::symbol::Red, "Red");
-        enumNames.insert(xdl::symbol::Magenta, "Magenta");
-        enumNames.insert(xdl::symbol::Violet, "Violet");
-        enumNames.insert(xdl::symbol::Blue, "Blue");
-        enumNames.insert(xdl::symbol::Cyan, "Cyan");
-        enumNames.insert(xdl::symbol::Green, "Green");
-        QMap<int, QIcon> enumIcons;
-        enumIcons.insert(xdl::symbol::Background, colorIcon(palette.background()));
-        enumIcons.insert(xdl::symbol::BackgroundHighlight, colorIcon(palette.backgroundHighlight()));
-        enumIcons.insert(xdl::symbol::PrimaryContent, colorIcon(palette.primaryContent()));
-        enumIcons.insert(xdl::symbol::SecondaryContent, colorIcon(palette.secondaryContent()));
-        enumIcons.insert(xdl::symbol::EmphasisedContent, colorIcon(palette.emphasisedContent()));
-        enumIcons.insert(xdl::symbol::Yellow, colorIcon(palette.yellow()));
-        enumIcons.insert(xdl::symbol::Orange, colorIcon(palette.orange()));
-        enumIcons.insert(xdl::symbol::Red, colorIcon(palette.red()));
-        enumIcons.insert(xdl::symbol::Magenta, colorIcon(palette.magenta()));
-        enumIcons.insert(xdl::symbol::Violet, colorIcon(palette.violet()));
-        enumIcons.insert(xdl::symbol::Blue, colorIcon(palette.blue()));
-        enumIcons.insert(xdl::symbol::Cyan, colorIcon(palette.cyan()));
-        enumIcons.insert(xdl::symbol::Green, colorIcon(palette.green()));
 
-        manager->setEnumNames(property, enumNames.values());
-        manager->setEnumIcons(property, enumIcons);
+        manager->setEnumNames(property, m_colorNames.values());
+        manager->setEnumIcons(property, m_colorIcons);
         addProperty(id, property, manager);
     }
 
@@ -206,6 +176,7 @@ namespace SymbolEditor
         m_propertyToIdMap.clear();
         m_idToPropertyMap.clear();
         m_idToManagerMap.clear();
+        m_colorProperties.clear();
 
         m_enumManager->clear();
         m_pointManager->clear();
@@ -339,6 +310,17 @@ namespace SymbolEditor
         m_idToPropertyMap.value(id)->setModified(modified);
     }
 
+    void PropertyManager::setPalette(Palette palette)
+    {
+        m_palette = palette;
+        updateColors();
+    }
+
+    Palette PropertyManager::palette() const
+    {
+        return m_palette;
+    }
+
     void PropertyManager::onEnumValueChanged(QtProperty *property, int value)
     {
         emit valueChanged(m_propertyToIdMap.value(property), QVariant(value));
@@ -367,6 +349,43 @@ namespace SymbolEditor
     void PropertyManager::onStringValueChanged(QtProperty *property, const QString &value)
     {
         emit valueChanged(m_propertyToIdMap.value(property), QVariant(value));
+    }
+
+    void PropertyManager::updateColors()
+    {
+        m_colorNames.clear();
+        m_colorNames.insert(xdl::symbol::Background, "Background");
+        m_colorNames.insert(xdl::symbol::BackgroundHighlight, "Background highlight");
+        m_colorNames.insert(xdl::symbol::PrimaryContent, "Primary content");
+        m_colorNames.insert(xdl::symbol::SecondaryContent, "Secondary content");
+        m_colorNames.insert(xdl::symbol::EmphasisedContent, "Emphasised content");
+        m_colorNames.insert(xdl::symbol::Yellow, "Yellow");
+        m_colorNames.insert(xdl::symbol::Orange, "Orange");
+        m_colorNames.insert(xdl::symbol::Red, "Red");
+        m_colorNames.insert(xdl::symbol::Magenta, "Magenta");
+        m_colorNames.insert(xdl::symbol::Violet, "Violet");
+        m_colorNames.insert(xdl::symbol::Blue, "Blue");
+        m_colorNames.insert(xdl::symbol::Cyan, "Cyan");
+        m_colorNames.insert(xdl::symbol::Green, "Green");
+        m_colorIcons.clear();
+        m_colorIcons.insert(xdl::symbol::Background, colorIcon(m_palette.background()));
+        m_colorIcons.insert(xdl::symbol::BackgroundHighlight, colorIcon(m_palette.backgroundHighlight()));
+        m_colorIcons.insert(xdl::symbol::PrimaryContent, colorIcon(m_palette.primaryContent()));
+        m_colorIcons.insert(xdl::symbol::SecondaryContent, colorIcon(m_palette.secondaryContent()));
+        m_colorIcons.insert(xdl::symbol::EmphasisedContent, colorIcon(m_palette.emphasisedContent()));
+        m_colorIcons.insert(xdl::symbol::Yellow, colorIcon(m_palette.yellow()));
+        m_colorIcons.insert(xdl::symbol::Orange, colorIcon(m_palette.orange()));
+        m_colorIcons.insert(xdl::symbol::Red, colorIcon(m_palette.red()));
+        m_colorIcons.insert(xdl::symbol::Magenta, colorIcon(m_palette.magenta()));
+        m_colorIcons.insert(xdl::symbol::Violet, colorIcon(m_palette.violet()));
+        m_colorIcons.insert(xdl::symbol::Blue, colorIcon(m_palette.blue()));
+        m_colorIcons.insert(xdl::symbol::Cyan, colorIcon(m_palette.cyan()));
+        m_colorIcons.insert(xdl::symbol::Green, colorIcon(m_palette.green()));
+        for (auto property: m_colorProperties)
+        {
+            m_enumManager->setEnumNames(property, m_colorNames.values());
+            m_enumManager->setEnumIcons(property, m_colorIcons);
+        }
     }
 
     void PropertyManager::addProperty(quint64 id, QtProperty *property, QtAbstractPropertyManager *manager)

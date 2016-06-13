@@ -1,10 +1,14 @@
-#include "core/core.h"
 #include "settingswidget.h"
 #include "ui_settingswidget.h"
+#include "settings.h"
+
 #include "view/scene.h"
 #include "view/palette.h"
+#include "view/paletteloader.h"
+
 #include "grid/cartesiangrid.h"
-#include "settings.h"
+
+#include "core/core.h"
 
 #include <QScrollBar>
 #include <QOpenGLWidget>
@@ -15,7 +19,8 @@ namespace SymbolEditor
 
     SettingsWidget::SettingsWidget(QWidget *parent) :
         QWidget(parent),
-        m_ui(new Ui::SettingsWidget)
+        m_ui(new Ui::SettingsWidget),
+        m_paletteLoader(new PaletteLoader(this))
     {
         m_ui->setupUi(this);
 
@@ -23,16 +28,18 @@ namespace SymbolEditor
         scene->setSceneRect(-100, -100, 200, 200);
         m_ui->graphicsView->setScene(scene);
 
+        m_paletteLoader->loadPalettes();
+        for (auto name: m_paletteLoader->paletteNames())
+        {
+            m_ui->colorSchemeComboBox->addItem(name);
+        }
 
-        m_ui->colorSchemeComboBox->addItem("Dark", QVariant::fromValue<Palette::Mode>(Palette::Dark));
-        m_colorSchemeToIndex.insert(Palette::Dark, 0);
-        m_ui->colorSchemeComboBox->addItem("Light", QVariant::fromValue<Palette::Mode>(Palette::Light));
-        m_colorSchemeToIndex.insert(Palette::Light, 1);
-        m_ui->colorSchemeComboBox->setCurrentIndex(m_colorSchemeToIndex[m_ui->graphicsView->paletteMode()]);
+        m_ui->colorSchemeComboBox->setCurrentText(m_ui->graphicsView->palette().name());
         connect(m_ui->colorSchemeComboBox, &QComboBox::currentTextChanged,
                 this, [this](const QString &)
         {
-            m_ui->graphicsView->setPaletteMode(m_ui->colorSchemeComboBox->currentData().value<Palette::Mode>());
+            auto name = m_ui->colorSchemeComboBox->currentText();
+            m_ui->graphicsView->setPalette(m_paletteLoader->palette(name));
         });
 
         m_ui->rulerCheckBox->setChecked(m_ui->graphicsView->rulerEnabled());
@@ -163,7 +170,7 @@ namespace SymbolEditor
         Settings settings;
         settings.load(Core::settings());
 
-        m_ui->colorSchemeComboBox->setCurrentIndex(m_colorSchemeToIndex.value(settings.colorScheme));
+        m_ui->colorSchemeComboBox->setCurrentText(settings.paletteName);
         m_ui->rulerCheckBox->setChecked(settings.rulerEnabled);
         m_ui->gridCheckBox->setChecked(settings.gridEnabled);
         m_ui->scrollBarsCheckBox->setChecked(settings.scrollBarsEnabled);
@@ -184,7 +191,7 @@ namespace SymbolEditor
     {
         Settings settings;
 
-        settings.colorScheme = m_ui->colorSchemeComboBox->currentData().value<Palette::Mode>();
+        settings.paletteName = m_ui->colorSchemeComboBox->currentText();
         settings.rulerEnabled = m_ui->rulerCheckBox->isChecked();
         settings.gridEnabled = m_ui->gridCheckBox->isChecked();
         settings.scrollBarsEnabled = m_ui->scrollBarsCheckBox->isChecked();

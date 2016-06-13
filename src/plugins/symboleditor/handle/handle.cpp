@@ -17,12 +17,8 @@ namespace SymbolEditor
         m_behaviour(NormalHandleBehaviour),
         m_parent(parent) // hackish: Because BezierHandle act as a proxy
     {
-        // FIXME: From palette
-        setPen(QPen(QColor("#839496"), 0)); // Primary content
-        setBrush(QColor("#073642")); // BG
-
-        //    setPen(QPen(gpalette::Content2, 0));
-        //    setBrush(QBrush(gpalette::Content4));
+        setPen(QPen(m_palette.primaryContent(), 0));
+        setBrush(QBrush(m_palette.background()));
 
         setFlag(QGraphicsItem::ItemIsMovable);
         setFlag(QGraphicsItem::ItemSendsGeometryChanges);
@@ -95,6 +91,19 @@ namespace SymbolEditor
     {
         m_parent = parent;
         // TBD: we could auto-add the observer
+    }
+
+    void Handle::setPalette(Palette palette)
+    {
+        m_palette = palette;
+        setPen(QPen(m_palette.primaryContent(), 0));
+        setBrush(QBrush(m_palette.background()));
+        update();
+    }
+
+    Palette Handle::palette() const
+    {
+        return m_palette;
     }
 
     QCursor Handle::roleToCursor(GraphicsHandleRole role)

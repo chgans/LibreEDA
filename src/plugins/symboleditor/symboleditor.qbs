@@ -134,6 +134,8 @@ LedaPlugin {
         "tool/tool.h",
         "view/palette.h",
         "view/palette.cpp",
+        "view/paletteloader.cpp",
+        "view/paletteloader.h",
         "view/scene.cpp",
         "view/scene.h",
         "view/view.cpp",

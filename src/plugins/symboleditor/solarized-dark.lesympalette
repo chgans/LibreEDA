@@ -1,0 +1,15 @@
+[leda.symbol.palette]
+PaletteName=Solarized Dark
+Background=#002b36
+BackgroundHighlight=#073642
+SecondaryContent=#586e75
+PrimaryContent=#839496
+EmphasisedContent=#93a1a1
+Yellow=#b58900
+Orange=#cb4b16
+Red=#dc322f
+Magenta=#d33682
+Violet=#6c71c4
+Blue=#268bd2
+Cyan=#2aa198
+Green=#859900

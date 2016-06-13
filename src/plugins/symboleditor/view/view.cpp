@@ -29,7 +29,6 @@ namespace SymbolEditor
         m_snapManager(new SnapManager(this)),
         m_snapping(false),
         m_snapToGridEnabled(true),
-        m_palette(new Palette(this)),
         m_panning(false)
     {
 
@@ -60,7 +59,6 @@ namespace SymbolEditor
         setGridFineLineStyle(Qt::DotLine);
         setMouseCursor(LargeMouseCursor);
         setOriginMark(LargeOriginMark);
-        setPaletteMode(Palette::Dark);
     }
 
     View::~View()
@@ -80,7 +78,6 @@ namespace SymbolEditor
         m_grid->setOrigin(rect.topLeft());
         m_grid->setSize(rect.size());
         m_grid->setStep(QPointF(10, 10));
-        applyPalette();
     }
 
     InteractiveTool *View::tool()
@@ -160,30 +157,21 @@ namespace SymbolEditor
         updateRulerCursorPositions();
     }
 
-    void View::setPaletteMode(Palette::Mode mode)
+    void View::setPalette(Palette palette)
     {
-        if (mode == m_palette->mode())
-        {
-            return;
-        }
-        m_palette->setMode(mode);
+        m_palette = palette;
         applyPalette();
     }
 
-    Palette::Mode View::paletteMode() const
-    {
-        return m_palette->mode();
-    }
-
-    const Palette *View::palette() const
+    Palette View::palette() const
     {
         return m_palette;
     }
 
     void View::drawBackground(QPainter *painter, const QRectF &rect)
     {
-        painter->fillRect(rect, QBrush(m_palette->backgroundHighlight()));
-        painter->fillRect(rect.intersected(sceneRect()), QBrush(m_palette->background()));
+        painter->fillRect(rect, QBrush(m_palette.backgroundHighlight()));
+        painter->fillRect(rect.intersected(sceneRect()), QBrush(m_palette.background()));
 
         if (m_gridEnabled)
         {
@@ -390,14 +378,14 @@ namespace SymbolEditor
     void View::applyPalette()
     {
         m_cornerWidget->setStyleSheet(QString("background-color:%1;").arg(
-                                          m_palette->backgroundHighlight().name()));
-        m_horizontalRuler->setBackgroundColor(m_palette->backgroundHighlight());
-        m_verticalRuler->setBackgroundColor(m_palette->backgroundHighlight());
-        m_horizontalRuler->setForegroundColor(m_palette->primaryContent());
-        m_verticalRuler->setForegroundColor(m_palette->primaryContent());
-        scene()->setBackgroundBrush(QBrush(m_palette->background()));
-        m_grid->setCoarseLineColor(m_palette->secondaryContent());
-        m_grid->setFineLineColor(m_palette->secondaryContent());
+                                          m_palette.backgroundHighlight().name()));
+        m_horizontalRuler->setBackgroundColor(m_palette.backgroundHighlight());
+        m_verticalRuler->setBackgroundColor(m_palette.backgroundHighlight());
+        m_horizontalRuler->setForegroundColor(m_palette.primaryContent());
+        m_verticalRuler->setForegroundColor(m_palette.primaryContent());
+        scene()->setBackgroundBrush(QBrush(m_palette.background()));
+        m_grid->setCoarseLineColor(m_palette.secondaryContent());
+        m_grid->setFineLineColor(m_palette.secondaryContent());
         update();
     }
 
@@ -409,13 +397,13 @@ namespace SymbolEditor
         }
 
         QPointF pos = cursorPosition();
-        painter->setPen(QPen(m_palette->orange(), 0, Qt::SolidLine));
+        painter->setPen(QPen(m_palette.orange(), 0, Qt::SolidLine));
         QRectF rect(0, 0,
                     CursorMarkPixelSize / transform().m11(), CursorMarkPixelSize / transform().m22());
         rect.moveCenter(pos);
         painter->drawEllipse(rect);
 
-        painter->setPen(QPen(m_palette->orange(), 0, Qt::DashLine));
+        painter->setPen(QPen(m_palette.orange(), 0, Qt::DashLine));
         if (mouseCursor() == LargeMouseCursor)
         {
             rect = visibleSceneRect();
@@ -448,13 +436,13 @@ namespace SymbolEditor
 
         QPointF pos = originPosition();
 
-        painter->setPen(QPen(m_palette->red(), 0, Qt::SolidLine));
+        painter->setPen(QPen(m_palette.red(), 0, Qt::SolidLine));
         QRectF rect(0, 0,
                     OriginMarkPixelSize / transform().m11(), OriginMarkPixelSize / transform().m22());
         rect.moveCenter(pos);
         painter->drawEllipse(rect);
 
-        painter->setPen(QPen(m_palette->red(), 0, Qt::DashDotLine));
+        painter->setPen(QPen(m_palette.red(), 0, Qt::DashDotLine));
         if (originMark() == LargeOriginMark)
         {
             rect = visibleSceneRect();
@@ -486,7 +474,7 @@ namespace SymbolEditor
         painter->translate(cursorPosition());
         painter->scale(1.0 / transform().m11(), 1.0 / transform().m22());
         painter->setPen(Qt::NoPen);
-        painter->setBrush(QBrush(m_palette->emphasisedContent()));
+        painter->setBrush(QBrush(m_palette.emphasisedContent()));
         painter->setRenderHint(QPainter::Antialiasing);
         painter->drawPath(m_snapManager->decoration());
         painter->restore();
@@ -672,7 +660,6 @@ namespace SymbolEditor
 
     void View::applySettings(const Settings &settings)
     {
-        setPaletteMode(settings.colorScheme);
         setRulerEnabled(settings.rulerEnabled);
         setGridEnabled(settings.gridEnabled);
         setMinimalGridSize(int(settings.minimalGridSize)); // FIXME: int vs uint

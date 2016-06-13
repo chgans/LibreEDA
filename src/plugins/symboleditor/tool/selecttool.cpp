@@ -43,6 +43,17 @@ namespace SymbolEditor
 
     }
 
+    void SelectTool::setPalette(Palette palette)
+    {
+        m_palette = palette;
+        m_propertyEditor->setPalette(m_palette);
+    }
+
+    Palette SelectTool::palette() const
+    {
+        return m_palette;
+    }
+
     void SelectTool::addDocumentItem(quint64 id, const Document::Item *item)
     {
         m_objectInspectorModel->addTopLevelItem(id, item->friendlyTypeName(), item->icon());

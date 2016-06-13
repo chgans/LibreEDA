@@ -1,6 +1,7 @@
 #pragma once
 
 #include "document.h"
+#include "view/palette.h"
 
 #include <QWidget>
 
@@ -21,6 +22,9 @@ namespace SymbolEditor
 
         const Document::Item *item() const;
 
+        void setPalette(Palette palette);
+        Palette palette() const;
+
     signals:
         void commandRequested(UndoCommand *command);
 
@@ -33,6 +37,8 @@ namespace SymbolEditor
         void onValueChanged(quint64 id, const QVariant &value);
 
     private:
+        Palette m_palette;
+
         void load();
         bool m_updatingProperties;
         QtAbstractPropertyBrowser *m_browser;

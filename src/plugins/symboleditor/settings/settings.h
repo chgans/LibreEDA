@@ -10,7 +10,7 @@ namespace SymbolEditor
     class Settings
     {
     public:
-        Palette::Mode colorScheme = Palette::Dark;
+        QString paletteName = "";
         bool rulerEnabled = true;
         bool gridEnabled = true;
         bool scrollBarsEnabled = false;

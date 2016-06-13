@@ -60,10 +60,9 @@ namespace SymbolEditor
         void scaleView(qreal scaleFactor);
         void translateView(qreal dx, qreal dy);
 
-        void setPaletteMode(Palette::Mode mode);
-        Palette::Mode paletteMode() const;
+        void setPalette(Palette palette);
+        Palette palette() const;
 
-        const Palette *palette() const;
         QSizeF pixelSize() const;
 
         const Grid *grid() const;
@@ -146,7 +145,7 @@ namespace SymbolEditor
         void updateForeground();
         void updateBackground();
 
-        Palette *m_palette;
+        Palette m_palette;
         void applyPalette();
 
         bool m_panning;

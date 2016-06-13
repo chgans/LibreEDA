@@ -277,6 +277,21 @@ namespace SymbolEditor
         }
     }
 
+    void Item::setPalette(Palette palette)
+    {
+        m_palette = palette;
+        for (auto handle: m_handleToId.keys())
+        {
+            handle->setPalette(m_palette);
+        }
+        update();
+    }
+
+    Palette Item::palette() const
+    {
+        return m_palette;
+    }
+
     QPen Item::pen() const
     {
         QPen pen;
@@ -331,8 +346,7 @@ namespace SymbolEditor
                 pen.setWidthF(2.0);
                 break;
         }
-        Palette palette;
-        pen.setColor(palette.color(Palette::ColorId(m_lineColor)));
+        pen.setColor(m_palette.color(Palette::ColorId(m_lineColor)));
         return pen;
     }
 
@@ -348,8 +362,7 @@ namespace SymbolEditor
                 brush.setStyle(Qt::SolidPattern);
                 break;
         }
-        Palette palette;
-        brush.setColor(palette.color(Palette::ColorId(m_fillColor)));
+        brush.setColor(m_palette.color(Palette::ColorId(m_fillColor)));
         return brush;
     }
 

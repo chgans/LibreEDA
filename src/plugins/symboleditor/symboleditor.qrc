@@ -11,4 +11,8 @@
     <qresource prefix="/">
         <file>icons/sch.png</file>
     </qresource>
+    <qresource prefix="/settings">
+        <file>solarized-dark.lesympalette</file>
+        <file>solarized-light.lesympalette</file>
+    </qresource>
 </RCC>

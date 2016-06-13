@@ -3,6 +3,8 @@
 #include <QObject>
 #include <QMap>
 
+#include "view/palette.h"
+
 class QtProperty;
 class QtAbstractPropertyManager;
 class QtBoolPropertyManager;
@@ -54,6 +56,9 @@ namespace SymbolEditor
         bool isModified(quint64 id) const;
         void setModified(quint64 id, bool modified);
 
+        void setPalette(Palette palette);
+        Palette palette() const;
+
     signals:
         void valueChanged(quint64 id, const QVariant &value);
         void propertyAdded(QtProperty *property);
@@ -67,6 +72,12 @@ namespace SymbolEditor
         void onStringValueChanged(QtProperty *property, const QString &value);
 
     private:
+        Palette m_palette;
+        QMap<int, QIcon> m_colorIcons;
+        QMap<int, QString> m_colorNames;
+        QList<QtProperty *> m_colorProperties;
+        void updateColors();
+
         QtEnumPropertyManager *m_enumManager;
         QtPointFPropertyManager *m_pointManager;
         QtDoublePropertyManager *m_realManager;

@@ -4,8 +4,8 @@ namespace SymbolEditor
 {
 
     // TODO: namespace Private
-    static const QString AppearanceGroupKey("SchEditor/Appearance");
-    static const QString ColorSchemeKey("ColorScheme");
+    static const QString AppearanceGroupKey("SymbolEditor/Appearance");
+    static const QString PaletteNameKey("PaletteName");
     static const QString RulerEnabledKey("RulerEnabled");
     static const QString GridEnabledKey("GridEnabled");
     static const QString ScrollBarsEnabledKey("ScrollBarsEnabled");
@@ -24,15 +24,7 @@ namespace SymbolEditor
     void Settings::load(QSettings *settings)
     {
         settings->beginGroup(AppearanceGroupKey);
-        QString colorSchemeString = settings->value(ColorSchemeKey, QString("Dark")).toString();
-        if (colorSchemeString == "Light")
-        {
-            colorScheme = Palette::Light;
-        }
-        else
-        {
-            colorScheme = Palette::Dark;
-        }
+        paletteName = settings->value(PaletteNameKey, QString()).toString();
         rulerEnabled = settings->value(RulerEnabledKey, true).toBool();
         gridEnabled = settings->value(GridEnabledKey, true).toBool();
         scrollBarsEnabled = settings->value(ScrollBarsEnabledKey, true).toBool();
@@ -53,14 +45,7 @@ namespace SymbolEditor
     void Settings::save(QSettings *settings) const
     {
         settings->beginGroup(AppearanceGroupKey);
-        if (colorScheme == Palette::Dark)
-        {
-            settings->setValue(ColorSchemeKey, "Dark");
-        }
-        else
-        {
-            settings->setValue(ColorSchemeKey, "Light");
-        }
+        settings->setValue(PaletteNameKey, paletteName);
         settings->setValue(RulerEnabledKey, rulerEnabled);
         settings->setValue(GridEnabledKey, gridEnabled);
         settings->setValue(ScrollBarsEnabledKey, scrollBarsEnabled);

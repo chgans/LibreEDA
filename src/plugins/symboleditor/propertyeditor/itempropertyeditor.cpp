@@ -46,6 +46,17 @@ namespace SymbolEditor
         return m_item;
     }
 
+    void ItemPropertyEditor::setPalette(Palette palette)
+    {
+        m_palette = palette;
+        m_manager->setPalette(m_palette);
+    }
+
+    Palette ItemPropertyEditor::palette() const
+    {
+        return m_palette;
+    }
+
     void ItemPropertyEditor::onValueChanged(quint64 id, const QVariant &value)
     {
         if (m_updatingProperties)

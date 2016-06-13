@@ -43,6 +43,20 @@ namespace SymbolEditor
         return m_itemMap.key(item);
     }
 
+    void Scene::setPalette(Palette palette)
+    {
+        m_palette = palette;
+        for (auto  item: m_itemMap.values())
+        {
+            item->setPalette(m_palette);
+        }
+    }
+
+    Palette Scene::palette() const
+    {
+        return m_palette;
+    }
+
     void Scene::applySettings(const Settings &settings)
     {
         Q_UNUSED(settings);
@@ -65,6 +79,7 @@ namespace SymbolEditor
                 sceneItem->setFillStyle(documentItem->fillStyle());
                 sceneItem->setFillColor(documentItem->fillColor());
                 sceneItem->setData(0, QVariant::fromValue<quint64>(id));
+                sceneItem->setPalette(m_palette);
                 m_itemMap.insert(id, sceneItem);
                 addItem(sceneItem);
                 break;
@@ -81,6 +96,7 @@ namespace SymbolEditor
                 sceneItem->setFillStyle(documentItem->fillStyle());
                 sceneItem->setFillColor(documentItem->fillColor());
                 sceneItem->setData(0, QVariant::fromValue<quint64>(id));
+                sceneItem->setPalette(m_palette);
                 m_itemMap.insert(id, sceneItem);
                 addItem(sceneItem);
                 break;
@@ -102,6 +118,7 @@ namespace SymbolEditor
                 sceneItem->setFillStyle(documentItem->fillStyle());
                 sceneItem->setFillColor(documentItem->fillColor());
                 sceneItem->setData(0, QVariant::fromValue<quint64>(id));
+                sceneItem->setPalette(m_palette);
                 m_itemMap.insert(id, sceneItem);
                 addItem(sceneItem);
                 break;
@@ -127,6 +144,7 @@ namespace SymbolEditor
                 sceneItem->setPolygon(QPolygonF(
                                           documentItem->vertices().toVector())); // FIXME: use QVector in xdl too?
                 sceneItem->setData(0, QVariant::fromValue<quint64>(id));
+                sceneItem->setPalette(m_palette);
                 m_itemMap.insert(id, sceneItem);
                 addItem(sceneItem);
                 break;

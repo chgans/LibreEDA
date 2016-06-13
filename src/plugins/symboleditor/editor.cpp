@@ -2,6 +2,8 @@
 #include "document.h"
 #include "view/view.h"
 #include "view/scene.h"
+#include "view/palette.h"
+#include "view/paletteloader.h"
 #include "item/item.h"
 #include "settings/settings.h"
 
@@ -105,6 +107,13 @@ namespace SymbolEditor
 
     void Editor::applySettings(const Settings &settings)
     {
+        PaletteLoader paletteLoader;
+        paletteLoader.loadPalettes();
+        Palette palette = paletteLoader.palette(settings.paletteName);
+        m_selectTool->setPalette(palette);
+        m_scene->setPalette(palette);
+        m_view->setPalette(palette);
+
         m_scene->applySettings(settings);
         m_view->applySettings(settings);
         for (auto tool : m_interactiveTools)
@@ -142,6 +151,10 @@ namespace SymbolEditor
                 this, &Editor::removeDocumentItem);
 
         m_undoDockWidget->setStack(m_undoStack);
+
+        Settings settings;
+        settings.load(Core::settings());
+        applySettings(settings);
 
         return true;
     }

@@ -2,7 +2,9 @@
 
 #include "handle/handle.h"
 #include "item/iitemobserver.h"
+#include "view/palette.h"
 #include "xdl/symbol.h"
+
 #include <QGraphicsItem>
 #include <QPointF>
 #include <QRectF>
@@ -66,7 +68,12 @@ namespace SymbolEditor
 
         virtual void setProperty(quint64 id, const QVariant &value);
 
+        void setPalette(Palette palette);
+        Palette palette() const;
+
     protected:
+        Palette m_palette;
+
         LineStyle m_lineStyle;
         LineWidth m_lineWidth;
         Color m_lineColor;

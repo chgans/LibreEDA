@@ -2,10 +2,11 @@
 
 #include <QWidget>
 #include <QMap>
-#include "view/palette.h"
 
 namespace SymbolEditor
 {
+
+    class PaletteLoader;
 
     namespace Ui {
         class SettingsWidget;
@@ -33,7 +34,7 @@ namespace SymbolEditor
 
     private:
         Ui::SettingsWidget *m_ui;
-        QMap<Palette::Mode, int> m_colorSchemeToIndex;
+        PaletteLoader *m_paletteLoader;
     };
 
 }

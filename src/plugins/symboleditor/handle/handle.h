@@ -2,6 +2,7 @@
 
 #include <QGraphicsPathItem>
 #include "item/iobservableitem.h"
+#include "view/palette.h"
 
 #include <QPainter>
 #include <QPointer>
@@ -60,7 +61,11 @@ namespace SymbolEditor
         Item *parentGraphicsObject() const;
         virtual void setParentGraphicsObject(Item *parent);
 
+        void setPalette(Palette palette);
+        Palette palette() const;
+
     private:
+        Palette m_palette;
         static QCursor roleToCursor(GraphicsHandleRole role);
         int m_id;
         GraphicsHandleRole m_role;
