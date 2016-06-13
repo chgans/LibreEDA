@@ -34,17 +34,14 @@ struct WriterPrivate
     void writeItemContent(const Item *item);
 
     // Complex types
-    void writePen(const char *tag, const QPen &pen);
-    void writeBrush(const char *tag, const QBrush &brush);
     void writePoint(const char *tag, const QPointF &point);
     void writePointList(const char *listTag, const char *pointTag, const QList<QPointF> &pointList);
 
     // Simple types
-    void writeColor(const char *tag, const QColor &color);
-    void writePenStyle(const char *tag, Qt::PenStyle style);
-    void writePenCapStyle(const char *tag, Qt::PenCapStyle style);
-    void writePenJoinStyle(const char *tag, Qt::PenJoinStyle style);
-    void writeBrushStyle(const char *tag, Qt::BrushStyle style);
+    void writeColor(const char *tag, const Color color);
+    void writeLineStyle(const char *tag, LineStyle style);
+    void writeLineWidth(const char *tag, LineWidth width);
+    void writeFillStyle(const char *tag, FillStyle style);
 
     // Built in types
     void writeBoolean(const char *tag, bool value);
@@ -233,35 +230,18 @@ void WriterPrivate::writeGroup(const ItemGroup *item)
 
 void WriterPrivate::writeItemContent(const Item *item)
 {
-    //writePen("pen", item->pen); // FIXME
-    //writeBrush("brush", item->brush); // FIXME
     writePoint("position", item->position());
+    writeLineStyle("line-style", item->lineStyle());
+    writeLineWidth("line-width", item->lineWidth());
+    writeColor("line-color", item->lineColor());
+    writeFillStyle("fill-style", item->fillStyle());
+    writeColor("fill-color", item->fillColor());
     //writeDouble("z-value", item->zValue());
     writeDouble("rotation", item->rotation()); // % 360
     writeDouble("opacity", item->opacity());
     writeBoolean("locked", !item->isLocked());
     writeBoolean("x-mirrored", item->isXMirrored());
     writeBoolean("y-mirrored", item->isYMirrored());
-    writeBoolean("visible", item->isVisible());
-}
-
-void WriterPrivate::writePen(const char *tag, const QPen &pen)
-{
-    xmlWriter->writeStartElement(tag);
-    writeDouble("width", pen.width());
-    writeColor("color", pen.color());
-    writePenStyle("style", pen.style());
-    writePenCapStyle("cap-style", pen.capStyle());
-    writePenJoinStyle("join-style", pen.joinStyle());
-    xmlWriter->writeEndElement();
-}
-
-void WriterPrivate::writeBrush(const char *tag, const QBrush &brush)
-{
-    xmlWriter->writeStartElement(tag);
-    writeColor("color", brush.color());
-    writeBrushStyle("style", brush.style());
-    xmlWriter->writeEndElement();
 }
 
 void WriterPrivate::writePoint(const char *tag, const QPointF &point)
@@ -283,99 +263,139 @@ void WriterPrivate::writePointList(const char *listTag, const char *pointTag,
     xmlWriter->writeEndElement();
 }
 
-void WriterPrivate::writeColor(const char *tag, const QColor &color)
-{
-    xmlWriter->writeTextElement(tag, color.name());
-}
-
-void WriterPrivate::writePenStyle(const char *tag, Qt::PenStyle style)
+void WriterPrivate::writeColor(const char *tag, Color color)
 {
     QString str;
-    switch (style)
+    switch (color)
     {
-        case Qt::DashLine:
-            str = "DashLine";
+        case EmphasisedContent:
+            str = "EmphasisedContent";
             break;
-        case Qt::DotLine:
-            str = "DotLine";
+        case PrimaryContent:
+            str = "PrimaryContent";
             break;
-        case Qt::DashDotLine:
-            str = "DashDotLine";
+        case SecondaryContent:
+            str = "SecondaryContent";
             break;
-        case Qt::DashDotDotLine:
-            str = "DashDotDotLine";
+        case BackgroundHighlight:
+            str = "BackgroundHighlight";
             break;
-        case Qt::NoPen:
-            str = "NoPen";
+        case Background:
+            str = "Background";
+            break;
+        case Yellow:
+            str = "Yellow";
+            break;
+        case Orange:
+            str = "Orange";
+            break;
+        case Red:
+            str = "Red";
+            break;
+        case Magenta:
+            str = "Magenta";
+            break;
+        case Violet:
+            str = "Violet";
+            break;
+        case Blue:
+            str = "Blue";
+            break;
+        case Cyan:
+            str = "Cyan";
+            break;
+        case Green:
+            str = "Green";
             break;
         default:
-            str = "SolidLine";
+            str = "PrimaryContent";
+            break;
     }
     xmlWriter->writeTextElement(tag, str);
 }
 
-void WriterPrivate::writePenCapStyle(const char *tag, Qt::PenCapStyle style)
+void WriterPrivate::writeLineStyle(const char *tag, LineStyle style)
 {
     QString str;
     switch (style)
     {
-        case Qt::FlatCap:
-            str = "Flat";
-            break;
-        case Qt::SquareCap:
-            str = "Square";
-            break;
-        default:
-            str = "Round";
-    }
-    xmlWriter->writeTextElement(tag, str);
-}
-
-void WriterPrivate::writePenJoinStyle(const char *tag, Qt::PenJoinStyle style)
-{
-    QString str;
-    switch (style)
-    {
-        case Qt::MiterJoin:
-            str = "Miter";
-            break;
-        case Qt::BevelJoin:
-            str = "Bevel";
-            break;
-        default:
-            str = "Round";
-    }
-    xmlWriter->writeTextElement(tag, str);
-}
-
-void WriterPrivate::writeBrushStyle(const char *tag, Qt::BrushStyle style)
-{
-    QString str;
-    switch (style)
-    {
-        case Qt::SolidPattern:
+        case SolidLine:
             str = "Solid";
             break;
-        case Qt::HorPattern:
-            str = "Horizontal";
+        case DashLine:
+            str = "Dash";
             break;
-        case Qt::VerPattern:
-            str = "Vertical";
+        case DotLine:
+            str = "Dot";
             break;
-        case Qt::CrossPattern:
-            str = "Cross";
+        case DashDotLine:
+            str = "DashDot";
             break;
-        case Qt::BDiagPattern:
-            str = "BDiagonal";
+        case DashDotDotLine:
+            str = "DashDotDot";
             break;
-        case Qt::FDiagPattern:
-            str = "FDiagonal";
-            break;
-        case Qt::DiagCrossPattern:
-            str = "CrossDiagonal";
+        case NoLine:
+            str = "None";
             break;
         default:
-            str = "NoBrush";
+            str = "Solid";
+    }
+    xmlWriter->writeTextElement(tag, str);
+}
+
+void WriterPrivate::writeLineWidth(const char *tag, LineWidth width)
+{
+    QString str;
+    switch (width)
+    {
+        case ThinestLine:
+            str = "Thinest";
+            break;
+        case ThinerLine:
+            str = "Thiner";
+            break;
+        case ThinLine:
+            str = "Thin";
+            break;
+        case SlightlyThinLine:
+            str = "SlightlyThin";
+            break;
+        case MediumLine:
+            str = "Medium";
+            break;
+        case SlightlyThickLine:
+            str = "SlightlyThick";
+            break;
+        case ThickLine:
+            str = "Thick";
+            break;
+        case ThickerLine:
+            str = "Thicker";
+            break;
+        case ThickestLine:
+            str = "Thickest";
+            break;
+        default:
+            str = "Medium";
+            break;
+    }
+    xmlWriter->writeTextElement(tag, str);
+}
+
+void WriterPrivate::writeFillStyle(const char *tag, FillStyle style)
+{
+    QString str;
+    switch (style)
+    {
+        case SolidFill:
+            str = "Solid";
+            break;
+        case NoFill:
+            str = "None";
+            break;
+        default:
+            str = "Solid";
+            break;
     }
     xmlWriter->writeTextElement(tag, str);
 }
