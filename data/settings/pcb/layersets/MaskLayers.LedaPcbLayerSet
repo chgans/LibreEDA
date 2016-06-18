@@ -1,8 +1,0 @@
-[PcbLayerSet]
-system=true
-label="M&ask Layers"
-layers/size=4
-layers/0=96
-layers/1=97
-layers/2=98
-layers/3=99

@@ -1,7 +1,0 @@
-
-File formats:
-- dia/calligra:
- - 1 desktop/ini per category
- - drawings in svg or odg
- - png for preview
- 
